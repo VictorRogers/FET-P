@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace FETP
 {
-    /*************************************************************************\
+    /**************************************************************************\
     Class: GA_Controller (Genetic Algorithm Controller)
     Description: Includes all of the primary functions needed for the genetic
                  algorithm and evolving the chromosomes to find a solution.
     \**************************************************************************/ 
     class GA_Controller
     {
-        /*************************************************************************\
+        /**************************************************************************\
         GA_Controller - Data Members
         \**************************************************************************/ 
         private int crossoverRate;
@@ -22,10 +22,10 @@ namespace FETP
         private int populationSize;
 
 
-        /*************************************************************************\
+        /**************************************************************************\
         GA_Controller - Methods 
         \**************************************************************************/ 
-        /*************************************************************************\
+        /**************************************************************************\
         Constructor: Default 
         Description: 
         \**************************************************************************/ 
@@ -34,7 +34,7 @@ namespace FETP
         }
 
 
-        /*************************************************************************\
+        /**************************************************************************\
         Method: Assign Fitness 
         Description: Should take a chromosome as an input and output its fitness
                      score.
@@ -45,7 +45,7 @@ namespace FETP
         }
 
 
-        /*************************************************************************\
+        /**************************************************************************\
         Method: Crossover 
         Description: Takes two chromosomes as an input and performs crossover on
                      the genes to create two offspring based on the crossover rate.
@@ -55,7 +55,7 @@ namespace FETP
         }
 
 
-        /*************************************************************************\
+        /**************************************************************************\
         Method: Roulette 
         Description: Selects a chromosome from the population proportional to its
                      fitness score. This is used to select members from the
@@ -68,7 +68,7 @@ namespace FETP
         }
 
 
-        /*************************************************************************\
+        /**************************************************************************\
         Method: Mutate 
         Description: Creates a mutation in a chromosome depending on the mutation
                      rate.
