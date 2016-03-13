@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FETP
 {
+    struct exam
+    {
+    }
     /**************************************************************************\
     Class: GA_Chromosome (Genetic Algorithm Chromosome)
     Description: Each chromosome is a potential calendar solution. This class
@@ -15,7 +18,8 @@ namespace FETP
     {
         /**************************************************************************\
         GA_Chromosome - Data Members
-        \**************************************************************************/ 
+        \**************************************************************************/
+        private int exam;
 
 
         /**************************************************************************\

@@ -6,6 +6,29 @@ using System.Threading.Tasks;
 
 namespace FETP
 {
+    struct Exam
+    {
+        TimeQuantum duration;
+    }
+
+
+    struct ConstraintHard
+    {
+    }
+
+    struct ConstraintSoft
+    {
+    }
+
+
+    struct TimeSlot
+    {
+    }
+
+    struct TimeQuantum
+    {
+    }
+
     /**************************************************************************\
     Class: GA_Controller (Genetic Algorithm Controller)
     Description: Includes all of the primary functions needed for the genetic
@@ -20,6 +43,13 @@ namespace FETP
         private int maxGenerations;
         private int mutationRate;
         private int populationSize;
+
+        private Exam[] setExams;
+        private ConstraintHard[] setHardConstraints;
+        private ConstraintSoft[] setSoftConstraints;
+        private int timeQuantumLength;
+        private TimeQuantum[] setTimeQuanta;
+        private TimeQuantum[] setSuitableTimeQuanta;
 
 
         /**************************************************************************\
