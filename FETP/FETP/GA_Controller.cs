@@ -11,16 +11,6 @@ namespace FETP
         TimeQuantum duration;
     }
 
-
-    struct ConstraintHard
-    {
-    }
-
-    struct ConstraintSoft
-    {
-    }
-
-
     struct TimeSlot
     {
     }
@@ -45,8 +35,6 @@ namespace FETP
         private int populationSize;
 
         private Exam[] setExams;
-        private ConstraintHard[] setHardConstraints;
-        private ConstraintSoft[] setSoftConstraints;
         private int timeQuantumLength;
         private TimeQuantum[] setTimeQuanta;
         private TimeQuantum[] setSuitableTimeQuanta;
