@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GA_Constraints.cs" />
     <Compile Include="FETP_Controller.cs" />
     <Compile Include="GA_Chromosome.cs" />
     <Compile Include="GA_Controller.cs" />

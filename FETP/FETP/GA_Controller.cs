@@ -21,6 +21,11 @@ namespace FETP
         private int mutationRate;
         private int populationSize;
 
+        private Class[] setClasses;
+        private TimeSlot[] setTimeSlots;
+
+        GA_Constraints Constraints;
+
 
         /**************************************************************************\
         GA_Controller - Methods 
@@ -35,12 +40,27 @@ namespace FETP
 
 
         /**************************************************************************\
+        Constructor: Default 
+        Description: 
+        \**************************************************************************/ 
+        GA_Controller(Class[] incomingSetClasses, int numClasses, int numExams)
+        {
+            setClasses = new Class[numClasses];
+            incomingSetClasses.CopyTo(setClasses, numClasses);
+
+        }
+
+
+        /**************************************************************************\
         Method: Assign Fitness 
         Description: Should take a chromosome as an input and output its fitness
                      score.
         \**************************************************************************/ 
         float AssignFitness()
         {
+            Constraints.CheckSoftConstraints();
+            Constraints.CheckHardConstraints();
+
             return 0.0f;
         }
 
