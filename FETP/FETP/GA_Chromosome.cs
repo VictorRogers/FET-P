@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace FETP
 {
-    struct exam
+    struct TimeSlot
     {
+
     }
     /**************************************************************************\
     Class: GA_Chromosome (Genetic Algorithm Chromosome)

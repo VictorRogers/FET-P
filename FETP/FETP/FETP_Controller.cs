@@ -22,7 +22,11 @@ namespace FETP
     /**************************************************************************\
     Class: FETP_Controller (Final Exam Timetabling Problem Controller)
     Description: This class contains all of the primary functions used for 
-    reading in data, adjusting data, outputting data, and running starting the process of running the genetic algorithm. This is the primary interface between the front-end and the back-end. It reads from the data file, formats the data for use by the GA_Controller, receives the solutions from the GA_Controller, and sends them back to the front-end for display in the GUI.
+    reading in data, adjusting data, outputting data, and running starting the 
+    process of running the genetic algorithm. This is the primary interface 
+    between the front-end and the back-end. It reads from the data file, formats 
+    the data for use by the GA_Controller, receives the solutions from the 
+    GA_Controller, and sends them back to the front-end for display in the GUI.
     \**************************************************************************/
     class FETP_Controller
     {
@@ -32,9 +36,9 @@ namespace FETP
         List<string> Meeting_Days_Times;
         List<string> SUM_ACTUAL_ENROLLMENT;
 
-        private int possibleExamSlots;
+        private int numExamSlots;
         private int numClasses;
-        private Class[] setClasses;
+        public Class[] setClasses;
 
         /**************************************************************************\
         FETP_Controller - Methods 
@@ -45,7 +49,6 @@ namespace FETP
         \**************************************************************************/ 
         public FETP_Controller()
         {
-            possibleExamSlots = 27;
         }
 
 
@@ -155,6 +158,16 @@ namespace FETP
                 setClasses[i].endTime = DateTime.ParseExact(strEndTime, "HHmm", System.Globalization.CultureInfo.InvariantCulture);
             }
 
+        }
+
+
+        /**************************************************************************\
+        Method: setExamSlots 
+        Description: Sets the number of possible exam slots 
+        \**************************************************************************/ 
+        public void setExamSlots(int numberOfExamSlots)
+        {
+            numExamSlots = numberOfExamSlots;
         }
 
     }
