@@ -11,7 +11,8 @@ namespace FETP
         static void Main(string[] args)
         {
             FETP_Controller FETP_Controller = new FETP_Controller();
-            FETP_Controller.readInputFile();
+            FETP_Controller.ReadInputFile();
+            FETP_Controller.ParseClasses();
         }
     }
 }
