@@ -4,20 +4,71 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Globalization;  // allows times to be different pased on local
 
 namespace FETP
 {
-    struct Class
+    // Programmer: Ben and Vic
+    public class Class
     {
-        public bool monday { get; set; }
-        public bool tuesday { get; set; }
-        public bool wednesday { get; set; }
-        public bool thursday { get; set; }
-        public bool friday { get; set; }
-        public DateTime startTime { get; set; }
-        public DateTime endTime { get; set; }
-        public int enrollment { get; set; }
+        
+        protected TimeSpan startTime;
+        protected TimeSpan endTime;
+        protected int enrollment;
+        protected List<DayOfWeek> daysMeet;
+        
+        // Accessors and Mutators
+        public TimeSpan StartTime 
+        {
+            get { return this. startTime; }
+            set { this.startTime = value; }
+        }
+        
+        public TimeSpan EndTime 
+        {
+            get { return this.endTime; }
+            set { this.startTime = value; }
+        }
+        
+        public int Enrollment
+        {
+            get { return this.enrollment; }
+            set { this.enrollment = value; }
+        }
+
+        public List<DayOfWeek> DaysMeet
+        {
+            get { return this.daysMeet; }
+            set { this.daysMeet = value;  }
+        }
+        
+        
+        // Intializes Class
+        public Class(TimeSpan inStartTime, TimeSpan inEndTime, int inEnrollment, List<DayOfWeek> inDaysMeet)
+        {
+            this.startTime = inStartTime;
+            this.endTime = inEndTime;
+            this.enrollment = inEnrollment;
+            this.daysMeet = inDaysMeet;
+        }
+
+        public void Display()
+        {
+            Console.WriteLine("Start Time: {0}", this.startTime);
+            Console.WriteLine("End Time: {0}", this.endTime);
+            Console.WriteLine("Enrollment: {0}", this.enrollment);
+            Console.Write("Days Meet: ");
+            foreach (DayOfWeek day in daysMeet)
+            {
+                Console.Write("{0} ", day);
+            }
+            
+            Console.WriteLine("");
+        }
+
     }
+
+    
 
     /**************************************************************************\
     Class: FETP_Controller (Final Exam Timetabling Problem Controller)
@@ -28,146 +79,69 @@ namespace FETP
     the data for use by the GA_Controller, receives the solutions from the 
     GA_Controller, and sends them back to the front-end for display in the GUI.
     \**************************************************************************/
-    class FETP_Controller
+    public static class FETP_Controller
     {
-        /**************************************************************************\
-        FETP_Controller - Data Members
-        \**************************************************************************/
-        List<string> Meeting_Days_Times;
-        List<string> SUM_ACTUAL_ENROLLMENT;
 
-        private int numExamSlots;
-        private int numClasses;
-        public Class[] setClasses;
-
-        /**************************************************************************\
-        FETP_Controller - Methods 
-        \**************************************************************************/
-        /**************************************************************************\
-        Constructor: Default 
-        Description: 
-        \**************************************************************************/ 
-        public FETP_Controller()
+        public static bool doClassesConflict(Class class1, Class class2)
         {
+            
+            return false;
         }
 
-
-        /**************************************************************************\
-        Method: ReadInputFile 
-        Description:  
-        \**************************************************************************/ 
-        public void ReadInputFile()
+        // Programmer: Ben
+        // takes in an open data file and returns a list of all the classes
+        public static List<Class> readInputDataFile(FileStream inFile)
         {
-            numClasses = 0;
-            Meeting_Days_Times = new List<string>();
-            SUM_ACTUAL_ENROLLMENT = new List<string>();
 
-            var reader = new StreamReader(File.OpenRead(@"Spring 2015 Total Enrollments by Meeting times.csv"));
+            List<Class> allClasses = new List<Class>(); // list of all classes to be returned
 
-            bool isDescriptionLine = true;
+            var reader = new StreamReader(inFile);
+
+            reader.ReadLine(); // skip description line
+
             while (!reader.EndOfStream)
             {
-                var line = reader.ReadLine();
-                var values = line.Split(',');
+                // ? possibly change var to string
+                var line = reader.ReadLine(); // reads in next line
+                var values = line.Split(','); // splits into days/times and enrollement
+                var daysAndTimes = values[0].Split(' '); // chops up the days and times to manageable sections
 
-                //Skips the first data description line in the csv
-                if (!isDescriptionLine)
+
+
+                TimeSpan startTime = TimeSpan.ParseExact(daysAndTimes[1], @"hhmm", CultureInfo.InstalledUICulture); // one postion is the start time
+                TimeSpan endTime = TimeSpan.ParseExact(daysAndTimes[3], @"hhmm", CultureInfo.InstalledUICulture); // 3 position is the end time
+
+                List<DayOfWeek> days = new List<DayOfWeek>(); // days the class meets
+                foreach (char day in daysAndTimes[0].ToCharArray()) // changes days from string of chars to list of DayOfWeek type
                 {
-                    Meeting_Days_Times.Add(values[0]);
-                    SUM_ACTUAL_ENROLLMENT.Add(values[1]);
-                    numClasses++;
-                }
-                //Setting to false after reading the first line
-                //This could use a more robust solution in case a future input file doesn't have a description
-                isDescriptionLine = false;
-            }
-        }
-
-
-        /**************************************************************************\
-        Method: ParseClasses
-        Description:  
-        \**************************************************************************/ 
-        public void ParseClasses()
-        {
-            setClasses = new Class[numClasses];
-
-            for (int i = 0; i < numClasses; i++)
-            {
-                //Parses enrollment and adds it to class struct
-                string strEnrollment = SUM_ACTUAL_ENROLLMENT[i].ToString();
-                setClasses[i].enrollment = Int32.Parse(strEnrollment);
-
-                //Converting meeting days and times to a char array for parsing
-                string meetingDaysTimes = Meeting_Days_Times[i].ToString();
-                Char[] charMeetingDaysTimes = meetingDaysTimes.ToCharArray();
-                
-                //Used for determining if class start time or end time
-                bool isParsingEndTime = false;
-
-                StringBuilder sbStartTime = new System.Text.StringBuilder();
-                StringBuilder sbEndTime = new System.Text.StringBuilder();
-                string strStartTime;
-                string strEndTime;
-
-                for (int j = 0; j < charMeetingDaysTimes.Length; j++)
-                {
-                    if (Char.IsLetter(charMeetingDaysTimes[j]))
+                    switch (day)
                     {
-                        //Identifies days of week class is held on and adds to class struct
-                        switch (charMeetingDaysTimes[j])
-                        {
-                            case 'M':
-                                setClasses[i].monday = true;
-                                break;
-                            case 'T':
-                                setClasses[i].tuesday = true;
-                                break;
-                            case 'W':
-                                setClasses[i].wednesday = true;
-                                break;
-                            case 'R':
-                                setClasses[i].thursday = true;
-                                break;
-                            case 'F':
-                                setClasses[i].friday = true;
-                                break;
-                        }
-                    }
-                    //Parsing class start and end times
-                    else if (Char.IsDigit(charMeetingDaysTimes[j]))
-                    {
-                        if (!isParsingEndTime)
-                        {
-                            sbStartTime.Append(charMeetingDaysTimes[j]);
-                        }
-                        else
-                        {
-                            sbEndTime.Append(charMeetingDaysTimes[j]);
-                        }
-                    }
-                    else if (charMeetingDaysTimes[j] == '-')
-                    {
-                        isParsingEndTime = true;
+                        case 'M':
+                            days.Add(DayOfWeek.Monday);
+                            break;
+                        case 'T':
+                            days.Add(DayOfWeek.Tuesday);
+                            break;
+                        case 'W':
+                            days.Add(DayOfWeek.Wednesday);
+                            break;
+                        case 'R':
+                            days.Add(DayOfWeek.Thursday);
+                            break;
+                        case 'F':
+                            days.Add(DayOfWeek.Friday);
+                            break;
                     }
                 }
 
-                strStartTime = sbStartTime.ToString();
-                strEndTime = sbEndTime.ToString();
-                setClasses[i].startTime = DateTime.ParseExact(strStartTime, "HHmm", System.Globalization.CultureInfo.InvariantCulture);
-                setClasses[i].endTime = DateTime.ParseExact(strEndTime, "HHmm", System.Globalization.CultureInfo.InvariantCulture);
+                int enrollment = Int32.Parse(values[1]); // enrollement values should be in position 1
+
+                allClasses.Add(new Class(startTime, endTime, enrollment, days)); // add new Class to list
+
             }
 
-        }
+            return allClasses;
 
-
-        /**************************************************************************\
-        Method: setExamSlots 
-        Description: Sets the number of possible exam slots 
-        \**************************************************************************/ 
-        public void setExamSlots(int numberOfExamSlots)
-        {
-            numExamSlots = numberOfExamSlots;
         }
 
     }

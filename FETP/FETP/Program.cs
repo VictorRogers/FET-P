@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace FETP
 {
@@ -10,9 +11,16 @@ namespace FETP
     {
         static void Main(string[] args)
         {
-            FETP_Controller FETP_Controller = new FETP_Controller();
-            FETP_Controller.ReadInputFile();
-            FETP_Controller.ParseClasses();
+            FileStream inFile = File.OpenRead(@"../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
+            List<Class> allClasses = FETP_Controller.readInputDataFile(inFile);
+            foreach(Class cl in allClasses)
+            {
+                cl.Display();
+            }
+
+            Console.ReadKey();
+           
         }
+       
     }
 }
