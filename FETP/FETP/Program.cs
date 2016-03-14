@@ -21,7 +21,7 @@ namespace FETP
                 {
                     if (FETP_Controller.doClassesOverlap(cl, cl2)) overlappingClasses++;
                 }
-                Console.WriteLine("Overlaps with: {0}", overlappingClasses);
+                Console.WriteLine("Overlaps with: {0} other classes", overlappingClasses);
             }
 
             Console.ReadKey();

@@ -6,6 +6,28 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Globalization;  // allows times to be different pased on local
 
+/*
+
+    Ben Notes:
+        swaped enrollment and days inorder for the call to the class constructor from block cleaner
+
+        do we really want to make block a class?
+            it gets weird with construction
+            its not REALLY a class
+            it is probably for the best
+
+        
+            could change and give it property isMWF to determine days
+            days of blocks SHOULD only be MWF or TR
+
+        timeslot class
+            doesn't seem to be needed
+            only thing to think to do is limit number of slots, but thats not needed
+
+*/
+
+
+
 namespace FETP
 {
     // Programmer: Ben and Vic
@@ -44,7 +66,7 @@ namespace FETP
         
         
         // Intializes Class
-        public Class(TimeSpan inStartTime, TimeSpan inEndTime, int inEnrollment, List<DayOfWeek> inDaysMeet)
+        public Class(TimeSpan inStartTime, TimeSpan inEndTime, List<DayOfWeek> inDaysMeet = null, int inEnrollment = 0)
         {
             this.startTime = inStartTime;
             this.endTime = inEndTime;
@@ -67,6 +89,61 @@ namespace FETP
         }
 
     }
+
+    // block contains classes that overlapped and were coalesced
+    public class Block : Class
+    {
+        protected List<Class> classesInBlock;
+
+        public Block(TimeSpan inStartTime, TimeSpan inEndTime, List<DayOfWeek> inDaysMeet, List<Class> inClasses)
+            : base(inStartTime, inEndTime, inDaysMeet)
+        {
+            this.classesInBlock = inClasses;
+
+            // calculate total enrollement
+            foreach (Class clas in inClasses)
+                this.enrollment += clas.Enrollment;
+
+        }
+
+        
+        public void DisplayAllClasses()
+        {
+            foreach (Class cl in classesInBlock)
+                cl.Display();
+        }
+        
+    }
+
+    // playing with TimeSlot class
+    //hmmmm
+    public class TimeSlots
+    {
+        protected List<Block> timeSlots;
+
+        public TimeSlots(List<Block> inBlocks)
+        {
+            this.timeSlots = inBlocks;
+        }
+
+        public void Display()
+        {
+            foreach (Block block in timeSlots)
+                block.Display();
+        }
+    }
+
+    public class Schedule
+    {
+        protected List<TimeSlots> days;
+
+        public Schedule(List<TimeSlots> inDays)
+        {
+            this.days = inDays;
+        }
+    } 
+
+
 
     
 
@@ -140,7 +217,7 @@ namespace FETP
 
                     int enrollment = Int32.Parse(values[1]); // enrollement values should be in 1 position
 
-                    allClasses.Add(new Class(startTime, endTime, enrollment, days)); // add new Class to list
+                    allClasses.Add(new Class(startTime, endTime, days, enrollment)); // add new Class to list
 
                 }
             }
@@ -148,7 +225,6 @@ namespace FETP
             return allClasses;
 
         }
-        
 
         // Checks if two classes overlap
         public static bool doClassesOverlap(Class class1, Class class2)
@@ -177,6 +253,13 @@ namespace FETP
                 }
             }
             return daysInCommon;
+        }
+
+        // in theory, this will automatically find what days a block meets.
+        // a block should only meet on MWF or TR
+        public static List<DayOfWeek> getMostCommonDays(List<Class> classes)
+        {
+            return null;
         }
 
     }
