@@ -85,12 +85,6 @@ namespace FETP
         private const string CLASS_LENGTH_TO_START_IGNORING = "02:45";
         private const string HOUR_TO_BEGIN_IGNORE_CLASS = "18:00";
 
-        public static bool doClassesConflict(Class class1, Class class2)
-        {
-            
-            return false;
-        }
-
         // Programmer: Ben
         // takes in an open data file and returns a list of all the classes
         public static List<Class> readInputDataFile(FileStream inFile)
@@ -153,6 +147,36 @@ namespace FETP
 
             return allClasses;
 
+        }
+        
+
+        // Checks if two classes overlap
+        public static bool doClassesOverlap(Class class1, Class class2)
+        {
+            // Broke up to aid readability
+            return (
+               (getDaysInCommon(class1, class2) > 0) // do the classes have any days in common
+               && (((class1.StartTime >= class2.StartTime && class1.StartTime <= class2.EndTime) // does class1 start during class2
+               || (class1.EndTime >= class2.StartTime && class1.EndTime <= class2.EndTime)) // does class1 end during class2 
+               || ((class2.StartTime >= class1.StartTime && class2.StartTime <= class1.EndTime) // does class2 start during class1
+               || (class2.EndTime >= class1.StartTime && class2.EndTime <= class1.EndTime))) // does class2 end during class1
+            );              
+                
+            
+        }
+
+        // Helper function to find the total days two classes have in common.
+        public static int getNumberOfDaysInCommon(Class class1, Class class2)
+        {
+            int daysInCommon = 0;
+            foreach(DayOfWeek dayFromClass1 in class1.DaysMeet)
+            {
+                foreach(DayOfWeek dayFromClass2 in class2.DaysMeet)
+                {
+                    if (dayFromClass1 == dayFromClass2) daysInCommon++;
+                }
+            }
+            return daysInCommon;
         }
 
     }

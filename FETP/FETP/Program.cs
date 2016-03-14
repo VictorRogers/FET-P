@@ -16,6 +16,12 @@ namespace FETP
             foreach(Class cl in allClasses)
             {
                 cl.Display();
+                int overlappingClasses = -1; // to account for and ignore comparing to self
+                foreach(Class cl2 in allClasses)
+                {
+                    if (FETP_Controller.doClassesOverlap(cl, cl2)) overlappingClasses++;
+                }
+                Console.WriteLine("Overlaps with: {0}", overlappingClasses);
             }
 
             Console.ReadKey();
