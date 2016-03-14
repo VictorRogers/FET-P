@@ -24,6 +24,14 @@ using System.Globalization;  // allows times to be different pased on local
             doesn't seem to be needed
             only thing to think to do is limit number of slots, but thats not needed
 
+
+        remember .orderby().thenby()
+        can now sort by enrollment or overlapping days
+        can sort by any combination of attributes
+
+        do not write validateDataFiles. we assume they are correct
+        can write those later for extra
+
 */
 
 
@@ -88,6 +96,16 @@ namespace FETP
             Console.WriteLine("");
         }
 
+        public static bool operator== (Class class1, Class class2)
+        {
+            return (class1.StartTime == class2.StartTime && class1.EndTime == class2.EndTime && class1.Enrollment == class2.Enrollment && class1.DaysMeet == class2.DaysMeet); // ? comparing list should work
+        }
+
+        public static bool operator !=(Class class1, Class class2)
+        {
+            return (class1.StartTime != class2.StartTime || class1.EndTime != class2.EndTime || class1.Enrollment != class2.Enrollment || class1.DaysMeet != class2.DaysMeet); // yay. used cs 245 to make this code faster
+        }
+
     }
 
     // block contains classes that overlapped and were coalesced
@@ -112,6 +130,8 @@ namespace FETP
             foreach (Class cl in classesInBlock)
                 cl.Display();
         }
+
+        
         
     }
 
@@ -120,10 +140,12 @@ namespace FETP
     public class TimeSlots
     {
         protected List<Block> timeSlots;
+        protected DayOfWeek day;
 
-        public TimeSlots(List<Block> inBlocks)
+        public TimeSlots(List<Block> inBlocks, DayOfWeek inDay)
         {
             this.timeSlots = inBlocks;
+            this.day = inDay;
         }
 
         public void Display()
@@ -224,7 +246,30 @@ namespace FETP
 
             return allClasses;
 
+        } // end readInputDataFile
+
+        // ? don't know what to do with this info yet
+        public static void readInputConstraintsFile(FileStream inFile)
+        {
+
+            var reader = new StreamReader(inFile);
+
+            int numberOfDays = Int32.Parse(reader.ReadLine());
+            TimeSpan startTime = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+            TimeSpan examLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+            TimeSpan timeBetweenExams = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+            TimeSpan lunchLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+
+
         }
+
+        /*
+        // takes in a list of classes and coalesces them into a list of blocks of classes
+        public static List<Block> coalesceClassesTogether(List<Class> classes)
+        {
+
+        }
+        */
 
         // Checks if two classes overlap
         public static bool doClassesOverlap(Class class1, Class class2)
@@ -255,11 +300,31 @@ namespace FETP
             return daysInCommon;
         }
 
+        public static int getNumberOfOverlappingDays(List<Class> classes, Class inClass)
+        {
+            int overlappingClasses = 0; 
+            foreach (Class cl in classes)
+            {
+                if (cl != inClass && FETP_Controller.doClassesOverlap(cl, inClass)) overlappingClasses++;
+            }
+            return overlappingClasses;
+        }
+
         // in theory, this will automatically find what days a block meets.
         // a block should only meet on MWF or TR
         public static List<DayOfWeek> getMostCommonDays(List<Class> classes)
         {
             return null;
+        }
+
+        public static List<Class> sortClassesByEnrollment(List<Class> classes)
+        {
+            return classes.OrderByDescending(c => c.Enrollment).ToList();
+        }
+
+        public static List<Class> sortClassesByOverlappingDays(List<Class> classes)
+        {
+            return classes.OrderByDescending(c => getNumberOfOverlappingDays(classes, c)).ToList();
         }
 
     }
