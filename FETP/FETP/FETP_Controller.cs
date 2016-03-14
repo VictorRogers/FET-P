@@ -155,7 +155,7 @@ namespace FETP
         {
             // Broke up to aid readability
             return (
-               (getDaysInCommon(class1, class2) > 0) // do the classes have any days in common
+               (getNumberOfDaysInCommon(class1, class2) > 0) // do the classes have any days in common
                && (((class1.StartTime >= class2.StartTime && class1.StartTime <= class2.EndTime) // does class1 start during class2
                || (class1.EndTime >= class2.StartTime && class1.EndTime <= class2.EndTime)) // does class1 end during class2 
                || ((class2.StartTime >= class1.StartTime && class2.StartTime <= class1.EndTime) // does class2 start during class1
