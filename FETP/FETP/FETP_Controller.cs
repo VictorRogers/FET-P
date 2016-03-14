@@ -81,6 +81,9 @@ namespace FETP
     \**************************************************************************/
     public static class FETP_Controller
     {
+        // These are the values that determine the boundaries of classes to be ignored
+        private const string CLASS_LENGTH_TO_START_IGNORING = "02:45";
+        private const string HOUR_TO_BEGIN_IGNORE_CLASS = "18:00";
 
         public static bool doClassesConflict(Class class1, Class class2)
         {
@@ -93,12 +96,16 @@ namespace FETP
         public static List<Class> readInputDataFile(FileStream inFile)
         {
 
+            // Make boundaries of ignored classes more usable
+            TimeSpan ignoreClassLength = TimeSpan.ParseExact(CLASS_LENGTH_TO_START_IGNORING, @"hh\:mm", CultureInfo.InvariantCulture);
+            TimeSpan ignoreClassStartTime = TimeSpan.ParseExact(HOUR_TO_BEGIN_IGNORE_CLASS, @"hh\:mm", CultureInfo.InvariantCulture);
+
             List<Class> allClasses = new List<Class>(); // list of all classes to be returned
 
             var reader = new StreamReader(inFile);
 
             reader.ReadLine(); // skip description line
-
+        
             while (!reader.EndOfStream)
             {
                 // ? possibly change var to string
@@ -108,36 +115,40 @@ namespace FETP
 
 
 
-                TimeSpan startTime = TimeSpan.ParseExact(daysAndTimes[1], @"hhmm", CultureInfo.InstalledUICulture); // one postion is the start time
-                TimeSpan endTime = TimeSpan.ParseExact(daysAndTimes[3], @"hhmm", CultureInfo.InstalledUICulture); // 3 position is the end time
+                TimeSpan startTime = TimeSpan.ParseExact(daysAndTimes[1], @"hhmm", CultureInfo.InvariantCulture); // 1 postion is the start time, changes formated time to bw more usable 
+                TimeSpan endTime = TimeSpan.ParseExact(daysAndTimes[3], @"hhmm", CultureInfo.InvariantCulture); // 3 position is the end time, changes formated time to bw more usable 
 
-                List<DayOfWeek> days = new List<DayOfWeek>(); // days the class meets
-                foreach (char day in daysAndTimes[0].ToCharArray()) // changes days from string of chars to list of DayOfWeek type
+                // Checks if class should not be ignored before continuing execution
+                if ((startTime < ignoreClassStartTime) || (endTime - startTime < ignoreClassLength))
                 {
-                    switch (day)
+                    List<DayOfWeek> days = new List<DayOfWeek>(); // days the class meets
+                    foreach (char day in daysAndTimes[0].ToCharArray()) // changes days from string of chars to list of DayOfWeek type
                     {
-                        case 'M':
-                            days.Add(DayOfWeek.Monday);
-                            break;
-                        case 'T':
-                            days.Add(DayOfWeek.Tuesday);
-                            break;
-                        case 'W':
-                            days.Add(DayOfWeek.Wednesday);
-                            break;
-                        case 'R':
-                            days.Add(DayOfWeek.Thursday);
-                            break;
-                        case 'F':
-                            days.Add(DayOfWeek.Friday);
-                            break;
+                        switch (day)
+                        {
+                            case 'M':
+                                days.Add(DayOfWeek.Monday);
+                                break;
+                            case 'T':
+                                days.Add(DayOfWeek.Tuesday);
+                                break;
+                            case 'W':
+                                days.Add(DayOfWeek.Wednesday);
+                                break;
+                            case 'R':
+                                days.Add(DayOfWeek.Thursday);
+                                break;
+                            case 'F':
+                                days.Add(DayOfWeek.Friday);
+                                break;
+                        }
                     }
+
+                    int enrollment = Int32.Parse(values[1]); // enrollement values should be in 1 position
+
+                    allClasses.Add(new Class(startTime, endTime, enrollment, days)); // add new Class to list
+
                 }
-
-                int enrollment = Int32.Parse(values[1]); // enrollement values should be in position 1
-
-                allClasses.Add(new Class(startTime, endTime, enrollment, days)); // add new Class to list
-
             }
 
             return allClasses;
