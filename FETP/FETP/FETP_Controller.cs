@@ -51,6 +51,9 @@ using System.Globalization;  // allows times to be different pased on local ? ma
         new fringe case, do we want to give them the ability to schedule overlapping exams if we can't coalesce small enough?
             we can say how many students will be effected and let them decide that
 
+        ask professor about best place to put some of these functions (in class or in controller)
+            which is the better practice
+
 */
 
 
@@ -257,6 +260,8 @@ namespace FETP
             this.days = inDays;
         }
 
+
+
         // ?
         // needs finishing
         public void Display()
@@ -268,7 +273,8 @@ namespace FETP
             Console.WriteLine("Length of Lunch Time: {0}", lunchLength);
             if (days != null)
             {
-                // dispaly days
+                // display days
+                // ? may not need
             }
         }
     } 
@@ -289,9 +295,9 @@ namespace FETP
     public static class FETP_Controller
     {
         // These are the values that determine the boundaries of classes to be ignored
-        private const string CLASS_LENGTH_TO_START_IGNORING = "02:45";
-        private const string HOUR_TO_BEGIN_IGNORE_CLASS = "18:00";
-        private const string TIME_EXAMS_MUST_END_BY = "5:00";
+        private const string CLASS_LENGTH_TO_START_IGNORING = "0245";
+        private const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
+        private const string TIME_EXAMS_MUST_END_BY = "0500";
 
         // Programmer: Ben
         // takes in an open data file and returns a list of all the classes
@@ -299,8 +305,8 @@ namespace FETP
         {
 
             // Make boundaries of ignored classes more usable
-            TimeSpan ignoreClassLength = TimeSpan.ParseExact(CLASS_LENGTH_TO_START_IGNORING, @"hh\:mm", CultureInfo.InvariantCulture);
-            TimeSpan ignoreClassStartTime = TimeSpan.ParseExact(HOUR_TO_BEGIN_IGNORE_CLASS, @"hh\:mm", CultureInfo.InvariantCulture);
+            TimeSpan ignoreClassLength = TimeSpan.ParseExact(CLASS_LENGTH_TO_START_IGNORING, @"hhmm", CultureInfo.InvariantCulture);
+            TimeSpan ignoreClassStartTime = TimeSpan.ParseExact(HOUR_TO_BEGIN_IGNORE_CLASS, @"hhmm", CultureInfo.InvariantCulture);
 
             List<Class> allClasses = new List<Class>(); // list of all classes to be returned
 
@@ -373,7 +379,43 @@ namespace FETP
 
         }
 
-   
+        public static int getNumberOfTimeSlotsAvailable(Schedule schedule)
+        {
+            return getNumberOfTimeSlotsAvaiablePerDay(schedule) * schedule.NumberOfDays;
+        }
+
+        public static int getNumberOfTimeSlotsAvaiablePerDay(Schedule schedule)
+        {
+            TimeSpan latestTime = TimeSpan.ParseExact(TIME_EXAMS_MUST_END_BY, @"hhmm", CultureInfo.InvariantCulture); // latest exams can go
+
+            TimeSpan lengthOfExamDay = latestTime - schedule.ExamsStartTime; // Figure out how much time available for exams
+
+            // if the lunch time is longer than the break time, account for it and the extra break time it will give you
+            if (schedule.LunchLength >= schedule.TimeBetweenExams)
+            {
+                lengthOfExamDay -= (schedule.LunchLength - schedule.TimeBetweenExams); // takes the lunch break out of available time. also pads for how the lunch will count as a break.
+            }
+
+
+            TimeSpan examFootprint = schedule.ExamsLength + schedule.TimeBetweenExams;
+
+            int numberOfExams = 0;
+            // ? bug if exam break is too big
+            while ((lengthOfExamDay - schedule.ExamsLength) >= TimeSpan.Zero)
+            {
+                lengthOfExamDay -= schedule.ExamsLength;
+                numberOfExams++;
+
+                // checks if a break is needed due to their being room for another exam after a break
+                if ((lengthOfExamDay - (schedule.TimeBetweenExams + schedule.ExamsLength) >= TimeSpan.Zero))
+                {
+                    lengthOfExamDay -= schedule.TimeBetweenExams;
+                }
+            }
+            return numberOfExams;
+        }
+
+
         /* ?
         // takes in a list of classes and coalesces them into a list of blocks of classes
         public static List<Block> coalesceClassesTogether(List<Class> classes)
