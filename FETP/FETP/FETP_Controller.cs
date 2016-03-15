@@ -55,6 +55,8 @@ using System.Globalization;  // allows times to be different pased on local ? ma
             which is the better practice
 
         change name of lengthOfExamDay to available time
+
+        change all TimeSlots to Timeslot
 */
 
 
@@ -114,10 +116,9 @@ namespace FETP
             
             Console.WriteLine("");
         }
+        
 
-        /* ? this may need to be uncommented. C# seems to want these methods defined in order to overload comparison operators
-
-        // this function does not do anything. The complications of writing a hash function is not needed for current program
+        // ? this function does not do anything. The complications of writing a hash function is not needed for current program
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -139,7 +140,6 @@ namespace FETP
         {
             return (this.StartTime == inClass.StartTime && this.EndTime == inClass.EndTime && this.Enrollment == inClass.Enrollment && this.DaysMeet == inClass.DaysMeet);
         }
-        */
         
         
         public static bool operator== (Class class1, Class class2)
@@ -159,7 +159,7 @@ namespace FETP
     {
         protected List<Class> classesInBlock;
 
-        public Block(TimeSpan inStartTime, TimeSpan inEndTime, List<DayOfWeek> inDaysMeet, List<Class> inClasses)
+        public Block(TimeSpan inStartTime, TimeSpan inEndTime, List<DayOfWeek> inDaysMeet, List<Class> inClasses = null)
             : base(inStartTime, inEndTime, inDaysMeet)
         {
             this.classesInBlock = inClasses;
@@ -168,6 +168,12 @@ namespace FETP
             foreach (Class clas in inClasses)
                 this.enrollment += clas.Enrollment;
 
+        }
+
+        public Block(Class inClass, List<Class> inClasses = null)
+            : base(inClass.StartTime, inClass.EndTime, inClass.DaysMeet)
+        {
+            this.classesInBlock = inClasses;
         }
         
         public void DisplayAllClasses()
@@ -258,6 +264,7 @@ namespace FETP
                 this.timeBetweenExams = inSchedule.TimeBetweenExams;
                 this.lunchLength = inSchedule.LunchLength;
             }
+            // ? could assign inSchedules days to it
             this.days = inDays;
         }
 
@@ -417,10 +424,15 @@ namespace FETP
         }
 
 
-        /* ?
+        /*
         // takes in a list of classes and coalesces them into a list of blocks of classes
-        public static List<Block> coalesceClassesTogether(List<Class> classes)
+        public static List<Block> coalesceClassesTogether(List<Class> classes, int numberOfTime)
         {
+            List<Block> classesToBeGrouped;
+            foreach(Class cl in classes)
+            {
+                classesToBeGrouped.Add(cl);
+            }
 
         }
         */
@@ -428,16 +440,23 @@ namespace FETP
         // Checks if two classes overlap
         public static bool doClassesOverlap(Class class1, Class class2)
         {
-            // Broke up to aid readability
+            return (doClassDaysOverlap(class1, class2) && doClassTimesOverlap(class1, class2)); // Broke up to aid readability
+        }
+
+        public static bool doClassDaysOverlap(Class class1, Class class2)
+        {
+            return (getNumberOfDaysInCommon(class1, class2) > 0);
+        }
+
+        // Checks if classes have overlapping times
+        public static bool doClassTimesOverlap(Class class1, Class class2)
+        {
             return (
-               (getNumberOfDaysInCommon(class1, class2) > 0) // do the classes have any days in common
-               && (((class1.StartTime >= class2.StartTime && class1.StartTime <= class2.EndTime) // does class1 start during class2
-               || (class1.EndTime >= class2.StartTime && class1.EndTime <= class2.EndTime)) // does class1 end during class2 
-               || ((class2.StartTime >= class1.StartTime && class2.StartTime <= class1.EndTime) // does class2 start during class1
-               || (class2.EndTime >= class1.StartTime && class2.EndTime <= class1.EndTime))) // does class2 end during class1
-            );              
-                
-            
+              (class1.StartTime >= class2.StartTime && class1.StartTime <= class2.EndTime) // does class1 start during class2
+              || (class1.EndTime >= class2.StartTime && class1.EndTime <= class2.EndTime) // or does class1 end during class2 
+              || (class2.StartTime >= class1.StartTime && class2.StartTime <= class1.EndTime) // or does class2 start during class1
+              || (class2.EndTime >= class1.StartTime && class2.EndTime <= class1.EndTime) // or does class2 end during class1
+            ); 
         }
 
         // Helper function to find the total days two classes have in common.
@@ -480,7 +499,7 @@ namespace FETP
         // Prototype function for example of how to sort
         public static List<Class> sortClassesByOverlappingDays(List<Class> classes)
         {
-            return classes.OrderByDescending(c => getNumberOfOverlappingDays(classes, c)).ToList();
+            return classes.OrderBy(c => getNumberOfOverlappingDays(classes, c)).ToList();
         }
 
     }
