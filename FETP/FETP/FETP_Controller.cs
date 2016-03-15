@@ -32,6 +32,16 @@ using System.Globalization;  // allows times to be different pased on local
         do not write validateDataFiles. we assume they are correct
         can write those later for extra
 
+        fitness function
+            one weight can be difference of hours between exam time and class time multiplied by number of people affected
+            second weight can be variance in days.
+            less wieght for after lunch break
+            weight for how many students are consecutive?
+
+        ineffeciencies in loaders. we could make them part of the classes.
+            its calling the class constructor to make a new class then creating a new one with it?
+            but its fine for now
+
 */
 
 
@@ -53,25 +63,21 @@ namespace FETP
             get { return this. startTime; }
             set { this.startTime = value; }
         }
-        
         public TimeSpan EndTime 
         {
             get { return this.endTime; }
             set { this.startTime = value; }
         }
-        
         public int Enrollment
         {
             get { return this.enrollment; }
             set { this.enrollment = value; }
         }
-
         public List<DayOfWeek> DaysMeet
         {
             get { return this.daysMeet; }
             set { this.daysMeet = value;  }
         }
-        
         
         // Intializes Class
         public Class(TimeSpan inStartTime, TimeSpan inEndTime, List<DayOfWeek> inDaysMeet = null, int inEnrollment = 0)
@@ -96,12 +102,39 @@ namespace FETP
             Console.WriteLine("");
         }
 
+        /* ? this may need to be uncommented. C# seems to want these methods defined in order to overload comparison operators
+
+        // this function does not do anything. The complications of writing a hash function is not needed for current program
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        
+
+        public override bool Equals(object obj)
+        {
+            Class inClass = obj as Class;
+            if (inClass != null)
+            {
+                return this == inClass;
+            }
+            else return false;
+        }
+
+        
+        public bool Equals(Class inClass)
+        {
+            return (this.StartTime == inClass.StartTime && this.EndTime == inClass.EndTime && this.Enrollment == inClass.Enrollment && this.DaysMeet == inClass.DaysMeet);
+        }
+        */
+        
+        
         public static bool operator== (Class class1, Class class2)
         {
             return (class1.StartTime == class2.StartTime && class1.EndTime == class2.EndTime && class1.Enrollment == class2.Enrollment && class1.DaysMeet == class2.DaysMeet); // ? comparing list should work
         }
 
-        public static bool operator !=(Class class1, Class class2)
+        public static bool operator!= (Class class1, Class class2)
         {
             return (class1.StartTime != class2.StartTime || class1.EndTime != class2.EndTime || class1.Enrollment != class2.Enrollment || class1.DaysMeet != class2.DaysMeet); // yay. used cs 245 to make this code faster
         }
@@ -123,15 +156,12 @@ namespace FETP
                 this.enrollment += clas.Enrollment;
 
         }
-
         
         public void DisplayAllClasses()
         {
             foreach (Class cl in classesInBlock)
                 cl.Display();
         }
-
-        
         
     }
 
@@ -157,10 +187,64 @@ namespace FETP
 
     public class Schedule
     {
+        protected DayOfWeek startDay; // for future use hopefully
         protected List<TimeSlots> days;
+        protected int numberOfDays;
+        protected TimeSpan examsStartTime;
+        protected TimeSpan examsLength;
+        protected TimeSpan timeBetweenExams;
+        protected TimeSpan lunchLength;
 
-        public Schedule(List<TimeSlots> inDays)
+        // Properties / Accessors and Mutators
+        public int NumberOfDays
         {
+            get { return numberOfDays; }
+            set { this.numberOfDays = value;  }
+        }
+        public TimeSpan ExamsStartTime
+        {
+            get { return examsStartTime; }
+            set { this.examsStartTime = value; }
+        }
+        public TimeSpan ExamsLength
+        {
+            get { return examsLength; }
+            set { this.examsLength = value; }
+        }
+        public TimeSpan TimeBetweenExams
+        {
+            get { return timeBetweenExams; }
+            set { this.timeBetweenExams = value; }
+        }
+        public TimeSpan LunchLength
+        {
+            get { return lunchLength; }
+            set { this.lunchLength = value; }
+        }
+
+
+        public Schedule(int inNumberOfDays, TimeSpan inExamsStartTime, TimeSpan inExamsLength, TimeSpan inTimeBetweenExams, TimeSpan inLunchLength, List<TimeSlots> inDays = null)
+        {
+            this.numberOfDays = inNumberOfDays;
+            this.examsStartTime = inExamsStartTime;
+            this.examsLength = inExamsLength;
+            this.timeBetweenExams = inTimeBetweenExams;
+            this.lunchLength = inLunchLength;
+
+            this.days = inDays;
+        }
+
+        // ? i don't think i'll ever need this 
+        public Schedule(Schedule inSchedule = null, List<TimeSlots> inDays = null)
+        {            
+            if(inSchedule != null)
+            {
+                this.numberOfDays = inSchedule.NumberOfDays;
+                this.examsStartTime = inSchedule.ExamsStartTime;
+                this.examsLength = inSchedule.ExamsStartTime;
+                this.timeBetweenExams = inSchedule.TimeBetweenExams;
+                this.lunchLength = inSchedule.LunchLength;
+            }
             this.days = inDays;
         }
     } 
@@ -182,7 +266,7 @@ namespace FETP
     {
         // These are the values that determine the boundaries of classes to be ignored
         private const string CLASS_LENGTH_TO_START_IGNORING = "02:45";
-        private const string HOUR_TO_BEGIN_IGNORE_CLASS = "18:00";
+        private const string HOUR_TO_BEGIN_IGNORE_CLASS = "18:00"; // also functions as the latest our scheduled exams can run
 
         // Programmer: Ben
         // takes in an open data file and returns a list of all the classes
@@ -249,7 +333,7 @@ namespace FETP
         } // end readInputDataFile
 
         // ? don't know what to do with this info yet
-        public static void readInputConstraintsFile(FileStream inFile)
+        public static Schedule readInputConstraintsFile(FileStream inFile)
         {
 
             var reader = new StreamReader(inFile);
@@ -260,9 +344,11 @@ namespace FETP
             TimeSpan timeBetweenExams = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
             TimeSpan lunchLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
 
+            return new Schedule(numberOfDays, startTime, examLength, timeBetweenExams, lunchLength);
 
         }
 
+   
         /*
         // takes in a list of classes and coalesces them into a list of blocks of classes
         public static List<Block> coalesceClassesTogether(List<Class> classes)
