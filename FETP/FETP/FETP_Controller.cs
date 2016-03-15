@@ -54,6 +54,7 @@ using System.Globalization;  // allows times to be different pased on local ? ma
         ask professor about best place to put some of these functions (in class or in controller)
             which is the better practice
 
+        change name of lengthOfExamDay to available time
 */
 
 
@@ -297,7 +298,7 @@ namespace FETP
         // These are the values that determine the boundaries of classes to be ignored
         private const string CLASS_LENGTH_TO_START_IGNORING = "0245";
         private const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
-        private const string TIME_EXAMS_MUST_END_BY = "1500";
+        private const string TIME_EXAMS_MUST_END_BY = "1700";
 
         // Programmer: Ben
         // takes in an open data file and returns a list of all the classes
@@ -391,7 +392,7 @@ namespace FETP
             TimeSpan lengthOfExamDay = latestTime - schedule.ExamsStartTime; // Figure out how much time available for exams
 
             // if the lunch time is longer than the break time, account for it and the extra break time it will give you
-            if (schedule.LunchLength >= schedule.TimeBetweenExams)
+            if (schedule.LunchLength > schedule.TimeBetweenExams)
             {
                 lengthOfExamDay -= (schedule.LunchLength - schedule.TimeBetweenExams); // takes the lunch break out of available time. also pads for how the lunch will count as a break.
             }
