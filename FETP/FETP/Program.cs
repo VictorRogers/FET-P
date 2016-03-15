@@ -39,8 +39,12 @@ namespace FETP
                     // List<Class> allClasses = FETP_Controller.sortClassesByEnrollment(FETP_Controller.readInputDataFile(inFile));
                     Schedule blankSchedule = FETP_Controller.readInputConstraintsFile(inFile);
                     blankSchedule.Display();
-                   
-                   
+                    Console.WriteLine("Number of Timeslots Available Per Day: {0}", FETP_Controller.getNumberOfTimeSlotsAvailablePerDay(blankSchedule));
+                    Console.WriteLine("Number of Timeslots Available: {0}", FETP_Controller.getNumberOfTimeSlotsAvailable(blankSchedule));
+
+
+
+
                 }
                 Console.WriteLine();
             }

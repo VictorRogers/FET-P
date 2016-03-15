@@ -297,7 +297,7 @@ namespace FETP
         // These are the values that determine the boundaries of classes to be ignored
         private const string CLASS_LENGTH_TO_START_IGNORING = "0245";
         private const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
-        private const string TIME_EXAMS_MUST_END_BY = "0500";
+        private const string TIME_EXAMS_MUST_END_BY = "1500";
 
         // Programmer: Ben
         // takes in an open data file and returns a list of all the classes
@@ -381,10 +381,10 @@ namespace FETP
 
         public static int getNumberOfTimeSlotsAvailable(Schedule schedule)
         {
-            return getNumberOfTimeSlotsAvaiablePerDay(schedule) * schedule.NumberOfDays;
+            return getNumberOfTimeSlotsAvailablePerDay(schedule) * schedule.NumberOfDays;
         }
 
-        public static int getNumberOfTimeSlotsAvaiablePerDay(Schedule schedule)
+        public static int getNumberOfTimeSlotsAvailablePerDay(Schedule schedule)
         {
             TimeSpan latestTime = TimeSpan.ParseExact(TIME_EXAMS_MUST_END_BY, @"hhmm", CultureInfo.InvariantCulture); // latest exams can go
 
