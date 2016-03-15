@@ -9,6 +9,7 @@ namespace FETP
 {
     class Program
     {
+        public const string STARS = "*******************************************";
         static void Main(string[] args)
         {
             while(true)
@@ -20,6 +21,10 @@ namespace FETP
                 Console.WriteLine();
                 if(input == "1")
                 {
+                    Console.WriteLine(STARS);
+                    Console.WriteLine("Testing Enrollment File Operations");
+                    Console.WriteLine(STARS);
+
                     FileStream inFile = File.OpenRead(@"../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
 
                     // currently sorts all the data
@@ -32,9 +37,18 @@ namespace FETP
 
                         Console.WriteLine("Overlaps with: {0} other classes", FETP_Controller.getNumberOfOverlappingDays(allClasses, cl));
                     }
+
+                    Console.WriteLine(STARS);
+                    Console.WriteLine("END Testing Enrollment File Operations");
+                    Console.WriteLine(STARS);
+
                 }
                 else if(input == "2")
                 {
+                    Console.WriteLine(STARS);
+                    Console.WriteLine("Testing Constraints File Operations");
+                    Console.WriteLine(STARS);
+
                     FileStream inFile = File.OpenRead(@"../../../../Example Data/Ben Made Constraints Sample.txt");
                     // List<Class> allClasses = FETP_Controller.sortClassesByEnrollment(FETP_Controller.readInputDataFile(inFile));
                     Schedule blankSchedule = FETP_Controller.readInputConstraintsFile(inFile);
@@ -42,6 +56,9 @@ namespace FETP
                     Console.WriteLine("Number of Timeslots Available Per Day: {0}", FETP_Controller.getNumberOfTimeSlotsAvailablePerDay(blankSchedule));
                     Console.WriteLine("Number of Timeslots Available: {0}", FETP_Controller.getNumberOfTimeSlotsAvailable(blankSchedule));
 
+                    Console.WriteLine(STARS);
+                    Console.WriteLine("END Testing Constraints File Operations");
+                    Console.WriteLine(STARS);
 
 
 
