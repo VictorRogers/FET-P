@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using System.Globalization;  // allows times to be different pased on local
+using System.Globalization;  // allows times to be different pased on local ? may can be removed
 
 /*
 
@@ -41,6 +41,15 @@ using System.Globalization;  // allows times to be different pased on local
         ineffeciencies in loaders. we could make them part of the classes.
             its calling the class constructor to make a new class then creating a new one with it?
             but its fine for now
+
+        look into asychronos capabilites of c#
+
+        look into multiprocessing stuff for when running GE
+
+        still need a way to determin if it is possible to schedule all classes together
+
+        new fringe case, do we want to give them the ability to schedule overlapping exams if we can't coalesce small enough?
+            we can say how many students will be effected and let them decide that
 
 */
 
@@ -247,6 +256,21 @@ namespace FETP
             }
             this.days = inDays;
         }
+
+        // ?
+        // needs finishing
+        public void Display()
+        {
+            Console.WriteLine("Number of Days: {0}", numberOfDays);
+            Console.WriteLine("Start Time for Exams: {0}", examsStartTime);
+            Console.WriteLine("Length of Exams: {0}", examsLength);
+            Console.WriteLine("Time Between Exams: {0}", timeBetweenExams);
+            Console.WriteLine("Length of Lunch Time: {0}", lunchLength);
+            if (days != null)
+            {
+                // dispaly days
+            }
+        }
     } 
 
 
@@ -266,7 +290,8 @@ namespace FETP
     {
         // These are the values that determine the boundaries of classes to be ignored
         private const string CLASS_LENGTH_TO_START_IGNORING = "02:45";
-        private const string HOUR_TO_BEGIN_IGNORE_CLASS = "18:00"; // also functions as the latest our scheduled exams can run
+        private const string HOUR_TO_BEGIN_IGNORE_CLASS = "18:00";
+        private const string TIME_EXAMS_MUST_END_BY = "5:00";
 
         // Programmer: Ben
         // takes in an open data file and returns a list of all the classes
@@ -349,7 +374,7 @@ namespace FETP
         }
 
    
-        /*
+        /* ?
         // takes in a list of classes and coalesces them into a list of blocks of classes
         public static List<Block> coalesceClassesTogether(List<Class> classes)
         {
@@ -403,11 +428,13 @@ namespace FETP
             return null;
         }
 
+        // Prototype function for example of how to sort
         public static List<Class> sortClassesByEnrollment(List<Class> classes)
         {
             return classes.OrderByDescending(c => c.Enrollment).ToList();
         }
 
+        // Prototype function for example of how to sort
         public static List<Class> sortClassesByOverlappingDays(List<Class> classes)
         {
             return classes.OrderByDescending(c => getNumberOfOverlappingDays(classes, c)).ToList();
