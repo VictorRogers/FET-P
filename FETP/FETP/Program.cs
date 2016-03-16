@@ -33,6 +33,8 @@ namespace FETP
                     //List<Class> allClasses = FETP_Controller.sortClassesByOverlappingDays(FETP_Controller.readInputDataFile(inFile));
                     List<Class> allClasses = FETP_Controller.readInputDataFile(inFile);
 
+                    Console.WriteLine("Number of Classes: {0}", allClasses.Count);
+
                     foreach (Class cl in allClasses)
                     {
                         cl.Display();
@@ -78,7 +80,11 @@ namespace FETP
 
                     List<Block> groupedClasses = FETP_Controller.coalesceClassesTogether(allClasses);
 
-                    foreach(Block block in groupedClasses)
+
+                    Console.WriteLine("Number of Blocks: {0}", groupedClasses.Count);
+                    Console.WriteLine();
+
+                    foreach (Block block in groupedClasses)
                     {
                         Console.WriteLine("=================================");
                         Console.WriteLine("Displaying Block");
@@ -87,6 +93,7 @@ namespace FETP
                         Console.WriteLine("---------------------------------");
                         Console.WriteLine("Displaying Information of Block");
                         Console.WriteLine("---------------------------------");
+                        
                         block.Display();
                         Console.WriteLine("---------------------------------");
                         Console.WriteLine("END Displaying Information of Block");
@@ -107,8 +114,9 @@ namespace FETP
                         Console.WriteLine("=================================");
                     }
 
+
                     Console.WriteLine(STARS);
-                    Console.WriteLine("Testing Grouping of Classes");
+                    Console.WriteLine("END Testing Grouping of Classes");
                     Console.WriteLine(STARS);
                 }
                 Console.WriteLine();

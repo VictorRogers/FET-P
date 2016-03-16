@@ -65,6 +65,10 @@ using System.Globalization;  // allows times to be different pased on local ? ma
             probably not. if the classes couldn't be taken at the same time, then we should show them they don't need all those time slots?
         how do we find the smallest possible grouping?
             possible different groupings result in differnt number of groups?
+
+        when outputing a block, output the info of the most common time
+
+        not sure if i like schedule class we have now. rework?
 */
 
 
@@ -111,7 +115,7 @@ namespace FETP
             this.daysMeet = inDaysMeet;
         }
 
-        public void Display()
+        public virtual void Display()
         {
             Console.Write("Days Meet: ");
             foreach (DayOfWeek day in daysMeet)
@@ -169,6 +173,11 @@ namespace FETP
     {
         protected List<Class> classesInBlock;
 
+        public List<Class> ClassesInBlock
+        {
+            get { return classesInBlock;  }
+        }
+
         /*
         public Block(TimeSpan inStartTime, TimeSpan inEndTime, List<DayOfWeek> inDaysMeet, List<Class> inClasses = null)
             : base(inStartTime, inEndTime, inDaysMeet, )
@@ -208,6 +217,12 @@ namespace FETP
             }
         }
         */
+
+        public override void Display()
+        {
+            Console.WriteLine("Number of Classes in Block: {0}", this.classesInBlock.Count);
+            base.Display();
+        }
         
         public void DisplayAllClasses()
         {
@@ -239,7 +254,6 @@ namespace FETP
 
     public class Schedule
     {
-        protected DayOfWeek startDay; // for future use hopefully
         protected List<TimeSlots> days;
         protected int numberOfDays;
         protected TimeSpan examsStartTime;
@@ -461,9 +475,7 @@ namespace FETP
         {
             List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
             
-            
-            classes = classes.OrderByDescending(c => c.Enrollment).ToList(); // Sort those classes by enrollment
-
+            classes = classes.OrderByDescending(c => getNumberOfOverlappingDays(classes, c)).ToList();
             foreach (Class cl in classes)
             {
                 bool doesItOverlap = false;
@@ -476,9 +488,7 @@ namespace FETP
                     }
                 }
                 if(!doesItOverlap)
-                {
                     classesToBeGrouped.Add(new Block(cl));
-                }
             }
             return classesToBeGrouped;
 
@@ -531,16 +541,11 @@ namespace FETP
             return overlappingClasses;
         }
 
-        // ? still incomplete
+        // ? maybe correct?
         public static int getSmallestPossibleGrouping(List<Class> classes)
         {
-            int numberOfGroups = 0;
-
-            while(doAnyClassesOverlap(classes))
-            {
-
-            }
-            return 0;
+            List<Block> groupedClasses = FETP_Controller.coalesceClassesTogether(classes);
+            return groupedClasses.Count;
         }
 
         // Find if any classes overlap in list of classes
@@ -555,6 +560,12 @@ namespace FETP
                 }
             }
             return false;
+        }
+
+        // Checks if enough timeslots are available
+        public static bool areThereEnoughTimeslots(Schedule schedule, List<Class> classes)
+        {
+            return (getNumberOfTimeSlotsAvailable(schedule) >= getSmallestPossibleGrouping(classes));
         }
 
         /*
