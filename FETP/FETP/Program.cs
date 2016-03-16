@@ -17,6 +17,7 @@ namespace FETP
                 Console.WriteLine("Would you like to test");
                 Console.WriteLine("1. Reading from Enrollment File");
                 Console.WriteLine("2. Reading from Constraints File");
+                Console.WriteLine("3. Test Basic Grouping");
                 string input = Console.ReadLine();
                 Console.WriteLine();
                 if(input == "1")
@@ -28,8 +29,9 @@ namespace FETP
                     FileStream inFile = File.OpenRead(@"../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
 
                     // currently sorts all the data
-                    // List<Class> allClasses = FETP_Controller.sortClassesByEnrollment(FETP_Controller.readInputDataFile(inFile));
-                    List<Class> allClasses = FETP_Controller.sortClassesByOverlappingDays(FETP_Controller.readInputDataFile(inFile));
+                    //List<Class> allClasses = FETP_Controller.sortClassesByEnrollment(FETP_Controller.readInputDataFile(inFile));
+                    //List<Class> allClasses = FETP_Controller.sortClassesByOverlappingDays(FETP_Controller.readInputDataFile(inFile));
+                    List<Class> allClasses = FETP_Controller.readInputDataFile(inFile);
 
                     foreach (Class cl in allClasses)
                     {
@@ -62,6 +64,52 @@ namespace FETP
 
 
 
+                }
+                else if(input == "3")
+                {
+                    Console.WriteLine(STARS);
+                    Console.WriteLine("Testing Grouping of Classes");
+                    Console.WriteLine(STARS);
+
+                    FileStream inFile = File.OpenRead(@"../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
+
+                    // currently sorts all the data
+                    List<Class> allClasses = FETP_Controller.readInputDataFile(inFile);
+
+                    List<Block> groupedClasses = FETP_Controller.coalesceClassesTogether(allClasses);
+
+                    foreach(Block block in groupedClasses)
+                    {
+                        Console.WriteLine("=================================");
+                        Console.WriteLine("Displaying Block");
+                        Console.WriteLine("=================================");
+
+                        Console.WriteLine("---------------------------------");
+                        Console.WriteLine("Displaying Information of Block");
+                        Console.WriteLine("---------------------------------");
+                        block.Display();
+                        Console.WriteLine("---------------------------------");
+                        Console.WriteLine("END Displaying Information of Block");
+                        Console.WriteLine("---------------------------------");
+
+
+                        Console.WriteLine("---------------------------------");
+                        Console.WriteLine("Displaying all Classes in Block");
+                        Console.WriteLine("---------------------------------");
+                        block.DisplayAllClasses();
+                        Console.WriteLine("---------------------------------");
+                        Console.WriteLine("END Displaying all Classes in Block");
+                        Console.WriteLine("---------------------------------");
+                        Console.WriteLine();
+
+                        Console.WriteLine("=================================");
+                        Console.WriteLine("END Displaying Block");
+                        Console.WriteLine("=================================");
+                    }
+
+                    Console.WriteLine(STARS);
+                    Console.WriteLine("Testing Grouping of Classes");
+                    Console.WriteLine(STARS);
                 }
                 Console.WriteLine();
             }

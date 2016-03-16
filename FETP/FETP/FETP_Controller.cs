@@ -37,6 +37,7 @@ using System.Globalization;  // allows times to be different pased on local ? ma
             second weight can be variance in days.
             less wieght for after lunch break
             weight for how many students are consecutive?
+            weight for internal and external variance of student enrollments in groups and days5
 
         ineffeciencies in loaders. we could make them part of the classes.
             its calling the class constructor to make a new class then creating a new one with it?
@@ -57,6 +58,13 @@ using System.Globalization;  // allows times to be different pased on local ? ma
         change name of lengthOfExamDay to available time
 
         change all TimeSlots to Timeslot
+
+        group with less populated classes to help spread out people
+        unless all are coalesced into MTF and TR
+        need option to not do that if there's enough space?
+            probably not. if the classes couldn't be taken at the same time, then we should show them they don't need all those time slots?
+        how do we find the smallest possible grouping?
+            possible different groupings result in differnt number of groups?
 */
 
 
@@ -105,18 +113,19 @@ namespace FETP
 
         public void Display()
         {
-            Console.WriteLine("Start Time: {0}", this.startTime);
-            Console.WriteLine("End Time: {0}", this.endTime);
-            Console.WriteLine("Enrollment: {0}", this.enrollment);
             Console.Write("Days Meet: ");
             foreach (DayOfWeek day in daysMeet)
             {
                 Console.Write("{0} ", day);
             }
-            
+            Console.WriteLine("");
+
+            Console.WriteLine("Start Time: {0}", this.startTime);
+            Console.WriteLine("End Time: {0}", this.endTime);
+            Console.WriteLine("Enrollment: {0}", this.enrollment);
+
             Console.WriteLine("");
         }
-        
 
         // ? this function does not do anything. The complications of writing a hash function is not needed for current program
         public override int GetHashCode()
@@ -135,11 +144,12 @@ namespace FETP
             else return false;
         }
 
-        
+        /*
         public bool Equals(Class inClass)
         {
             return (this.StartTime == inClass.StartTime && this.EndTime == inClass.EndTime && this.Enrollment == inClass.Enrollment && this.DaysMeet == inClass.DaysMeet);
         }
+        */
         
         
         public static bool operator== (Class class1, Class class2)
@@ -159,8 +169,9 @@ namespace FETP
     {
         protected List<Class> classesInBlock;
 
+        /*
         public Block(TimeSpan inStartTime, TimeSpan inEndTime, List<DayOfWeek> inDaysMeet, List<Class> inClasses = null)
-            : base(inStartTime, inEndTime, inDaysMeet)
+            : base(inStartTime, inEndTime, inDaysMeet, )
         {
             this.classesInBlock = inClasses;
 
@@ -169,16 +180,38 @@ namespace FETP
                 this.enrollment += clas.Enrollment;
 
         }
+        */
 
         public Block(Class inClass, List<Class> inClasses = null)
             : base(inClass.StartTime, inClass.EndTime, inClass.DaysMeet)
         {
             this.classesInBlock = inClasses;
+            addClass(inClass);
         }
+
+        // adds class to block and increaments time
+        public void addClass(Class inClass)
+        {
+            if(this.classesInBlock == null)
+                this.classesInBlock = new List<Class>();
+
+            classesInBlock.Add(inClass);
+            this.enrollment += inClass.Enrollment;
+        }
+
+        /*
+        public bool doesClassOverlapWithBlock(Class inClass)
+        {
+            foreach(Class cl in this.classesInBlock)
+            {
+
+            }
+        }
+        */
         
         public void DisplayAllClasses()
         {
-            foreach (Class cl in classesInBlock)
+            foreach (Class cl in this.classesInBlock)
                 cl.Display();
         }
         
@@ -335,7 +368,7 @@ namespace FETP
                 TimeSpan endTime = TimeSpan.ParseExact(daysAndTimes[3], @"hhmm", CultureInfo.InvariantCulture); // 3 position is the end time, changes formated time to bw more usable 
 
                 // Checks if class should not be ignored before continuing execution
-                if ((startTime < ignoreClassStartTime) || (endTime - startTime < ignoreClassLength))
+                if ((startTime < ignoreClassStartTime) && (endTime - startTime < ignoreClassLength))
                 {
                     List<DayOfWeek> days = new List<DayOfWeek>(); // days the class meets
                     foreach (char day in daysAndTimes[0].ToCharArray()) // changes days from string of chars to list of DayOfWeek type
@@ -423,19 +456,34 @@ namespace FETP
             return numberOfExams;
         }
 
-
-        /*
         // takes in a list of classes and coalesces them into a list of blocks of classes
-        public static List<Block> coalesceClassesTogether(List<Class> classes, int numberOfTime)
+        public static List<Block> coalesceClassesTogether(List<Class> classes)
         {
-            List<Block> classesToBeGrouped;
-            foreach(Class cl in classes)
+            List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
+            
+            
+            classes = classes.OrderByDescending(c => c.Enrollment).ToList(); // Sort those classes by enrollment
+
+            foreach (Class cl in classes)
             {
-                classesToBeGrouped.Add(cl);
+                bool doesItOverlap = false;
+                foreach(Block block in classesToBeGrouped)
+                {
+                    if (doClassesOverlap(cl, block))
+                    {
+                        block.addClass(cl);
+                        doesItOverlap = true;
+                    }
+                }
+                if(!doesItOverlap)
+                {
+                    classesToBeGrouped.Add(new Block(cl));
+                }
             }
+            return classesToBeGrouped;
 
         }
-        */
+
 
         // Checks if two classes overlap
         public static bool doClassesOverlap(Class class1, Class class2)
@@ -483,12 +531,51 @@ namespace FETP
             return overlappingClasses;
         }
 
-        // in theory, this will automatically find what days a block meets.
+        // ? still incomplete
+        public static int getSmallestPossibleGrouping(List<Class> classes)
+        {
+            int numberOfGroups = 0;
+
+            while(doAnyClassesOverlap(classes))
+            {
+
+            }
+            return 0;
+        }
+
+        // Find if any classes overlap in list of classes
+        public static bool doAnyClassesOverlap(List<Class> classes)
+        {
+            foreach(Class class1 in classes)
+            {
+                foreach(Class class2 in classes)
+                {
+                    if (doClassesOverlap(class1, class2))
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        /*
+        // ? in theory, this will automatically find what days a block meets.
         // a block should only meet on MWF or TR
+        //return a key value
+        //      Day: #
+        //      Number of those days: #
         public static List<DayOfWeek> getMostCommonDays(List<Class> classes)
         {
-            return null;
+            foreach (Class class1 in classes)
+            {
+                foreach (Class class2 in classes)
+                {
+                    if (doClassDaysOverlap(class1, class2))
+                        return true;
+                }
+            }
+            return false;
         }
+        */
 
         // Prototype function for example of how to sort
         public static List<Class> sortClassesByEnrollment(List<Class> classes)
