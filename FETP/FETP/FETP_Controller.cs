@@ -69,6 +69,11 @@ using System.Globalization;  // allows times to be different pased on local ? ma
         when outputing a block, output the info of the most common time
 
         not sure if i like schedule class we have now. rework?
+
+        will sorting thenby enrollment make better results?
+
+
+
 */
 
 
@@ -178,6 +183,40 @@ namespace FETP
             get { return classesInBlock;  }
         }
 
+        public int Average
+        {
+            get
+            {
+                if (classesInBlock != null)
+                    return this.enrollment / this.classesInBlock.Count;
+                else return 0;
+            }
+        }
+
+        public int Variance
+        {
+            get
+            {
+                int variance = 0;
+                foreach(Class cl in this.classesInBlock)
+                {
+                    int difference = cl.Enrollment - this.Average;
+                    variance += (difference * difference);
+                }
+                return variance / this.ClassesInBlock.Count;
+            }
+        }
+
+        public double StandardDeviation
+        {
+            get
+            {
+                return Math.Sqrt(this.Variance);
+            }
+        }
+
+        
+
         /*
         public Block(TimeSpan inStartTime, TimeSpan inEndTime, List<DayOfWeek> inDaysMeet, List<Class> inClasses = null)
             : base(inStartTime, inEndTime, inDaysMeet, )
@@ -221,6 +260,9 @@ namespace FETP
         public override void Display()
         {
             Console.WriteLine("Number of Classes in Block: {0}", this.classesInBlock.Count);
+            Console.WriteLine("Average Enrollment: {0}", this.Average);
+            Console.WriteLine("Variance: {0}", this.Variance);
+            Console.WriteLine("Standard Deviation: {0}", this.StandardDeviation);
             base.Display();
         }
         
@@ -475,7 +517,7 @@ namespace FETP
         {
             List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
             
-            classes = classes.OrderByDescending(c => getNumberOfOverlappingDays(classes, c)).ToList();
+            classes = classes.OrderByDescending(c => getNumberOfOverlappingDays(classes, c)).ThenBy(c => c.Enrollment).ToList();
             foreach (Class cl in classes)
             {
                 bool doesItOverlap = false;
