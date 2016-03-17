@@ -72,6 +72,30 @@ using System.Globalization;  // allows times to be different pased on local ? ma
 
         will sorting thenby enrollment make better results?
 
+        possibly don't let block inherit from class but from a new class callled course information
+
+        could really break up and stop passing around classes. could just pass around parameters
+
+        can we not just break up the largest groups?
+            break off smaller courses from it to fill slots
+        could break off based on how far the internal classes are from their own time times number enrolled?
+            keep in mind we're trying to keep groups large and avoid spreading people out maybe?
+
+        you have to pick on class and base mutual exclussion of that one
+            class A could be mutually exclussive with class B.
+            Class B could be mutually exclussive with Class C
+            class A is not necissarily mutually exclusive with Class C
+            ????????????????
+
+        Victor, if you're reading this, you were right. I should have went with your idea of schedule just having the list of all the gorups
+        My method might have been useful if we also cared about when exam days were
+
+        this is getting so ugly it hurts :'(
+        I'm so close to something though...
+
+        a class HAS to be used as a seed
+            if a timeslot is made up and used as a seed, ambiguatity could come in
+            ???/ dang
 
 
 */
@@ -80,22 +104,19 @@ using System.Globalization;  // allows times to be different pased on local ? ma
 
 namespace FETP
 {
-    // Programmer: Ben and Vic
-    public class Class
+    public abstract class CourseInformation
     {
-        
         protected TimeSpan startTime;
         protected TimeSpan endTime;
         protected int enrollment;
-        protected List<DayOfWeek> daysMeet;
-        
+
         // Accessors and Mutators
-        public TimeSpan StartTime 
+        public TimeSpan StartTime
         {
-            get { return this. startTime; }
+            get { return this.startTime; }
             set { this.startTime = value; }
         }
-        public TimeSpan EndTime 
+        public TimeSpan EndTime
         {
             get { return this.endTime; }
             set { this.startTime = value; }
@@ -105,6 +126,31 @@ namespace FETP
             get { return this.enrollment; }
             set { this.enrollment = value; }
         }
+
+        public CourseInformation(TimeSpan inStartTime, TimeSpan inEndTime, int inEnrollment)
+        {
+            this.startTime = inStartTime;
+            this.endTime = inEndTime;
+            this.enrollment = inEnrollment;
+        }
+
+        public virtual void Display()
+        {
+            Console.WriteLine("Start Time: {0}", this.startTime);
+            Console.WriteLine("End Time: {0}", this.endTime);
+            Console.WriteLine("Enrollment: {0}", this.enrollment);
+        }
+
+    }
+
+    // Programmer: Ben and Vic
+    public class Class : CourseInformation
+    {
+        
+        
+        protected List<DayOfWeek> daysMeet;
+        
+        
         public List<DayOfWeek> DaysMeet
         {
             get { return this.daysMeet; }
@@ -112,21 +158,28 @@ namespace FETP
         }
         
         // Intializes Class
-        public Class(TimeSpan inStartTime, TimeSpan inEndTime, List<DayOfWeek> inDaysMeet = null, int inEnrollment = 0)
+        public Class(TimeSpan inStartTime, TimeSpan inEndTime, int inEnrollment, List<DayOfWeek> inDaysMeet)
+            :base(inStartTime, inEndTime, inEnrollment)
         {
-            this.startTime = inStartTime;
-            this.endTime = inEndTime;
-            this.enrollment = inEnrollment;
-            this.daysMeet = inDaysMeet;
+            
+            if(inDaysMeet == null)
+            {
+                inDaysMeet = new List<DayOfWeek>(); // ? bad
+            }
+            else
+            {
+
+                this.daysMeet = inDaysMeet;
+            }
         }
 
-        public virtual void Display()
+        public override void Display()
         {
             Console.Write("Days Meet: ");
             foreach (DayOfWeek day in daysMeet)
             {
                 Console.Write("{0} ", day);
-            }
+            } 
             Console.WriteLine("");
 
             Console.WriteLine("Start Time: {0}", this.startTime);
@@ -174,7 +227,7 @@ namespace FETP
     }
 
     // block contains classes that overlapped and were coalesced
-    public class Block : Class
+    public class Block : CourseInformation
     {
         protected List<Class> classesInBlock;
 
@@ -215,7 +268,7 @@ namespace FETP
             }
         }
 
-        
+
 
         /*
         public Block(TimeSpan inStartTime, TimeSpan inEndTime, List<DayOfWeek> inDaysMeet, List<Class> inClasses = null)
@@ -229,13 +282,18 @@ namespace FETP
 
         }
         */
-
-        public Block(Class inClass, List<Class> inClasses = null)
-            : base(inClass.StartTime, inClass.EndTime, inClass.DaysMeet)
+        public Block(TimeSpan inStartTime, TimeSpan inEndTime, int inEnrollment, List<Class> inClasses)
+            : base(inStartTime, inEndTime, inEnrollment)
         {
             this.classesInBlock = inClasses;
-            addClass(inClass);
         }
+
+        //public Block(Class inClass, List<Class> inClasses = null)
+        //    : base(inClass.StartTime, inClass.EndTime, 0)
+        //{
+        //    this.classesInBlock = inClasses;
+        //    addClass(inClass);
+        //}
 
         // adds class to block and increaments time
         public void addClass(Class inClass)
@@ -245,6 +303,20 @@ namespace FETP
 
             classesInBlock.Add(inClass);
             this.enrollment += inClass.Enrollment;
+        }
+
+        // returns wheter the class was found and removed
+        public bool removeClass(Class inClass)
+        {
+            bool isFound = false;
+            int i = 0;
+            while (i < classesInBlock.Count && !isFound)
+            {
+                if(this.classesInBlock[i] == inClass)
+                {
+                    this.ClassesInBlock.
+                } 
+            }
         }
 
         /*
@@ -259,7 +331,7 @@ namespace FETP
 
         public override void Display()
         {
-            Console.WriteLine("Number of Classes in Block: {0}", this.classesInBlock.Count);
+            // ??Console.WriteLine("Number of Classes in Block: {0}", this.classesInBlock.Count);
             Console.WriteLine("Average Enrollment: {0}", this.Average);
             Console.WriteLine("Variance: {0}", this.Variance);
             Console.WriteLine("Standard Deviation: {0}", this.StandardDeviation);
@@ -274,33 +346,63 @@ namespace FETP
         
     }
 
-    // playing with TimeSlot class
-    //hmmmm
-    public class TimeSlots
-    {
-        protected List<Block> timeSlots;
-        protected DayOfWeek day;
+    //// playing with TimeSlot class
+    ////hmmmm
+    //// ? did i really just make this?
+    //// it's LITERALLY just a block... damn
+    //public class Timeslot : Class
+    //{
+    //    protected Block groupOfClasses;
 
-        public TimeSlots(List<Block> inBlocks, DayOfWeek inDay)
-        {
-            this.timeSlots = inBlocks;
-            this.day = inDay;
-        }
+    //    public Timeslot(TimeSpan inStartTime, TimeSpan inEndTime, Block inBlock = null, List<DayOfWeek> inDaysMeet = null, int inEnrollment = 0)
+    //        : base(inStartTime, inEndTime, inDaysMeet, inEnrollment)
+    //    {
+    //        this.groupOfClasses = inBlock;
+    //    }
 
-        public void Display()
-        {
-            foreach (Block block in timeSlots)
-                block.Display();
-        }
-    }
+
+
+    //    public override void Display()
+    //    {
+    //        base.Display();
+    //    }
+
+    //}
+
+        // ? oh gawd this hurts. why ben? why? why did you do this? it's not good
+    //public class Day
+    //{
+    //    public List<Block> blocks; // ? lazy
+    //    protected TimeSpan dayStartTime;
+    //    protected TimeSpan lunchStartTime;
+    //    protected TimeSpan lunchEndTime;
+        
+
+    //    public Day(TimeSpan dayStartTime, TimeSpan lunchStartTime = TimeSpan.Zero, TimeSpan lunchEndTime = TimeSpan.Zero, List<Block> inBlocks = null) // 0 because there won't always be lunch
+    //    {
+    //        this.dayStartTime = dayStartTime;
+    //        this.lunchStartTime = lunchStartTime;
+    //        this.lunchEndTime = lunchEndTime;
+    //        this.blocks = inBlocks;
+    //    }
+
+
+
+    //    public void Display()
+    //    {
+    //        foreach (Timeslot block in blocks)
+    //            block.Display();
+    //    }
+    //}
 
     public class Schedule
     {
-        protected List<TimeSlots> days;
+        public List<Block> blocks; // ? lazy
         protected int numberOfDays;
         protected TimeSpan examsStartTime;
         protected TimeSpan examsLength;
         protected TimeSpan timeBetweenExams;
+        public TimeSpan lunchTime; // ? lazy
         protected TimeSpan lunchLength;
 
         // Properties / Accessors and Mutators
@@ -331,7 +433,7 @@ namespace FETP
         }
 
 
-        public Schedule(int inNumberOfDays, TimeSpan inExamsStartTime, TimeSpan inExamsLength, TimeSpan inTimeBetweenExams, TimeSpan inLunchLength, List<TimeSlots> inDays = null)
+        public Schedule(int inNumberOfDays, TimeSpan inExamsStartTime, TimeSpan inExamsLength, TimeSpan inTimeBetweenExams, TimeSpan inLunchLength, List<Block> inDays = null)
         {
             this.numberOfDays = inNumberOfDays;
             this.examsStartTime = inExamsStartTime;
@@ -339,11 +441,11 @@ namespace FETP
             this.timeBetweenExams = inTimeBetweenExams;
             this.lunchLength = inLunchLength;
 
-            this.days = inDays;
+            this.blocks = inDays;
         }
 
         // ? i don't think i'll ever need this 
-        public Schedule(Schedule inSchedule = null, List<TimeSlots> inDays = null)
+        public Schedule(Schedule inSchedule = null, List<Block> inBlocks = null)
         {            
             if(inSchedule != null)
             {
@@ -354,10 +456,30 @@ namespace FETP
                 this.lunchLength = inSchedule.LunchLength;
             }
             // ? could assign inSchedules days to it
-            this.days = inDays;
+            this.blocks = inBlocks;
         }
 
+       // public void addDay()
 
+            /*
+       // fills in days with blank timeslots
+       public void fillInDays()
+        {
+            List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
+
+            for (int i = 0; i < this.numberOfDays; i++)
+            {
+                Day newDay = new Day(examsStartTime);
+                TimeSpan examCurrentTime = this.examsStartTime;
+                for (int j = 0; j < FETP_Controller.getNumberOfTimeSlotsAvailablePerDay(this); j++)
+                {
+                    newDay.blocks.Add(new Timeslot(examCurrentTime, examCurrentTime + examsLength));
+                    // ? check if lunch and account for it here
+                    examCurrentTime += examsLength + timeBetweenExams;
+                }
+            }
+        }
+        */
 
         // ?
         // needs finishing
@@ -368,11 +490,11 @@ namespace FETP
             Console.WriteLine("Length of Exams: {0}", examsLength);
             Console.WriteLine("Time Between Exams: {0}", timeBetweenExams);
             Console.WriteLine("Length of Lunch Time: {0}", lunchLength);
-            if (days != null)
-            {
+            //if (days != null)
+//{
                 // display days
                 // ? may not need
-            }
+            //
         }
     } 
 
@@ -517,16 +639,16 @@ namespace FETP
         {
             List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
             
-            classes = classes.OrderByDescending(c => getNumberOfOverlappingDays(classes, c)).ThenBy(c => c.Enrollment).ToList();
             foreach (Class cl in classes)
             {
                 bool doesItOverlap = false;
                 foreach(Block block in classesToBeGrouped)
                 {
-                    if (doClassesOverlap(cl, block))
+                    if (doClassesOverlap(cl, block.ClassesInBlock[0])) // ? changed to 0. makes no difference when making smallest classes, but should make it work with blank days
                     {
                         block.addClass(cl);
                         doesItOverlap = true;
+                        break; // ?bug THIS WASN'T THERE :'( // maybe not a bug due to ordering?
                     }
                 }
                 if(!doesItOverlap)
@@ -535,7 +657,156 @@ namespace FETP
             return classesToBeGrouped;
 
         }
+        // takes in a list of classes and coalesces them into a list of blocks of classes
+        public static List<Block> coalesceClassesTogether(List<Class> classes, List<Block> groups = null)
+        {
+            // ? check if possible maybe?
+            //
 
+            if (groups == null)
+            {
+                groups = new List<Block>(); // Variable to contain the list of all grouped classes
+            }
+
+            foreach (Class cl in classes)
+            {
+                bool isFound = false;
+
+                TimeSpan weight = TimeSpan.Zero;
+                while (!isFound) // ?hello infinity
+                {
+                    
+                    foreach (Block block in groups)
+                    {
+                        if (block.StartTime - cl.StartTime < weight && (block.ClassesInBlock == null || doClassesOverlap(cl, block.ClassesInBlock[0]))) // could reference null, but should drop out
+                        {
+                            block.addClass(cl);
+                            isFound = true;
+                            break; // ? BAD BAD BAD :'(
+                        }
+                    }
+                    weight += TimeSpan.FromMinutes(30);
+                }
+                
+            }
+            return groups;
+        }
+
+        //public static getClosest
+
+        //// ? need to rewrite and combine these
+        //// takes in a list of classes and coalesces them into a list of blocks of classes
+        //public static List<Block> coalesceClassesTogether(List<Class> classes)
+        //{
+        //    List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
+
+        //    // ? oh gawd this hurts
+        //    List<Block> allGroups = new List<Block>;
+            
+        //    foreach (Class cl in classes)
+        //    {
+        //        bool doesItOverlap = false;
+        //        foreach (Block block in classesToBeGrouped)
+        //        {
+        //            if (doClassesOverlap(cl, block.ClassesInBlock[0])) // ? changed to 0. makes no difference when making smallest classes, but should make it work with blank days
+        //            {
+        //                block.addClass(cl);
+        //                doesItOverlap = true;
+        //            }
+        //        }
+        //        if (!doesItOverlap)
+        //            classesToBeGrouped.Add(new Block(cl));
+        //    }
+        //    return classesToBeGrouped;
+
+        //}
+
+
+        //public static List<Day> coalesceClassesIntoDays(Schedule schedule, List<Class> classes)
+        //{
+        //    //List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
+
+        //    //for(int i = 0; i < schedule.NumberOfDays; i++)
+        //    //{
+        //    //    Day newDay = new Day();
+        //    //    TimeSpan examCurrentTime = schedule.ExamsStartTime;
+        //    //    for(int j = 0; j < getNumberOfTimeSlotsAvailablePerDay(schedule); j++)
+        //    //    {
+        //    //        Block newBlock
+        //    //    }
+        //    //}
+
+        //    //return classesToBeGrouped;
+
+        //     List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
+
+        //     foreach (Class cl in classes)
+        //     {
+        //         bool doesItOverlap = false;
+        //         foreach (Day day in schedule.days)
+        //         {
+        //             foreach (day )
+        //             if (doClassesOverlap(cl, day.block))
+        //             {
+        //                 block.addClass(cl);
+        //                 doesItOverlap = true;
+        //             }
+        //         }
+        //         if (!doesItOverlap)
+        //             classesToBeGrouped.Add(new Block(cl));
+        //     }
+        //     return classesToBeGrouped;
+
+
+        // }
+
+
+
+        // fills in days with blank timeslots
+        public static List<Block> createShellDays(Schedule schedule)
+        {
+            // List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
+
+            List<Block> groups = new List<Block>();
+
+            for (int i = 0; i < schedule.NumberOfDays; i++)
+            {
+                TimeSpan examCurrentTime = schedule.ExamsStartTime;
+                for (int j = 0; j < FETP_Controller.getNumberOfTimeSlotsAvailablePerDay(schedule); j++)
+                {
+                    groups.Add(new Block(examCurrentTime, examCurrentTime + schedule.ExamsLength));
+                    // ? check if lunch and account for it here
+                    examCurrentTime += schedule.ExamsLength + schedule.TimeBetweenExams;
+                }
+            }
+
+            return groups;
+        }
+        /*
+        // fills in days with blank timeslots
+        public List<Days> createShellDays(int numberOfDays, int numberOfTimeslotsPerDay, int examsStartTime, TimeSpan examsLength, TimeSpan timeBetweenExams)
+        {
+            List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
+
+            for (int i = 0; i < this.numberOfDays; i++)
+            {
+                Day newDay = new Day(examsStartTime);
+                TimeSpan examCurrentTime = this.examsStartTime;
+                for (int j = 0; j < FETP_Controller.getNumberOfTimeSlotsAvailablePerDay(this); j++)
+                {
+                    newDay.blocks.Add(new Timeslot(examCurrentTime, examCurrentTime + examsLength));
+                    // ? check if lunch and account for it here
+                    examCurrentTime += examsLength + timeBetweenExams;
+                }
+            }
+        }
+        */
+       
+
+        /*
+        // ? switching up style of functions here to make coupling ?lower?
+        public static List<Days> makeBlankDays(TimeSpan startTime, TimeSpan endTime, TimeSpan examLength)
+        */
 
         // Checks if two classes overlap
         public static bool doClassesOverlap(Class class1, Class class2)
@@ -586,10 +857,9 @@ namespace FETP
         // ? maybe correct?
         public static int getSmallestPossibleGrouping(List<Class> classes)
         {
-            List<Block> groupedClasses = FETP_Controller.coalesceClassesTogether(classes);
-            return groupedClasses.Count;
+            return (coalesceClassesTogether(sortClassesByOverlappingDays(classes))).Count;
         }
-
+        
         // Find if any classes overlap in list of classes
         public static bool doAnyClassesOverlap(List<Class> classes)
         {
@@ -639,8 +909,17 @@ namespace FETP
         // Prototype function for example of how to sort
         public static List<Class> sortClassesByOverlappingDays(List<Class> classes)
         {
-            return classes.OrderBy(c => getNumberOfOverlappingDays(classes, c)).ToList();
+            return classes.OrderByDescending(c => getNumberOfOverlappingDays(classes, c)).ToList();
         }
+
+        //public static TimeSpan putInClosestPossibleBlock()
+        //{
+        //    // first look for closest block with start time, then go to next largest
+
+        //        // preference to being later then earlier
+
+
+        //}
 
     }
 }
