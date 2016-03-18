@@ -104,247 +104,11 @@ using System.Globalization;  // allows times to be different pased on local ? ma
 
 namespace FETP
 {
-    public abstract class CourseInformation
-    {
-        protected TimeSpan startTime;
-        protected TimeSpan endTime;
-        protected int enrollment;
+    
 
-        // Accessors and Mutators
-        public TimeSpan StartTime
-        {
-            get { return this.startTime; }
-            set { this.startTime = value; }
-        }
-        public TimeSpan EndTime
-        {
-            get { return this.endTime; }
-            set { this.startTime = value; }
-        }
-        public int Enrollment
-        {
-            get { return this.enrollment; }
-            set { this.enrollment = value; }
-        }
+    
 
-        public CourseInformation(TimeSpan inStartTime, TimeSpan inEndTime, int inEnrollment)
-        {
-            this.startTime = inStartTime;
-            this.endTime = inEndTime;
-            this.enrollment = inEnrollment;
-        }
-
-        public virtual void Display()
-        {
-            Console.WriteLine("Start Time: {0}", this.startTime);
-            Console.WriteLine("End Time: {0}", this.endTime);
-            Console.WriteLine("Enrollment: {0}", this.enrollment);
-        }
-
-    }
-
-    // Programmer: Ben and Vic
-    public class Class : CourseInformation
-    {
-        
-        
-        protected List<DayOfWeek> daysMeet;
-        
-        
-        public List<DayOfWeek> DaysMeet
-        {
-            get { return this.daysMeet; }
-            set { this.daysMeet = value;  }
-        }
-        
-        // Intializes Class
-        public Class(TimeSpan inStartTime, TimeSpan inEndTime, int inEnrollment, List<DayOfWeek> inDaysMeet)
-            :base(inStartTime, inEndTime, inEnrollment)
-        {
-            
-            if(inDaysMeet == null)
-            {
-                inDaysMeet = new List<DayOfWeek>(); // ? bad
-            }
-            else
-            {
-
-                this.daysMeet = inDaysMeet;
-            }
-        }
-
-        public override void Display()
-        {
-            Console.Write("Days Meet: ");
-            foreach (DayOfWeek day in daysMeet)
-            {
-                Console.Write("{0} ", day);
-            } 
-            Console.WriteLine("");
-
-            Console.WriteLine("Start Time: {0}", this.startTime);
-            Console.WriteLine("End Time: {0}", this.endTime);
-            Console.WriteLine("Enrollment: {0}", this.enrollment);
-
-            Console.WriteLine("");
-        }
-
-        // ? this function does not do anything. The complications of writing a hash function is not needed for current program
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-        
-
-        public override bool Equals(object obj)
-        {
-            Class inClass = obj as Class;
-            if (inClass != null)
-            {
-                return this == inClass;
-            }
-            else return false;
-        }
-
-        /*
-        public bool Equals(Class inClass)
-        {
-            return (this.StartTime == inClass.StartTime && this.EndTime == inClass.EndTime && this.Enrollment == inClass.Enrollment && this.DaysMeet == inClass.DaysMeet);
-        }
-        */
-        
-        
-        public static bool operator== (Class class1, Class class2)
-        {
-            return (class1.StartTime == class2.StartTime && class1.EndTime == class2.EndTime && class1.Enrollment == class2.Enrollment && class1.DaysMeet == class2.DaysMeet); // ? comparing list should work
-        }
-
-        public static bool operator!= (Class class1, Class class2)
-        {
-            return (class1.StartTime != class2.StartTime || class1.EndTime != class2.EndTime || class1.Enrollment != class2.Enrollment || class1.DaysMeet != class2.DaysMeet); // yay. used cs 245 to make this code faster
-        }
-
-    }
-
-    // block contains classes that overlapped and were coalesced
-    public class Block : CourseInformation
-    {
-        protected List<Class> classesInBlock;
-
-        public List<Class> ClassesInBlock
-        {
-            get { return classesInBlock;  }
-        }
-
-        public int Average
-        {
-            get
-            {
-                if (classesInBlock != null)
-                    return this.enrollment / this.classesInBlock.Count;
-                else return 0;
-            }
-        }
-
-        public int Variance
-        {
-            get
-            {
-                int variance = 0;
-                foreach(Class cl in this.classesInBlock)
-                {
-                    int difference = cl.Enrollment - this.Average;
-                    variance += (difference * difference);
-                }
-                return variance / this.ClassesInBlock.Count;
-            }
-        }
-
-        public double StandardDeviation
-        {
-            get
-            {
-                return Math.Sqrt(this.Variance);
-            }
-        }
-
-
-
-        /*
-        public Block(TimeSpan inStartTime, TimeSpan inEndTime, List<DayOfWeek> inDaysMeet, List<Class> inClasses = null)
-            : base(inStartTime, inEndTime, inDaysMeet, )
-        {
-            this.classesInBlock = inClasses;
-
-            // calculate total enrollement
-            foreach (Class clas in inClasses)
-                this.enrollment += clas.Enrollment;
-
-        }
-        */
-        public Block(TimeSpan inStartTime, TimeSpan inEndTime, int inEnrollment, List<Class> inClasses)
-            : base(inStartTime, inEndTime, inEnrollment)
-        {
-            this.classesInBlock = inClasses;
-        }
-
-        //public Block(Class inClass, List<Class> inClasses = null)
-        //    : base(inClass.StartTime, inClass.EndTime, 0)
-        //{
-        //    this.classesInBlock = inClasses;
-        //    addClass(inClass);
-        //}
-
-        // adds class to block and increaments time
-        public void addClass(Class inClass)
-        {
-            if(this.classesInBlock == null)
-                this.classesInBlock = new List<Class>();
-
-            classesInBlock.Add(inClass);
-            this.enrollment += inClass.Enrollment;
-        }
-
-        // returns wheter the class was found and removed
-        public bool removeClass(Class inClass)
-        {
-            bool isFound = false;
-            int i = 0;
-            while (i < classesInBlock.Count && !isFound)
-            {
-                if(this.classesInBlock[i] == inClass)
-                {
-                    this.ClassesInBlock.
-                } 
-            }
-        }
-
-        /*
-        public bool doesClassOverlapWithBlock(Class inClass)
-        {
-            foreach(Class cl in this.classesInBlock)
-            {
-
-            }
-        }
-        */
-
-        public override void Display()
-        {
-            // ??Console.WriteLine("Number of Classes in Block: {0}", this.classesInBlock.Count);
-            Console.WriteLine("Average Enrollment: {0}", this.Average);
-            Console.WriteLine("Variance: {0}", this.Variance);
-            Console.WriteLine("Standard Deviation: {0}", this.StandardDeviation);
-            base.Display();
-        }
-        
-        public void DisplayAllClasses()
-        {
-            foreach (Class cl in this.classesInBlock)
-                cl.Display();
-        }
-        
-    }
+    
 
     //// playing with TimeSlot class
     ////hmmmm
@@ -395,108 +159,7 @@ namespace FETP
     //    }
     //}
 
-    public class Schedule
-    {
-        public List<Block> blocks; // ? lazy
-        protected int numberOfDays;
-        protected TimeSpan examsStartTime;
-        protected TimeSpan examsLength;
-        protected TimeSpan timeBetweenExams;
-        public TimeSpan lunchTime; // ? lazy
-        protected TimeSpan lunchLength;
-
-        // Properties / Accessors and Mutators
-        public int NumberOfDays
-        {
-            get { return numberOfDays; }
-            set { this.numberOfDays = value;  }
-        }
-        public TimeSpan ExamsStartTime
-        {
-            get { return examsStartTime; }
-            set { this.examsStartTime = value; }
-        }
-        public TimeSpan ExamsLength
-        {
-            get { return examsLength; }
-            set { this.examsLength = value; }
-        }
-        public TimeSpan TimeBetweenExams
-        {
-            get { return timeBetweenExams; }
-            set { this.timeBetweenExams = value; }
-        }
-        public TimeSpan LunchLength
-        {
-            get { return lunchLength; }
-            set { this.lunchLength = value; }
-        }
-
-
-        public Schedule(int inNumberOfDays, TimeSpan inExamsStartTime, TimeSpan inExamsLength, TimeSpan inTimeBetweenExams, TimeSpan inLunchLength, List<Block> inDays = null)
-        {
-            this.numberOfDays = inNumberOfDays;
-            this.examsStartTime = inExamsStartTime;
-            this.examsLength = inExamsLength;
-            this.timeBetweenExams = inTimeBetweenExams;
-            this.lunchLength = inLunchLength;
-
-            this.blocks = inDays;
-        }
-
-        // ? i don't think i'll ever need this 
-        public Schedule(Schedule inSchedule = null, List<Block> inBlocks = null)
-        {            
-            if(inSchedule != null)
-            {
-                this.numberOfDays = inSchedule.NumberOfDays;
-                this.examsStartTime = inSchedule.ExamsStartTime;
-                this.examsLength = inSchedule.ExamsStartTime;
-                this.timeBetweenExams = inSchedule.TimeBetweenExams;
-                this.lunchLength = inSchedule.LunchLength;
-            }
-            // ? could assign inSchedules days to it
-            this.blocks = inBlocks;
-        }
-
-       // public void addDay()
-
-            /*
-       // fills in days with blank timeslots
-       public void fillInDays()
-        {
-            List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
-
-            for (int i = 0; i < this.numberOfDays; i++)
-            {
-                Day newDay = new Day(examsStartTime);
-                TimeSpan examCurrentTime = this.examsStartTime;
-                for (int j = 0; j < FETP_Controller.getNumberOfTimeSlotsAvailablePerDay(this); j++)
-                {
-                    newDay.blocks.Add(new Timeslot(examCurrentTime, examCurrentTime + examsLength));
-                    // ? check if lunch and account for it here
-                    examCurrentTime += examsLength + timeBetweenExams;
-                }
-            }
-        }
-        */
-
-        // ?
-        // needs finishing
-        public void Display()
-        {
-            Console.WriteLine("Number of Days: {0}", numberOfDays);
-            Console.WriteLine("Start Time for Exams: {0}", examsStartTime);
-            Console.WriteLine("Length of Exams: {0}", examsLength);
-            Console.WriteLine("Time Between Exams: {0}", timeBetweenExams);
-            Console.WriteLine("Length of Lunch Time: {0}", lunchLength);
-            //if (days != null)
-//{
-                // display days
-                // ? may not need
-            //
-        }
-    } 
+   
 
 
 
@@ -828,6 +491,19 @@ namespace FETP
               || (class2.StartTime >= class1.StartTime && class2.StartTime <= class1.EndTime) // or does class2 start during class1
               || (class2.EndTime >= class1.StartTime && class2.EndTime <= class1.EndTime) // or does class2 end during class1
             ); 
+        }
+
+        // checks if class overlaps with any class in a block
+        public static bool doesClassOverlapBlock(Block block, Class inClass)
+        {
+            foreach (Class cl in block.ClassesInBlock)
+            {
+                if (doClassesOverlap(cl, inClass))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         // Helper function to find the total days two classes have in common.
