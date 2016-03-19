@@ -60,42 +60,12 @@ namespace FETP
             }
         }
 
-
-
-        /*
-        public Block(TimeSpan inStartTime, TimeSpan inEndTime, List<DayOfWeek> inDaysMeet, List<Class> inClasses = null)
-            : base(inStartTime, inEndTime, inDaysMeet, )
-        {
-            this.classesInBlock = inClasses;
-
-            // calculate total enrollement
-            foreach (Class clas in inClasses)
-                this.enrollment += clas.Enrollment;
-
-        }
-        */
-        //public Block(TimeSpan inStartTime, TimeSpan inEndTime, int inEnrollment, List<Class> inClasses)
-        //    : base(inStartTime, inEndTime, inEnrollment)
-        //{
-        //    if (inClasses == null)
-        //        this.classesInBlock = new List<Class>();
-        //    else
-        //        this.classesInBlock = inClasses;
-        //}
-
         public Block(Class inClass)
         {
             this.classesInBlock = new List<Class>();
             this.addClass(inClass);
         }
 
-
-        //public Block(Class inClass, List<Class> inClasses = null)
-        //    : base(inClass.StartTime, inClass.EndTime, 0)
-        //{
-        //    this.classesInBlock = inClasses;
-        //    addClass(inClass);
-        //}
 
         // adds class to block and increaments time
         // only if class overlaps all other classes in block
@@ -140,8 +110,6 @@ namespace FETP
             }
             return true;
         }
-
-
 
         public void Display()
         {

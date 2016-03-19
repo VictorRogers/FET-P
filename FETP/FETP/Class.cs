@@ -10,8 +10,39 @@ namespace FETP
     public class Class : CourseInformation
     {
 
-
+        protected TimeSpan startTime;
+        protected TimeSpan endTime;
+        protected int enrollment;
         protected List<DayOfWeek> daysMeet;
+
+        // Accessors and Mutators
+        public TimeSpan StartTime
+        {
+            get { return this.startTime; }
+            set { this.startTime = value; }
+        }
+        public TimeSpan EndTime
+        {
+            get { return this.endTime; }
+            set { this.startTime = value; }
+        }
+        public int Enrollment
+        {
+            get { return this.enrollment; }
+            set { this.enrollment = value; }
+        }
+
+        public CourseInformation(TimeSpan inStartTime, TimeSpan inEndTime, int inEnrollment)
+        {
+            this.startTime = inStartTime;
+            this.endTime = inEndTime;
+            this.enrollment = inEnrollment;
+        }
+
+        
+
+
+        
 
 
         public List<DayOfWeek> DaysMeet
@@ -36,19 +67,16 @@ namespace FETP
             }
         }
 
-        public override void Display()
+        public void Display()
         {
             Console.Write("Days Meet: ");
             foreach (DayOfWeek day in daysMeet)
-            {
                 Console.Write("{0} ", day);
-            }
-            Console.WriteLine("");
 
+            Console.WriteLine("");
             Console.WriteLine("Start Time: {0}", this.startTime);
             Console.WriteLine("End Time: {0}", this.endTime);
             Console.WriteLine("Enrollment: {0}", this.enrollment);
-
             Console.WriteLine("");
         }
 
@@ -75,7 +103,6 @@ namespace FETP
             return (this.StartTime == inClass.StartTime && this.EndTime == inClass.EndTime && this.Enrollment == inClass.Enrollment && this.DaysMeet == inClass.DaysMeet);
         }
         */
-
 
         public static bool operator ==(Class class1, Class class2)
         {

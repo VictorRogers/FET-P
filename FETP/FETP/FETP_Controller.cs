@@ -104,67 +104,6 @@ using System.Globalization;  // allows times to be different pased on local ? ma
 
 namespace FETP
 {
-    
-
-    
-
-    
-
-    //// playing with TimeSlot class
-    ////hmmmm
-    //// ? did i really just make this?
-    //// it's LITERALLY just a block... damn
-    //public class Timeslot : Class
-    //{
-    //    protected Block groupOfClasses;
-
-    //    public Timeslot(TimeSpan inStartTime, TimeSpan inEndTime, Block inBlock = null, List<DayOfWeek> inDaysMeet = null, int inEnrollment = 0)
-    //        : base(inStartTime, inEndTime, inDaysMeet, inEnrollment)
-    //    {
-    //        this.groupOfClasses = inBlock;
-    //    }
-
-
-
-    //    public override void Display()
-    //    {
-    //        base.Display();
-    //    }
-
-    //}
-
-        // ? oh gawd this hurts. why ben? why? why did you do this? it's not good
-    //public class Day
-    //{
-    //    public List<Block> blocks; // ? lazy
-    //    protected TimeSpan dayStartTime;
-    //    protected TimeSpan lunchStartTime;
-    //    protected TimeSpan lunchEndTime;
-        
-
-    //    public Day(TimeSpan dayStartTime, TimeSpan lunchStartTime = TimeSpan.Zero, TimeSpan lunchEndTime = TimeSpan.Zero, List<Block> inBlocks = null) // 0 because there won't always be lunch
-    //    {
-    //        this.dayStartTime = dayStartTime;
-    //        this.lunchStartTime = lunchStartTime;
-    //        this.lunchEndTime = lunchEndTime;
-    //        this.blocks = inBlocks;
-    //    }
-
-
-
-    //    public void Display()
-    //    {
-    //        foreach (Timeslot block in blocks)
-    //            block.Display();
-    //    }
-    //}
-
-   
-
-
-
-    
-
     /**************************************************************************\
     Class: FETP_Controller (Final Exam Timetabling Problem Controller)
     Description: This class contains all of the primary functions used for 
@@ -298,187 +237,6 @@ namespace FETP
             return numberOfExams;
         }
 
-        // ? original
-        //// takes in a list of classes and coalesces them into a list of blocks of classes
-        //public static List<Block> coalesceClassesTogether(List<Class> classes)
-        //{
-        //    List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
-            
-        //    foreach (Class cl in classes)
-        //    {
-        //        bool doesItOverlap = false;
-        //        foreach(Block block in classesToBeGrouped)
-        //        {
-        //            if (doClassesOverlap(cl, block.ClassesInBlock[0])) // ? changed to 0. makes no difference when making smallest classes, but should make it work with blank days
-        //            {
-        //                block.addClass(cl);
-        //                doesItOverlap = true;
-        //                break; // ?bug THIS WASN'T THERE :'( // maybe not a bug due to ordering?
-        //            }
-        //        }
-        //        if(!doesItOverlap)
-        //            classesToBeGrouped.Add(new Block(cl));
-        //    }
-        //    return classesToBeGrouped;
-
-        //}
-
-        // takes in a list of classes and coalesces them into a list of blocks of classes
-        
-
-
-
-        //// takes in a list of classes and coalesces them into a list of blocks of classes
-        //public static List<Block> coalesceClassesTogether(List<Class> classes, List<Block> groups)
-        //{
-        //    // ? check if possible maybe?
-        //    //
-
-        //    if (groups == null)
-        //    {
-        //        groups = new List<Block>(); // Variable to contain the list of all grouped classes
-        //    }
-
-        //    foreach (Class cl in classes)
-        //    {
-        //        bool isFound = false;
-
-        //        TimeSpan weight = TimeSpan.Zero;
-        //        while (!isFound) // ?hello infinity
-        //        {
-                    
-        //            foreach (Block block in groups)
-        //            {
-        //                if (block.StartTime - cl.StartTime < weight && (block.ClassesInBlock == null || doClassesOverlap(cl, block.ClassesInBlock[0]))) // could reference null, but should drop out
-        //                {
-        //                    block.addClass(cl);
-        //                    isFound = true;
-        //                    break; // ? BAD BAD BAD :'(
-        //                }
-        //            }
-        //            weight += TimeSpan.FromMinutes(30);
-        //        }
-                
-        //    }
-        //    return groups;
-        //}
-
-        //public static getClosest
-
-        //// ? need to rewrite and combine these
-        //// takes in a list of classes and coalesces them into a list of blocks of classes
-        //public static List<Block> coalesceClassesTogether(List<Class> classes)
-        //{
-        //    List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
-
-        //    // ? oh gawd this hurts
-        //    List<Block> allGroups = new List<Block>;
-            
-        //    foreach (Class cl in classes)
-        //    {
-        //        bool doesItOverlap = false;
-        //        foreach (Block block in classesToBeGrouped)
-        //        {
-        //            if (doClassesOverlap(cl, block.ClassesInBlock[0])) // ? changed to 0. makes no difference when making smallest classes, but should make it work with blank days
-        //            {
-        //                block.addClass(cl);
-        //                doesItOverlap = true;
-        //            }
-        //        }
-        //        if (!doesItOverlap)
-        //            classesToBeGrouped.Add(new Block(cl));
-        //    }
-        //    return classesToBeGrouped;
-
-        //}
-
-
-        //public static List<Day> coalesceClassesIntoDays(Schedule schedule, List<Class> classes)
-        //{
-        //    //List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
-
-        //    //for(int i = 0; i < schedule.NumberOfDays; i++)
-        //    //{
-        //    //    Day newDay = new Day();
-        //    //    TimeSpan examCurrentTime = schedule.ExamsStartTime;
-        //    //    for(int j = 0; j < getNumberOfTimeSlotsAvailablePerDay(schedule); j++)
-        //    //    {
-        //    //        Block newBlock
-        //    //    }
-        //    //}
-
-        //    //return classesToBeGrouped;
-
-        //     List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
-
-        //     foreach (Class cl in classes)
-        //     {
-        //         bool doesItOverlap = false;
-        //         foreach (Day day in schedule.days)
-        //         {
-        //             foreach (day )
-        //             if (doClassesOverlap(cl, day.block))
-        //             {
-        //                 block.addClass(cl);
-        //                 doesItOverlap = true;
-        //             }
-        //         }
-        //         if (!doesItOverlap)
-        //             classesToBeGrouped.Add(new Block(cl));
-        //     }
-        //     return classesToBeGrouped;
-
-
-        // }
-
-
-
-        //// fills in days with blank timeslots
-        //public static List<Block> createShellDays(Schedule schedule)
-        //{
-        //    // List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
-
-        //    List<Block> groups = new List<Block>();
-
-        //    for (int i = 0; i < schedule.NumberOfDays; i++)
-        //    {
-        //        TimeSpan examCurrentTime = schedule.ExamsStartTime;
-        //        for (int j = 0; j < FETP_Controller.getNumberOfTimeSlotsAvailablePerDay(schedule); j++)
-        //        {
-        //            groups.Add(new Block(examCurrentTime, examCurrentTime + schedule.ExamsLength));
-        //            // ? check if lunch and account for it here
-        //            examCurrentTime += schedule.ExamsLength + schedule.TimeBetweenExams;
-        //        }
-        //    }
-
-        //    return groups;
-        //}
-        /*
-        // fills in days with blank timeslots
-        public List<Days> createShellDays(int numberOfDays, int numberOfTimeslotsPerDay, int examsStartTime, TimeSpan examsLength, TimeSpan timeBetweenExams)
-        {
-            List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
-
-            for (int i = 0; i < this.numberOfDays; i++)
-            {
-                Day newDay = new Day(examsStartTime);
-                TimeSpan examCurrentTime = this.examsStartTime;
-                for (int j = 0; j < FETP_Controller.getNumberOfTimeSlotsAvailablePerDay(this); j++)
-                {
-                    newDay.blocks.Add(new Timeslot(examCurrentTime, examCurrentTime + examsLength));
-                    // ? check if lunch and account for it here
-                    examCurrentTime += examsLength + timeBetweenExams;
-                }
-            }
-        }
-        */
-       
-
-        /*
-        // ? switching up style of functions here to make coupling ?lower?
-        public static List<Days> makeBlankDays(TimeSpan startTime, TimeSpan endTime, TimeSpan examLength)
-        */
-
         // Checks if two classes overlap
         public static bool doClassesOverlap(Class class1, Class class2)
         {
@@ -500,21 +258,6 @@ namespace FETP
               || (class2.EndTime >= class1.StartTime && class2.EndTime <= class1.EndTime) // or does class2 end during class1
             ); 
         }
-
-        //// checks if class overlaps with any class in a block
-        //public static bool doesClassOverlapBlock(Block block, Class inClass)
-        //{
-        //    foreach (Class cl in block.ClassesInBlock)
-        //    {
-        //        if (!doClassesOverlap(cl, inClass))
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    return true;
-        //}
-
-        // Helper function to find the total days two classes have in common.
 
         public static int getNumberOfDaysInCommon(Class class1, Class class2)
         {
@@ -551,42 +294,7 @@ namespace FETP
             }
             return false;
         }
-
-        //// ? maybe correct?
-        //public static int getSmallestPossibleGrouping(List<Class> classes)
-        //{
-        //    return (coalesceClassesTogether(sortClassesByOverlappingDays(classes))).Count;
-        //}
-
-        // Find if any classes overlap in list of classes
-
-
-        //// Checks if enough timeslots are available
-        //public static bool areThereEnoughTimeslots(Schedule schedule, List<Class> classes)
-        //{
-        //    return (getNumberOfTimeSlotsAvailable(schedule) >= getSmallestPossibleGrouping(classes));
-        //}
-
-        /*
-        // ? in theory, this will automatically find what days a block meets.
-        // a block should only meet on MWF or TR
-        //return a key value
-        //      Day: #
-        //      Number of those days: #
-        public static List<DayOfWeek> getMostCommonDays(List<Class> classes)
-        {
-            foreach (Class class1 in classes)
-            {
-                foreach (Class class2 in classes)
-                {
-                    if (doClassDaysOverlap(class1, class2))
-                        return true;
-                }
-            }
-            return false;
-        }
-        */
-
+             
         // Prototype function for example of how to sort
         public static List<Class> sortClassesByEnrollment(List<Class> classes)
         {
@@ -598,15 +306,36 @@ namespace FETP
         {
             return classes.OrderByDescending(c => getNumberOfOverlappingDays(classes, c)).ToList();
         }
+             
+        // basic grouping for testing  
+        public static List<Block> coalesceClassesTogether(List<Class> classes)
+        {
+            List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
 
-        //public static TimeSpan putInClosestPossibleBlock()
-        //{
-        //    // first look for closest block with start time, then go to next largest
+            foreach (Class cl in classes)
+            {
+                classesToBeGrouped = groupClass(classesToBeGrouped, cl); // ? clean this up
 
-        //        // preference to being later then earlier
+            }
+
+            return classesToBeGrouped;
 
 
-        //}
+        }
 
+        // ?????
+        public static List<Class> removeClass(List<Class> classes, Class inClass)
+        {
+            int i = 0;
+            while (i < classes.Count)
+            {
+                if (classes[i] == inClass)
+                {
+                    classes.RemoveAt(i);
+                    return classes;
+                }
+            }
+            return classes;
+        }
     }
 }
