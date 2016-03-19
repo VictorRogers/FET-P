@@ -27,13 +27,12 @@ namespace FETP
                     Console.WriteLine(STARS);
                     Console.WriteLine("Testing Enrollment File Operations");
                     Console.WriteLine(STARS);
-
-                    FileStream inFile = File.OpenRead(@"../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
+                    
 
                     // currently sorts all the data
                     //List<Class> allClasses = FETP_Controller.sortClassesByEnrollment(FETP_Controller.readInputDataFile(inFile));
                     //List<Class> allClasses = FETP_Controller.sortClassesByOverlappingDays(FETP_Controller.readInputDataFile(inFile));
-                    List<Class> allClasses = FETP_Controller.readInputDataFile(inFile);
+                    List<Class> allClasses = FETP_Controller.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
 
                     Console.WriteLine("Number of Classes: {0}", allClasses.Count);
                     Console.WriteLine();
@@ -57,9 +56,9 @@ namespace FETP
                     Console.WriteLine("Testing Constraints File Operations");
                     Console.WriteLine(STARS);
 
-                    FileStream inFile = File.OpenRead(@"../../../../Example Data/Ben Made Constraints Sample.txt");
+                    
                     // List<Class> allClasses = FETP_Controller.sortClassesByEnrollment(FETP_Controller.readInputDataFile(inFile));
-                    Schedule blankSchedule = FETP_Controller.readInputConstraintsFile(inFile);
+                    Schedule blankSchedule = FETP_Controller.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
                     blankSchedule.Display();
                     Console.WriteLine("Number of Timeslots Available Per Day: {0}", FETP_Controller.getNumberOfTimeSlotsAvailablePerDay(blankSchedule));
                     Console.WriteLine("Number of Timeslots Available: {0}", FETP_Controller.getNumberOfTimeSlotsAvailable(blankSchedule));
@@ -77,12 +76,12 @@ namespace FETP
                     Console.WriteLine("Testing Grouping of Classes");
                     Console.WriteLine(STARS);
 
-                    FileStream inFile = File.OpenRead(@"../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
+                    // FileStream inFile = File.OpenRead(@"../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
 
                     // currently sorts all the data
-                    List<Class> allClasses = FETP_Controller.readInputDataFile(inFile);
-                    allClasses.OrderBy
-                    allClasses = FETP_Controller.sortClassesByOverlappingDays(allClasses); // sort classes how you want 
+                    List<Class> allClasses = FETP_Controller.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
+                    allClasses.OrderByDescending(c => c.Enrollment);
+                    //allClasses = FETP_Controller.sortClassesByOverlappingDays(allClasses); // sort classes how you want 
                     List<Block> groupedClasses = Schedule.coalesceClassesTogether(allClasses);
 
 
@@ -262,7 +261,7 @@ namespace FETP
 
                     //Console.WriteLine("Number of Blocks: {0}", groupedClasses.Count);
                     //Console.WriteLine();
-                }
+                //}
                 Console.WriteLine();
             }
             

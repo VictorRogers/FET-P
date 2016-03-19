@@ -17,7 +17,7 @@ namespace FETP
         protected TimeSpan examsStartTime;
         protected TimeSpan examsLength;
         protected TimeSpan timeBetweenExams;
-        public TimeSpan lunchTime; // ? lazy
+        //public TimeSpan lunchTime; // ? lazy
         protected TimeSpan lunchLength;
 
         // Properties / Accessors and Mutators
@@ -162,15 +162,15 @@ namespace FETP
             return blocks;
         }
 
-        // finds the smallest grouping
-        public void groupClasses(List<Class> classes)
-        {
-            List<Block> blocks = new List<Block>();
-            //groupingHelper(blocks, classes);
-            //helpMe(blocks, classes);
-            //Console.WriteLine("{0}", findSmallestGroup(blocks, classes));
-            Console.WriteLine("{0}", findNextSmallestGroup(blocks, classes, this.smallestGroupSizeFound));
-        }
+        //// finds the smallest grouping
+        //public void groupClasses(List<Class> classes)
+        //{
+        //    List<Block> blocks = new List<Block>();
+        //    //groupingHelper(blocks, classes);
+        //    //helpMe(blocks, classes);
+        //    //Console.WriteLine("{0}", findSmallestGroup(blocks, classes));
+        //    Console.WriteLine("{0}", findNextSmallestGroup(blocks, classes, this.smallestGroupSizeFound));
+        //}
 
 
 

@@ -183,7 +183,7 @@ namespace FETP
 
         // Programmer: Ben
         // takes in an open data file and returns a list of all the classes
-        public static List<Class> readInputDataFile(FileStream inFile)
+        public static List<Class> readInputDataFile(string inFileName)
         {
 
             // Make boundaries of ignored classes more usable
@@ -192,6 +192,7 @@ namespace FETP
 
             List<Class> allClasses = new List<Class>(); // list of all classes to be returned
 
+            FileStream inFile = File.OpenRead(@inFileName);
             var reader = new StreamReader(inFile);
 
             reader.ReadLine(); // skip description line
@@ -246,9 +247,9 @@ namespace FETP
         } // end readInputDataFile
 
         // ? don't know what to do with this info yet
-        public static Schedule readInputConstraintsFile(FileStream inFile)
+        public static Schedule readInputConstraintsFile(string inFileName)
         {
-
+            FileStream inFile = File.OpenRead(@inFileName);
             var reader = new StreamReader(inFile);
 
             int numberOfDays = Int32.Parse(reader.ReadLine());
@@ -538,18 +539,11 @@ namespace FETP
             return overlappingClasses;
         }
 
-        //// ? maybe correct?
-        //public static int getSmallestPossibleGrouping(List<Class> classes)
-        //{
-        //    return (coalesceClassesTogether(sortClassesByOverlappingDays(classes))).Count;
-        //}
-        
-        // Find if any classes overlap in list of classes
         public static bool doAnyClassesOverlap(List<Class> classes)
         {
-            foreach(Class class1 in classes)
+            foreach (Class class1 in classes)
             {
-                foreach(Class class2 in classes)
+                foreach (Class class2 in classes)
                 {
                     if (doClassesOverlap(class1, class2))
                         return true;
@@ -557,6 +551,15 @@ namespace FETP
             }
             return false;
         }
+
+        //// ? maybe correct?
+        //public static int getSmallestPossibleGrouping(List<Class> classes)
+        //{
+        //    return (coalesceClassesTogether(sortClassesByOverlappingDays(classes))).Count;
+        //}
+
+        // Find if any classes overlap in list of classes
+
 
         //// Checks if enough timeslots are available
         //public static bool areThereEnoughTimeslots(Schedule schedule, List<Class> classes)
