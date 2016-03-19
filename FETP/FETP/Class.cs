@@ -79,11 +79,13 @@ namespace FETP
 
         public static bool operator ==(Class class1, Class class2)
         {
+            //if (class1 == null && class2 == null) return true;
             return (class1.StartTime == class2.StartTime && class1.EndTime == class2.EndTime && class1.Enrollment == class2.Enrollment && class1.DaysMeet == class2.DaysMeet); // ? comparing list should work
         }
 
         public static bool operator !=(Class class1, Class class2)
         {
+           // if (class1 == null && class2 == null) return false;
             return (class1.StartTime != class2.StartTime || class1.EndTime != class2.EndTime || class1.Enrollment != class2.Enrollment || class1.DaysMeet != class2.DaysMeet); // yay. used cs 245 to make this code faster
         }
 

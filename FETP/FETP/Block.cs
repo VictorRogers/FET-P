@@ -7,13 +7,25 @@ using System.Threading.Tasks;
 namespace FETP
 {
     // block contains classes that overlapped and were coalesced
-    public class Block : CourseInformation
+    public class Block
     {
         protected List<Class> classesInBlock;
+        protected int enrollment;
 
         public List<Class> ClassesInBlock
         {
             get { return classesInBlock; }
+        }
+
+        public int Enrollment
+        {
+            get
+            {
+                int enrollment = 0;
+                foreach (Class cl in classesInBlock)
+                    enrollment += cl.Enrollment;
+                return enrollment;
+            }
         }
 
         public int Average
@@ -62,11 +74,21 @@ namespace FETP
 
         }
         */
-        public Block(TimeSpan inStartTime, TimeSpan inEndTime, int inEnrollment, List<Class> inClasses)
-            : base(inStartTime, inEndTime, inEnrollment)
+        //public Block(TimeSpan inStartTime, TimeSpan inEndTime, int inEnrollment, List<Class> inClasses)
+        //    : base(inStartTime, inEndTime, inEnrollment)
+        //{
+        //    if (inClasses == null)
+        //        this.classesInBlock = new List<Class>();
+        //    else
+        //        this.classesInBlock = inClasses;
+        //}
+
+        public Block(Class inClass)
         {
-            this.classesInBlock = inClasses;
+            this.classesInBlock = new List<Class>();
+            this.addClass(inClass);
         }
+
 
         //public Block(Class inClass, List<Class> inClasses = null)
         //    : base(inClass.StartTime, inClass.EndTime, 0)
@@ -76,16 +98,21 @@ namespace FETP
         //}
 
         // adds class to block and increaments time
-        public void addClass(Class inClass)
+        // only if class overlaps all other classes in block
+        public bool addClass(Class inClass)
         {
-            if (this.classesInBlock == null)
-                this.classesInBlock = new List<Class>();
+            bool wasPerformed = false;
 
-            classesInBlock.Add(inClass);
-            this.enrollment += inClass.Enrollment;
+            if (this.doesClassOverlap(inClass)) {
+                classesInBlock.Add(inClass);
+                this.enrollment += inClass.Enrollment;
+                wasPerformed = true;
+            }
+            return wasPerformed;
         }
 
         // returns wheter the class was found and removed
+        // ? can maybe rewrite with List.Constains()
         public bool removeClass(Class inClass)
         {
             bool isFound = false;
@@ -102,15 +129,26 @@ namespace FETP
             return isFound;
         }
 
+        public bool doesClassOverlap(Class inClass)
+        {
+            foreach (Class cl in this.classesInBlock)
+            {
+                if (!FETP_Controller.doClassesOverlap(cl, inClass))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
 
-        public override void Display()
+
+        public void Display()
         {
             // ??Console.WriteLine("Number of Classes in Block: {0}", this.classesInBlock.Count);
             Console.WriteLine("Average Enrollment: {0}", this.Average);
             Console.WriteLine("Variance: {0}", this.Variance);
             Console.WriteLine("Standard Deviation: {0}", this.StandardDeviation);
-            base.Display();
         }
 
         public void DisplayAllClasses()

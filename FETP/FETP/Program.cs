@@ -18,8 +18,8 @@ namespace FETP
                 Console.WriteLine("1. Reading from Enrollment File");
                 Console.WriteLine("2. Reading from Constraints File");
                 Console.WriteLine("3. Test Basic Grouping");
-                Console.WriteLine("4. Test Advanced Grouping (not ready)");
-                Console.WriteLine("5. Test Advanced Advanced Grouping (not ready)");
+                //Console.WriteLine("4. Test Advanced Grouping (not ready)");
+                //Console.WriteLine("5. Test Advanced Advanced Grouping (not ready)");
                 string input = Console.ReadLine();
                 Console.WriteLine();
                 if(input == "1")
@@ -36,12 +36,14 @@ namespace FETP
                     List<Class> allClasses = FETP_Controller.readInputDataFile(inFile);
 
                     Console.WriteLine("Number of Classes: {0}", allClasses.Count);
+                    Console.WriteLine();
 
                     foreach (Class cl in allClasses)
                     {
+                        
                         cl.Display();
 
-                        Console.WriteLine("Overlaps with: {0} other classes", FETP_Controller.getNumberOfOverlappingDays(allClasses, cl));
+                        // Console.WriteLine("Overlaps with: {0} other classes", FETP_Controller.getNumberOfOverlappingDays(allClasses, cl));
                     }
 
                     Console.WriteLine(STARS);
@@ -69,7 +71,7 @@ namespace FETP
 
 
                 }
-                else if(input == "3")
+                else if (input == "3")
                 {
                     Console.WriteLine(STARS);
                     Console.WriteLine("Testing Grouping of Classes");
@@ -79,8 +81,9 @@ namespace FETP
 
                     // currently sorts all the data
                     List<Class> allClasses = FETP_Controller.readInputDataFile(inFile);
+                    allClasses.OrderBy
                     allClasses = FETP_Controller.sortClassesByOverlappingDays(allClasses); // sort classes how you want 
-                    List<Block> groupedClasses = FETP_Controller.coalesceClassesTogether(allClasses);
+                    List<Block> groupedClasses = Schedule.coalesceClassesTogether(allClasses);
 
 
                     Console.WriteLine("Number of Blocks: {0}", groupedClasses.Count);
@@ -95,7 +98,7 @@ namespace FETP
                         Console.WriteLine("---------------------------------");
                         Console.WriteLine("Displaying Information of Block");
                         Console.WriteLine("---------------------------------");
-                        
+
                         block.Display();
                         Console.WriteLine("---------------------------------");
                         Console.WriteLine("END Displaying Information of Block");
@@ -121,130 +124,144 @@ namespace FETP
                     Console.WriteLine("END Testing Grouping of Classes");
                     Console.WriteLine(STARS);
                 }
-                else if (input == "4")
-                {
-                    Console.WriteLine(STARS);
-                    Console.WriteLine("Testing Advanced Grouping of Classes");
-                    Console.WriteLine(STARS);
+                //else if (input == "4")
+                //{
+                //    Console.WriteLine(STARS);
+                //    Console.WriteLine("Testing Advanced Grouping of Classes");
+                //    Console.WriteLine(STARS);
 
-                    // ------------------------------------------------------------------------------------------------------
-                    // Get data file information
-                    FileStream inFile = File.OpenRead(@"../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
+                //    // ------------------------------------------------------------------------------------------------------
+                //    // Get data file information
+                //    FileStream inFile = File.OpenRead(@"../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
 
-                    // currently sorts all the data
-                    List<Class> allClasses = FETP_Controller.readInputDataFile(inFile);
-                    // ------------------------------------------------------------------------------------------------------
+                //    // currently sorts all the data
+                //    List<Class> allClasses = FETP_Controller.readInputDataFile(inFile);
+                //    // ------------------------------------------------------------------------------------------------------
 
-                    // ------------------------------------------------------------------------------------------------------
-                    // Get contraints file information
-                    inFile = File.OpenRead(@"../../../../Example Data/Ben Made Constraints Sample.txt");
-                    // List<Class> allClasses = FETP_Controller.sortClassesByEnrollment(FETP_Controller.readInputDataFile(inFile));
-                    Schedule blankSchedule = FETP_Controller.readInputConstraintsFile(inFile);
-                    // ------------------------------------------------------------------------------------------------------
-
-
-                    allClasses = FETP_Controller.sortClassesByEnrollment(allClasses);
-                    List<Block> groupedClasses = FETP_Controller.coalesceClassesTogether(allClasses);
-                    
-
-                    Console.WriteLine("Number of Blocks: {0}", groupedClasses.Count);
-                    Console.WriteLine();
-
-                    foreach (Block block in groupedClasses)
-                    {
-                        Console.WriteLine("=================================");
-                        Console.WriteLine("Displaying Block");
-                        Console.WriteLine("=================================");
-
-                        Console.WriteLine("---------------------------------");
-                        Console.WriteLine("Displaying Information of Block");
-                        Console.WriteLine("---------------------------------");
-
-                        block.Display();
-                        Console.WriteLine("---------------------------------");
-                        Console.WriteLine("END Displaying Information of Block");
-                        Console.WriteLine("---------------------------------");
+                //    // ------------------------------------------------------------------------------------------------------
+                //    // Get contraints file information
+                //    inFile = File.OpenRead(@"../../../../Example Data/Ben Made Constraints Sample.txt");
+                //    // List<Class> allClasses = FETP_Controller.sortClassesByEnrollment(FETP_Controller.readInputDataFile(inFile));
+                //    Schedule blankSchedule = FETP_Controller.readInputConstraintsFile(inFile);
+                //    // ------------------------------------------------------------------------------------------------------
 
 
-                        Console.WriteLine("---------------------------------");
-                        Console.WriteLine("Displaying all Classes in Block");
-                        Console.WriteLine("---------------------------------");
-                        block.DisplayAllClasses();
-                        Console.WriteLine("---------------------------------");
-                        Console.WriteLine("END Displaying all Classes in Block");
-                        Console.WriteLine("---------------------------------");
-                        Console.WriteLine();
-
-                        Console.WriteLine("=================================");
-                        Console.WriteLine("END Displaying Block");
-                        Console.WriteLine("=================================");
-                    }
-
-                    Console.WriteLine(STARS);
-                    Console.WriteLine("END Testing Advanced Grouping of Classes");
-                    Console.WriteLine(STARS);
-
-                }
-                else if(input == "5")
-                {
-                    Console.WriteLine(STARS);
-                    Console.WriteLine("Testing Advanced Advanced Grouping of Classes");
-                    Console.WriteLine(STARS);
-
-                    // ------------------------------------------------------------------------------------------------------
-                    // Get data file information
-                    FileStream inFile = File.OpenRead(@"../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
-
-                    // currently sorts all the data
-                    List<Class> allClasses = FETP_Controller.readInputDataFile(inFile);
-                    // ------------------------------------------------------------------------------------------------------
-
-                    // ------------------------------------------------------------------------------------------------------
-                    // Get contraints file information
-                    inFile = File.OpenRead(@"../../../../Example Data/Ben Made Constraints Sample.txt");
-                    // List<Class> allClasses = FETP_Controller.sortClassesByEnrollment(FETP_Controller.readInputDataFile(inFile));
-                    Schedule blankSchedule = FETP_Controller.readInputConstraintsFile(inFile);
-                    // ------------------------------------------------------------------------------------------------------
+                //    allClasses = FETP_Controller.sortClassesByEnrollment(allClasses);
+                //    List<Block> groupedClasses = FETP_Controller.coalesceClassesTogether(allClasses);
 
 
-                    allClasses = FETP_Controller.sortClassesByEnrollment(allClasses);
+                //    Console.WriteLine("Number of Blocks: {0}", groupedClasses.Count);
+                //    Console.WriteLine();
 
-                    blankSchedule.blocks = FETP_Controller.createShellDays(blankSchedule);
+                //    foreach (Block block in groupedClasses)
+                //    {
+                //        Console.WriteLine("=================================");
+                //        Console.WriteLine("Displaying Block");
+                //        Console.WriteLine("=================================");
 
-                    List<Block> groupedClasses = FETP_Controller.coalesceClassesTogether(allClasses, blankSchedule.blocks);
+                //        Console.WriteLine("---------------------------------");
+                //        Console.WriteLine("Displaying Information of Block");
+                //        Console.WriteLine("---------------------------------");
 
-                    foreach (Block block in groupedClasses)
-                    {
-                        Console.WriteLine("=================================");
-                        Console.WriteLine("Displaying Block");
-                        Console.WriteLine("=================================");
-
-                        Console.WriteLine("---------------------------------");
-                        Console.WriteLine("Displaying Information of Block");
-                        Console.WriteLine("---------------------------------");
-
-                        block.Display();
-                        Console.WriteLine("---------------------------------");
-                        Console.WriteLine("END Displaying Information of Block");
-                        Console.WriteLine("---------------------------------");
+                //        block.Display();
+                //        Console.WriteLine("---------------------------------");
+                //        Console.WriteLine("END Displaying Information of Block");
+                //        Console.WriteLine("---------------------------------");
 
 
-                        Console.WriteLine("---------------------------------");
-                        Console.WriteLine("Displaying all Classes in Block");
-                        Console.WriteLine("---------------------------------");
-                        block.DisplayAllClasses();
-                        Console.WriteLine("---------------------------------");
-                        Console.WriteLine("END Displaying all Classes in Block");
-                        Console.WriteLine("---------------------------------");
-                        Console.WriteLine();
+                //        Console.WriteLine("---------------------------------");
+                //        Console.WriteLine("Displaying all Classes in Block");
+                //        Console.WriteLine("---------------------------------");
+                //        block.DisplayAllClasses();
+                //        Console.WriteLine("---------------------------------");
+                //        Console.WriteLine("END Displaying all Classes in Block");
+                //        Console.WriteLine("---------------------------------");
+                //        Console.WriteLine();
 
-                        Console.WriteLine("=================================");
-                        Console.WriteLine("END Displaying Block");
-                        Console.WriteLine("=================================");
-                    }
+                //        Console.WriteLine("=================================");
+                //        Console.WriteLine("END Displaying Block");
+                //        Console.WriteLine("=================================");
+                //    }
 
-                    Console.WriteLine("Number of Blocks: {0}", groupedClasses.Count);
-                    Console.WriteLine();
+                //    Console.WriteLine(STARS);
+                //    Console.WriteLine("END Testing Advanced Grouping of Classes");
+                //    Console.WriteLine(STARS);
+
+                //}
+                //else if(input == "5")
+                //{
+                //    Console.WriteLine(STARS);
+                //    Console.WriteLine("Testing Advanced Advanced Grouping of Classes");
+                //    Console.WriteLine(STARS);
+
+                //    // ------------------------------------------------------------------------------------------------------
+                //    // Get data file information
+                //    FileStream inFile = File.OpenRead(@"../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
+
+                //    // currently sorts all the data
+                //    List<Class> allClasses = FETP_Controller.readInputDataFile(inFile);
+                //    // ------------------------------------------------------------------------------------------------------
+
+                //    // ------------------------------------------------------------------------------------------------------
+                //    // Get contraints file information
+                //    inFile = File.OpenRead(@"../../../../Example Data/Ben Made Constraints Sample.txt");
+                //    // List<Class> allClasses = FETP_Controller.sortClassesByEnrollment(FETP_Controller.readInputDataFile(inFile));
+                //    Schedule blankSchedule = FETP_Controller.readInputConstraintsFile(inFile);
+                //    // ------------------------------------------------------------------------------------------------------
+
+
+                //    allClasses = FETP_Controller.sortClassesByOverlappingDays(allClasses);
+
+                //    //blankSchedule.blocks = FETP_Controller.createShellDays(blankSchedule);
+
+                //    List<Block> groupedClasses = Schedule.coalesceClassesTogether(allClasses);
+
+                //    blankSchedule.smallestGroupSizeFound = groupedClasses.Count;
+
+                //    Console.WriteLine("Smallest Group Found First: {0}", blankSchedule.smallestGroupSizeFound);
+
+                //    blankSchedule.groupClasses(allClasses);
+
+                //    Console.WriteLine("New Smallest Group Found: {0}", blankSchedule.smallestGroupSizeFound);
+
+
+
+
+
+
+
+                    //foreach (Block block in groupedClasses)
+                    //{
+                    //    Console.WriteLine("=================================");
+                    //    Console.WriteLine("Displaying Block");
+                    //    Console.WriteLine("=================================");
+
+                    //    Console.WriteLine("---------------------------------");
+                    //    Console.WriteLine("Displaying Information of Block");
+                    //    Console.WriteLine("---------------------------------");
+
+                    //    block.Display();
+                    //    Console.WriteLine("---------------------------------");
+                    //    Console.WriteLine("END Displaying Information of Block");
+                    //    Console.WriteLine("---------------------------------");
+
+
+                    //    Console.WriteLine("---------------------------------");
+                    //    Console.WriteLine("Displaying all Classes in Block");
+                    //    Console.WriteLine("---------------------------------");
+                    //    block.DisplayAllClasses();
+                    //    Console.WriteLine("---------------------------------");
+                    //    Console.WriteLine("END Displaying all Classes in Block");
+                    //    Console.WriteLine("---------------------------------");
+                    //    Console.WriteLine();
+
+                    //    Console.WriteLine("=================================");
+                    //    Console.WriteLine("END Displaying Block");
+                    //    Console.WriteLine("=================================");
+                    //}
+
+                    //Console.WriteLine("Number of Blocks: {0}", groupedClasses.Count);
+                    //Console.WriteLine();
                 }
                 Console.WriteLine();
             }
