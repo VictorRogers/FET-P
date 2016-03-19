@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace FETP
 {
     // Programmer: Ben and Vic
-    public class Class : CourseInformation
+    public class Class
     {
 
         protected TimeSpan startTime;
@@ -31,20 +31,7 @@ namespace FETP
             get { return this.enrollment; }
             set { this.enrollment = value; }
         }
-
-        public CourseInformation(TimeSpan inStartTime, TimeSpan inEndTime, int inEnrollment)
-        {
-            this.startTime = inStartTime;
-            this.endTime = inEndTime;
-            this.enrollment = inEnrollment;
-        }
-
-        
-
-
-        
-
-
+ 
         public List<DayOfWeek> DaysMeet
         {
             get { return this.daysMeet; }
@@ -53,12 +40,15 @@ namespace FETP
 
         // Intializes Class
         public Class(TimeSpan inStartTime, TimeSpan inEndTime, int inEnrollment, List<DayOfWeek> inDaysMeet)
-            : base(inStartTime, inEndTime, inEnrollment)
         {
+            this.startTime = inStartTime;
+            this.endTime = inEndTime;
+            this.enrollment = inEnrollment;
 
             if (inDaysMeet == null)
             {
-                inDaysMeet = new List<DayOfWeek>(); // ? bad
+                //inDaysMeet = new List<DayOfWeek>(); // ? bad
+                throw new Exception("Class does not have any days attached. A class must have days it meets on.");
             }
             else
             {

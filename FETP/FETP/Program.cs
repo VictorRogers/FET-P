@@ -81,7 +81,7 @@ namespace FETP
                     List<Class> allClasses = FETP_Controller.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
                     allClasses.OrderByDescending(c => c.Enrollment);
                     //allClasses = FETP_Controller.sortClassesByOverlappingDays(allClasses); // sort classes how you want 
-                    List<Block> groupedClasses = Schedule.coalesceClassesTogether(allClasses);
+                    List<Block> groupedClasses = FETP_Controller.coalesceClassesTogether(allClasses);
 
 
                     Console.WriteLine("Number of Blocks: {0}", groupedClasses.Count);

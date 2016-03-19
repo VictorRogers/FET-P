@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="Block.cs" />
     <Compile Include="Class.cs" />
-    <Compile Include="CourseInformation.cs" />
     <Compile Include="GA_Constraints.cs" />
     <Compile Include="FETP_Controller.cs" />
     <Compile Include="GA_Chromosome.cs" />

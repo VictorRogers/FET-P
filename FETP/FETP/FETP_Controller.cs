@@ -294,7 +294,21 @@ namespace FETP
             }
             return false;
         }
-             
+
+        // takes in a list of class groups and a class
+        // returns a new list of class groups with class inserted into first possible group
+        public static List<Block> groupClass(List<Block> blocks, Class inClass)
+        {
+            bool isInserted = false;
+            int i = 0;
+
+            while (i < blocks.Count && !(isInserted = blocks[i++].addClass(inClass))) ; // ? i <3 my while loops that terminate in a semicolen
+
+            if (!isInserted)
+                blocks.Add(new Block(inClass));
+            return blocks;
+        }
+
         // Prototype function for example of how to sort
         public static List<Class> sortClassesByEnrollment(List<Class> classes)
         {
