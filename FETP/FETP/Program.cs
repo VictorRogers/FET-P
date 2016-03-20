@@ -124,7 +124,7 @@ namespace FETP
                 }
                 else if(input == "4")
                 {
-                    List<Schedule>
+                    Console.WriteLine(Schedule.CLASS_LENGTH_TO_START_IGNORING);
                 }
                 Console.WriteLine();
             }

@@ -87,6 +87,23 @@ namespace FETP
         /**************************************************************************\
         Block - Methods 
         \**************************************************************************/
+
+        /**************************************************************************\
+        Constructor: Default 
+        Description: Takes in data values and creates Block with those values
+        ? need new constructor
+        \**************************************************************************/
+        public Block(List<Class> inClasses = null)
+        {
+            if(inClasses == null)
+            {
+                this.classesInBlock = new List<Class>();
+            }
+            else
+                this.classesInBlock = inClasses;
+        }
+
+
         /**************************************************************************\
         Constructor: Default 
         Description: Takes in data values and creates Block with those values
@@ -152,7 +169,7 @@ namespace FETP
         Description: Determins if the inClass overlaps with ALL classes in block
         ?
         \**************************************************************************/
-        public bool doesClassOverlap(Class inClass)
+        public bool doesClassOverlapWithBlock(Class inClass)
         {
             foreach (Class cl in this.classesInBlock)
             {

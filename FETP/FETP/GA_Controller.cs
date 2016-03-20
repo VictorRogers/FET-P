@@ -69,12 +69,6 @@ namespace FETP
 
         }
 
-        public int computeFitness(Schedule schedule)
-        {
-            // compute fitness score
-        }
-
-        public static List<Block> 
 
         // ?
         // need finish
@@ -89,35 +83,7 @@ namespace FETP
 
         }
 
-        // ?
-        public bool WillMutate()
-        {
-            // ? victor rewrite
-            Random rnd = new Random();
-            return (rnd.Next(0, 20) == 1);
-        }
-
-
-
-        // ?
-        public Schedule Mutate(Schedule schedule)
-        {
-            if (WillMutate())
-            {
-                Random rnd = new Random();
-
-                int index1 = rnd.Next(0, schedule.blocks.Count);
-                int index2 = rnd.Next(0, schedule.blocks.Count);
-
-                int indexOfMidPoint1 = rnd.Next(0, schedule.blocks[index1].ClassesInBlock.Count);
-                int indexOfMidPoint2 = rnd.Next(0, schedule.blocks[index2].ClassesInBlock.Count);
-
-
-                // swap from index
-                // ?
-
-            }
-        }
+        
 
         // ?
         // need finish

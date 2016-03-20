@@ -19,25 +19,29 @@ namespace FETP
     \**************************************************************************/
     public class Schedule
     {
+
         /**************************************************************************\
         Schedule - Constant Data Members 
         \**************************************************************************/
-        public const string CLASS_LENGTH_TO_START_IGNORING = "0245"; // const is always static ?
-        public const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
         public const string TIME_EXAMS_MUST_END_BY = "1700";
+
+
+        /**************************************************************************\
+        Schedule - Static Data Members 
+        \**************************************************************************/
+        private static int numberOfDays;
+        private static TimeSpan examsStartTime;
+        private static TimeSpan examsLength;
+        private static TimeSpan timeBetweenExams;
+        private static TimeSpan lunchLength;
+        // could make List of all classes static
+
 
         /**************************************************************************\
         Schedule - Data Members 
         \**************************************************************************/
         private List<Block> blocks; 
-        private int numberOfDays;
-        private TimeSpan examsStartTime;
-        private TimeSpan examsLength;
-        private TimeSpan timeBetweenExams;
-        //public TimeSpan lunchTime; // ? lazy
-        private TimeSpan lunchLength;
-        //private int fitnessScore;
-
+        
 
         /**************************************************************************\
         Schedule - Properties 
@@ -53,32 +57,32 @@ namespace FETP
                 this.blocks = value;
             }
         }
-        public int NumberOfDays
+        public static int NumberOfDays
         {
             get { return numberOfDays; }
             set { this.numberOfDays = value; }
         }
-        public TimeSpan ExamsStartTime
+        public static TimeSpan ExamsStartTime
         {
             get { return examsStartTime; }
             set { this.examsStartTime = value; }
         }
-        public TimeSpan ExamsLength
+        public static TimeSpan ExamsLength
         {
             get { return examsLength; }
             set { this.examsLength = value; }
         }
-        public TimeSpan TimeBetweenExams
+        public static TimeSpan TimeBetweenExams
         {
             get { return timeBetweenExams; }
             set { this.timeBetweenExams = value; }
         }
-        public TimeSpan LunchLength
+        public static TimeSpan LunchLength
         {
             get { return lunchLength; }
             set { this.lunchLength = value; }
         }
-        public int NumberOfTimeSlotsAvailable
+        public static int NumberOfTimeSlotsAvailable
         {
             get
             {
@@ -86,7 +90,7 @@ namespace FETP
             }
             
         }
-        public int NumberOfTimeSlotsAvailablePerDay
+        public static int NumberOfTimeSlotsAvailablePerDay
         {
             get
             {
@@ -140,35 +144,134 @@ namespace FETP
         Method:  
         Description: 
         \**************************************************************************/
-        public Schedule(int inNumberOfDays, TimeSpan inExamsStartTime, TimeSpan inExamsLength, TimeSpan inTimeBetweenExams, TimeSpan inLunchLength, List<Block> inDays = null)
-        {
-            this.numberOfDays = inNumberOfDays;
-            this.examsStartTime = inExamsStartTime;
-            this.examsLength = inExamsLength;
-            this.timeBetweenExams = inTimeBetweenExams;
-            this.lunchLength = inLunchLength;
+        //public Schedule(List<Block> inDays = null)
+        //{
+        //    if (inDays == null)
+        //    {
+        //        this.blocks = new List<Block>();
+        //    } 
+        //    else
+        //    {
+        //        this.blocks = inDays;
+        //    }
+        //}
 
-            this.blocks = inDays;
+        // creates a random schedule
+        // maybe makes list of all classes static
+        // ????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????? here victor 1/4
+        /**************************************************************************\
+        Constructor: Random Constructor
+        Description: Creates a random schedule off the incoming list of classes
+        \**************************************************************************/
+        public Schedule(List<Class> classes) // ? possibly make classes static. it would make it faster
+        {
+            
+            Random rand = new Random();
+            classes = classes.OrderBy(c => rand.Next()).ToList(); // randomly arrange classes ? i think
+
+            this.blocks = FETP_Controller.coalesceClassesTogether(classes);
         }
+
+        // ? call twice for keeeeds. swap postions of parents
+        // ????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????? here victor 2/4
+        /**************************************************************************\
+        Constructor: Schedule Combining Constructor
+        Description: Creates a schedule off parent schedules. I alternates 
+                     taking blocks from each parent.
+        Note: for two kids, call constructor twice with parent 
+              schedules in different spots 
+        \**************************************************************************/
+        public Schedule(Schedule schedule1, Schedule schedule)
+        {
+
+            // int blockCount = Schedule.NumberOfTimeSlotsAvailable;
+            for(int i = 0; i < Schedule.NumberOfTimeSlotsAvailable; i++) // maybe swap just whole halves
+            {
+                if(i % 2 == 0)
+                {
+                    this.blocks[i] = schedule1.Blocks[i];
+                }
+                else
+                {
+                    this.blocks[i] = schedule2.Blocks[i];
+                }
+            }
+
+            Mutate(); // ? break up for cohesion
+
+            // don't need randomness ?
+        }
+
+        // ?
+        // ????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????? here victor 3/4
+        /**************************************************************************\
+        Method: WillMutate
+        Description: Deteremines whether a mutation should occur
+        \**************************************************************************/
+        private bool WillMutate()
+        {
+            // ? victor rewrite
+            Random rnd = new Random();
+            return (rnd.Next(0, 20) == 1);
+        }
+
+
+        // ?
+        // ????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????? here victor 4/4
+        /**************************************************************************\
+        Method: Mutate
+        Description: Mutates a scheudle
+                     currently picks two random blocks, picks midpoints in those
+                     blocks classes, then cuts the classes at that point, then
+                     swaps them
+        \**************************************************************************/
+        public bool Mutate()
+        {
+            if (WillMutate()) // break up for coehesion?
+            {
+                Random rnd = new Random();
+
+                // select two random blocks to combine
+                int blockIndex1 = rnd.Next(0, this.blocks.Count); // ? this makes it possible to not mutate with 0? maybe. over weigting chance to not mutate?
+                int blockIndex2 = rnd.Next(0, this.blocks.Count);
+
+                // select a mid point in classes to swap from
+                int midPointInClasses1 = rnd.Next(0, this.blocks[blockIndex1].ClassesInBlock.Count);
+                int midPointInClasses2 = rnd.Next(0, this.blocks[blockIndex2].ClassesInBlock.Count);
+
+                // swap parts of classes
+                List<Class> tempClasses1 = blocks[blockIndex1].ClassesInBlock.GetRange(0, blocks[blockIndex1].ClassesInBlock.Count); // gets the objects from the beginning to index
+
+                // ? make more readable
+                blocks[blockIndex1].ClassesInBlock.RemoveRange(0, blocks[blockIndex1].ClassesInBlock.Count);
+                blocks[blockIndex1].ClassesInBlock.AddRange(blocks[blockIndex2].ClassesInBlock.GetRange(0, blocks[blockIndex2].ClassesInBlock.Count)); // adds the range from the second class to block 1 // maybe not right to get front half from both ???
+                blocks[blockIndex2].ClassesInBlock.RemoveRange(0, blocks[blockIndex2].ClassesInBlock.Count);
+                blocks[blockIndex2].ClassesInBlock.AddRange(tempClasses1);
+
+                return true;
+            }
+            else return false;
+        }
+
 
         // ? i don't think i'll ever need this 
         /**************************************************************************\
         Method:  
         Description: 
         \**************************************************************************/
-        public Schedule(Schedule inSchedule = null, List<Block> inBlocks = null)
-        {
-            if (inSchedule != null)
-            {
-                this.numberOfDays = inSchedule.NumberOfDays;
-                this.examsStartTime = inSchedule.ExamsStartTime;
-                this.examsLength = inSchedule.ExamsStartTime;
-                this.timeBetweenExams = inSchedule.TimeBetweenExams;
-                this.lunchLength = inSchedule.LunchLength;
-            }
-            // ? could assign inSchedules days to it
-            this.blocks = inBlocks;
-        }
+        //public Schedule(Schedule inSchedule = null, List<Block> inBlocks = null)
+        //{
+        //    if (inSchedule != null)
+        //    {
+        //        this.numberOfDays = inSchedule.NumberOfDays;
+        //        this.examsStartTime = inSchedule.ExamsStartTime;
+        //        this.examsLength = inSchedule.ExamsStartTime;
+        //        this.timeBetweenExams = inSchedule.TimeBetweenExams;
+        //        this.lunchLength = inSchedule.LunchLength;
+        //    }
+        //    // ? could assign inSchedules days to it
+        //    this.blocks = inBlocks;
+        //}
 
         // ?
         // needs finishing

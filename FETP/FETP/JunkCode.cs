@@ -969,3 +969,6 @@ public static int getNumberOfTimeSlotsAvailablePerDay(Schedule schedule)
     }
     return numberOfExams;
 }
+
+
+// while (i < blocks.Count && !(isInserted = blocks[i++].addClass(inClass))) ; // ? i <3 my while loops that terminate in a semicolen

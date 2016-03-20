@@ -5,9 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
+using System.Globalization;
+
 
 namespace FETP
 {
+    // ?? 
     /**************************************************************************\
     Class: FETP_Controller (Final Exam Timetabling Problem Controller)
     Description: This class contains all of the primary functions used for 
@@ -19,10 +22,11 @@ namespace FETP
     \**************************************************************************/
     public static class FETP_Controller
     {
-        // These are the values that determine the boundaries of classes to be ignored
-        private const string CLASS_LENGTH_TO_START_IGNORING = "0245";
+        /**************************************************************************\
+        Schedule - Constant Data Members 
+        \**************************************************************************/
+        private const string CLASS_LENGTH_TO_START_IGNORING = "0245"; // ? clean these up
         private const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
-        private const string TIME_EXAMS_MUST_END_BY = "1700";
 
         // Programmer: Ben
         // takes in an open data file and returns a list of all the classes
@@ -91,31 +95,26 @@ namespace FETP
 
             return allClasses;
 
-        } // end readInputDataFile
+        } 
 
 
         /**************************************************************************\
         Method: readInputConstraintsFile
-        Description: Reads in constraints file and constructs a schedule based
-                     on input
+        Description: Reads in constraints file and intializes static schedule
+                     data members
         \**************************************************************************/
-        public static Schedule readInputConstraintsFile(string inFileName)
+        public static void readInputConstraintsFile(string inFileName)
         {
             FileStream inFile = File.OpenRead(@inFileName);
-            var reader = new StreamReader(inFile);
+            var reader = new StreamReader(inFile); // ?
 
-            int numberOfDays = Int32.Parse(reader.ReadLine());
-            TimeSpan startTime = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
-            TimeSpan examLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
-            TimeSpan timeBetweenExams = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
-            TimeSpan lunchLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
-
-            return new Schedule(numberOfDays, startTime, examLength, timeBetweenExams, lunchLength);
-
+            Schedule.NumberOfDays = Int32.Parse(reader.ReadLine());
+            Schedule.ExamsStartTime = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+            Schedule.ExamsLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+            Schedule.TimeBetweenExams = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+            Schedule.LunchLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
         }
 
-
-        
 
         // Checks if two classes overlap
         /**************************************************************************\
@@ -137,7 +136,7 @@ namespace FETP
             return (getNumberOfDaysInCommon(class1, class2) > 0);
         }
 
-        // Checks if classes have overlapping times
+        
         /**************************************************************************\
         Method: doClassTimesOverlap
         Description: Determines if the two input classes have times that overlap
@@ -216,11 +215,20 @@ namespace FETP
         {
             bool isInserted = false;
             int i = 0;
-
-            while (i < blocks.Count && !(isInserted = blocks[i++].addClass(inClass))) ; // ? i <3 my while loops that terminate in a semicolen
+            while(i < blocks.Count && !isInserted)
+            {
+                if(blocks[i].doesClassOverlapWithBlock(inClass))
+                {
+                    blocks[i].ClassesInBlock.Add(inClass);
+                    isInserted = true;
+                    i++;
+                }
+            }
 
             if (!isInserted)
+            {
                 blocks.Add(new Block(inClass));
+            }
             return blocks;
         }
 
