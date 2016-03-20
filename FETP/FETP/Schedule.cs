@@ -10,6 +10,12 @@ using System.Diagnostics;
 
 namespace FETP
 {
+
+    /**************************************************************************\
+    Class: GA_Constraints (Genetic Algorithm Constraints)
+    Description: The Constraints class contains all of the methods needed for
+                 checking if a chromosome is meeting soft and hard constraints. 
+    \**************************************************************************/
     public class Schedule
     {
         public List<Block> blocks; // ? lazy
@@ -58,7 +64,10 @@ namespace FETP
         //    }
         //}
 
-
+        /**************************************************************************\
+        Method:  
+        Description: 
+        \**************************************************************************/
         public Schedule(int inNumberOfDays, TimeSpan inExamsStartTime, TimeSpan inExamsLength, TimeSpan inTimeBetweenExams, TimeSpan inLunchLength, List<Block> inDays = null)
         {
             this.numberOfDays = inNumberOfDays;
@@ -71,6 +80,10 @@ namespace FETP
         }
 
         // ? i don't think i'll ever need this 
+        /**************************************************************************\
+        Method:  
+        Description: 
+        \**************************************************************************/
         public Schedule(Schedule inSchedule = null, List<Block> inBlocks = null)
         {
             if (inSchedule != null)
@@ -87,6 +100,11 @@ namespace FETP
 
         // ?
         // needs finishing
+        /**************************************************************************\
+        Method: Display
+        Description: Displays all informations stored in Schedule instance
+                     with formatting.
+        \**************************************************************************/
         public void Display()
         {
             Console.WriteLine("Number of Days: {0}", numberOfDays);

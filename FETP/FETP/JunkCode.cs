@@ -911,3 +911,14 @@ public static List<Days> makeBlankDays(TimeSpan startTime, TimeSpan endTime, Tim
 
 
 
+// Prototype function for example of how to sort
+public static List<Class> sortClassesByEnrollment(List<Class> classes)
+{
+    return classes.OrderByDescending(c => c.Enrollment).ToList();
+}
+
+// Prototype function for example of how to sort
+public static List<Class> sortClassesByOverlappingDays(List<Class> classes)
+{
+    return classes.OrderByDescending(c => getNumberOfOverlappingDays(classes, c)).ToList();
+}

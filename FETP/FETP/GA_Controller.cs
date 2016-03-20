@@ -11,7 +11,7 @@ namespace FETP
     Description: Includes all of the primary functions needed for the genetic
                  algorithm and evolving the chromosomes to find a solution.
     \**************************************************************************/ 
-    class GA_Controller
+    public class GA_Controller
     {
         /**************************************************************************\
         GA_Controller - Data Constants
@@ -74,12 +74,16 @@ namespace FETP
             // compute fitness score
         }
 
+        public static List<Block> 
+
         // ?
         // need finish
         public static Schedule generateRandomSchedule(List<Class> classes)
         {
             Random rand = new Random();
             classes = classes.OrderBy(c => rand.Next()).Select(c => c.Model).ToList(); // randomly arrange classes
+
+
 
             Schedule schedule = new Schedule(classes);
 

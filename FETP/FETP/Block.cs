@@ -6,11 +6,18 @@ using System.Threading.Tasks;
 
 namespace FETP
 {
-    // block contains classes that overlapped and were coalesced
+    // block contains classes that overlapped and were coalesced.
+
+
+    /**************************************************************************\
+    Class: Block (Groups of Classes)
+    Description: Contains grouped classes and functions to get information
+                 on properties of all classes in block 
+    \**************************************************************************/
     public class Block
     {
         protected List<Class> classesInBlock;
-        protected int enrollment;
+        // protected int enrollment;
 
         public List<Class> ClassesInBlock
         {
@@ -27,7 +34,6 @@ namespace FETP
                 return enrollment;
             }
         }
-
         public int Average
         {
             get
@@ -37,7 +43,6 @@ namespace FETP
                 else return 0;
             }
         }
-
         public int Variance
         {
             get
@@ -51,7 +56,6 @@ namespace FETP
                 return variance / this.ClassesInBlock.Count;
             }
         }
-
         public double StandardDeviation
         {
             get
@@ -60,27 +64,43 @@ namespace FETP
             }
         }
 
+        /**************************************************************************\
+        Constructor: Default 
+        Description: Takes in data values and creates Block with those values
+        \**************************************************************************/
         public Block(Class inClass)
         {
             this.classesInBlock = new List<Class>();
             this.addClass(inClass);
         }
 
+
         // adds class to block and increaments time
         // only if class overlaps all other classes in block
-        public bool addClass(Class inClass)
-        {
-            bool wasPerformed = false;
+        /**************************************************************************\
+        Method: addClass
+        Description: Addes class to list of classes in block. 
+                     doesn't add class if the class does not overlap with group
+                     ? this is maybe lowering cohesion
+                     ? don't need anymore due to enrollment being a property
+        \**************************************************************************/
+        //public bool addClass(Class inClass)
+        //{
+        //    bool wasPerformed = false;
 
-            if (this.doesClassOverlap(inClass)) {
-                classesInBlock.Add(inClass);
-                this.enrollment += inClass.Enrollment;
-                wasPerformed = true;
-            }
-            return wasPerformed;
-        }
+        //    if (this.doesClassOverlap(inClass)) {
+        //        classesInBlock.Add(inClass);
+        //        wasPerformed = true;
+        //    }
+        //    return wasPerformed;
+        //}
 
-        // returns wheter the class was found and removed// returns wheter the class was found and removed
+
+        // returns wheter the class was found and removed// returns wheter the class was found and removed.
+        /**************************************************************************\
+        Method: isClassInGroup
+        Description: Determines if the class is in the group
+        \**************************************************************************/
         public bool isClassInGroup(Class inClass)
         {
             foreach (Class cl in this.classesInBlock)
@@ -90,15 +110,23 @@ namespace FETP
             return false;
         }
 
-        public bool removeClass(Class inClass)
-        {
-            if (isClassInGroup(inClass))
-            {
-                this.enrollment -= inClass.Enrollment;
-            }
-            return this.classesInBlock.Remove(inClass);  // this should work
-        }
+        /**************************************************************************\
+        Method:  
+        Description: ? see addClass
+        \**************************************************************************/
+        //public bool removeClass(Class inClass)
+        //{
+        //    if (isClassInGroup(inClass))
+        //    {
+        //        this.enrollment -= inClass.Enrollment;
+        //    }
+        //    return this.classesInBlock.Remove(inClass);  // this should work
+        //}
 
+        /**************************************************************************\
+        Method: doesClassOverlap
+        Description: Determins if the inClass overlaps with ALL classes in block
+        \**************************************************************************/
         public bool doesClassOverlap(Class inClass)
         {
             foreach (Class cl in this.classesInBlock)
@@ -111,6 +139,11 @@ namespace FETP
             return true;
         }
 
+        /**************************************************************************\
+        Method: Display
+        Description: Displays all informations stored in Block instance
+                     with formatting.
+        \**************************************************************************/
         public void Display()
         {
             // ??Console.WriteLine("Number of Classes in Block: {0}", this.classesInBlock.Count);
@@ -119,6 +152,10 @@ namespace FETP
             Console.WriteLine("Standard Deviation: {0}", this.StandardDeviation);
         }
 
+        /**************************************************************************\
+        Method:  
+        Description: 
+        \**************************************************************************/
         public void DisplayAllClasses()
         {
             foreach (Class cl in this.classesInBlock)

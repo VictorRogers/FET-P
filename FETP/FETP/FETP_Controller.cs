@@ -6,102 +6,6 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Globalization;  // allows times to be different pased on local ? may can be removed
 
-/*
-
-    Ben Notes:
-        swaped enrollment and days inorder for the call to the class constructor from block cleaner
-
-        do we really want to make block a class?
-            it gets weird with construction
-            its not REALLY a class
-            it is probably for the best
-
-        
-            could change and give it property isMWF to determine days
-            days of blocks SHOULD only be MWF or TR
-
-        timeslot class
-            doesn't seem to be needed
-            only thing to think to do is limit number of slots, but thats not needed
-
-
-        remember .orderby().thenby()
-        can now sort by enrollment or overlapping days
-        can sort by any combination of attributes
-
-        do not write validateDataFiles. we assume they are correct
-        can write those later for extra
-
-        fitness function
-            one weight can be difference of hours between exam time and class time multiplied by number of people affected
-            second weight can be variance in days.
-            less wieght for after lunch break
-            weight for how many students are consecutive?
-            weight for internal and external variance of student enrollments in groups and days5
-
-        ineffeciencies in loaders. we could make them part of the classes.
-            its calling the class constructor to make a new class then creating a new one with it?
-            but its fine for now
-
-        look into asychronos capabilites of c#
-
-        look into multiprocessing stuff for when running GE
-
-        still need a way to determin if it is possible to schedule all classes together
-
-        new fringe case, do we want to give them the ability to schedule overlapping exams if we can't coalesce small enough?
-            we can say how many students will be effected and let them decide that
-
-        ask professor about best place to put some of these functions (in class or in controller)
-            which is the better practice
-
-        change name of lengthOfExamDay to available time
-
-        change all TimeSlots to Timeslot
-
-        group with less populated classes to help spread out people
-        unless all are coalesced into MTF and TR
-        need option to not do that if there's enough space?
-            probably not. if the classes couldn't be taken at the same time, then we should show them they don't need all those time slots?
-        how do we find the smallest possible grouping?
-            possible different groupings result in differnt number of groups?
-
-        when outputing a block, output the info of the most common time
-
-        not sure if i like schedule class we have now. rework?
-
-        will sorting thenby enrollment make better results?
-
-        possibly don't let block inherit from class but from a new class callled course information
-
-        could really break up and stop passing around classes. could just pass around parameters
-
-        can we not just break up the largest groups?
-            break off smaller courses from it to fill slots
-        could break off based on how far the internal classes are from their own time times number enrolled?
-            keep in mind we're trying to keep groups large and avoid spreading people out maybe?
-
-        you have to pick on class and base mutual exclussion of that one
-            class A could be mutually exclussive with class B.
-            Class B could be mutually exclussive with Class C
-            class A is not necissarily mutually exclusive with Class C
-            ????????????????
-
-        Victor, if you're reading this, you were right. I should have went with your idea of schedule just having the list of all the gorups
-        My method might have been useful if we also cared about when exam days were
-
-        this is getting so ugly it hurts :'(
-        I'm so close to something though...
-
-        Can redo ordering with List's built in functions. can rewrite checking if item is in list as well
-
-
-
-
-*/
-
-
-
 namespace FETP
 {
     /**************************************************************************\
@@ -122,6 +26,10 @@ namespace FETP
 
         // Programmer: Ben
         // takes in an open data file and returns a list of all the classes
+        /**************************************************************************\
+        Method:  
+        Description: 
+        \**************************************************************************/
         public static List<Class> readInputDataFile(string inFileName)
         {
 
@@ -183,7 +91,12 @@ namespace FETP
 
         } // end readInputDataFile
 
+
         // ? don't know what to do with this info yet
+        /**************************************************************************\
+        Method:  
+        Description: 
+        \**************************************************************************/
         public static Schedule readInputConstraintsFile(string inFileName)
         {
             FileStream inFile = File.OpenRead(@inFileName);
@@ -199,11 +112,21 @@ namespace FETP
 
         }
 
+
+        /**************************************************************************\
+        Method:  
+        Description: 
+        \**************************************************************************/
         public static int getNumberOfTimeSlotsAvailable(Schedule schedule)
         {
             return getNumberOfTimeSlotsAvailablePerDay(schedule) * schedule.NumberOfDays;
         }
 
+
+        /**************************************************************************\
+        Method:  
+        Description: 
+        \**************************************************************************/
         public static int getNumberOfTimeSlotsAvailablePerDay(Schedule schedule)
         {
             TimeSpan latestTime = TimeSpan.ParseExact(TIME_EXAMS_MUST_END_BY, @"hhmm", CultureInfo.InvariantCulture); // latest exams can go
@@ -235,18 +158,32 @@ namespace FETP
             return numberOfExams;
         }
 
+
         // Checks if two classes overlap
+        /**************************************************************************\
+        Method: doClassesOverlap
+        Description: Determines if the two input classes overlap.
+        \**************************************************************************/
         public static bool doClassesOverlap(Class class1, Class class2)
         {
             return (doClassDaysOverlap(class1, class2) && doClassTimesOverlap(class1, class2)); // Broke up to aid readability
         }
 
+
+        /**************************************************************************\
+        Method: doClassDaysOverlap
+        Description: Determines if the two input classes share any days in common
+        \**************************************************************************/
         public static bool doClassDaysOverlap(Class class1, Class class2)
         {
             return (getNumberOfDaysInCommon(class1, class2) > 0);
         }
 
         // Checks if classes have overlapping times
+        /**************************************************************************\
+        Method: doClassTimesOverlap
+        Description: Determines if the two input classes have times that overlap
+        \**************************************************************************/
         public static bool doClassTimesOverlap(Class class1, Class class2)
         {
             return (
@@ -257,6 +194,11 @@ namespace FETP
             ); 
         }
 
+
+        /**************************************************************************\
+        Method: getNumberOfDaysInCommon
+        Description: Gets the number of overlapping days between two input classes
+        \**************************************************************************/
         public static int getNumberOfDaysInCommon(Class class1, Class class2)
         {
             int daysInCommon = 0;
@@ -270,16 +212,26 @@ namespace FETP
             return daysInCommon;
         }
 
-        public static int getNumberOfOverlappingDays(List<Class> classes, Class inClass)
+        /**************************************************************************\
+        Method: getNumberOfOverlappingClasses
+        Description: Determines the number of classes in the list of classes 
+                     that the inClass overlaps with
+        \**************************************************************************/
+        public static int getNumberOfOverlappingClasses(List<Class> classes, Class inClass)
         {
             int overlappingClasses = 0; 
             foreach (Class cl in classes)
             {
-                if (cl != inClass && FETP_Controller.doClassesOverlap(cl, inClass)) overlappingClasses++;
+                if (cl != inClass && doClassesOverlap(cl, inClass)) overlappingClasses++;
             }
             return overlappingClasses;
         }
 
+        /**************************************************************************\
+        Method: doAnyClassesOverlap
+        Description: Checks if there are any overlapping classes in the list of
+                     classes
+        \**************************************************************************/
         public static bool doAnyClassesOverlap(List<Class> classes)
         {
             foreach (Class class1 in classes)
@@ -295,6 +247,10 @@ namespace FETP
 
         // takes in a list of class groups and a class
         // returns a new list of class groups with class inserted into first possible group
+        /**************************************************************************\
+        Method:  
+        Description: 
+        \**************************************************************************/
         public static List<Block> groupClass(List<Block> blocks, Class inClass)
         {
             bool isInserted = false;
@@ -307,19 +263,12 @@ namespace FETP
             return blocks;
         }
 
-        // Prototype function for example of how to sort
-        public static List<Class> sortClassesByEnrollment(List<Class> classes)
-        {
-            return classes.OrderByDescending(c => c.Enrollment).ToList();
-        }
 
-        // Prototype function for example of how to sort
-        public static List<Class> sortClassesByOverlappingDays(List<Class> classes)
-        {
-            return classes.OrderByDescending(c => getNumberOfOverlappingDays(classes, c)).ToList();
-        }
-             
         // basic grouping for testing  
+        /**************************************************************************\
+        Method:  
+        Description: 
+        \**************************************************************************/
         public static List<Block> coalesceClassesTogether(List<Class> classes)
         {
             List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
@@ -332,6 +281,10 @@ namespace FETP
         }
 
         // ?????
+        /**************************************************************************\
+        Method:  
+        Description: 
+        \**************************************************************************/
         public static List<Class> removeClass(List<Class> classes, Class inClass)
         {
             int i = 0;
