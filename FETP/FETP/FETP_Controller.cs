@@ -25,95 +25,98 @@ namespace FETP
         /**************************************************************************\
         Schedule - Constant Data Members 
         \**************************************************************************/
-        private const string CLASS_LENGTH_TO_START_IGNORING = "0245"; // ? clean these up
-        private const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
+        //private const string CLASS_LENGTH_TO_START_IGNORING = "0245"; 
+        //private const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
 
-        // Programmer: Ben
-        // takes in an open data file and returns a list of all the classes
-        /**************************************************************************\
-        Method: readInputDataFile
-        Description: Reads in data file and constructs list of all classes
-                     in the file. Does not add classes in that fall into the
-                     criteria of ignorable classes
-        \**************************************************************************/
-        public static List<Class> readInputDataFile(string inFileName)
-        {
+        //// ? this might need to be moved
+        //// Programmer: Ben
+        //// takes in an open data file and returns a list of all the classes
+        ///**************************************************************************\
+        //Method: readInputDataFile
+        //Description: Reads in data file and constructs list of all classes
+        //             in the file. Does not add classes in that fall into the
+        //             criteria of ignorable classes
+        //\**************************************************************************/
+        //public static List<Class> readInputDataFile(string inFileName)
+        //{
 
-            // Make boundaries of ignored classes more usable
-            TimeSpan ignoreClassLength = TimeSpan.ParseExact(CLASS_LENGTH_TO_START_IGNORING, @"hhmm", CultureInfo.InvariantCulture);
-            TimeSpan ignoreClassStartTime = TimeSpan.ParseExact(HOUR_TO_BEGIN_IGNORE_CLASS, @"hhmm", CultureInfo.InvariantCulture);
+        //    // Make boundaries of ignored classes more usable
+        //    TimeSpan ignoreClassLength = TimeSpan.ParseExact(CLASS_LENGTH_TO_START_IGNORING, @"hhmm", CultureInfo.InvariantCulture);
+        //    TimeSpan ignoreClassStartTime = TimeSpan.ParseExact(HOUR_TO_BEGIN_IGNORE_CLASS, @"hhmm", CultureInfo.InvariantCulture);
 
-            List<Class> allClasses = new List<Class>(); // list of all classes to be returned
+        //    List<Class> allClasses = new List<Class>(); // list of all classes to be returned
 
-            FileStream inFile = File.OpenRead(@inFileName);
-            var reader = new StreamReader(inFile);
+        //    FileStream inFile = File.OpenRead(@inFileName);
+        //    var reader = new StreamReader(inFile);
 
-            reader.ReadLine(); // skip description line
+        //    reader.ReadLine(); // skip description line
         
-            while (!reader.EndOfStream)
-            {
-                // ? possibly change var to string
-                var line = reader.ReadLine(); // reads in next line
-                var values = line.Split(','); // splits into days/times and enrollement
-                var daysAndTimes = values[0].Split(' '); // chops up the days and times to manageable sections
+        //    while (!reader.EndOfStream)
+        //    {
+        //        // ? possibly change var to string
+        //        var line = reader.ReadLine(); // reads in next line
+        //        var values = line.Split(','); // splits into days/times and enrollement
+        //        var daysAndTimes = values[0].Split(' '); // chops up the days and times to manageable sections
 
-                TimeSpan startTime = TimeSpan.ParseExact(daysAndTimes[1], @"hhmm", CultureInfo.InvariantCulture); // 1 postion is the start time, changes formated time to bw more usable 
-                TimeSpan endTime = TimeSpan.ParseExact(daysAndTimes[3], @"hhmm", CultureInfo.InvariantCulture); // 3 position is the end time, changes formated time to bw more usable 
+        //        TimeSpan startTime = TimeSpan.ParseExact(daysAndTimes[1], @"hhmm", CultureInfo.InvariantCulture); // 1 postion is the start time, changes formated time to bw more usable 
+        //        TimeSpan endTime = TimeSpan.ParseExact(daysAndTimes[3], @"hhmm", CultureInfo.InvariantCulture); // 3 position is the end time, changes formated time to bw more usable 
 
-                // Checks if class should not be ignored before continuing execution
-                if ((startTime < ignoreClassStartTime) && (endTime - startTime < ignoreClassLength))
-                {
-                    List<DayOfWeek> days = new List<DayOfWeek>(); // days the class meets
-                    foreach (char day in daysAndTimes[0].ToCharArray()) // changes days from string of chars to list of DayOfWeek type
-                    {
-                        switch (day)
-                        {
-                            case 'M':
-                                days.Add(DayOfWeek.Monday);
-                                break;
-                            case 'T':
-                                days.Add(DayOfWeek.Tuesday);
-                                break;
-                            case 'W':
-                                days.Add(DayOfWeek.Wednesday);
-                                break;
-                            case 'R':
-                                days.Add(DayOfWeek.Thursday);
-                                break;
-                            case 'F':
-                                days.Add(DayOfWeek.Friday);
-                                break;
-                        }
-                    }
+        //        // Checks if class should not be ignored before continuing execution
+        //        if ((startTime < ignoreClassStartTime) && (endTime - startTime < ignoreClassLength))
+        //        {
+        //            List<DayOfWeek> days = new List<DayOfWeek>(); // days the class meets
+        //            foreach (char day in daysAndTimes[0].ToCharArray()) // changes days from string of chars to list of DayOfWeek type
+        //            {
+        //                switch (day)
+        //                {
+        //                    case 'M':
+        //                        days.Add(DayOfWeek.Monday);
+        //                        break;
+        //                    case 'T':
+        //                        days.Add(DayOfWeek.Tuesday);
+        //                        break;
+        //                    case 'W':
+        //                        days.Add(DayOfWeek.Wednesday);
+        //                        break;
+        //                    case 'R':
+        //                        days.Add(DayOfWeek.Thursday);
+        //                        break;
+        //                    case 'F':
+        //                        days.Add(DayOfWeek.Friday);
+        //                        break;
+        //                }
+        //            }
 
-                    int enrollment = Int32.Parse(values[1]); // enrollement values should be in 1 position
+        //            int enrollment = Int32.Parse(values[1]); // enrollement values should be in 1 position
 
-                    allClasses.Add(new Class(startTime, endTime, enrollment, days)); // add new Class to list
+        //            allClasses.Add(new Class(startTime, endTime, enrollment, days)); // add new Class to list
 
-                }
-            }
+        //        }
+        //    }
+        //    Schedule.AllClasses = allClasses;
 
-            return allClasses;
+        //    // ? rewrite
+        //    return allClasses;
 
-        } 
+        //} 
 
+        //// ? this might need to be moved
+        ///**************************************************************************\
+        //Method: readInputConstraintsFile
+        //Description: Reads in constraints file and intializes static schedule
+        //             data members
+        //\**************************************************************************/
+        //public static void readInputConstraintsFile(string inFileName)
+        //{
+        //    FileStream inFile = File.OpenRead(@inFileName);
+        //    var reader = new StreamReader(inFile); // ?
 
-        /**************************************************************************\
-        Method: readInputConstraintsFile
-        Description: Reads in constraints file and intializes static schedule
-                     data members
-        \**************************************************************************/
-        public static void readInputConstraintsFile(string inFileName)
-        {
-            FileStream inFile = File.OpenRead(@inFileName);
-            var reader = new StreamReader(inFile); // ?
-
-            Schedule.NumberOfDays = Int32.Parse(reader.ReadLine());
-            Schedule.ExamsStartTime = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
-            Schedule.ExamsLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
-            Schedule.TimeBetweenExams = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
-            Schedule.LunchLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
-        }
+        //    Schedule.NumberOfDays = Int32.Parse(reader.ReadLine());
+        //    Schedule.ExamsStartTime = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+        //    Schedule.ExamsLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+        //    Schedule.TimeBetweenExams = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+        //    Schedule.LunchLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+        //}
 
 
         // Checks if two classes overlap

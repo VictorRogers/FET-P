@@ -972,3 +972,23 @@ public static int getNumberOfTimeSlotsAvailablePerDay(Schedule schedule)
 
 
 // while (i < blocks.Count && !(isInserted = blocks[i++].addClass(inClass))) ; // ? i <3 my while loops that terminate in a semicolen
+
+
+// ? i don't think i'll ever need this 
+/**************************************************************************\
+Method:  
+Description: 
+\**************************************************************************/
+//public Schedule(Schedule inSchedule = null, List<Block> inBlocks = null)
+//{
+//    if (inSchedule != null)
+//    {
+//        this.numberOfDays = inSchedule.NumberOfDays;
+//        this.examsStartTime = inSchedule.ExamsStartTime;
+//        this.examsLength = inSchedule.ExamsStartTime;
+//        this.timeBetweenExams = inSchedule.TimeBetweenExams;
+//        this.lunchLength = inSchedule.LunchLength;
+//    }
+//    // ? could assign inSchedules days to it
+//    this.blocks = inBlocks;
+//}

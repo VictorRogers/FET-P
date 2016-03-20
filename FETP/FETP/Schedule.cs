@@ -7,6 +7,7 @@ using System.Threading.Tasks; // ?? some of these aren't needed
 
 using System.Globalization;  // allows times to be different pased on local ? may can be removed
 using System.Diagnostics;
+using System.IO;
 
 
 namespace FETP
@@ -23,6 +24,8 @@ namespace FETP
         /**************************************************************************\
         Schedule - Constant Data Members 
         \**************************************************************************/
+        private const string CLASS_LENGTH_TO_START_IGNORING = "0245"; // ? clean these up
+        private const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
         public const string TIME_EXAMS_MUST_END_BY = "1700";
 
 
@@ -34,7 +37,7 @@ namespace FETP
         private static TimeSpan examsLength;
         private static TimeSpan timeBetweenExams;
         private static TimeSpan lunchLength;
-        // could make List of all classes static
+        private static List<Class> allClasses;
 
 
         /**************************************************************************\
@@ -52,35 +55,42 @@ namespace FETP
             {
                 return this.blocks;
             }
-            set
-            {
-                this.blocks = value;
-            }
+            //set
+            //{
+            //    this.blocks = value;
+            //}
         }
         public static int NumberOfDays
         {
             get { return numberOfDays; }
-            set { this.numberOfDays = value; }
+            //set { Schedule.numberOfDays = value; }
         }
         public static TimeSpan ExamsStartTime
         {
             get { return examsStartTime; }
-            set { this.examsStartTime = value; }
+            //set { Schedule.examsStartTime = value; }
         }
         public static TimeSpan ExamsLength
         {
             get { return examsLength; }
-            set { this.examsLength = value; }
+            //set { Schedule.examsLength = value; }
         }
         public static TimeSpan TimeBetweenExams
         {
             get { return timeBetweenExams; }
-            set { this.timeBetweenExams = value; }
+            //set { Schedule.timeBetweenExams = value; }
         }
         public static TimeSpan LunchLength
         {
             get { return lunchLength; }
-            set { this.lunchLength = value; }
+            //set { this.lunchLength = value; }
+        }
+        public static List<Class> AllClasses
+        {
+            get
+            {
+                return Schedule.allClasses;
+            }
         }
         public static int NumberOfTimeSlotsAvailable
         {
@@ -158,7 +168,6 @@ namespace FETP
 
         // creates a random schedule
         // maybe makes list of all classes static
-        // ????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????? here victor 1/4
         /**************************************************************************\
         Constructor: Random Constructor
         Description: Creates a random schedule off the incoming list of classes
@@ -173,7 +182,6 @@ namespace FETP
         }
 
         // ? call twice for keeeeds. swap postions of parents
-        // ????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????? here victor 2/4
         /**************************************************************************\
         Constructor: Schedule Combining Constructor
         Description: Creates a schedule off parent schedules. I alternates 
@@ -185,9 +193,9 @@ namespace FETP
         {
 
             // int blockCount = Schedule.NumberOfTimeSlotsAvailable;
-            for(int i = 0; i < Schedule.NumberOfTimeSlotsAvailable; i++) // maybe swap just whole halves
+            for (int i = 0; i < Schedule.NumberOfTimeSlotsAvailable; i++) // maybe swap just whole halves
             {
-                if(i % 2 == 0)
+                if (i % 2 == 0)
                 {
                     this.blocks[i] = schedule1.Blocks[i];
                 }
@@ -197,13 +205,12 @@ namespace FETP
                 }
             }
 
-            Mutate(); // ? break up for cohesion
+            this.AttemptMutate(); // ? break up for cohesion
 
             // don't need randomness ?
         }
 
-        // ?
-        // ????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????? here victor 3/4
+        // ? needs rewriting
         /**************************************************************************\
         Method: WillMutate
         Description: Deteremines whether a mutation should occur
@@ -216,8 +223,6 @@ namespace FETP
         }
 
 
-        // ?
-        // ????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????? here victor 4/4
         /**************************************************************************\
         Method: Mutate
         Description: Mutates a scheudle
@@ -225,53 +230,45 @@ namespace FETP
                      blocks classes, then cuts the classes at that point, then
                      swaps them
         \**************************************************************************/
-        public bool Mutate()
+        public void Mutate()
         {
-            if (WillMutate()) // break up for coehesion?
-            {
-                Random rnd = new Random();
+            Random rnd = new Random();
 
-                // select two random blocks to combine
-                int blockIndex1 = rnd.Next(0, this.blocks.Count); // ? this makes it possible to not mutate with 0? maybe. over weigting chance to not mutate?
-                int blockIndex2 = rnd.Next(0, this.blocks.Count);
+            // select two random blocks to combine
+            int blockIndex1 = rnd.Next(0, this.blocks.Count); // ? this makes it possible to not mutate with 0? maybe. over weigting chance to not mutate?
+            int blockIndex2 = rnd.Next(0, this.blocks.Count);
 
-                // select a mid point in classes to swap from
-                int midPointInClasses1 = rnd.Next(0, this.blocks[blockIndex1].ClassesInBlock.Count);
-                int midPointInClasses2 = rnd.Next(0, this.blocks[blockIndex2].ClassesInBlock.Count);
+            // select a mid point in classes to swap from
+            int midPointInClasses1 = rnd.Next(0, this.blocks[blockIndex1].ClassesInBlock.Count);
+            int midPointInClasses2 = rnd.Next(0, this.blocks[blockIndex2].ClassesInBlock.Count);
 
-                // swap parts of classes
-                List<Class> tempClasses1 = blocks[blockIndex1].ClassesInBlock.GetRange(0, blocks[blockIndex1].ClassesInBlock.Count); // gets the objects from the beginning to index
+            // swap parts of classes
+            List<Class> tempClasses1 = blocks[blockIndex1].ClassesInBlock.GetRange(0, blocks[blockIndex1].ClassesInBlock.Count); // gets the objects from the beginning to index
 
-                // ? make more readable
-                blocks[blockIndex1].ClassesInBlock.RemoveRange(0, blocks[blockIndex1].ClassesInBlock.Count);
-                blocks[blockIndex1].ClassesInBlock.AddRange(blocks[blockIndex2].ClassesInBlock.GetRange(0, blocks[blockIndex2].ClassesInBlock.Count)); // adds the range from the second class to block 1 // maybe not right to get front half from both ???
-                blocks[blockIndex2].ClassesInBlock.RemoveRange(0, blocks[blockIndex2].ClassesInBlock.Count);
-                blocks[blockIndex2].ClassesInBlock.AddRange(tempClasses1);
-
-                return true;
-            }
-            else return false;
+            // ? make more readable
+            blocks[blockIndex1].ClassesInBlock.RemoveRange(0, blocks[blockIndex1].ClassesInBlock.Count);
+            blocks[blockIndex1].ClassesInBlock.AddRange(blocks[blockIndex2].ClassesInBlock.GetRange(0, blocks[blockIndex2].ClassesInBlock.Count)); // adds the range from the second class to block 1 // maybe not right to get front half from both ???
+            blocks[blockIndex2].ClassesInBlock.RemoveRange(0, blocks[blockIndex2].ClassesInBlock.Count);
+            blocks[blockIndex2].ClassesInBlock.AddRange(tempClasses1);
         }
 
 
-        // ? i don't think i'll ever need this 
         /**************************************************************************\
-        Method:  
-        Description: 
+        Method: AttemptMutate
+        Description: Attempts to mutate a scheudle. Runs a test to see if it
+                     will mutate. If so, it mutates the schedule.                
         \**************************************************************************/
-        //public Schedule(Schedule inSchedule = null, List<Block> inBlocks = null)
-        //{
-        //    if (inSchedule != null)
-        //    {
-        //        this.numberOfDays = inSchedule.NumberOfDays;
-        //        this.examsStartTime = inSchedule.ExamsStartTime;
-        //        this.examsLength = inSchedule.ExamsStartTime;
-        //        this.timeBetweenExams = inSchedule.TimeBetweenExams;
-        //        this.lunchLength = inSchedule.LunchLength;
-        //    }
-        //    // ? could assign inSchedules days to it
-        //    this.blocks = inBlocks;
-        //}
+        public bool AttemptMutate()
+        {
+            bool didItMutate = false;
+            if (this.WillMutate()) 
+            {
+                this.Mutate();
+                didItMutate = true;
+            }
+            return didItMutate;
+        }
+
 
         // ?
         // needs finishing
@@ -288,7 +285,97 @@ namespace FETP
             Console.WriteLine("Time Between Exams: {0}", timeBetweenExams);
             Console.WriteLine("Length of Lunch Time: {0}", lunchLength);
         }
-        
+
+        // ? maybe make bool to see if it is read
+        // ? this might need to be moved
+        /**************************************************************************\
+        Method: readInputConstraintsFile
+        Description: Reads in constraints file and intializes static schedule
+                     data members
+        \**************************************************************************/
+        public static void readInputConstraintsFile(string inFileName)
+        {
+            FileStream inFile = File.OpenRead(@inFileName);
+            var reader = new StreamReader(inFile); // ?
+
+            Schedule.numberOfDays = Int32.Parse(reader.ReadLine());
+            Schedule.examsStartTime = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+            Schedule.examsLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+            Schedule.timeBetweenExams = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+            Schedule.lunchLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+        }
+
+        // ? maybe make bool to see if it is read
+        // ? this might need to be moved
+        // ? break up for coehesion and for easier use of manual input
+        // Programmer: Ben
+        // takes in an open data file and returns a list of all the classes
+        /**************************************************************************\
+        Method: readInputDataFile
+        Description: Reads in data file and constructs list of all classes
+                     in the file. Does not add classes in that fall into the
+                     criteria of ignorable classes
+        \**************************************************************************/
+        public static void readInputDataFile(string inFileName)
+        {
+
+            // Make boundaries of ignored classes more usable
+            TimeSpan ignoreClassLength = TimeSpan.ParseExact(Schedule.CLASS_LENGTH_TO_START_IGNORING, @"hhmm", CultureInfo.InvariantCulture); // can't declare TimeSpan as const so do this here
+            TimeSpan ignoreClassStartTime = TimeSpan.ParseExact(HOUR_TO_BEGIN_IGNORE_CLASS, @"hhmm", CultureInfo.InvariantCulture);
+
+            List<Class> newAllClasses = new List<Class>(); // list of all classes to be returned
+
+            FileStream inFile = File.OpenRead(@inFileName);
+            var reader = new StreamReader(inFile);
+
+            reader.ReadLine(); // skip description line
+
+            while (!reader.EndOfStream)
+            {
+                // ? possibly change var to string
+                var line = reader.ReadLine(); // reads in next line
+                var values = line.Split(','); // splits into days/times and enrollement
+                var daysAndTimes = values[0].Split(' '); // chops up the days and times to manageable sections
+
+                TimeSpan startTime = TimeSpan.ParseExact(daysAndTimes[1], @"hhmm", CultureInfo.InvariantCulture); // 1 postion is the start time, changes formated time to bw more usable 
+                TimeSpan endTime = TimeSpan.ParseExact(daysAndTimes[3], @"hhmm", CultureInfo.InvariantCulture); // 3 position is the end time, changes formated time to bw more usable 
+
+                // Checks if class should not be ignored before continuing execution
+                if ((startTime < ignoreClassStartTime) && (endTime - startTime < ignoreClassLength))
+                {
+                    List<DayOfWeek> days = new List<DayOfWeek>(); // days the class meets
+                    foreach (char day in daysAndTimes[0].ToCharArray()) // changes days from string of chars to list of DayOfWeek type
+                    {
+                        switch (day)
+                        {
+                            case 'M':
+                                days.Add(DayOfWeek.Monday);
+                                break;
+                            case 'T':
+                                days.Add(DayOfWeek.Tuesday);
+                                break;
+                            case 'W':
+                                days.Add(DayOfWeek.Wednesday);
+                                break;
+                            case 'R':
+                                days.Add(DayOfWeek.Thursday);
+                                break;
+                            case 'F':
+                                days.Add(DayOfWeek.Friday);
+                                break;
+                        }
+                    }
+
+                    int enrollment = Int32.Parse(values[1]); // enrollement values should be in 1 position
+
+                    Schedule.allClasses.Add(new Class(startTime, endTime, enrollment, days)); // add new Class to list
+
+                }
+            }
+            
+
+        }
+
 
     } // end class Schedule
 }
