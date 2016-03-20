@@ -39,7 +39,7 @@ namespace FETP
         private static TimeSpan examsLength;
         private static TimeSpan timeBetweenExams;
         private static TimeSpan lunchLength;
-        private static List<Class> allClasses;
+        private static List<Class> allClasses = new List<Class>();
 
 
         /**************************************************************************\
