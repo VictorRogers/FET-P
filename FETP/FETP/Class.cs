@@ -6,16 +6,10 @@ using System.Threading.Tasks;
 
 namespace FETP
 {
-    // Programmer: Ben and Vic
-    public class Class
+    public class CourseInformation
     {
-
         protected TimeSpan startTime;
         protected TimeSpan endTime;
-        protected int enrollment;
-        protected List<DayOfWeek> daysMeet;
-
-        // Accessors and Mutators
         public TimeSpan StartTime
         {
             get { return this.startTime; }
@@ -26,6 +20,17 @@ namespace FETP
             get { return this.endTime; }
             set { this.startTime = value; }
         }
+
+    }
+
+
+    // Programmer: Ben and Vic
+    public class Class : CourseInformation
+    { 
+        protected int enrollment;
+        protected List<DayOfWeek> daysMeet;
+
+        // Accessors and Mutators
         public int Enrollment
         {
             get { return this.enrollment; }

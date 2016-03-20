@@ -122,6 +122,10 @@ namespace FETP
                     Console.WriteLine("END Testing Grouping of Classes");
                     Console.WriteLine(STARS);
                 }
+                else if(input == "4")
+                {
+                    List<Schedule>
+                }
                 Console.WriteLine();
             }
         }

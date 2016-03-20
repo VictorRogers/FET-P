@@ -14,17 +14,25 @@ namespace FETP
     class GA_Controller
     {
         /**************************************************************************\
-        GA_Controller - Data Members
+        GA_Controller - Data Constants
         \**************************************************************************/ 
-        private int crossoverRate;
-        private int maxGenerations;
-        private int mutationRate;
-        private int populationSize;
+        private const int CROSSOVER_RATE;
+        private const int maxGenerations;
+        private const int mutationRate;
+        private const int populationSize;
 
-        private Class[] setClasses;
-        private TimeSlot[] setTimeSlots;
+        private const int GENERATION_SIZE = 500;
 
-        GA_Constraints Constraints;
+    /**************************************************************************\
+    GA_Controller - Weights
+    \**************************************************************************/
+        private const int WEIGHT_OVERLAPPING_CLASSES = 10;
+
+
+
+        private List<Schedule> currentGeneration;
+        private List<Schedule> topGuys;
+        
 
 
         /**************************************************************************\
@@ -50,12 +58,82 @@ namespace FETP
 
         }
 
+        List<Schedule> generateChildren(Schedule schedule1, Schedule schedule2)
+        {
+
+        }
+
+
+        Schedule RouletCrossOver(Schedule schedule1, Schedule schedule2)
+        {
+
+        }
+
+        public int computeFitness(Schedule schedule)
+        {
+            // compute fitness score
+        }
+
+        // ?
+        // need finish
+        public static Schedule generateRandomSchedule(List<Class> classes)
+        {
+            Random rand = new Random();
+            classes = classes.OrderBy(c => rand.Next()).Select(c => c.Model).ToList(); // randomly arrange classes
+
+            Schedule schedule = new Schedule(classes);
+
+        }
+
+        // ?
+        public bool WillMutate()
+        {
+            // ? victor rewrite
+            Random rnd = new Random();
+            return (rnd.Next(0, 20) == 1);
+        }
+
+
+
+        // ?
+        public Schedule Mutate(Schedule schedule)
+        {
+            if (WillMutate())
+            {
+                Random rnd = new Random();
+
+                int index1 = rnd.Next(0, schedule.blocks.Count);
+                int index2 = rnd.Next(0, schedule.blocks.Count);
+
+                int indexOfMidPoint1 = rnd.Next(0, schedule.blocks[index1].ClassesInBlock.Count);
+                int indexOfMidPoint2 = rnd.Next(0, schedule.blocks[index2].ClassesInBlock.Count);
+
+
+                // swap from index
+                // ?
+
+            }
+        }
+
+        // ?
+        // need finish
+        public static List<Schedule> generateRandomGeneration(List<Class> classes)
+        {
+            List<Schedule> generation = new List<Schedule>(); // makes blank generation
+
+            for (int i = 0; i < GENERATION_SIZE; i++)
+            {
+                generation.Add(generateRandomSchedule(classes));
+            }
+
+            return generation;
+        }
 
         /**************************************************************************\
         Method: Assign Fitness 
         Description: Should take a chromosome as an input and output its fitness
                      score.
-        \**************************************************************************/ 
+        \**************************************************************************/
         float AssignFitness()
         {
             Constraints.CheckSoftConstraints();

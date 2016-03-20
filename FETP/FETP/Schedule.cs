@@ -95,5 +95,8 @@ namespace FETP
             Console.WriteLine("Time Between Exams: {0}", timeBetweenExams);
             Console.WriteLine("Length of Lunch Time: {0}", lunchLength);
         }
+
+        
+
     } // end class Schedule
 }

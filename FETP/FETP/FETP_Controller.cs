@@ -143,8 +143,6 @@ namespace FETP
                 var values = line.Split(','); // splits into days/times and enrollement
                 var daysAndTimes = values[0].Split(' '); // chops up the days and times to manageable sections
 
-
-
                 TimeSpan startTime = TimeSpan.ParseExact(daysAndTimes[1], @"hhmm", CultureInfo.InvariantCulture); // 1 postion is the start time, changes formated time to bw more usable 
                 TimeSpan endTime = TimeSpan.ParseExact(daysAndTimes[3], @"hhmm", CultureInfo.InvariantCulture); // 3 position is the end time, changes formated time to bw more usable 
 
@@ -329,12 +327,8 @@ namespace FETP
             foreach (Class cl in classes)
             {
                 classesToBeGrouped = groupClass(classesToBeGrouped, cl); // ? clean this up
-
             }
-
             return classesToBeGrouped;
-
-
         }
 
         // ?????
@@ -351,5 +345,7 @@ namespace FETP
             }
             return classes;
         }
+
+        
     }
 }

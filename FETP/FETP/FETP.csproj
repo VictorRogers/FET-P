@@ -47,8 +47,8 @@
     <Compile Include="Class.cs" />
     <Compile Include="GA_Constraints.cs" />
     <Compile Include="FETP_Controller.cs" />
-    <Compile Include="GA_Chromosome.cs" />
     <Compile Include="GA_Controller.cs" />
+    <Compile Include="Generation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedule.cs" />
