@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace FETP
 {
-    // block contains classes that overlapped and were coalesced.
-
 
     /**************************************************************************\
     Class: Block (Groups of Classes)
@@ -16,14 +14,19 @@ namespace FETP
     \**************************************************************************/
     public class Block
     {
+        /**************************************************************************\
+        Block - Data Members 
+        \**************************************************************************/
         protected List<Class> classesInBlock;
-        // protected int enrollment;
+        
 
+        /**************************************************************************\
+        Block - Properties 
+        \**************************************************************************/
         public List<Class> ClassesInBlock
         {
             get { return classesInBlock; }
         }
-
         public int Enrollment
         {
             get
@@ -63,16 +66,37 @@ namespace FETP
                 return Math.Sqrt(this.Variance);
             }
         }
+        public int FitnessScore
+        {
+            get
+            {
+                int fitnessScore = 0;
+                foreach(Class cl in this.classesInBlock)
+                {
+                    if(!doesClassOverlap(cl)) // if the class does not overlap with ALL classes
+                    {
+                        fitnessScore += cl.Enrollment * GA_Controller.WEIGHT_OVERLAPPING_CLASSES;
+                    }
+                    // ? add more weighting here
+                }
+                return fitnessScore;
+            }
+        } // ? needs more work
 
+
+        /**************************************************************************\
+        Block - Methods 
+        \**************************************************************************/
         /**************************************************************************\
         Constructor: Default 
         Description: Takes in data values and creates Block with those values
+        ? need new constructor
         \**************************************************************************/
-        public Block(Class inClass)
-        {
-            this.classesInBlock = new List<Class>();
-            this.addClass(inClass);
-        }
+        //public Block(Class inClass)
+        //{
+        //    this.classesInBlock = new List<Class>();
+        //    this.addClass(inClass);
+        //}
 
 
         // adds class to block and increaments time
@@ -126,6 +150,7 @@ namespace FETP
         /**************************************************************************\
         Method: doesClassOverlap
         Description: Determins if the inClass overlaps with ALL classes in block
+        ?
         \**************************************************************************/
         public bool doesClassOverlap(Class inClass)
         {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks; // ?? some of these aren't needed
 
+using System.Globalization;  // allows times to be different pased on local ? may can be removed
 using System.Diagnostics;
 
 
@@ -12,22 +13,46 @@ namespace FETP
 {
 
     /**************************************************************************\
-    Class: GA_Constraints (Genetic Algorithm Constraints)
+    Class: Schedule (Genetic Algorithm Constraints)
     Description: The Constraints class contains all of the methods needed for
                  checking if a chromosome is meeting soft and hard constraints. 
     \**************************************************************************/
     public class Schedule
     {
-        public List<Block> blocks; // ? lazy
-        protected int numberOfDays;
-        protected TimeSpan examsStartTime;
-        protected TimeSpan examsLength;
-        protected TimeSpan timeBetweenExams;
-        //public TimeSpan lunchTime; // ? lazy
-        protected TimeSpan lunchLength;
-        protected int fitnessScore;
+        /**************************************************************************\
+        Schedule - Constant Data Members 
+        \**************************************************************************/
+        public const string CLASS_LENGTH_TO_START_IGNORING = "0245"; // const is always static ?
+        public const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
+        public const string TIME_EXAMS_MUST_END_BY = "1700";
 
-        // Properties / Accessors and Mutators
+        /**************************************************************************\
+        Schedule - Data Members 
+        \**************************************************************************/
+        private List<Block> blocks; 
+        private int numberOfDays;
+        private TimeSpan examsStartTime;
+        private TimeSpan examsLength;
+        private TimeSpan timeBetweenExams;
+        //public TimeSpan lunchTime; // ? lazy
+        private TimeSpan lunchLength;
+        //private int fitnessScore;
+
+
+        /**************************************************************************\
+        Schedule - Properties 
+        \**************************************************************************/
+        public List<Block> Blocks
+        {
+            get
+            {
+                return this.blocks;
+            }
+            set
+            {
+                this.blocks = value;
+            }
+        }
         public int NumberOfDays
         {
             get { return numberOfDays; }
@@ -53,17 +78,64 @@ namespace FETP
             get { return lunchLength; }
             set { this.lunchLength = value; }
         }
+        public int NumberOfTimeSlotsAvailable
+        {
+            get
+            {
+                return this.NumberOfTimeSlotsAvailablePerDay * this.numberOfDays;
+            }
+            
+        }
+        public int NumberOfTimeSlotsAvailablePerDay
+        {
+            get
+            {
+                TimeSpan latestTime = TimeSpan.ParseExact(TIME_EXAMS_MUST_END_BY, @"hhmm", CultureInfo.InvariantCulture); // latest exams can go // ? maybe rewrite
 
-        //public int FitnessScore
-        //{
-        //    get
-        //    {
-        //        {
+                TimeSpan lengthOfExamDay = latestTime - this.ExamsStartTime; // Figure out how much time available for exams
 
-        //        }
-        //    }
-        //}
+                // if the lunch time is longer than the break time, account for it and the extra break time it will give you
+                if (this.LunchLength > this.TimeBetweenExams)
+                {
+                    lengthOfExamDay -= (this.LunchLength - this.TimeBetweenExams); // takes the lunch break out of available time. also pads for how the lunch will count as a break.
+                }
 
+                TimeSpan examFootprint = this.ExamsLength + this.TimeBetweenExams;
+
+                int numberOfExams = 0;
+                // ? bug if exam break is too big
+                while ((lengthOfExamDay - this.ExamsLength) >= TimeSpan.Zero)
+                {
+                    lengthOfExamDay -= this.ExamsLength;
+                    numberOfExams++;
+
+                    // checks if a break is needed due to their being room for another exam after a break
+                    if ((lengthOfExamDay - (this.TimeBetweenExams + this.ExamsLength) >= TimeSpan.Zero))
+                    {
+                        lengthOfExamDay -= this.TimeBetweenExams;
+                    }
+                }
+                return numberOfExams;
+            }
+        }
+        public int FitnessScore
+        {
+            get
+            {
+                int fitnessScore = 0;
+                foreach(Block block in this.blocks)
+                {
+                    fitnessScore += block.FitnessScore;
+                }
+                // more weighting stuff here
+                return fitnessScore;
+            }
+        }
+
+
+        /**************************************************************************\
+        Schedule - Methods 
+        \**************************************************************************/
         /**************************************************************************\
         Method:  
         Description: 
@@ -113,7 +185,6 @@ namespace FETP
             Console.WriteLine("Time Between Exams: {0}", timeBetweenExams);
             Console.WriteLine("Length of Lunch Time: {0}", lunchLength);
         }
-
         
 
     } // end class Schedule

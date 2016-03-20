@@ -922,3 +922,50 @@ public static List<Class> sortClassesByOverlappingDays(List<Class> classes)
 {
     return classes.OrderByDescending(c => getNumberOfOverlappingDays(classes, c)).ToList();
 }
+
+
+
+/**************************************************************************\
+        Method: getNumberOfTimeSlotsAvailablep
+        Description: 
+        \**************************************************************************/
+public static int getNumberOfTimeSlotsAvailable(Schedule schedule)
+{
+    return getNumberOfTimeSlotsAvailablePerDay(schedule) * schedule.NumberOfDays;
+}
+
+
+/**************************************************************************\
+Method:  
+Description: 
+\**************************************************************************/
+public static int getNumberOfTimeSlotsAvailablePerDay(Schedule schedule)
+{
+    TimeSpan latestTime = TimeSpan.ParseExact(TIME_EXAMS_MUST_END_BY, @"hhmm", CultureInfo.InvariantCulture); // latest exams can go
+
+    TimeSpan lengthOfExamDay = latestTime - schedule.ExamsStartTime; // Figure out how much time available for exams
+
+    // if the lunch time is longer than the break time, account for it and the extra break time it will give you
+    if (schedule.LunchLength > schedule.TimeBetweenExams)
+    {
+        lengthOfExamDay -= (schedule.LunchLength - schedule.TimeBetweenExams); // takes the lunch break out of available time. also pads for how the lunch will count as a break.
+    }
+
+
+    TimeSpan examFootprint = schedule.ExamsLength + schedule.TimeBetweenExams;
+
+    int numberOfExams = 0;
+    // ? bug if exam break is too big
+    while ((lengthOfExamDay - schedule.ExamsLength) >= TimeSpan.Zero)
+    {
+        lengthOfExamDay -= schedule.ExamsLength;
+        numberOfExams++;
+
+        // checks if a break is needed due to their being room for another exam after a break
+        if ((lengthOfExamDay - (schedule.TimeBetweenExams + schedule.ExamsLength) >= TimeSpan.Zero))
+        {
+            lengthOfExamDay -= schedule.TimeBetweenExams;
+        }
+    }
+    return numberOfExams;
+}

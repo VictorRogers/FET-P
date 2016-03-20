@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using System.Globalization;  // allows times to be different pased on local ? may can be removed
+
 
 namespace FETP
 {
@@ -27,8 +27,10 @@ namespace FETP
         // Programmer: Ben
         // takes in an open data file and returns a list of all the classes
         /**************************************************************************\
-        Method:  
-        Description: 
+        Method: readInputDataFile
+        Description: Reads in data file and constructs list of all classes
+                     in the file. Does not add classes in that fall into the
+                     criteria of ignorable classes
         \**************************************************************************/
         public static List<Class> readInputDataFile(string inFileName)
         {
@@ -92,10 +94,10 @@ namespace FETP
         } // end readInputDataFile
 
 
-        // ? don't know what to do with this info yet
         /**************************************************************************\
-        Method:  
-        Description: 
+        Method: readInputConstraintsFile
+        Description: Reads in constraints file and constructs a schedule based
+                     on input
         \**************************************************************************/
         public static Schedule readInputConstraintsFile(string inFileName)
         {
@@ -113,51 +115,7 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method:  
-        Description: 
-        \**************************************************************************/
-        public static int getNumberOfTimeSlotsAvailable(Schedule schedule)
-        {
-            return getNumberOfTimeSlotsAvailablePerDay(schedule) * schedule.NumberOfDays;
-        }
-
-
-        /**************************************************************************\
-        Method:  
-        Description: 
-        \**************************************************************************/
-        public static int getNumberOfTimeSlotsAvailablePerDay(Schedule schedule)
-        {
-            TimeSpan latestTime = TimeSpan.ParseExact(TIME_EXAMS_MUST_END_BY, @"hhmm", CultureInfo.InvariantCulture); // latest exams can go
-
-            TimeSpan lengthOfExamDay = latestTime - schedule.ExamsStartTime; // Figure out how much time available for exams
-
-            // if the lunch time is longer than the break time, account for it and the extra break time it will give you
-            if (schedule.LunchLength > schedule.TimeBetweenExams)
-            {
-                lengthOfExamDay -= (schedule.LunchLength - schedule.TimeBetweenExams); // takes the lunch break out of available time. also pads for how the lunch will count as a break.
-            }
-
-
-            TimeSpan examFootprint = schedule.ExamsLength + schedule.TimeBetweenExams;
-
-            int numberOfExams = 0;
-            // ? bug if exam break is too big
-            while ((lengthOfExamDay - schedule.ExamsLength) >= TimeSpan.Zero)
-            {
-                lengthOfExamDay -= schedule.ExamsLength;
-                numberOfExams++;
-
-                // checks if a break is needed due to their being room for another exam after a break
-                if ((lengthOfExamDay - (schedule.TimeBetweenExams + schedule.ExamsLength) >= TimeSpan.Zero))
-                {
-                    lengthOfExamDay -= schedule.TimeBetweenExams;
-                }
-            }
-            return numberOfExams;
-        }
-
+        
 
         // Checks if two classes overlap
         /**************************************************************************\
@@ -212,6 +170,7 @@ namespace FETP
             return daysInCommon;
         }
 
+
         /**************************************************************************\
         Method: getNumberOfOverlappingClasses
         Description: Determines the number of classes in the list of classes 
@@ -226,6 +185,7 @@ namespace FETP
             }
             return overlappingClasses;
         }
+
 
         /**************************************************************************\
         Method: doAnyClassesOverlap
@@ -244,6 +204,7 @@ namespace FETP
             }
             return false;
         }
+
 
         // takes in a list of class groups and a class
         // returns a new list of class groups with class inserted into first possible group

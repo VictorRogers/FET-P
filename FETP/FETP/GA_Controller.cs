@@ -23,10 +23,10 @@ namespace FETP
 
         private const int GENERATION_SIZE = 500;
 
-    /**************************************************************************\
-    GA_Controller - Weights
-    \**************************************************************************/
-        private const int WEIGHT_OVERLAPPING_CLASSES = 10;
+        /**************************************************************************\
+        GA_Controller - Weights
+        \**************************************************************************/
+        public static int WEIGHT_OVERLAPPING_CLASSES = 10; // static makes it fuction almost as const ?
 
 
 
