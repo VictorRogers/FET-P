@@ -208,29 +208,32 @@ namespace FETP
         }
 
 
+
+        /**************************************************************************\
+        Schedule - Constant Data Members 
+        \**************************************************************************/
         // takes in a list of class groups and a class
         // returns a new list of class groups with class inserted into first possible group
         /**************************************************************************\
-        Method:  
-        Description: 
+        method:  
+        description: 
         \**************************************************************************/
-        public static List<Block> groupClass(List<Block> blocks, Class inClass)
+        public static List<Block> GroupClass(List<Block> blocks, Class inclass)
         {
-            bool isInserted = false;
-            int i = 0;
-            while(i < blocks.Count && !isInserted)
+            bool isinserted = false;
+             int i = 0;
+            while(i<blocks.Count && !isinserted)
             {
-                if(blocks[i].doesClassOverlapWithBlock(inClass))
+                if(blocks[i].doesClassOverlapWithBlock(inclass))
                 {
-                    blocks[i].ClassesInBlock.Add(inClass);
-                    isInserted = true;
+                    blocks[i].addClass(inclass);
+                    isinserted = true;
                     i++;
                 }
             }
-
-            if (!isInserted)
+            if (!isinserted)
             {
-                blocks.Add(new Block(inClass));
+                blocks.Add(new Block(inclass));
             }
             return blocks;
         }
@@ -238,18 +241,18 @@ namespace FETP
 
         // basic grouping for testing  
         /**************************************************************************\
-        Method:  
-        Description: 
+        method:  
+        description: 
         \**************************************************************************/
-        public static List<Block> coalesceClassesTogether(List<Class> classes)
+        public static List<Block> CoalesceClassesTogether(List<Class> classes)
         {
-            List<Block> classesToBeGrouped = new List<Block>(); // Variable to contain the list of all grouped classes
+            List<Block> classestobegrouped = new List<Block>(); // variable to contain the list of all grouped classes
 
             foreach (Class cl in classes)
             {
-                classesToBeGrouped = groupClass(classesToBeGrouped, cl); // ? clean this up
+                classestobegrouped = GroupClass(classestobegrouped, cl); // ? clean this up
             }
-            return classesToBeGrouped;
+            return classestobegrouped;
         }
 
         // ?????

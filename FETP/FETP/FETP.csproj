@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="Block.cs" />
     <Compile Include="Class.cs" />
-    <Compile Include="CONSTANTS.cs" />
     <Compile Include="FETP_Controller.cs" />
     <Compile Include="GA_Controller.cs" />
     <Compile Include="Generation.cs" />

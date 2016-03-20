@@ -16,10 +16,10 @@ namespace FETP
         /**************************************************************************\
         GA_Controller - Data Constants
         \**************************************************************************/ 
-        private const int CROSSOVER_RATE;
-        private const int maxGenerations;
-        private const int mutationRate;
-        private const int populationSize;
+        private int CROSSOVER_RATE;
+        private int maxGenerations;
+        private int mutationRate;
+        private int populationSize;
 
         private const int GENERATION_SIZE = 500;
 
@@ -47,70 +47,70 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Constructor: Default 
-        Description: 
-        \**************************************************************************/ 
-        GA_Controller(Class[] incomingSetClasses, int numClasses, int numExams)
-        {
-            setClasses = new Class[numClasses];
-            incomingSetClasses.CopyTo(setClasses, numClasses);
+        ///**************************************************************************\
+        //Constructor: Default 
+        //Description: 
+        //\**************************************************************************/ 
+        //GA_Controller(Class[] incomingSetClasses, int numClasses, int numExams)
+        //{
+        //    setClasses = new Class[numClasses];
+        //    incomingSetClasses.CopyTo(setClasses, numClasses);
 
-        }
+        //}
 
-        List<Schedule> generateChildren(Schedule schedule1, Schedule schedule2)
-        {
+        //List<Schedule> generateChildren(Schedule schedule1, Schedule schedule2)
+        //{
 
-        }
-
-
-        Schedule RouletCrossOver(Schedule schedule1, Schedule schedule2)
-        {
-
-        }
+        //}
 
 
-        // ?
-        // need finish
-        public static Schedule generateRandomSchedule(List<Class> classes)
-        {
-            Random rand = new Random();
-            classes = classes.OrderBy(c => rand.Next()).Select(c => c.Model).ToList(); // randomly arrange classes
+        //Schedule RouletCrossOver(Schedule schedule1, Schedule schedule2)
+        //{
+
+        //}
+
+
+        //// ?
+        //// need finish
+        //public static Schedule generateRandomSchedule(List<Class> classes)
+        //{
+        //    Random rand = new Random();
+        //    classes = classes.OrderBy(c => rand.Next()).Select(c => c.Model).ToList(); // randomly arrange classes
 
 
 
-            Schedule schedule = new Schedule(classes);
+        //    Schedule schedule = new Schedule(classes);
 
-        }
+        //}
 
         
 
-        // ?
-        // need finish
-        public static List<Schedule> generateRandomGeneration(List<Class> classes)
-        {
-            List<Schedule> generation = new List<Schedule>(); // makes blank generation
+        //// ?
+        //// need finish
+        //public static List<Schedule> generateRandomGeneration(List<Class> classes)
+        //{
+        //    List<Schedule> generation = new List<Schedule>(); // makes blank generation
 
-            for (int i = 0; i < GENERATION_SIZE; i++)
-            {
-                generation.Add(generateRandomSchedule(classes));
-            }
+        //    for (int i = 0; i < GENERATION_SIZE; i++)
+        //    {
+        //        generation.Add(generateRandomSchedule(classes));
+        //    }
 
-            return generation;
-        }
+        //    return generation;
+        //}
 
-        /**************************************************************************\
-        Method: Assign Fitness 
-        Description: Should take a chromosome as an input and output its fitness
-                     score.
-        \**************************************************************************/
-        float AssignFitness()
-        {
-            Constraints.CheckSoftConstraints();
-            Constraints.CheckHardConstraints();
+        ///**************************************************************************\
+        //Method: Assign Fitness 
+        //Description: Should take a chromosome as an input and output its fitness
+        //             score.
+        //\**************************************************************************/
+        //float AssignFitness()
+        //{
+        //    Constraints.CheckSoftConstraints();
+        //    Constraints.CheckHardConstraints();
 
-            return 0.0f;
-        }
+        //    return 0.0f;
+        //}
 
 
         /**************************************************************************\

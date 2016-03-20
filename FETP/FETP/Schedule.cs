@@ -13,6 +13,8 @@ using System.IO;
 namespace FETP
 {
 
+    // ? if a function can modify the internal variables of class, it should be in that class
+
     /**************************************************************************\
     Class: Schedule (Genetic Algorithm Constraints)
     Description: The Constraints class contains all of the methods needed for
@@ -96,7 +98,7 @@ namespace FETP
         {
             get
             {
-                return this.NumberOfTimeSlotsAvailablePerDay * this.numberOfDays;
+                return Schedule.NumberOfTimeSlotsAvailablePerDay * Schedule.numberOfDays;
             }
             
         }
@@ -106,27 +108,27 @@ namespace FETP
             {
                 TimeSpan latestTime = TimeSpan.ParseExact(TIME_EXAMS_MUST_END_BY, @"hhmm", CultureInfo.InvariantCulture); // latest exams can go // ? maybe rewrite
 
-                TimeSpan lengthOfExamDay = latestTime - this.ExamsStartTime; // Figure out how much time available for exams
+                TimeSpan lengthOfExamDay = latestTime - Schedule.ExamsStartTime; // Figure out how much time available for exams
 
                 // if the lunch time is longer than the break time, account for it and the extra break time it will give you
-                if (this.LunchLength > this.TimeBetweenExams)
+                if (Schedule.LunchLength > Schedule.TimeBetweenExams)
                 {
-                    lengthOfExamDay -= (this.LunchLength - this.TimeBetweenExams); // takes the lunch break out of available time. also pads for how the lunch will count as a break.
+                    lengthOfExamDay -= (Schedule.LunchLength - Schedule.TimeBetweenExams); // takes the lunch break out of available time. also pads for how the lunch will count as a break.
                 }
 
-                TimeSpan examFootprint = this.ExamsLength + this.TimeBetweenExams;
+                TimeSpan examFootprint = Schedule.ExamsLength + Schedule.TimeBetweenExams;
 
                 int numberOfExams = 0;
                 // ? bug if exam break is too big
-                while ((lengthOfExamDay - this.ExamsLength) >= TimeSpan.Zero)
+                while ((lengthOfExamDay - Schedule.ExamsLength) >= TimeSpan.Zero)
                 {
-                    lengthOfExamDay -= this.ExamsLength;
+                    lengthOfExamDay -= Schedule.ExamsLength;
                     numberOfExams++;
 
                     // checks if a break is needed due to their being room for another exam after a break
-                    if ((lengthOfExamDay - (this.TimeBetweenExams + this.ExamsLength) >= TimeSpan.Zero))
+                    if ((lengthOfExamDay - (Schedule.TimeBetweenExams + Schedule.ExamsLength) >= TimeSpan.Zero))
                     {
-                        lengthOfExamDay -= this.TimeBetweenExams;
+                        lengthOfExamDay -= Schedule.TimeBetweenExams;
                     }
                 }
                 return numberOfExams;
@@ -178,7 +180,8 @@ namespace FETP
             Random rand = new Random();
             classes = classes.OrderBy(c => rand.Next()).ToList(); // randomly arrange classes ? i think
 
-            this.blocks = FETP_Controller.coalesceClassesTogether(classes);
+            this.blocks = new List<Block>(Schedule.NumberOfTimeSlotsAvailable); // intialize blocks to proper size
+            this.PigeonHoleClasses(classes);
         }
 
         // ? call twice for keeeeds. swap postions of parents
@@ -189,7 +192,7 @@ namespace FETP
         Note: for two kids, call constructor twice with parent 
               schedules in different spots 
         \**************************************************************************/
-        public Schedule(Schedule schedule1, Schedule schedule)
+        public Schedule(Schedule schedule1, Schedule schedule2)
         {
 
             // int blockCount = Schedule.NumberOfTimeSlotsAvailable;
@@ -277,17 +280,18 @@ namespace FETP
         Description: Displays all informations stored in Schedule instance
                      with formatting.
         \**************************************************************************/
-        public void Display()
+        public static void Display()
         {
-            Console.WriteLine("Number of Days: {0}", numberOfDays);
-            Console.WriteLine("Start Time for Exams: {0}", examsStartTime);
-            Console.WriteLine("Length of Exams: {0}", examsLength);
-            Console.WriteLine("Time Between Exams: {0}", timeBetweenExams);
-            Console.WriteLine("Length of Lunch Time: {0}", lunchLength);
+            Console.WriteLine("Number of Days: {0}", Schedule.NumberOfDays);
+            Console.WriteLine("Start Time for Exams: {0}", Schedule.ExamsStartTime);
+            Console.WriteLine("Length of Exams: {0}", Schedule.ExamsLength);
+            Console.WriteLine("Time Between Exams: {0}", Schedule.TimeBetweenExams);
+            Console.WriteLine("Length of Lunch Time: {0}", Schedule.LunchLength);
         }
 
         // ? maybe make bool to see if it is read
         // ? this might need to be moved
+        // ? catch exception that file couldn't be opened?
         /**************************************************************************\
         Method: readInputConstraintsFile
         Description: Reads in constraints file and intializes static schedule
@@ -369,11 +373,34 @@ namespace FETP
                     int enrollment = Int32.Parse(values[1]); // enrollement values should be in 1 position
 
                     Schedule.allClasses.Add(new Class(startTime, endTime, enrollment, days)); // add new Class to list
-
                 }
             }
-            
+        }
 
+        // only runs during one generation. maybe move ?
+        //// takes in a list of classes and coalesces them into a list of blocks of classes
+        /**************************************************************************\
+        Method: PigeonHoleClasses
+        Description: Puts classes in blocks sequentially. 
+                     Used in random schedule creation
+        \**************************************************************************/
+        private void PigeonHoleClasses(List<Class> classes) // ? I LOVE PIGEON HOLE
+        {
+            int i = 0;
+            foreach (Class cl in classes)
+            {
+                // maybe check for empty blocks ?
+                this.blocks[i].addClass(cl);
+
+                if (i < this.blocks.Count)
+                {
+                    i++;
+                }
+                else
+                {
+                    i = 0;
+                }
+            }
         }
 
 

@@ -42,7 +42,7 @@ namespace FETP
             get
             {
                 if (classesInBlock != null)
-                    return this.enrollment / this.classesInBlock.Count;
+                    return this.Enrollment / this.classesInBlock.Count;
                 else return 0;
             }
         }
@@ -73,7 +73,7 @@ namespace FETP
                 int fitnessScore = 0;
                 foreach(Class cl in this.classesInBlock)
                 {
-                    if(!doesClassOverlap(cl)) // if the class does not overlap with ALL classes
+                    if(!this.doesClassOverlapWithBlock(cl)) // if the class does not overlap with ALL classes
                     {
                         fitnessScore += cl.Enrollment * GA_Controller.WEIGHT_OVERLAPPING_CLASSES;
                     }
@@ -105,15 +105,15 @@ namespace FETP
 
 
         /**************************************************************************\
-        Constructor: Default 
-        Description: Takes in data values and creates Block with those values
+        Constructor: Block 
+        Description: Creates a new Block with only the in class in it
         ? need new constructor
         \**************************************************************************/
-        //public Block(Class inClass)
-        //{
-        //    this.classesInBlock = new List<Class>();
-        //    this.addClass(inClass);
-        //}
+        public Block(Class inClass)
+        {
+            this.classesInBlock = new List<Class>();
+            this.addClass(inClass);
+        }
 
 
         // adds class to block and increaments time
@@ -125,16 +125,10 @@ namespace FETP
                      ? this is maybe lowering cohesion
                      ? don't need anymore due to enrollment being a property
         \**************************************************************************/
-        //public bool addClass(Class inClass)
-        //{
-        //    bool wasPerformed = false;
-
-        //    if (this.doesClassOverlap(inClass)) {
-        //        classesInBlock.Add(inClass);
-        //        wasPerformed = true;
-        //    }
-        //    return wasPerformed;
-        //}
+        public void addClass(Class inClass)
+        {
+            classesInBlock.Add(inClass);
+        }
 
 
         // returns wheter the class was found and removed// returns wheter the class was found and removed.
