@@ -66,7 +66,6 @@ namespace FETP
             this.addClass(inClass);
         }
 
-
         // adds class to block and increaments time
         // only if class overlaps all other classes in block
         public bool addClass(Class inClass)
@@ -81,22 +80,23 @@ namespace FETP
             return wasPerformed;
         }
 
-        // returns wheter the class was found and removed
-        // ? can maybe rewrite with List.Constains()
+        // returns wheter the class was found and removed// returns wheter the class was found and removed
+        public bool isClassInGroup(Class inClass)
+        {
+            foreach (Class cl in this.classesInBlock)
+            {
+                if (cl == inClass) return true;
+            }
+            return false;
+        }
+
         public bool removeClass(Class inClass)
         {
-            bool isFound = false;
-            int i = 0;
-            while (i < classesInBlock.Count && !isFound)
+            if (isClassInGroup(inClass))
             {
-                if (this.classesInBlock[i] == inClass)
-                {
-                    this.ClassesInBlock.RemoveAt(i);
-                    enrollment -= inClass.Enrollment;
-                    isFound = true;
-                }
+                this.enrollment -= inClass.Enrollment;
             }
-            return isFound;
+            return this.classesInBlock.Remove(inClass);  // this should work
         }
 
         public bool doesClassOverlap(Class inClass)
