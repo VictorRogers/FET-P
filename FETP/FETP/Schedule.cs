@@ -14,7 +14,7 @@ namespace FETP
 {
 
     // ? if a function can modify the internal variables of class, it should be in that class
-
+    // ? 
     /**************************************************************************\
     Class: Schedule (Genetic Algorithm Constraints)
     Description: The Constraints class contains all of the methods needed for
@@ -40,6 +40,10 @@ namespace FETP
         private static TimeSpan timeBetweenExams;
         private static TimeSpan lunchLength;
         private static List<Class> allClasses = new List<Class>();
+
+        private static int numberOfTimeSlotsAvailable;
+
+        // public static int NumberOfTimeSlotsAvailablePerDay;
 
 
         /**************************************************************************\
@@ -98,7 +102,7 @@ namespace FETP
         {
             get
             {
-                return Schedule.NumberOfTimeSlotsAvailablePerDay * Schedule.numberOfDays;
+                return Schedule.numberOfTimeSlotsAvailable;
             }
             
         }
@@ -146,7 +150,7 @@ namespace FETP
                 // more weighting stuff here
                 return fitnessScore;
             }
-        } // ? possible optimation, if private var is null, set it. then return
+        } // ? possible optimation, if private var is null, set it. then return. ? maybe add in Parallel foreach loop to do that if fitness score is heavy to calculate?
 
 
         /**************************************************************************\
@@ -218,9 +222,15 @@ namespace FETP
                 }
             }
 
+
             this.AttemptMutate(); // ? break up for cohesion
 
             // don't need randomness ?
+        }
+
+        private static void SetNumberOfTimeSlotsAvailable()
+        {
+            Schedule.numberOfTimeSlotsAvailable = Schedule.NumberOfTimeSlotsAvailablePerDay * Schedule.NumberOfDays;
         }
 
 
@@ -338,6 +348,8 @@ namespace FETP
             Schedule.examsLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
             Schedule.timeBetweenExams = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
             Schedule.lunchLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+
+            Schedule.SetNumberOfTimeSlotsAvailable();
         }
 
 
