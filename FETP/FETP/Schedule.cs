@@ -146,7 +146,7 @@ namespace FETP
                 // more weighting stuff here
                 return fitnessScore;
             }
-        }
+        } // ? possible optimation, if private var is null, set it. then return
 
 
         /**************************************************************************\
@@ -174,14 +174,23 @@ namespace FETP
         Constructor: Random Constructor
         Description: Creates a random schedule off the incoming list of classes
         \**************************************************************************/
-        public Schedule(List<Class> classes) // ? possibly make classes static. it would make it faster
+        public Schedule() // ? possibly make classes static. it would make it faster
         {
             
             Random rand = new Random();
-            classes = classes.OrderBy(c => rand.Next()).ToList(); // randomly arrange classes ? i think
 
+            SetUpBlocks();
+
+            this.PigeonHoleClasses(Schedule.AllClasses.OrderBy(c => rand.Next()).ToList()); // sort in randomly order classes
+        }
+
+        public void SetUpBlocks()
+        {
             this.blocks = new List<Block>(Schedule.NumberOfTimeSlotsAvailable); // intialize blocks to proper size
-            this.PigeonHoleClasses(classes);
+            for (int i = 0; i < Schedule.NumberOfTimeSlotsAvailable; i++)
+            {
+                this.blocks.Add(new Block());
+            }
         }
 
         // ? call twice for keeeeds. swap postions of parents
@@ -194,6 +203,7 @@ namespace FETP
         \**************************************************************************/
         public Schedule(Schedule schedule1, Schedule schedule2)
         {
+            SetUpBlocks();
 
             // int blockCount = Schedule.NumberOfTimeSlotsAvailable;
             for (int i = 0; i < Schedule.NumberOfTimeSlotsAvailable; i++) // maybe swap just whole halves
@@ -220,15 +230,15 @@ namespace FETP
         \**************************************************************************/
         private bool WillMutate()
         {
-            bool mutate = false;
+            bool willItMutate = false;
             float randFloatBetween01 = FETP_Controller.RandomFloatBetween01();
 
             if (randFloatBetween01 < GA_Controller.MUTATION_RATE)
             {
-                mutate = true;
+                willItMutate = true;
             }
 
-            return mutate;
+            return willItMutate;
         }
 
 
@@ -293,6 +303,17 @@ namespace FETP
             Console.WriteLine("Length of Exams: {0}", Schedule.ExamsLength);
             Console.WriteLine("Time Between Exams: {0}", Schedule.TimeBetweenExams);
             Console.WriteLine("Length of Lunch Time: {0}", Schedule.LunchLength);
+        }
+
+        public void DisplayBlocks()
+        {
+            foreach (Block block in this.Blocks)
+            {
+                Console.WriteLine("Block");
+                Console.WriteLine("**************");
+                block.Display();
+                Console.WriteLine();
+            }
         }
 
         // ? maybe make bool to see if it is read
@@ -398,7 +419,7 @@ namespace FETP
                 // maybe check for empty blocks ?
                 this.blocks[i].addClass(cl);
 
-                if (i < this.blocks.Count)
+                if (i < Schedule.NumberOfTimeSlotsAvailable - 1) // ? clean up
                 {
                     i++;
                 }

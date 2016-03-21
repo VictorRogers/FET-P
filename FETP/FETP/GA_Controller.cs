@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+
+
+// ? Although reproduction methods that are based on the use of two parents are more "biology inspired", some research[3][4] suggests that more than two "parents" generate higher quality chromosomes.
+
 
 namespace FETP
 {
@@ -16,11 +22,13 @@ namespace FETP
         /**************************************************************************\
         GA_Controller - Data Constants
         \**************************************************************************/ 
-        const int GENERATION_SIZE = 500;
-        const int MAX_GENERATION = 1000;
+        // const int GENERATION_SIZE = 500;
+        private const int MAX_GENERATION = 100; // ? big generations take a long time
+        private const int NUMBER_OF_GENERATIONS = 4;
 
-        const float CROSSOVER_RATE = 0.7F;
+        private const float CROSSOVER_RATE = 0.7F;
         public const float MUTATION_RATE = 0.15F;
+       
 
         /**************************************************************************\
         GA_Controller - Weights
@@ -30,13 +38,134 @@ namespace FETP
 
 
         //private List<Schedule> currentGeneration;
-        //private List<Schedule> topGuys;
-        
+        private static List<Schedule> currentGeneration = new List<Schedule>(GA_Controller.MAX_GENERATION);
+
 
 
         /**************************************************************************\
         GA_Controller - Methods 
-        \**************************************************************************/ 
+        \**************************************************************************/
+        public static void Run()
+        {
+            Console.WriteLine("Begining GA\n");
+            Stopwatch stopWatch = new Stopwatch();
+            //if(Schedule.AllClasses == null)
+            //{
+            //    Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
+            //}
+
+            //if(Schedule.LunchLength == null)
+            //{
+            //    Schedule.readInputConstraintsFile("../../../../ Example Data / Ben Made Constraints Sample.txt");
+            //}
+
+            Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
+            Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
+
+            stopWatch.Start();
+            // create seed generation
+            for (int i = 0; i < GA_Controller.MAX_GENERATION; i++)
+            {
+                GA_Controller.currentGeneration.Add(new Schedule());
+            }
+            stopWatch.Stop();
+            Console.WriteLine("Time to Create Seed Generation: {0}", stopWatch.Elapsed);
+            stopWatch.Reset();
+            
+            for (int i = 0; i < NUMBER_OF_GENERATIONS; i++)
+            {
+                stopWatch.Start();
+
+                List<Schedule> nextGeneration = new List<Schedule>(GA_Controller.MAX_GENERATION);
+                while (currentGeneration.Count > 0) // loop while there are still members in current generation // ? could optimze with just MAX_Generation and minus 2 but this is more scalable and reusable
+                {
+                    // ? not sure if you're supposed to give the parents a chance to reproduce or not.
+                    // ? that should be handled just by selection?
+
+                    // get next two parents // separate out into antoher function??
+                    int indexOfParent1 = BenRoutlette();
+                    int indexOfParent2 = BenRoutlette();
+                    while (indexOfParent1 == indexOfParent2) // makes sure we have two different indexes
+                    {
+                        indexOfParent2 = BenRoutlette();
+                    }
+
+
+
+                    // Add the two parents new children to the next generation
+                    nextGeneration.Add(new Schedule(currentGeneration[indexOfParent1], currentGeneration[indexOfParent2]));
+                    nextGeneration.Add(new Schedule(currentGeneration[indexOfParent2], currentGeneration[indexOfParent1]));
+
+                    // Remove the parents from the current pool
+                    if (indexOfParent1 > indexOfParent2) // this is to make sure removing one parent doesn't move the index of the second
+                    {
+                        currentGeneration.RemoveAt(indexOfParent1);
+                        currentGeneration.RemoveAt(indexOfParent2);
+                    }
+                    else
+                    {
+                        currentGeneration.RemoveAt(indexOfParent2);
+                        currentGeneration.RemoveAt(indexOfParent1);
+                    }
+                }
+                stopWatch.Stop();
+                Console.WriteLine("Time to Execute {0} generations: {1}", i+1, stopWatch.Elapsed);
+
+                currentGeneration = nextGeneration;
+            }
+
+
+            Console.WriteLine("Displaying most fit schedule");
+            currentGeneration.OrderByDescending(c => c.FitnessScore).ToList();
+
+
+            Console.WriteLine();
+            currentGeneration[0].DisplayBlocks();
+
+
+
+        }
+
+
+        // ? need to weight somewhere by one to avoid divide by zero if perfect population?
+        public static int BenRoutlette()
+        {
+            int totalFitnessScoreWeight = (ComputeTotalFitnessScore()); // maybe add in one ? it avoids divide by zero
+
+            double randomFloat = GetRandomFloat() * totalFitnessScoreWeight;
+
+            for (int i = 0; i < GA_Controller.currentGeneration.Count; i++) // ? current generation will shrink as more and more are moved to next generation 
+            {
+                randomFloat -= currentGeneration[i].FitnessScore;
+                if (randomFloat <= 0)
+                {
+                    return i;
+                }
+            }
+            return GA_Controller.currentGeneration.Count - 1; // ? This point should never be reached. roundoff error?
+        }
+
+        public static double GetRandomFloat()
+        {
+            return new Random().NextDouble(); // ? we need a better implementation. numbers from this class are known to not be that random
+        }
+
+        public static void AdvanceGeneration()
+        {
+            
+        }
+
+        public static int ComputeTotalFitnessScore()
+        {
+            int totalFitnessScore = 0;
+            foreach (Schedule schedule in GA_Controller.currentGeneration)
+            {
+                totalFitnessScore += schedule.FitnessScore;
+            }
+            return totalFitnessScore;
+        }
+
+
         /**************************************************************************\
         Constructor: Default 
         Description: 

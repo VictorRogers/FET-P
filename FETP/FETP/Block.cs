@@ -95,12 +95,13 @@ namespace FETP
         \**************************************************************************/
         public Block(List<Class> inClasses = null)
         {
-            if(inClasses == null)
+            if (inClasses == null)
             {
                 this.classesInBlock = new List<Class>();
             }
-            else
+            else {
                 this.classesInBlock = inClasses;
+            }
         }
 
 
@@ -182,7 +183,8 @@ namespace FETP
         \**************************************************************************/
         public void Display()
         {
-            // ??Console.WriteLine("Number of Classes in Block: {0}", this.classesInBlock.Count);
+            Console.WriteLine("Number of Classes in Block: {0}", this.classesInBlock.Count);
+            Console.WriteLine("Total Enrollment: {0}", this.Enrollment);
             Console.WriteLine("Average Enrollment: {0}", this.Average);
             Console.WriteLine("Variance: {0}", this.Variance);
             Console.WriteLine("Standard Deviation: {0}", this.StandardDeviation);

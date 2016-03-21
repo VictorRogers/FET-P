@@ -18,7 +18,8 @@ namespace FETP
                 Console.WriteLine("1. Reading from Enrollment File");
                 Console.WriteLine("2. Reading from Constraints File");
                 Console.WriteLine("3. Test Basic Grouping");
-                
+                Console.WriteLine("4. Test Basic GA");
+
                 string input = Console.ReadLine();
                 Console.WriteLine();
                 if(input == "1")
@@ -122,9 +123,9 @@ namespace FETP
                 //    Console.WriteLine("END Testing Grouping of Classes");
                 //    Console.WriteLine(STARS);
                 //}
-                else if(input == "4")
+                else if(input == "4") // GA 
                 {
-                    
+                    GA_Controller.Run();
                 }
                 Console.WriteLine();
             }
