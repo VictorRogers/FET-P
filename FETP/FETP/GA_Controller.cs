@@ -11,17 +11,16 @@ namespace FETP
     Description: Includes all of the primary functions needed for the genetic
                  algorithm and evolving the chromosomes to find a solution.
     \**************************************************************************/ 
-    public class GA_Controller
+    public static class GA_Controller
     {
         /**************************************************************************\
         GA_Controller - Data Constants
         \**************************************************************************/ 
-        private int CROSSOVER_RATE;
-        private int maxGenerations;
-        private int mutationRate;
-        private int populationSize;
+        const int GENERATION_SIZE = 500;
+        const int MAX_GENERATION = 1000;
 
-        private const int GENERATION_SIZE = 500;
+        const float CROSSOVER_RATE = 0.7F;
+        public const float MUTATION_RATE = 0.15F;
 
         /**************************************************************************\
         GA_Controller - Weights
@@ -30,8 +29,8 @@ namespace FETP
 
 
 
-        private List<Schedule> currentGeneration;
-        private List<Schedule> topGuys;
+        //private List<Schedule> currentGeneration;
+        //private List<Schedule> topGuys;
         
 
 
@@ -42,9 +41,9 @@ namespace FETP
         Constructor: Default 
         Description: 
         \**************************************************************************/ 
-        GA_Controller()
-        {
-        }
+        //GA_Controller()
+        //{
+        //}
 
 
         ///**************************************************************************\
@@ -118,9 +117,9 @@ namespace FETP
         Description: Takes two chromosomes as an input and performs crossover on
                      the genes to create two offspring based on the crossover rate.
         \**************************************************************************/ 
-        void Crossover()
-        {
-        }
+        //void Crossover()
+        //{
+        //}
 
 
         /**************************************************************************\
@@ -131,9 +130,9 @@ namespace FETP
                      guarantee that the most fit chromosomes will be selected, but
                      it does give them a good chance of doing so.
         \**************************************************************************/ 
-        void Roulette()
-        {
-        }
+        //void Roulette()
+        //{
+        //}
 
 
         /**************************************************************************\
@@ -141,8 +140,8 @@ namespace FETP
         Description: Creates a mutation in a chromosome depending on the mutation
                      rate.
         \**************************************************************************/ 
-        void Mutate()
-        {
-        }
+        //void Mutate()
+        //{
+        //}
     }
 }

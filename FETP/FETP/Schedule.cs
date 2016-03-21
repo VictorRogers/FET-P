@@ -213,16 +213,22 @@ namespace FETP
             // don't need randomness ?
         }
 
-        // ? needs rewriting
+
         /**************************************************************************\
         Method: WillMutate
         Description: Deteremines whether a mutation should occur
         \**************************************************************************/
         private bool WillMutate()
         {
-            // ? victor rewrite
-            Random rnd = new Random();
-            return (rnd.Next(0, 20) == 1);
+            bool mutate = false;
+            float randFloatBetween01 = FETP_Controller.RandomFloatBetween01();
+
+            if (randFloatBetween01 < GA_Controller.MUTATION_RATE)
+            {
+                mutate = true;
+            }
+
+            return mutate;
         }
 
 

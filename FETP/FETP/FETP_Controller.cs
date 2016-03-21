@@ -50,7 +50,7 @@ namespace FETP
         //    var reader = new StreamReader(inFile);
 
         //    reader.ReadLine(); // skip description line
-        
+
         //    while (!reader.EndOfStream)
         //    {
         //        // ? possibly change var to string
@@ -118,6 +118,24 @@ namespace FETP
         //    Schedule.LunchLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
         //}
 
+
+        //Used for random number generation
+        private static readonly Random random = new Random();
+        private static readonly object syncLock = new object();
+
+
+        /**************************************************************************\
+        Method: RandomFloatBetween01 
+        Description: Will return a random float between 0 and 1 
+        \**************************************************************************/       
+        public static float RandomFloatBetween01()
+        {
+            lock (syncLock)
+            {
+                return (float)random.NextDouble();
+            }
+        }
+        
 
         // Checks if two classes overlap
         /**************************************************************************\
