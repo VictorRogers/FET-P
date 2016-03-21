@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Diagnostics;
 
 namespace FETP
 {
@@ -17,17 +18,19 @@ namespace FETP
                 Console.WriteLine("Would you like to test");
                 Console.WriteLine("1. Reading from Enrollment File");
                 Console.WriteLine("2. Reading from Constraints File");
-                Console.WriteLine("3. Test Basic Grouping");
+                //Console.WriteLine("3. Test Basic Grouping");
                 Console.WriteLine("4. Test Basic GA");
+                Console.WriteLine("5. Test Basic GA with Generation class (broken hard)");
+
 
                 string input = Console.ReadLine();
                 Console.WriteLine();
-                if(input == "1")
+                if (input == "1")
                 {
                     Console.WriteLine(STARS);
                     Console.WriteLine("Testing Enrollment File Operations");
                     Console.WriteLine(STARS);
-                    
+
 
                     // currently sorts all the data
                     //List<Class> allClasses = FETP_Controller.sortClassesByEnrollment(FETP_Controller.readInputDataFile(inFile));
@@ -39,7 +42,7 @@ namespace FETP
 
                     foreach (Class cl in Schedule.AllClasses)
                     {
-                        
+
                         cl.Display();
 
                         // Console.WriteLine("Overlaps with: {0} other classes", FETP_Controller.getNumberOfOverlappingDays(allClasses, cl));
@@ -50,13 +53,13 @@ namespace FETP
                     Console.WriteLine(STARS);
 
                 }
-                else if(input == "2")
+                else if (input == "2")
                 {
                     Console.WriteLine(STARS);
                     Console.WriteLine("Testing Constraints File Operations");
                     Console.WriteLine(STARS);
 
-                    
+
                     // List<Class> allClasses = FETP_Controller.sortClassesByEnrollment(FETP_Controller.readInputDataFile(inFile));
                     Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
                     Schedule.Display();
@@ -123,9 +126,21 @@ namespace FETP
                 //    Console.WriteLine("END Testing Grouping of Classes");
                 //    Console.WriteLine(STARS);
                 //}
-                else if(input == "4") // GA 
+                else if (input == "4") // GA 
                 {
                     GA_Controller.Run();
+                }
+                else if (input == "5") // GA 
+                {
+                    Generation currentGeneration = new Generation();
+                    Stopwatch stopwatch = new Stopwatch();
+                    for (int i = 0; i < Generation.NUMBER_OF_GENERATIONS; i++)
+                    {
+                        stopwatch.Start();
+                        currentGeneration = new Generation(currentGeneration.Schedules);
+                        stopwatch.Stop();
+                        Console.WriteLine("Time to Execute {0} generations: {1}", i + 1, stopwatch.Elapsed);
+                    }
                 }
                 Console.WriteLine();
             }

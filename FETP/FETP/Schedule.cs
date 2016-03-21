@@ -39,11 +39,10 @@ namespace FETP
         private static TimeSpan examsLength;
         private static TimeSpan timeBetweenExams;
         private static TimeSpan lunchLength;
-        private static List<Class> allClasses = new List<Class>();
+        private static List<Class> allClasses;
 
         private static int numberOfTimeSlotsAvailable;
-
-        // public static int NumberOfTimeSlotsAvailablePerDay;
+       
 
 
         /**************************************************************************\
@@ -371,7 +370,8 @@ namespace FETP
             TimeSpan ignoreClassLength = TimeSpan.ParseExact(Schedule.CLASS_LENGTH_TO_START_IGNORING, @"hhmm", CultureInfo.InvariantCulture); // can't declare TimeSpan as const so do this here
             TimeSpan ignoreClassStartTime = TimeSpan.ParseExact(HOUR_TO_BEGIN_IGNORE_CLASS, @"hhmm", CultureInfo.InvariantCulture);
 
-            List<Class> newAllClasses = new List<Class>(); // list of all classes to be returned
+            // Initialize all classes
+            Schedule.allClasses = new List<Class>();
 
             FileStream inFile = File.OpenRead(@inFileName);
             var reader = new StreamReader(inFile);

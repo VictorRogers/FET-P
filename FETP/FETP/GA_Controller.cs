@@ -38,7 +38,7 @@ namespace FETP
 
 
         //private List<Schedule> currentGeneration;
-        private static List<Schedule> currentGeneration = new List<Schedule>(GA_Controller.MAX_GENERATION);
+        private static List<Schedule> currentGeneration;
 
 
 
@@ -65,6 +65,9 @@ namespace FETP
 
             Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
             Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
+
+
+            GA_Controller.currentGeneration = new List<Schedule>(MAX_GENERATION);
 
             stopWatch.Start();
             // create seed generation
@@ -119,12 +122,12 @@ namespace FETP
             }
 
 
-            Console.WriteLine("Displaying most fit schedule");
-            currentGeneration.OrderByDescending(c => c.FitnessScore).ToList();
+            //Console.WriteLine("Displaying most fit schedule");
+            //currentGeneration.OrderByDescending(c => c.FitnessScore).ToList();
 
 
-            Console.WriteLine();
-            currentGeneration[0].DisplayBlocks();
+            //Console.WriteLine();
+            //currentGeneration[0].DisplayBlocks();
 
 
 
