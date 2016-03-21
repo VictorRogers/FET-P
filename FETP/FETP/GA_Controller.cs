@@ -45,6 +45,10 @@ namespace FETP
         /**************************************************************************\
         GA_Controller - Methods 
         \**************************************************************************/
+        /**************************************************************************\
+        Method: Run
+        Description: Basic Testing Driver for GA
+        \**************************************************************************/
         public static void Run()
         {
             Console.WriteLine("Begining GA\n");
@@ -128,6 +132,10 @@ namespace FETP
 
 
         // ? need to weight somewhere by one to avoid divide by zero if perfect population?
+        /**************************************************************************\
+        Method: BenRoutlette
+        Description: Randomly selects an index with weight from fitness scores
+        \**************************************************************************/
         public static int BenRoutlette()
         {
             int totalFitnessScoreWeight = (ComputeTotalFitnessScore()); // maybe add in one ? it avoids divide by zero
@@ -145,16 +153,25 @@ namespace FETP
             return GA_Controller.currentGeneration.Count - 1; // ? This point should never be reached. roundoff error?
         }
 
+        /**************************************************************************\
+        Method: GetRandomFlot
+        Description: Retrieves a random float between 0 and 1
+        \**************************************************************************/
         public static double GetRandomFloat()
         {
             return new Random().NextDouble(); // ? we need a better implementation. numbers from this class are known to not be that random
         }
 
-        public static void AdvanceGeneration()
-        {
-            
-        }
 
+        //public static void AdvanceGeneration()
+        //{
+
+        //}
+
+        /**************************************************************************\
+        Method: ComputeTotalFitnessScore
+        Description: Computes the total fitness score of all schedules
+        \**************************************************************************/
         public static int ComputeTotalFitnessScore()
         {
             int totalFitnessScore = 0;

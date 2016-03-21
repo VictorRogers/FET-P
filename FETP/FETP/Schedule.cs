@@ -305,6 +305,10 @@ namespace FETP
             Console.WriteLine("Length of Lunch Time: {0}", Schedule.LunchLength);
         }
 
+        /**************************************************************************\
+        Method: DisplayBlocks
+        Description: Displays all blocks in schedule
+        \**************************************************************************/
         public void DisplayBlocks()
         {
             foreach (Block block in this.Blocks)
@@ -335,6 +339,7 @@ namespace FETP
             Schedule.timeBetweenExams = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
             Schedule.lunchLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
         }
+
 
         // ? maybe make bool to see if it is read
         // ? this might need to be moved
@@ -403,6 +408,7 @@ namespace FETP
                 }
             }
         }
+
 
         // only runs during one generation. maybe move ?
         //// takes in a list of classes and coalesces them into a list of blocks of classes
