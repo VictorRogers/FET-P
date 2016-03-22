@@ -132,15 +132,15 @@ namespace FETP
                 }
                 else if (input == "5") // GA 
                 {
-                    Generation currentGeneration = new Generation();
-                    Stopwatch stopwatch = new Stopwatch();
-                    for (int i = 0; i < Generation.NUMBER_OF_GENERATIONS; i++)
-                    {
-                        stopwatch.Start();
-                        currentGeneration = new Generation(currentGeneration.Schedules);
-                        stopwatch.Stop();
-                        Console.WriteLine("Time to Execute {0} generations: {1}", i + 1, stopwatch.Elapsed);
-                    }
+                    //Generation currentGeneration = new Generation();
+                    //Stopwatch stopwatch = new Stopwatch();
+                    //for (int i = 0; i < Generation.NUMBER_OF_GENERATIONS; i++)
+                    //{
+                    //    stopwatch.Start();
+                    //    currentGeneration = new Generation(currentGeneration.Schedules);
+                    //    stopwatch.Stop();
+                    //    Console.WriteLine("Time to Execute {0} generations: {1}", i + 1, stopwatch.Elapsed);
+                    //}
                 }
                 Console.WriteLine();
             }

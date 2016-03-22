@@ -91,7 +91,7 @@ namespace FETP
                 stopwatch.Start();
                 AdvanceGeneration();
                 stopwatch.Stop();
-                Console.WriteLine("Time to Execute {0} generations: {1}", i + 1, stopWatch.Elapsed);
+                Console.WriteLine("Time to Execute {0} generations: {1}", i + 1, stopwatch.Elapsed);
             }
         }
 
@@ -179,7 +179,7 @@ namespace FETP
                 }
 
                 // If parents are going to breed, pass their chidlren on to next generation, else pass parents on to next generation
-                if (WillParentsBreed())
+                if (WillParentsBreed(indexOfParent1, indexOfParent2))
                 {
                     // Add the two parents new children to the next generation
                     nextGeneration.Add(new Schedule(currentGeneration[indexOfParent1], currentGeneration[indexOfParent2]));
