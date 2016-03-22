@@ -17,7 +17,7 @@ namespace FETP
             }
         }
 
-        public const int SIZE_OF_GENERATION = 30; // ? big generations take a long time ? should be divisable by 2 ? we could write it to take a random number of parents for better crossover
+        public const int SIZE_OF_GENERATION = 100; // ? big generations take a long time ? should be divisable by 2 ? we could write it to take a random number of parents for better crossover
         public const int NUMBER_OF_GENERATIONS = 100;
 
         // creates seed generation
@@ -102,18 +102,19 @@ namespace FETP
         \**************************************************************************/
         public int BenRoutlette(List<Schedule> schedules)
         {
-            int totalFitnessScoreWeight = (this.ComputeTotalFitnessScore(schedules)); // maybe add in one ? it avoids divide by zero
+            double totalFitnessScoreWeight = (this.ComputeTotalFitnessScore(schedules)); // maybe add in one ? it avoids divide by zero
 
             double randomFloat = GA_Controller.GetRandomFloat() * totalFitnessScoreWeight;
             for (int i = 0; i < schedules.Count; i++) // ? current generation will shrink as more and more are moved to next generation 
             {
+
                 randomFloat -= schedules[i].FitnessScore;
                 if (randomFloat <= 0)
                 {
                     return i;
                 }
             }
-
+            Console.WriteLine("pls");
             return this.schedules.Count - 1; // ? This point should never be reached. roundoff error? ? it could fail on empty schedule
         }
 
@@ -121,9 +122,9 @@ namespace FETP
         Method: ComputeTotalFitnessScore
         Description: Computes the total fitness score of all schedules
         \**************************************************************************/
-        public int ComputeTotalFitnessScore(List<Schedule> schedules)
+        public double ComputeTotalFitnessScore(List<Schedule> schedules)
         {
-            int totalFitnessScore = 0;
+            double totalFitnessScore = 0;
             foreach (Schedule schedule in schedules)
             {
                 totalFitnessScore += schedule.FitnessScore;

@@ -137,11 +137,11 @@ namespace FETP
                 return numberOfExams;
             }
         }
-        public int FitnessScore
+        public double FitnessScore
         {
             get
             {
-                int fitnessScore = 0;
+                double fitnessScore = 0;
                 foreach(Block block in this.blocks)
                 {
                     fitnessScore += block.FitnessScore;

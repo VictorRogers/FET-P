@@ -77,11 +77,11 @@ namespace FETP
                 return Math.Sqrt(this.Variance);
             }
         }
-        public int FitnessScore
+        public double FitnessScore
         {
             get
             {
-                int fitnessScore = 0;
+                double fitnessScore = 0;
                 foreach(Class cl in this.classesInBlock)
                 {
                     if(!this.doesClassOverlapWithBlock(cl)) // if the class does not overlap with ALL classes
@@ -90,7 +90,7 @@ namespace FETP
                     }
                     // ? add more weighting here
                 }
-                return fitnessScore;
+                return 1/ (1 + fitnessScore);
             }
         } // ? needs more work
         public bool AreThereAnyNonOverlappingClasses
