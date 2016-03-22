@@ -18,7 +18,7 @@ namespace FETP
         }
 
         public const int SIZE_OF_GENERATION = 100; // ? big generations take a long time ? should be divisable by 2 ? we could write it to take a random number of parents for better crossover
-        public const int NUMBER_OF_GENERATIONS = 100;
+        public const int NUMBER_OF_GENERATIONS = 50;
 
         // creates seed generation
         public Generation()
@@ -142,6 +142,11 @@ namespace FETP
         {
             OrderByFitnessScore();
             return this.Schedules[0];
+        }
+        public Schedule GetWorstFit()
+        {
+            OrderByFitnessScore();
+            return this.Schedules[this.Schedules.Count-1];
         }
 
     }

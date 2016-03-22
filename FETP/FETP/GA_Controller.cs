@@ -69,10 +69,11 @@ namespace FETP
                     }
 
                     //Console.WriteLine("Time to Execute generation number {0}: {1}", index + 1, newStopwatch.Elapsed);
-                    lock (benLock)
-                    {
+                    //lock (benLock)
+                    //{
+                    Console.WriteLine("finished generation: " + index);
                         allStars.Add(generation.GetMostFit());
-                    }
+                    //}
                     
                     
                     
@@ -94,12 +95,16 @@ namespace FETP
                 CheckSchedule(sch); // ? could be that some groups have less overlapping classes even though more clean blocks?
             }
 
-            Console.WriteLine("Displaying most fit schedule");
-            
 
+
+            Console.WriteLine("Displaying worst fit schedule");
             Console.WriteLine();
-            lastGen.GetMostFit().DisplayBlocks();
+            lastGen.GetWorstFit().DisplayBlocks();
+            Console.WriteLine("Displaying most fit schedule");
+            Console.WriteLine();
+
             CheckSchedule(lastGen.GetMostFit());
+
 
         }
 
@@ -133,11 +138,23 @@ namespace FETP
                 Console.WriteLine("Time to Execute {0} generations: {1}", i + 1, stopwatch.Elapsed);
             }
 
-            Console.WriteLine("Displaying most fit schedule");
-            generation.OrderByFitnessScore();
-            generation.GetMostFit().DisplayBlocks();
-            CheckSchedule(generation.GetMostFit());
 
+
+
+            Console.WriteLine("Displaying worst fit schedule");
+            Console.WriteLine();
+            //generation.GetMostFit().DisplayBlocks();
+            CheckSchedule(generation.GetWorstFit());
+
+            Console.WriteLine("Displaying most fit schedules");
+            Console.WriteLine();
+            for(int i = 0; i < 5; i++)
+            {
+                CheckSchedule(generation.Schedules[i]); // should already be sorted
+            }
+            
+
+            
             //currentGeneration.OrderByDescending(c => c.FitnessScore).ToList();
 
             //Console.WriteLine();
