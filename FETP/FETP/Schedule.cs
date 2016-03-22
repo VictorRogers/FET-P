@@ -227,6 +227,10 @@ namespace FETP
             // don't need randomness ?
         }
 
+        /**************************************************************************\
+        Method: SetNumberOfTimeSlotsAvailable
+        Description: Calculates number of timeslots available and sets it.
+        \**************************************************************************/
         private static void SetNumberOfTimeSlotsAvailable()
         {
             Schedule.numberOfTimeSlotsAvailable = Schedule.NumberOfTimeSlotsAvailablePerDay * Schedule.NumberOfDays;
@@ -314,6 +318,7 @@ namespace FETP
             Console.WriteLine("Length of Lunch Time: {0}", Schedule.LunchLength);
         }
 
+
         /**************************************************************************\
         Method: DisplayBlocks
         Description: Displays all blocks in schedule
@@ -328,6 +333,7 @@ namespace FETP
                 Console.WriteLine();
             }
         }
+
 
         // ? maybe make bool to see if it is read
         // ? this might need to be moved

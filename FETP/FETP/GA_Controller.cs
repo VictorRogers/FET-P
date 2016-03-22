@@ -41,7 +41,7 @@ namespace FETP
         private static List<Schedule> currentGeneration;
 
 
-        public static Stopwatch stopwatch = new Stopwatch();
+        public static Stopwatch stopwatch = new Stopwatch(); // ? for testing purposes 
 
 
         /**************************************************************************\
@@ -59,8 +59,6 @@ namespace FETP
             Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
             Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
 
-            
-
             // Intialize First Generation
             stopwatch.Restart();
 
@@ -70,18 +68,22 @@ namespace FETP
             Console.WriteLine("Time to Create Seed Generation: {0}", stopwatch.Elapsed);
             stopwatch.Reset();
 
-
             // Run GA
             RunGeneticAlgorithm();
 
-            //Console.WriteLine("Displaying most fit schedule");
-            //currentGeneration.OrderByDescending(c => c.FitnessScore).ToList();
-
-
-            //Console.WriteLine();
-            //currentGeneration[0].DisplayBlocks();
+            Console.WriteLine("Displaying most fit schedule");
+            currentGeneration.OrderByDescending(c => c.FitnessScore).ToList();
+            
+            Console.WriteLine();
+            currentGeneration[0].DisplayBlocks();
         }
 
+        /**************************************************************************\
+        Method: RunGeneticAlgorithm
+        Description: Executtes the Genetic Algorithm. For the number of 
+                     generations desired to go through, advances 
+                     the generation
+        \**************************************************************************/
         public static void RunGeneticAlgorithm()
         {
             for (int i = 0; i < NUMBER_OF_GENERATIONS; i++)
@@ -93,11 +95,21 @@ namespace FETP
             }
         }
 
-        public static bool WillParentsBreed()
+
+        /**************************************************************************\
+        Method: WillParentsBreed
+        Description: Determines whether or not two parents will breed
+        \**************************************************************************/
+        public static bool WillParentsBreed(int indexOfParent1, int indexOfParent2)
         {
             return true; // ? Rewrite Victor
         }
 
+
+        /**************************************************************************\
+        Method: IntializeSeedGeneration
+        Description: Creates the first generation for GA
+        \**************************************************************************/
         public static void IntializeSeedGeneration()
         {
             // Intialize the current generation
@@ -133,6 +145,7 @@ namespace FETP
             return GA_Controller.currentGeneration.Count - 1; // ? This point should never be reached. roundoff error?
         }
 
+
         /**************************************************************************\
         Method: GetRandomFlot
         Description: Retrieves a random float between 0 and 1
@@ -143,6 +156,11 @@ namespace FETP
         }
 
 
+        /**************************************************************************\
+        Method: AdvanceGeneration
+        Description: Handles crossing over of current generation to the next
+                     generation
+        \**************************************************************************/
         public static void AdvanceGeneration()
         {
 
@@ -190,6 +208,7 @@ namespace FETP
             currentGeneration = nextGeneration; // Advance to the next generation
         }
 
+
         /**************************************************************************\
         Method: ComputeTotalFitnessScore
         Description: Computes the total fitness score of all schedules
@@ -205,15 +224,25 @@ namespace FETP
         }
 
 
+        /**************************************************************************\
+        Method: SaveMostFitSchedule
+        Description: Saves the most fit schedule to file
+        \**************************************************************************/
         public static void SaveMostFitSchedule()
         {
             // ? write
         }
 
+
+        /**************************************************************************\
+        Method: SaveGeneration
+        Description: Saves the current generation to file
+        \**************************************************************************/
         public static void SaveGeneration()
         {
             // ? write
         }
+
 
         /**************************************************************************\
         Constructor: Default 
