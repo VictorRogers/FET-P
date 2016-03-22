@@ -23,8 +23,8 @@ namespace FETP
         GA_Controller - Data Constants
         \**************************************************************************/ 
         // const int GENERATION_SIZE = 500;
-        private const int MAX_GENERATION = 100; // ? big generations take a long time
-        private const int NUMBER_OF_GENERATIONS = 500;
+        private const int SIZE_OF_GENERATION = 1; // ? big generations take a long time
+        private const int NUMBER_OF_GENERATIONS = 1;
 
         private const float CROSSOVER_RATE = 0.7F;
         public const float MUTATION_RATE = 0.15F;
@@ -53,21 +53,32 @@ namespace FETP
             SetupIntialFields();
 
             List<Schedule> allStars = new List<Schedule>();
-            Parallel.For(0, MAX_GENERATION, i =>
-                {
-                    RunGeneticAlgorithm();
 
-                    currentGeneration.OrderByDescending(c => c.FitnessScore).ToList();
-                    allStars.Add(currentGeneration[0]);
+            Stopwatch newStopwatch = new Stopwatch();
+            newStopwatch.Start();
+            Parallel.For(0, Generation.SIZE_OF_GENERATION, index =>
+                {
+                    Generation generation = new Generation(); // sets up intial generation
+                    Console.WriteLine("Starting GA: {0}", index);
+                    for (int i = 0; i < Generation.NUMBER_OF_GENERATIONS; i++)
+                    {
+                        generation = new Generation(generation);
+                    }
+                    
+                    Console.WriteLine("Time to Execute generation number {0}: {1}", index + 1, newStopwatch.Elapsed);
+                    allStars.Add(generation.GetMostFit());
+                    
+                    
                 });
 
-            //for(int i = 0; i < MAX_GENERATION; i++)
+            //for(int i = 0; i < SIZE_OF_GENERATION; i++)
             //{
             //    Run();
             //    allStars.Add(currentGeneration[0]);
             //}
 
             // Do All Star run
+            Console.WriteLine("Starting allstar run");
             currentGeneration = allStars;
             RunGeneticAlgorithm();
 
@@ -80,12 +91,7 @@ namespace FETP
 
         }
 
-        public static void SetupIntialFields()
-        {
-            Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
-            Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
-        }
-
+        
         /**************************************************************************\
         Method: Run
         Description: Basic Testing Driver for GA
@@ -100,22 +106,70 @@ namespace FETP
             // Intialize First Generation
             stopwatch.Restart();
 
-            IntializeSeedGeneration();
+            Generation generation = new Generation();
 
             stopwatch.Stop();
             Console.WriteLine("Time to Create Seed Generation: {0}", stopwatch.Elapsed);
             stopwatch.Reset();
 
             // Run GA
-            RunGeneticAlgorithm();
+            for (int i = 0; i < NUMBER_OF_GENERATIONS; i++)
+            {
+                stopwatch.Start();
+                generation = new Generation(generation);
+                stopwatch.Stop();
+                Console.WriteLine("Time to Execute {0} generations: {1}", i + 1, stopwatch.Elapsed);
+            }
 
             Console.WriteLine("Displaying most fit schedule");
             currentGeneration.OrderByDescending(c => c.FitnessScore).ToList();
-            
+
             Console.WriteLine();
             currentGeneration[0].DisplayBlocks();
             CheckSchedule(currentGeneration[0]);
+        
+            
+
+
+
+
+
+
+
+
+        //Console.WriteLine("Begining GA\n");
+
+        //    // Get input
+        //    SetupIntialFields();
+
+        //    // Intialize First Generation
+        //    stopwatch.Restart();
+
+        //    IntializeSeedGeneration();
+
+        //    stopwatch.Stop();
+        //    Console.WriteLine("Time to Create Seed Generation: {0}", stopwatch.Elapsed);
+        //    stopwatch.Reset();
+
+        //    // Run GA
+        //    RunGeneticAlgorithm();
+
+        //    Console.WriteLine("Displaying most fit schedule");
+        //    currentGeneration.OrderByDescending(c => c.FitnessScore).ToList();
+            
+        //    Console.WriteLine();
+        //    currentGeneration[0].DisplayBlocks();
+        //    CheckSchedule(currentGeneration[0]);
         }
+
+
+        public static void SetupIntialFields()
+        {
+            Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
+            Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
+        }
+
+
 
         /**************************************************************************\
         Method: RunGeneticAlgorithm
@@ -129,6 +183,16 @@ namespace FETP
             {
                 stopwatch.Start();
                 AdvanceGeneration();
+                stopwatch.Stop();
+                Console.WriteLine("Time to Execute {0} generations: {1}", i + 1, stopwatch.Elapsed);
+            }
+        }
+        public static void RunGeneticAlgorithm2()
+        {
+            for (int i = 0; i < NUMBER_OF_GENERATIONS; i++)
+            {
+                stopwatch.Start();
+                
                 stopwatch.Stop();
                 Console.WriteLine("Time to Execute {0} generations: {1}", i + 1, stopwatch.Elapsed);
             }
@@ -152,10 +216,10 @@ namespace FETP
         public static void IntializeSeedGeneration()
         {
             // Intialize the current generation
-            GA_Controller.currentGeneration = new List<Schedule>(MAX_GENERATION);
+            GA_Controller.currentGeneration = new List<Schedule>(SIZE_OF_GENERATION);
 
             // create seed generation
-            for (int i = 0; i < GA_Controller.MAX_GENERATION; i++)
+            for (int i = 0; i < GA_Controller.SIZE_OF_GENERATION; i++)
             {
                 GA_Controller.currentGeneration.Add(new Schedule());
             }
@@ -213,8 +277,8 @@ namespace FETP
         public static void AdvanceGeneration()
         {
 
-            List<Schedule> nextGeneration = new List<Schedule>(GA_Controller.MAX_GENERATION);
-            while (currentGeneration.Count > 0) // loop while there are still members in current generation // ? could optimze with just MAX_Generation and minus 2 but this is more scalable and reusable
+            List<Schedule> nextGeneration = new List<Schedule>(GA_Controller.SIZE_OF_GENERATION);
+            while (currentGeneration.Count > 0) // loop while there are still members in current generation // ? could optimze with just SIZE_OF_GENERATION and minus 2 but this is more scalable and reusable
             {
                 // ? not sure if you're supposed to give the parents a chance to reproduce or not.
                 // ? that should be handled just by selection?
@@ -256,6 +320,11 @@ namespace FETP
             
             currentGeneration = nextGeneration; // Advance to the next generation
         }
+        public static void AdvanceGeneration2()
+        {
+            
+        }
+
 
 
         /**************************************************************************\
