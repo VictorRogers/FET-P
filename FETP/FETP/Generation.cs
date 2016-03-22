@@ -18,7 +18,8 @@ namespace FETP
         }
 
         public const int SIZE_OF_GENERATION = 100; // ? big generations take a long time ? should be divisable by 2 ? we could write it to take a random number of parents for better crossover
-        public const int NUMBER_OF_GENERATIONS = 50;
+        public const int NUMBER_OF_GENERATIONS = 500;
+        public const int BEN_ALL_STAR_THREAD_LIMIT = 4;
 
         // creates seed generation
         public Generation()

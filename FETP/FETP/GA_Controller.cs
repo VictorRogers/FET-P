@@ -59,34 +59,50 @@ namespace FETP
 
             object benLock = new object();
 
-            Parallel.For(0, Generation.SIZE_OF_GENERATION, index =>
-                {
-                    Generation generation = new Generation(); // sets up intial generation
-                    //Console.WriteLine("Starting GA: {0}", index);
-                    for (int i = 0; i < Generation.NUMBER_OF_GENERATIONS; i++) // ? is i the same for all loops?
-                    {
-                        generation = new Generation(generation);
-                    }
-
-                    //Console.WriteLine("Time to Execute generation number {0}: {1}", index + 1, newStopwatch.Elapsed);
-                    //lock (benLock)
-                    //{
-                    Console.WriteLine("finished generation: " + index);
-                        allStars.Add(generation.GetMostFit());
-                    //}
-                    
-                    
-                    
-                });
-
-            //for(int i = 0; i < SIZE_OF_GENERATION; i++)
+            //for (int i = 0; i < Generation.SIZE_OF_GENERATION; i++)
             //{
-            //    Run();
-            //    allStars.Add(currentGeneration[0]);
+            //    Generation generation = new Generation(); // sets up intial generation
+            //                                              //Console.WriteLine("Starting GA: {0}", index);
+            //    for (int j = 0; j < Generation.NUMBER_OF_GENERATIONS; j++) // ? is i the same for all loops?
+            //    {
+            //        generation = new Generation(generation);
+            //    }
+
+            //    //Console.WriteLine("Time to Execute generation number {0}: {1}", index + 1, newStopwatch.Elapsed);
+            //    //lock (benLock)
+            //    //{
+            //    Console.WriteLine("finished generation: " + i);
+            //    allStars.Add(generation.GetMostFit());
             //}
 
-            // Do All Star run
-            Console.WriteLine("Starting allstar run");
+
+            Parallel.For(0, Generation.SIZE_OF_GENERATION, new ParallelOptions { MaxDegreeOfParallelism = Generation.BEN_ALL_STAR_THREAD_LIMIT }, index =>
+            {
+                Generation generation = new Generation(); // sets up intial generation
+                Console.WriteLine("Starting GA: {0}", index+1);
+                for (int i = 0; i < Generation.NUMBER_OF_GENERATIONS; i++) // ? is i the same for all loops?
+                {
+                    generation = new Generation(generation);
+                }
+
+                Console.WriteLine("Time to Execute GA {0}: {1}", index + 1, newStopwatch.Elapsed);
+                //lock (benLock)
+                //{
+                allStars.Add(generation.GetMostFit());
+                //}
+
+
+
+            });
+
+                    //for(int i = 0; i < SIZE_OF_GENERATION; i++)
+                    //{
+                    //    Run();
+                    //    allStars.Add(currentGeneration[0]);
+                    //}
+
+                    // Do All Star run
+                    Console.WriteLine("Starting allstar run");
             Generation lastGen = new Generation(allStars);
             lastGen.OrderByFitnessScore();
 
@@ -97,13 +113,21 @@ namespace FETP
 
 
 
-            Console.WriteLine("Displaying worst fit schedule");
-            Console.WriteLine();
-            lastGen.GetWorstFit().DisplayBlocks();
-            Console.WriteLine("Displaying most fit schedule");
-            Console.WriteLine();
+            //Console.WriteLine("Displaying worst fit schedule");
+            //Console.WriteLine();
+            //lastGen.GetWorstFit().DisplayBlocks();
+            //Console.WriteLine("Displaying most fit schedule");
+            //Console.WriteLine();
 
-            CheckSchedule(lastGen.GetMostFit());
+
+            //CheckSchedule(lastGen.GetMostFit());
+
+            //Console.WriteLine("Displaying most fit schedules");
+            //Console.WriteLine();
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    CheckSchedule(lastGen.Schedules[i]); // should already be sorted
+            //}
 
 
         }
