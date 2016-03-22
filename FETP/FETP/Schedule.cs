@@ -26,7 +26,7 @@ namespace FETP
         /**************************************************************************\
         Schedule - Constant Data Members 
         \**************************************************************************/
-        private const string CLASS_LENGTH_TO_START_IGNORING = "0245"; // ? clean these up
+        private const string CLASS_LENGTH_TO_START_IGNORING = "0120"; // ? clean these up
         private const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
         public const string TIME_EXAMS_MUST_END_BY = "1700";
 
@@ -187,6 +187,10 @@ namespace FETP
             this.PigeonHoleClasses(Schedule.AllClasses.OrderBy(c => rand.Next()).ToList()); // sort in randomly order classes
         }
 
+        /**************************************************************************\
+        Method: SetUpBlocks
+        Description: Makes a block for each timeslot available
+        \**************************************************************************/
         public void SetUpBlocks()
         {
             this.blocks = new List<Block>(Schedule.NumberOfTimeSlotsAvailable); // intialize blocks to proper size
@@ -195,6 +199,7 @@ namespace FETP
                 this.blocks.Add(new Block());
             }
         }
+
 
         // ? call twice for keeeeds. swap postions of parents
         /**************************************************************************\
@@ -437,20 +442,22 @@ namespace FETP
         \**************************************************************************/
         private void PigeonHoleClasses(List<Class> classes) // ? I LOVE PIGEON HOLE
         {
-            int i = 0;
+            
             foreach (Class cl in classes)
             {
+                int i = GA_Controller.GetRandomInt(this.Blocks.Count);
+
                 // maybe check for empty blocks ?
                 this.blocks[i].addClass(cl);
 
-                if (i < Schedule.NumberOfTimeSlotsAvailable - 1) // ? clean up
-                {
-                    i++;
-                }
-                else
-                {
-                    i = 0;
-                }
+                //if (i < Schedule.NumberOfTimeSlotsAvailable - 1) // ? clean up
+                //{
+                //    i++;
+                //}
+                //else
+                //{
+                //    i = 0;
+                //}
             }
         }
 

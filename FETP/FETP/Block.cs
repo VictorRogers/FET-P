@@ -41,9 +41,15 @@ namespace FETP
         {
             get
             {
-                if (classesInBlock != null)
+                if (classesInBlock != null && classesInBlock.Count != 0)
+                {
                     return this.Enrollment / this.classesInBlock.Count;
-                else return 0;
+                }
+
+                else
+                {
+                    return 0;
+                }
             }
         }
         public int Variance
@@ -51,12 +57,17 @@ namespace FETP
             get
             {
                 int variance = 0;
-                foreach (Class cl in this.classesInBlock)
+                if(classesInBlock != null && classesInBlock.Count != 0)
                 {
-                    int difference = cl.Enrollment - this.Average;
-                    variance += (difference * difference);
+                    foreach (Class cl in this.classesInBlock)
+                    {
+                        int difference = cl.Enrollment - this.Average;
+                        variance += (difference * difference);
+                    }
+                    variance /= this.ClassesInBlock.Count;
                 }
-                return variance / this.ClassesInBlock.Count;
+                
+                    return variance;
             }
         }
         public double StandardDeviation
@@ -82,6 +93,20 @@ namespace FETP
                 return fitnessScore;
             }
         } // ? needs more work
+        public bool AreThereAnyNonOverlappingClasses
+        {
+            get
+            {
+                foreach (Class cl in this.classesInBlock)
+                {
+                    if(!this.doesClassOverlapWithBlock(cl))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
 
 
         /**************************************************************************\

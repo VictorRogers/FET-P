@@ -24,7 +24,7 @@ namespace FETP
         \**************************************************************************/ 
         // const int GENERATION_SIZE = 500;
         private const int MAX_GENERATION = 100; // ? big generations take a long time
-        private const int NUMBER_OF_GENERATIONS = 4;
+        private const int NUMBER_OF_GENERATIONS = 1;
 
         private const float CROSSOVER_RATE = 0.7F;
         public const float MUTATION_RATE = 0.15F;
@@ -33,7 +33,7 @@ namespace FETP
         /**************************************************************************\
         GA_Controller - Weights
         \**************************************************************************/
-        public static int WEIGHT_OVERLAPPING_CLASSES = 10; // static makes it fuction almost as const ?
+        public static int WEIGHT_OVERLAPPING_CLASSES = 50; // static makes it fuction almost as const ?
 
 
 
@@ -76,6 +76,7 @@ namespace FETP
             
             Console.WriteLine();
             currentGeneration[0].DisplayBlocks();
+            CheckSchedule(currentGeneration[0]);
         }
 
         /**************************************************************************\
@@ -146,13 +147,23 @@ namespace FETP
         }
 
 
+        public static Random rnd = new Random(); // this is up here to make sure we get good randoms, if it wasn't then we'd get the same random a bunch of times
+
         /**************************************************************************\
         Method: GetRandomFlot
         Description: Retrieves a random float between 0 and 1
         \**************************************************************************/
+
         public static double GetRandomFloat()
         {
-            return new Random().NextDouble(); // ? we need a better implementation. numbers from this class are known to not be that random
+            return rnd.NextDouble();
+            //return new Random().NextDouble(); // ? we need a better implementation. numbers from this class are known to not be that random
+        }
+
+        public static int GetRandomInt(int upperRange, int lowerRange = 0)
+        {
+            return rnd.Next(lowerRange, upperRange);
+            //return new Random().Next(lowerRange, upperRange);
         }
 
 
@@ -243,6 +254,30 @@ namespace FETP
             // ? write
         }
 
+        public static void CheckSchedule(Schedule schedule) // ? for testing
+        {
+            Console.WriteLine("\n***********************************************\n");
+            Console.WriteLine("How good is this Schedule?... Let's find out!!!");
+            Console.WriteLine("\n************************************************\n");
+
+            Console.WriteLine("Printing Basic information on Schedule");
+            Console.WriteLine("**************************************");
+            Schedule.Display();
+            Console.WriteLine();
+
+            Console.WriteLine("Number of Blocks: {0}", Schedule.NumberOfTimeSlotsAvailable);
+
+            // Check for bad blocks
+            int failingBlocks = 0;
+            foreach(Block block in schedule.Blocks)
+            {
+                if(block.AreThereAnyNonOverlappingClasses)
+                {
+                    failingBlocks++;
+                }
+            }
+            Console.WriteLine("Number of Blocks that do *NOT* have overlapping Classes: {0}", failingBlocks);
+        }
 
         /**************************************************************************\
         Constructor: Default 

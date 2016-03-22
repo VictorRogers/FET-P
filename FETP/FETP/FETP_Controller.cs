@@ -212,13 +212,13 @@ namespace FETP
         Description: Checks if there are any overlapping classes in the list of
                      classes
         \**************************************************************************/
-        public static bool doAnyClassesOverlap(List<Class> classes)
+        public static bool doAnyClassesNotOverlap(List<Class> classes)
         {
             foreach (Class class1 in classes)
             {
                 foreach (Class class2 in classes)
                 {
-                    if (doClassesOverlap(class1, class2))
+                    if (!doClassesOverlap(class1, class2))
                         return true;
                 }
             }
