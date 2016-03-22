@@ -1102,3 +1102,77 @@ class Generation
         return totalFitnessScore;
     }
 }
+
+
+
+//else if (input == "3")
+//{
+//    Console.WriteLine(STARS);
+//    Console.WriteLine("Testing Grouping of Classes");
+//    Console.WriteLine(STARS);
+
+//    // FileStream inFile = File.OpenRead(@"../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
+
+//    // currently sorts all the data
+//    List<Class> allClasses = FETP_Controller.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
+//    allClasses.OrderByDescending(c => c.Enrollment);
+//    //allClasses = FETP_Controller.sortClassesByOverlappingDays(allClasses); // sort classes how you want 
+//    List<Block> groupedClasses = FETP_Controller.coalesceClassesTogether(allClasses);
+
+
+//    Console.WriteLine("Number of Blocks: {0}", groupedClasses.Count);
+//    Console.WriteLine();
+
+//    foreach (Block block in groupedClasses)
+//    {
+//        Console.WriteLine("=================================");
+//        Console.WriteLine("Displaying Block");
+//        Console.WriteLine("=================================");
+
+//        Console.WriteLine("---------------------------------");
+//        Console.WriteLine("Displaying Information of Block");
+//        Console.WriteLine("---------------------------------");
+
+//        block.Display();
+//        Console.WriteLine("---------------------------------");
+//        Console.WriteLine("END Displaying Information of Block");
+//        Console.WriteLine("---------------------------------");
+
+
+//        Console.WriteLine("---------------------------------");
+//        Console.WriteLine("Displaying all Classes in Block");
+//        Console.WriteLine("---------------------------------");
+//        block.DisplayAllClasses();
+//        Console.WriteLine("---------------------------------");
+//        Console.WriteLine("END Displaying all Classes in Block");
+//        Console.WriteLine("---------------------------------");
+//        Console.WriteLine();
+
+//        Console.WriteLine("=================================");
+//        Console.WriteLine("END Displaying Block");
+//        Console.WriteLine("=================================");
+//    }
+
+
+//    Console.WriteLine(STARS);
+//    Console.WriteLine("END Testing Grouping of Classes");
+//    Console.WriteLine(STARS);
+//}
+
+    else if (input == "5") // GA 
+                {
+                    //Generation currentGeneration = new Generation();
+                    //Stopwatch stopwatch = new Stopwatch();
+                    //for (int i = 0; i < Generation.NUMBER_OF_GENERATIONS; i++)
+                    //{
+                    //    stopwatch.Start();
+                    //    currentGeneration = new Generation(currentGeneration.Schedules);
+                    //    stopwatch.Stop();
+                    //    Console.WriteLine("Time to Execute {0} generations: {1}", i + 1, stopwatch.Elapsed);
+                    //}
+                }
+
+    
+                //Console.WriteLine("3. Test Basic Grouping");
+                
+                Console.WriteLine("5. Test Basic GA with Generation class (broken hard)");

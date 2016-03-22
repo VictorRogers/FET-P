@@ -24,7 +24,7 @@ namespace FETP
         \**************************************************************************/ 
         // const int GENERATION_SIZE = 500;
         private const int MAX_GENERATION = 100; // ? big generations take a long time
-        private const int NUMBER_OF_GENERATIONS = 1;
+        private const int NUMBER_OF_GENERATIONS = 500;
 
         private const float CROSSOVER_RATE = 0.7F;
         public const float MUTATION_RATE = 0.15F;
@@ -47,6 +47,45 @@ namespace FETP
         /**************************************************************************\
         GA_Controller - Methods 
         \**************************************************************************/
+
+        public static void BenAllStartRun()
+        {
+            SetupIntialFields();
+
+            List<Schedule> allStars = new List<Schedule>();
+            Parallel.For(0, MAX_GENERATION, i =>
+                {
+                    RunGeneticAlgorithm();
+
+                    currentGeneration.OrderByDescending(c => c.FitnessScore).ToList();
+                    allStars.Add(currentGeneration[0]);
+                });
+
+            //for(int i = 0; i < MAX_GENERATION; i++)
+            //{
+            //    Run();
+            //    allStars.Add(currentGeneration[0]);
+            //}
+
+            // Do All Star run
+            currentGeneration = allStars;
+            RunGeneticAlgorithm();
+
+            Console.WriteLine("Displaying most fit schedule");
+            currentGeneration.OrderByDescending(c => c.FitnessScore).ToList();
+
+            Console.WriteLine();
+            currentGeneration[0].DisplayBlocks();
+
+
+        }
+
+        public static void SetupIntialFields()
+        {
+            Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
+            Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
+        }
+
         /**************************************************************************\
         Method: Run
         Description: Basic Testing Driver for GA
@@ -56,8 +95,7 @@ namespace FETP
             Console.WriteLine("Begining GA\n");
 
             // Get input
-            Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
-            Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
+            SetupIntialFields();
 
             // Intialize First Generation
             stopwatch.Restart();
@@ -276,7 +314,7 @@ namespace FETP
                     failingBlocks++;
                 }
             }
-            Console.WriteLine("Number of Blocks that do *NOT* have overlapping Classes: {0}", failingBlocks);
+            Console.WriteLine("Number of Blocks that do *NOT* have overlapping Classes: {0}", Schedule.NumberOfTimeSlotsAvailable - failingBlocks);
         }
 
         /**************************************************************************\
