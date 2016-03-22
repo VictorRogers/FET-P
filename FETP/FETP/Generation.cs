@@ -8,7 +8,7 @@ namespace FETP
 {
     class Generation
     {
-        private List<Schedule> schedules = new List<Schedule>(Generation.SIZE_OF_GENERATION);
+        private List<Schedule> schedules; // = new List<Schedule>(Generation.SIZE_OF_GENERATION);
         public List<Schedule> Schedules
         {
             get
@@ -17,8 +17,8 @@ namespace FETP
             }
         }
 
-        public const int SIZE_OF_GENERATION = 20; // ? big generations take a long time ? should be divisable by 2 ? we could write it to take a random number of parents for better crossover
-        public const int NUMBER_OF_GENERATIONS = 10;
+        public const int SIZE_OF_GENERATION = 30; // ? big generations take a long time ? should be divisable by 2 ? we could write it to take a random number of parents for better crossover
+        public const int NUMBER_OF_GENERATIONS = 100;
 
         // creates seed generation
         public Generation()

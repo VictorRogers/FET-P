@@ -23,8 +23,8 @@ namespace FETP
         GA_Controller - Data Constants
         \**************************************************************************/ 
         // const int GENERATION_SIZE = 500;
-        private const int SIZE_OF_GENERATION = 50; // ? big generations take a long time
-        private const int NUMBER_OF_GENERATIONS = 1000;
+        //private const int SIZE_OF_GENERATION = 50; // ? big generations take a long time
+        //private const int NUMBER_OF_GENERATIONS = 1000;
 
         private const float CROSSOVER_RATE = 0.7F;
         public const float MUTATION_RATE = 0.15F;
@@ -56,17 +56,24 @@ namespace FETP
 
             Stopwatch newStopwatch = new Stopwatch();
             newStopwatch.Start();
+
+            object benLock = new object();
+
             Parallel.For(0, Generation.SIZE_OF_GENERATION, index =>
                 {
                     Generation generation = new Generation(); // sets up intial generation
-                    Console.WriteLine("Starting GA: {0}", index);
-                    for (int i = 0; i < Generation.NUMBER_OF_GENERATIONS; i++)
+                    //Console.WriteLine("Starting GA: {0}", index);
+                    for (int i = 0; i < Generation.NUMBER_OF_GENERATIONS; i++) // ? is i the same for all loops?
                     {
                         generation = new Generation(generation);
                     }
+
+                    //Console.WriteLine("Time to Execute generation number {0}: {1}", index + 1, newStopwatch.Elapsed);
+                    lock (benLock)
+                    {
+                        allStars.Add(generation.GetMostFit());
+                    }
                     
-                    Console.WriteLine("Time to Execute generation number {0}: {1}", index + 1, newStopwatch.Elapsed);
-                    allStars.Add(generation.GetMostFit());
                     
                     
                 });
@@ -118,7 +125,7 @@ namespace FETP
             stopwatch.Reset();
 
             // Run GA
-            for (int i = 0; i < NUMBER_OF_GENERATIONS; i++)
+            for (int i = 0; i < Generation.NUMBER_OF_GENERATIONS; i++)
             {
                 stopwatch.Start();
                 generation = new Generation(generation);
