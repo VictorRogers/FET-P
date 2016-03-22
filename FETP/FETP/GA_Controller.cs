@@ -93,6 +93,10 @@ namespace FETP
             }
         }
 
+        public static bool WillParentsBreed()
+        {
+            return true; // ? Rewrite Victor
+        }
 
         public static void IntializeSeedGeneration()
         {
@@ -141,7 +145,6 @@ namespace FETP
 
         public static void AdvanceGeneration()
         {
-            stopWatch.Start();
 
             List<Schedule> nextGeneration = new List<Schedule>(GA_Controller.MAX_GENERATION);
             while (currentGeneration.Count > 0) // loop while there are still members in current generation // ? could optimze with just MAX_Generation and minus 2 but this is more scalable and reusable
@@ -157,11 +160,18 @@ namespace FETP
                     indexOfParent2 = BenRoutlette();
                 }
 
-
-
-                // Add the two parents new children to the next generation
-                nextGeneration.Add(new Schedule(currentGeneration[indexOfParent1], currentGeneration[indexOfParent2]));
-                nextGeneration.Add(new Schedule(currentGeneration[indexOfParent2], currentGeneration[indexOfParent1]));
+                // If parents are going to breed, pass their chidlren on to next generation, else pass parents on to next generation
+                if (WillParentsBreed())
+                {
+                    // Add the two parents new children to the next generation
+                    nextGeneration.Add(new Schedule(currentGeneration[indexOfParent1], currentGeneration[indexOfParent2]));
+                    nextGeneration.Add(new Schedule(currentGeneration[indexOfParent2], currentGeneration[indexOfParent1]));                    
+                }
+                else
+                {
+                    nextGeneration.Add(currentGeneration[indexOfParent1]);
+                    nextGeneration.Add(currentGeneration[indexOfParent2]);
+                }
 
                 // Remove the parents from the current pool
                 if (indexOfParent1 > indexOfParent2) // this is to make sure removing one parent doesn't move the index of the second
@@ -174,9 +184,10 @@ namespace FETP
                     currentGeneration.RemoveAt(indexOfParent2);
                     currentGeneration.RemoveAt(indexOfParent1);
                 }
+
             }
             
-            currentGeneration = nextGeneration;
+            currentGeneration = nextGeneration; // Advance to the next generation
         }
 
         /**************************************************************************\
@@ -201,7 +212,7 @@ namespace FETP
 
         public static void SaveGeneration()
         {
-            // write
+            // ? write
         }
 
         /**************************************************************************\
