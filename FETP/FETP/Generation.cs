@@ -17,9 +17,10 @@ namespace FETP
             }
         }
 
-        public const int SIZE_OF_GENERATION = 20; // ? big generations take a long time
+        public const int SIZE_OF_GENERATION = 20; // ? big generations take a long time ? should be divisable by 2 ? we could write it to take a random number of parents for better crossover
         public const int NUMBER_OF_GENERATIONS = 10;
 
+        // creates seed generation
         public Generation()
         {
             // Intialize the current generation
@@ -38,22 +39,22 @@ namespace FETP
             // List<Schedule> nextGeneration = new List<Schedule>(GA_Controller.SIZE_OF_GENERATION);
 
             this.schedules = new List<Schedule>(Generation.SIZE_OF_GENERATION);
-
             List<Schedule> currentGeneration = new List<Schedule>(generation.Schedules); // ? a little confusing since currentGeneration isn't a generation object
-
             while (currentGeneration.Count > 0) // loop while there are still members in current generation // ? could optimze with just SIZE_OF_GENERATION and minus 2 but this is more scalable and reusable
             {
                 // ? not sure if you're supposed to give the parents a chance to reproduce or not.
                 // ? that should be handled just by selection?
 
                 // get next two parents // separate out into antoher function??
-                int indexOfParent1 = BenRoutlette();
-                int indexOfParent2 = BenRoutlette();
+                int indexOfParent1 = this.BenRoutlette(currentGeneration);
+                int indexOfParent2 = this.BenRoutlette(currentGeneration);
+                
                 while (indexOfParent1 == indexOfParent2) // makes sure we have two different indexes
                 {
-                    indexOfParent2 = BenRoutlette();
+                    indexOfParent2 = this.BenRoutlette(currentGeneration);
                 }
 
+                
                 // If parents are going to breed, pass their chidlren on to next generation, else pass parents on to next generation
                 if (GA_Controller.WillParentsBreed(indexOfParent1, indexOfParent2))
                 {
@@ -66,7 +67,7 @@ namespace FETP
                     this.schedules.Add(currentGeneration[indexOfParent1]);
                     this.schedules.Add(currentGeneration[indexOfParent2]);
                 }
-
+                
                 // Remove the parents from the current pool
                 if (indexOfParent1 > indexOfParent2) // this is to make sure removing one parent doesn't move the index of the second
                 {
@@ -84,6 +85,11 @@ namespace FETP
             //currentGeneration = nextGeneration; // Advance to the next generation
         }
 
+        public Generation(List<Schedule> inSchedules)
+        {
+            this.schedules = inSchedules;
+        }
+
         public bool IsEmpty()
         {
             return this.schedules.Count <= 0;
@@ -94,15 +100,14 @@ namespace FETP
         Method: BenRoutlette
         Description: Randomly selects an index with weight from fitness scores
         \**************************************************************************/
-        public int BenRoutlette()
+        public int BenRoutlette(List<Schedule> schedules)
         {
-            int totalFitnessScoreWeight = (ComputeTotalFitnessScore()); // maybe add in one ? it avoids divide by zero
+            int totalFitnessScoreWeight = (this.ComputeTotalFitnessScore(schedules)); // maybe add in one ? it avoids divide by zero
 
             double randomFloat = GA_Controller.GetRandomFloat() * totalFitnessScoreWeight;
-
-            for (int i = 0; i < this.schedules.Count; i++) // ? current generation will shrink as more and more are moved to next generation 
+            for (int i = 0; i < schedules.Count; i++) // ? current generation will shrink as more and more are moved to next generation 
             {
-                randomFloat -= this.schedules[i].FitnessScore;
+                randomFloat -= schedules[i].FitnessScore;
                 if (randomFloat <= 0)
                 {
                     return i;
@@ -116,10 +121,10 @@ namespace FETP
         Method: ComputeTotalFitnessScore
         Description: Computes the total fitness score of all schedules
         \**************************************************************************/
-        public int ComputeTotalFitnessScore()
+        public int ComputeTotalFitnessScore(List<Schedule> schedules)
         {
             int totalFitnessScore = 0;
-            foreach (Schedule schedule in this.schedules)
+            foreach (Schedule schedule in schedules)
             {
                 totalFitnessScore += schedule.FitnessScore;
             }
