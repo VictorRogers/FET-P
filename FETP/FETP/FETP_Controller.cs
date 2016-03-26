@@ -337,15 +337,15 @@ namespace FETP
                 {
                     int indexOfLargest = 0;
                     int currentLargest = 0;
-                    foreach (int index in indexes)
-                    {
-                        if (groupedClasses[index].ClassesInBlock.Count > currentLargest)
-                        {
-                            currentLargest = groupedClasses[index].ClassesInBlock.Count;
-                            indexOfLargest = index;
-                        }
-                    }
-                    //indexOfLargest = indexes[ GA_Controller.GetRandomInt() % indexes.Count];
+                    //foreach (int index in indexes)
+                    //{
+                    //    if (groupedClasses[index].ClassesInBlock.Count > currentLargest)
+                    //    {
+                    //        currentLargest = groupedClasses[index].ClassesInBlock.Count;
+                    //        indexOfLargest = index;
+                    //    }
+                    //}
+                    indexOfLargest = indexes[ GA_Controller.GetRandomInt() % indexes.Count];
                     groupedClasses[indexOfLargest].addClass(cl);
                 }
             }

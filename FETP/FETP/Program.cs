@@ -91,7 +91,6 @@ namespace FETP
                     Console.WriteLine();
 
                     List<Block> blocks = FETP_Controller.GroupClasses(Schedule.AllClasses.OrderByDescending(c => c.Enrollment).ToList());
-                    Console.WriteLine("Number of Blocks: {0}", blocks.Count);
                     int smallest = blocks.Count;
 
                     int variance = FETP_Controller.ComputeVarianceOfBlocks(blocks);
@@ -103,6 +102,15 @@ namespace FETP
                     object benlock2 = new object();
                     int foundNewCount = 0;
                     int countSearched = 0;
+                    Stopwatch newTimer = new Stopwatch();
+                    newTimer.Start();
+
+                    Console.WriteLine("Searched: {0}: ", countSearched);
+                    Console.WriteLine("New Variance: {0}: ", variance);
+                    Console.WriteLine("Count: {0}: ", foundNewCount);
+                    Console.WriteLine("Number of Blocks: {0}", blocks.Count);
+                    Console.WriteLine("**********************");
+
                     Parallel.For(0, 1000000, new ParallelOptions { MaxDegreeOfParallelism = Generation.BEN_ALL_STAR_THREAD_LIMIT }, index =>
                     {
                         lock(benlock2)
@@ -121,18 +129,21 @@ namespace FETP
                                 Console.WriteLine("Number of Blocks: {0}", newblocks.Count);
                                 smallest = newblocks.Count;
                                 blocks = newblocks;
+
+                                variance = FETP_Controller.ComputeVarianceOfBlocks(blocks);
+
+                                Console.WriteLine("New Variance: {0}: ", variance);
                                 Console.WriteLine("**********************");
                             }
                             else if(newblocks.Count == smallest)
                             {
                                 
                                 int newvariance = FETP_Controller.ComputeVarianceOfBlocks(newblocks);
-                                if(newvariance < variance)
+                                if(newvariance > variance)
                                 {
                                     foundNewCount++;
                                     Console.WriteLine("Searched: {0}: ", countSearched);
                                     Console.WriteLine("New Variance: {0}: ", newvariance);
-
                                     Console.WriteLine("Count: {0}: ", foundNewCount);
                                     Console.WriteLine("Number of Blocks: {0}", newblocks.Count);
                                     //smallest = newblocks.Count;
@@ -152,6 +163,9 @@ namespace FETP
 
 
                     });
+
+                    newTimer.Stop();
+                    Console.WriteLine(newTimer.Elapsed);
                     //for(int i = 0; i < 10000000; i++)
                     //{
                     //    blocks = FETP_Controller.GroupClasses(Schedule.AllClasses.OrderBy(c => GA_Controller.GetRandomInt()).ToList());
@@ -162,7 +176,12 @@ namespace FETP
                     //    }
                     //}
 
+                    Console.WriteLine("******DONE************");
+                    Console.WriteLine("Searched: {0}: ", countSearched);
+                    Console.WriteLine("New Variance: {0}: ", variance);
+                    Console.WriteLine("Count: {0}: ", foundNewCount);
                     Console.WriteLine("Number of Blocks: {0}", blocks.Count);
+                    Console.WriteLine("**********************");
                     blocks = blocks.OrderByDescending(c => c.Enrollment).ToList();
                     foreach (Block block in blocks)
                     {
