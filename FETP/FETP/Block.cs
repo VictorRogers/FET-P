@@ -201,6 +201,11 @@ namespace FETP
             return true;
         }
 
+        public void SortByEnrollment()
+        {
+            
+        }
+
         /**************************************************************************\
         Method: Display
         Description: Displays all informations stored in Block instance
@@ -213,6 +218,7 @@ namespace FETP
             Console.WriteLine("Average Enrollment: {0}", this.Average);
             Console.WriteLine("Variance: {0}", this.Variance);
             Console.WriteLine("Standard Deviation: {0}", this.StandardDeviation);
+            Console.WriteLine("Fitness: {0}", this.FitnessScore);
         }
 
         /**************************************************************************\

@@ -73,7 +73,7 @@ namespace FETP
 
 
                 }
-                
+
                 else if (input == "3") // GA 
                 {
                     //while(true)
@@ -81,35 +81,94 @@ namespace FETP
                 }
                 else if (input == "4")
                 {
-                   // while(true)
+                    // while(true)
                     GA_Controller.BenAllStartRun();
                 }
-                else if(input == "5")
+                else if (input == "5")
                 {
                     Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
                     Console.WriteLine("Number of Classes: {0}", Schedule.AllClasses.Count);
                     Console.WriteLine();
 
-                    List<Block> blocks = FETP_Controller.GroupClasses(Schedule.AllClasses.OrderBy(c => c.Enrollment).ToList());
+                    List<Block> blocks = FETP_Controller.GroupClasses(Schedule.AllClasses.OrderByDescending(c => c.Enrollment).ToList());
                     Console.WriteLine("Number of Blocks: {0}", blocks.Count);
                     int smallest = blocks.Count;
-                    for(int i = 0; i < 10000000; i++)
+
+                    int variance = FETP_Controller.ComputeVarianceOfBlocks(blocks);
+
+
+
+                    object benlock = new object();
+
+                    object benlock2 = new object();
+                    int foundNewCount = 0;
+                    int countSearched = 0;
+                    Parallel.For(0, 1000000, new ParallelOptions { MaxDegreeOfParallelism = Generation.BEN_ALL_STAR_THREAD_LIMIT }, index =>
                     {
-                        blocks = FETP_Controller.GroupClasses(Schedule.AllClasses.OrderBy(c => GA_Controller.GetRandomInt()).ToList());
-                        if (blocks.Count < smallest)
+                        lock(benlock2)
                         {
-                            Console.WriteLine("Number of Blocks: {0}", blocks.Count);
-                            smallest = blocks.Count;
+                            countSearched++;
                         }
-                    }
+                        List<Block> newblocks = FETP_Controller.GroupClasses(Schedule.AllClasses.OrderBy(c => GA_Controller.GetRandomInt()).ToList());
 
-                    //Console.WriteLine("Number of Blocks: {0}", blocks.Count);
+                      lock(benlock)
+                        {
+                            if (newblocks.Count < smallest)
+                            {
+                                foundNewCount++;
+                                Console.WriteLine("Searched: {0}: ", countSearched);
+                                Console.WriteLine("Count: {0}: ", foundNewCount);
+                                Console.WriteLine("Number of Blocks: {0}", newblocks.Count);
+                                smallest = newblocks.Count;
+                                blocks = newblocks;
+                                Console.WriteLine("**********************");
+                            }
+                            else if(newblocks.Count == smallest)
+                            {
+                                
+                                int newvariance = FETP_Controller.ComputeVarianceOfBlocks(newblocks);
+                                if(newvariance < variance)
+                                {
+                                    foundNewCount++;
+                                    Console.WriteLine("Searched: {0}: ", countSearched);
+                                    Console.WriteLine("New Variance: {0}: ", newvariance);
 
-                    //foreach(Block block in blocks)
+                                    Console.WriteLine("Count: {0}: ", foundNewCount);
+                                    Console.WriteLine("Number of Blocks: {0}", newblocks.Count);
+                                    //smallest = newblocks.Count;
+                                    variance = newvariance;
+                                    blocks = newblocks;
+                                    Console.WriteLine("**********************");
+                                }
+
+                                 
+                            }
+
+                        }
+
+
+
+
+
+
+                    });
+                    //for(int i = 0; i < 10000000; i++)
                     //{
-                    //    block.Display();
-                    //    block.DisplayAllClasses();
+                    //    blocks = FETP_Controller.GroupClasses(Schedule.AllClasses.OrderBy(c => GA_Controller.GetRandomInt()).ToList());
+                    //    if (blocks.Count < smallest)
+                    //    {
+                    //        Console.WriteLine("Number of Blocks: {0}", blocks.Count);
+                    //        smallest = blocks.Count;
+                    //    }
                     //}
+
+                    Console.WriteLine("Number of Blocks: {0}", blocks.Count);
+                    blocks = blocks.OrderByDescending(c => c.Enrollment).ToList();
+                    foreach (Block block in blocks)
+                    {
+                        block.Display();
+                        block.DisplayAllClasses();
+                    }
                 }
                 
                 Console.WriteLine();

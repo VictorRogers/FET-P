@@ -339,13 +339,13 @@ namespace FETP
                     int currentLargest = 0;
                     foreach (int index in indexes)
                     {
-                        if (groupedClasses[index].Enrollment > currentLargest)
+                        if (groupedClasses[index].ClassesInBlock.Count > currentLargest)
                         {
                             currentLargest = groupedClasses[index].ClassesInBlock.Count;
                             indexOfLargest = index;
                         }
                     }
-                    //int randomNum = GA_Controller.GetRandomInt() % indexes.Count;
+                    //indexOfLargest = indexes[ GA_Controller.GetRandomInt() % indexes.Count];
                     groupedClasses[indexOfLargest].addClass(cl);
                 }
             }
@@ -353,8 +353,29 @@ namespace FETP
             return groupedClasses;
 
         }
-        
+     
 
-        
+        public static int ComputeVarianceOfBlocks(List<Block> blocks)
+        {
+            int newaverage = 0;
+            foreach (Block block in blocks)
+            {
+                newaverage += block.Enrollment;
+            }
+            newaverage /= blocks.Count;
+
+            int newvariance = 0;
+            foreach (Block block in blocks)
+            {
+                int difference = block.Enrollment - newaverage;
+                newvariance += (difference * difference);
+            }
+
+            return newvariance / blocks.Count;
+
+
+        }
     }
+
+    
 }

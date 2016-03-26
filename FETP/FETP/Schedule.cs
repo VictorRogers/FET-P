@@ -399,7 +399,7 @@ namespace FETP
                 TimeSpan endTime = TimeSpan.ParseExact(daysAndTimes[3], @"hhmm", CultureInfo.InvariantCulture); // 3 position is the end time, changes formated time to bw more usable 
 
                 // Checks if class should not be ignored before continuing execution
-                if ((startTime < ignoreClassStartTime) && (endTime - startTime < ignoreClassLength))
+                if ((startTime < ignoreClassStartTime) && (endTime - startTime < ignoreClassLength) && ((TimeSpan.Compare(endTime - startTime, TimeSpan.FromMinutes(50))) == 0 || (TimeSpan.Compare(endTime - startTime, TimeSpan.FromMinutes(75)) == 0)))
                 {
                     List<DayOfWeek> days = new List<DayOfWeek>(); // days the class meets
                     foreach (char day in daysAndTimes[0].ToCharArray()) // changes days from string of chars to list of DayOfWeek type
