@@ -27,7 +27,7 @@ namespace FETP
         //private const int NUMBER_OF_GENERATIONS = 1000;
 
         private const float CROSSOVER_RATE = 0.7F;
-        public const float MUTATION_RATE = 0.15F;
+        public const float MUTATION_RATE = 0.04F;
        
 
         /**************************************************************************\
@@ -57,53 +57,88 @@ namespace FETP
             Stopwatch newStopwatch = new Stopwatch();
             newStopwatch.Start();
 
-            object benLock = new object();
 
             //for (int i = 0; i < Generation.SIZE_OF_GENERATION; i++)
             //{
             //    Generation generation = new Generation(); // sets up intial generation
-            //                                              //Console.WriteLine("Starting GA: {0}", index);
+            //    Console.WriteLine("Starting GA: {0}", i + 1);
             //    for (int j = 0; j < Generation.NUMBER_OF_GENERATIONS; j++) // ? is i the same for all loops?
             //    {
-            //        generation = new Generation(generation);
+            //        generation.AdvanceGeneration();
             //    }
 
-            //    //Console.WriteLine("Time to Execute generation number {0}: {1}", index + 1, newStopwatch.Elapsed);
+            //    Console.WriteLine("Time to Execute GA {0}: {1}", i + 1, newStopwatch.Elapsed);
             //    //lock (benLock)
             //    //{
-            //    Console.WriteLine("finished generation: " + i);
             //    allStars.Add(generation.GetMostFit());
+            //    //}
+
+
             //}
 
+            object benLock = new object();
+            object benLock2 = new object();
+            object benLock3 = new object();
 
-            Parallel.For(0, Generation.SIZE_OF_GENERATION, new ParallelOptions { MaxDegreeOfParallelism = Generation.BEN_ALL_STAR_THREAD_LIMIT }, index =>
+            lock(benLock2)
             {
-                Generation generation = new Generation(); // sets up intial generation
-                Console.WriteLine("Starting GA: {0}", index+1);
-                for (int i = 0; i < Generation.NUMBER_OF_GENERATIONS; i++) // ? is i the same for all loops?
+                Parallel.For(0, Generation.SIZE_OF_GENERATION, new ParallelOptions { MaxDegreeOfParallelism = Generation.BEN_ALL_STAR_THREAD_LIMIT }, index =>
                 {
-                    generation = new Generation(generation);
-                }
+                    Generation generation;
+                    lock (benLock)
+                    {
+                        generation = new Generation(); // sets up intial generation
+                    }
 
-                Console.WriteLine("Time to Execute GA {0}: {1}", index + 1, newStopwatch.Elapsed);
-                //lock (benLock)
-                //{
-                allStars.Add(generation.GetMostFit());
-                //}
+                    Console.WriteLine("Starting GA: {0}", index + 1);
 
+                    for (int i = 0; i < Generation.NUMBER_OF_GENERATIONS; i++) // ? is i the same for all loops?
+                    {
+                        generation.AdvanceGeneration();
+                    }
 
+                    Console.WriteLine("Time to Execute GA {0}: {1}", index + 1, newStopwatch.Elapsed);
 
-            });
+                    allStars.Add(generation.GetMostFit());
+                });
+            }
+            
 
-                    //for(int i = 0; i < SIZE_OF_GENERATION; i++)
-                    //{
-                    //    Run();
-                    //    allStars.Add(currentGeneration[0]);
-                    //}
+            List<Schedule> betterAllStars = new List<Schedule>();
+            //lock(benLock2)
+            //{
+            //    Parallel.For(0, Generation.SIZE_OF_GENERATION, new ParallelOptions { MaxDegreeOfParallelism = Generation.BEN_ALL_STAR_THREAD_LIMIT }, index =>
+            //    {
+            //        Generation generation;
+            //        lock (benLock)
+            //        {
+            //            generation = new Generation(allStars); // sets up intial generation
+            //        }
 
-                    // Do All Star run
-                    Console.WriteLine("Starting allstar run");
+            //        for (int i = 0; i < Generation.NUMBER_OF_GENERATIONS; i++) // ? is i the same for all loops?
+            //        {
+            //            generation.AdvanceGeneration();
+            //        }
+
+            //        betterAllStars.Add(generation.GetMostFit());
+            //    });
+            //}
+            
+
+            //for(int i = 0; i < SIZE_OF_GENERATION; i++)
+            //{
+            //    Run();
+            //    allStars.Add(currentGeneration[0]);
+            //}
+
+            // Do All Star run
+            Console.WriteLine("Starting allstar run");
             Generation lastGen = new Generation(allStars);
+            for (int i = 0; i < Generation.NUMBER_OF_GENERATIONS; i++) // ? is i the same for all loops?
+            {
+                lastGen.AdvanceGeneration();
+            }
+
             lastGen.OrderByFitnessScore();
 
             foreach(Schedule sch in lastGen.Schedules)
@@ -129,7 +164,13 @@ namespace FETP
             //    CheckSchedule(lastGen.Schedules[i]); // should already be sorted
             //}
 
-
+            Console.WriteLine(Schedule.AllClasses.Count);
+            int classnum = 0;
+            foreach (Block block in lastGen.Schedules[0].Blocks)
+            {
+                classnum+= block.ClassesInBlock.Count;
+            }
+            Console.WriteLine(classnum);
         }
 
         
@@ -157,7 +198,7 @@ namespace FETP
             for (int i = 0; i < Generation.NUMBER_OF_GENERATIONS; i++)
             {
                 stopwatch.Start();
-                generation = new Generation(generation);
+                generation.AdvanceGeneration();
                 stopwatch.Stop();
                 Console.WriteLine("Time to Execute {0} generations: {1}", i + 1, stopwatch.Elapsed);
             }

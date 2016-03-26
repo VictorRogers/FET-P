@@ -125,7 +125,7 @@ namespace FETP
                 this.classesInBlock = new List<Class>();
             }
             else {
-                this.classesInBlock = inClasses;
+                this.classesInBlock = new List<Class>(inClasses);
             }
         }
 

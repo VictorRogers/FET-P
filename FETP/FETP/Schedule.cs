@@ -26,7 +26,7 @@ namespace FETP
         /**************************************************************************\
         Schedule - Constant Data Members 
         \**************************************************************************/
-        private const string CLASS_LENGTH_TO_START_IGNORING = "0120"; // ? clean these up
+        private const string CLASS_LENGTH_TO_START_IGNORING = "0126"; // ? clean these up
         private const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
         public const string TIME_EXAMS_MUST_END_BY = "1700";
 

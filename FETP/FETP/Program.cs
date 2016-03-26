@@ -75,10 +75,12 @@ namespace FETP
                 
                 else if (input == "3") // GA 
                 {
+                    //while(true)
                     GA_Controller.Run();
                 }
                 else if (input == "4")
                 {
+                   // while(true)
                     GA_Controller.BenAllStartRun();
                 }
                 
