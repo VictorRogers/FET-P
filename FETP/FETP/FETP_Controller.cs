@@ -239,7 +239,7 @@ namespace FETP
         public static List<Block> GroupClass(List<Block> blocks, Class inclass)
         {
             bool isinserted = false;
-             int i = 0;
+            int i = 0;
             while(i<blocks.Count && !isinserted)
             {
                 if(blocks[i].doesClassOverlapWithBlock(inclass))
@@ -291,6 +291,69 @@ namespace FETP
             }
             return classes;
         }
+
+        public static List<Block> GroupClasses(List<Class> classes)
+        {
+            List<Block> groupedClasses = new List<Block>();
+            //foreach (Class cl in classes)
+            //{
+            //    bool doesItOverlap = false;
+            //    foreach (Block block in groupedClasses)
+            //    {
+            //        if (block.doesClassOverlapWithBlock(cl)) // ? changed to 0. makes no difference when making smallest classes, but should make it work with blank days
+            //        {
+            //            block.addClass(cl);
+            //            doesItOverlap = true;
+            //            break; // ?bug THIS WASN'T THERE :'( // maybe not a bug due to ordering?
+            //        }
+            //    }
+            //    if (!doesItOverlap)
+            //    {
+            //        groupedClasses.Add(new Block(cl));
+            //    }
+            //}
+            //return groupedClasses;
+
+
+
+            foreach (Class cl in classes)
+            {
+                List<int> indexes = new List<int>();
+                int i = 0;
+                while (i < groupedClasses.Count)
+                {
+                    if (groupedClasses[i].doesClassOverlapWithBlock(cl))
+                    {
+                        indexes.Add(i);
+                    }
+                    i++;
+                }
+
+                if (indexes.Count == 0)
+                {
+                    groupedClasses.Add(new Block(cl));
+                }
+                else
+                {
+                    int indexOfLargest = 0;
+                    int currentLargest = 0;
+                    foreach (int index in indexes)
+                    {
+                        if (groupedClasses[index].Enrollment > currentLargest)
+                        {
+                            currentLargest = groupedClasses[index].ClassesInBlock.Count;
+                            indexOfLargest = index;
+                        }
+                    }
+                    //int randomNum = GA_Controller.GetRandomInt() % indexes.Count;
+                    groupedClasses[indexOfLargest].addClass(cl);
+                }
+            }
+
+            return groupedClasses;
+
+        }
+        
 
         
     }

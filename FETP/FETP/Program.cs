@@ -20,6 +20,7 @@ namespace FETP
                 Console.WriteLine("2. Reading from Constraints File");
                 Console.WriteLine("3. Test Basic GA");
                 Console.WriteLine("4. Test Ben's Allstar GA    <---- will devour CPU like ice cream on a hot day"); // ? crashes every now and then. theres a bug somewhere...
+                Console.WriteLine("5. Basic Grouping");
 
 
                 string input = Console.ReadLine();
@@ -82,6 +83,33 @@ namespace FETP
                 {
                    // while(true)
                     GA_Controller.BenAllStartRun();
+                }
+                else if(input == "5")
+                {
+                    Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
+                    Console.WriteLine("Number of Classes: {0}", Schedule.AllClasses.Count);
+                    Console.WriteLine();
+
+                    List<Block> blocks = FETP_Controller.GroupClasses(Schedule.AllClasses.OrderBy(c => c.Enrollment).ToList());
+                    Console.WriteLine("Number of Blocks: {0}", blocks.Count);
+                    int smallest = blocks.Count;
+                    for(int i = 0; i < 10000000; i++)
+                    {
+                        blocks = FETP_Controller.GroupClasses(Schedule.AllClasses.OrderBy(c => GA_Controller.GetRandomInt()).ToList());
+                        if (blocks.Count < smallest)
+                        {
+                            Console.WriteLine("Number of Blocks: {0}", blocks.Count);
+                            smallest = blocks.Count;
+                        }
+                    }
+
+                    //Console.WriteLine("Number of Blocks: {0}", blocks.Count);
+
+                    //foreach(Block block in blocks)
+                    //{
+                    //    block.Display();
+                    //    block.DisplayAllClasses();
+                    //}
                 }
                 
                 Console.WriteLine();
