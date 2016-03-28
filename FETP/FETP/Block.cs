@@ -14,13 +14,43 @@ namespace FETP
     public class Block
     {
         /**************************************************************************\
-        Block - Data Members 
+        Class: Block 
+        Section: Utilities
         \**************************************************************************/
+        //Utility Data Members Here
+
+
+        /**************************************************************************\
+        Utility Method: Example 
+        Description: This is an example header
+        TODO: Remove if a utility method is added
+        \**************************************************************************/
+
+        //End Utilities Section
+
+
+        /**************************************************************************\
+        Class: Block 
+        Section: Data Constants 
+        \**************************************************************************/
+        //Add data constants here
+
+        //End Data Constants Section
+
+
+        /**************************************************************************\
+        Class: Block 
+        Section: Data Members
+        \**************************************************************************/
+        //TODO: This seems ambiguous - There is a member and a property for this
         protected List<Class> classesInBlock;
+
+        //End Data Members Section
         
 
         /**************************************************************************\
-        Block - Properties 
+        Class: Block 
+        Sections: Properties
         TODO: Let me know if headers for properties are too excessive (VR)
         \**************************************************************************/
         /**************************************************************************\
@@ -155,12 +185,15 @@ namespace FETP
             }
         }
 
+        //End Properties Section
+
 
         /**************************************************************************\
-        Block - Methods 
+        Class: Block 
+        Section: Methods
         \**************************************************************************/
         /**************************************************************************\
-        Constructor: Default 
+        Method: Overloaded Constructor 
         Description: Takes in data values and creates Block with those values
         TODO: need new constructor
         \**************************************************************************/
@@ -177,9 +210,9 @@ namespace FETP
 
 
         /**************************************************************************\
-        Constructor: Overloaded 
+        Method: Overloaded Constructor
         Description: Creates a new Block with only the input class in it
-        TODO: need new constructor
+        TODO: Looks like one of these overloaded constructors needs to go 
         \**************************************************************************/
         public Block(Class inClass)
         {
@@ -259,5 +292,19 @@ namespace FETP
             foreach (Class cl in this.classesInBlock)
                 cl.Display();
         }
+
+        //End Methods Section
+
+
+        /**************************************************************************\
+        Class: Block 
+        Section: Overloaded Operators 
+        \**************************************************************************/
+        /**************************************************************************\
+        Operator: ==
+        Description: This is an example 
+        \**************************************************************************/
+
+        //End Overloaded Operators Section
     }
 }
