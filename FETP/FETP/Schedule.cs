@@ -137,11 +137,11 @@ namespace FETP
                 return numberOfExams;
             }
         }
-        public int FitnessScore
+        public double FitnessScore
         {
             get
             {
-                int fitnessScore = 0;
+                double fitnessScore = 0;
                 foreach(Block block in this.blocks)
                 {
                     fitnessScore += block.FitnessScore;
@@ -180,11 +180,10 @@ namespace FETP
         public Schedule() // ? possibly make classes static. it would make it faster
         {
             
-            Random rand = new Random();
-
+            
             SetUpBlocks();
 
-            this.PigeonHoleClasses(Schedule.AllClasses.OrderBy(c => rand.Next()).ToList()); // sort in randomly order classes
+            this.PigeonHoleClasses(Schedule.AllClasses.OrderBy(c => GA_Controller.GetRandomInt()).ToList()); // sort in randomly order classes
         }
 
         /**************************************************************************\

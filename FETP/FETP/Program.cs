@@ -19,7 +19,7 @@ namespace FETP
                 Console.WriteLine("1. Reading from Enrollment File");
                 Console.WriteLine("2. Reading from Constraints File");
                 Console.WriteLine("3. Test Basic GA");
-                Console.WriteLine("4. Test Ben's Allstar GA");
+                Console.WriteLine("4. Test Ben's Allstar GA    <---- will devour CPU like ice cream on a hot day"); // ? crashes every now and then. theres a bug somewhere...
 
 
                 string input = Console.ReadLine();

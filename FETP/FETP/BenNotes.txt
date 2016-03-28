@@ -89,5 +89,7 @@
 
 
 
+	needs to do allstar type runs to make use of multi cpu computers. it allows us to compute better results faster.
+
 
 */
