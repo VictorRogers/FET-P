@@ -5,170 +5,240 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
+using System.Globalization;
+
+
 namespace FETP
 {
-    struct Class
-    {
-        public bool monday { get; set; }
-        public bool tuesday { get; set; }
-        public bool wednesday { get; set; }
-        public bool thursday { get; set; }
-        public bool friday { get; set; }
-        public DateTime startTime { get; set; }
-        public DateTime endTime { get; set; }
-        public int enrollment { get; set; }
-    }
-
     /**************************************************************************\
     Class: FETP_Controller (Final Exam Timetabling Problem Controller)
-    Description: This class contains all of the primary functions used for 
-    reading in data, adjusting data, outputting data, and running starting the 
-    process of running the genetic algorithm. This is the primary interface 
-    between the front-end and the back-end. It reads from the data file, formats 
-    the data for use by the GA_Controller, receives the solutions from the 
-    GA_Controller, and sends them back to the front-end for display in the GUI.
+    Description: 
+    TODO: Rewrite description. The old one was out of date.
     \**************************************************************************/
-    class FETP_Controller
+    public static class FETP_Controller
     {
         /**************************************************************************\
-        FETP_Controller - Data Members
-        \**************************************************************************/
-        List<string> Meeting_Days_Times;
-        List<string> SUM_ACTUAL_ENROLLMENT;
+        Class: FETP_Controller
+        Section: Utilities
+        \**************************************************************************/       
+        //Used for random number generation
+        private static readonly Random random = new Random();
+        private static readonly object syncLock = new object();
 
-        private int numExamSlots;
-        private int numClasses;
-        public Class[] setClasses;
 
         /**************************************************************************\
-        FETP_Controller - Methods 
+        Utility Method: RandomFloatBetween01 
+        Description: Will return a random float between 0 and 1 
+        \**************************************************************************/       
+        public static float RandomFloatBetween01()
+        {
+            lock (syncLock)
+            {
+                return (float)random.NextDouble();
+            }
+        }
+
+        //End Utilities Section
+
+
+        /**************************************************************************\
+        Class: FETP_Controller 
+        Section: Data Constants 
+        \**************************************************************************/
+        //Add data constants here
+
+        //End Data Constants Section 
+
+
+        /**************************************************************************\
+        Class: FETP_Controller 
+        Section: Data Members 
+        \**************************************************************************/
+        //Add data members here
+
+        //End Data Members section
+
+
+        /**************************************************************************\
+        Class: FETP_Controller 
+        Sections: Properties
+        TODO: Let me know if headers for properties are too excessive (VR)
         \**************************************************************************/
         /**************************************************************************\
-        Constructor: Default 
+        Property: ExampleProperty 
+        Description: This is an example
+        TODO: Delete this if an actual property is added 
+        \**************************************************************************/
+
+        //End Properties Section
+
+
+        /**************************************************************************\
+        Class: FETP_Controller
+        Section: Methods
+        /**************************************************************************\
+        Method: doClassesOverlap
+        Description: Determines if the two input classes overlap.
+        \**************************************************************************/
+        public static bool doClassesOverlap(Class class1, Class class2)
+        {
+            return (doClassDaysOverlap(class1, class2) && doClassTimesOverlap(class1, class2)); // Broke up to aid readability
+        }
+
+
+        /**************************************************************************\
+        Method: doClassDaysOverlap
+        Description: Determines if the two input classes share any days in common
+        \**************************************************************************/
+        public static bool doClassDaysOverlap(Class class1, Class class2)
+        {
+            return (getNumberOfDaysInCommon(class1, class2) > 0);
+        }
+
+        
+        /**************************************************************************\
+        Method: doClassTimesOverlap
+        Description: Determines if the two input classes have times that overlap
+        \**************************************************************************/
+        public static bool doClassTimesOverlap(Class class1, Class class2)
+        {
+            return (
+              (class1.StartTime >= class2.StartTime && class1.StartTime <= class2.EndTime) // does class1 start during class2
+              || (class1.EndTime >= class2.StartTime && class1.EndTime <= class2.EndTime) // or does class1 end during class2 
+              || (class2.StartTime >= class1.StartTime && class2.StartTime <= class1.EndTime) // or does class2 start during class1
+              || (class2.EndTime >= class1.StartTime && class2.EndTime <= class1.EndTime) // or does class2 end during class1
+            ); 
+        }
+
+
+        /**************************************************************************\
+        Method: getNumberOfDaysInCommon
+        Description: Gets the number of overlapping days between two input classes
+        \**************************************************************************/
+        public static int getNumberOfDaysInCommon(Class class1, Class class2)
+        {
+            int daysInCommon = 0;
+            foreach(DayOfWeek dayFromClass1 in class1.DaysMeet)
+            {
+                foreach(DayOfWeek dayFromClass2 in class2.DaysMeet)
+                {
+                    if (dayFromClass1 == dayFromClass2) daysInCommon++;
+                }
+            }
+            return daysInCommon;
+        }
+
+
+        /**************************************************************************\
+        Method: getNumberOfOverlappingClasses
+        Description: Determines the number of classes in the list of classes 
+                     that the inClass overlaps with
+        \**************************************************************************/
+        public static int getNumberOfOverlappingClasses(List<Class> classes, Class inClass)
+        {
+            int overlappingClasses = 0; 
+            foreach (Class cl in classes)
+            {
+                if (cl != inClass && doClassesOverlap(cl, inClass)) overlappingClasses++;
+            }
+            return overlappingClasses;
+        }
+
+
+        /**************************************************************************\
+        Method: doAnyClassesOverlap
+        Description: Checks if there are any overlapping classes in the list of
+                     classes
+        \**************************************************************************/
+        public static bool doAnyClassesNotOverlap(List<Class> classes)
+        {
+            foreach (Class class1 in classes)
+            {
+                foreach (Class class2 in classes)
+                {
+                    if (!doClassesOverlap(class1, class2))
+                        return true;
+                }
+            }
+            return false;
+        }
+
+
+        /**************************************************************************\
+        Method: GroupClass
+        Description: Takes in a list of class groups and a class. The method then
+                     returns a new list of class groups with the class inserted
+                     into the first possible group.
+        \**************************************************************************/
+        public static List<Block> GroupClass(List<Block> blocks, Class inclass)
+        {
+            bool isinserted = false;
+             int i = 0;
+            while(i<blocks.Count && !isinserted)
+            {
+                if(blocks[i].doesClassOverlapWithBlock(inclass))
+                {
+                    blocks[i].addClass(inclass);
+                    isinserted = true;
+                    i++;
+                }
+            }
+            if (!isinserted)
+            {
+                blocks.Add(new Block(inclass));
+            }
+            return blocks;
+        }
+
+
+        /**************************************************************************\
+        Method: CoalesceClassesTogether 
         Description: 
-        \**************************************************************************/ 
-        public FETP_Controller()
+        TODO: Add a description
+        \**************************************************************************/
+        public static List<Block> CoalesceClassesTogether(List<Class> classes)
         {
-        }
+            List<Block> classestobegrouped = new List<Block>(); // variable to contain the list of all grouped classes
 
-
-        /**************************************************************************\
-        Method: ReadInputFile 
-        Description:  
-        \**************************************************************************/ 
-        public void ReadInputFile()
-        {
-            numClasses = 0;
-            Meeting_Days_Times = new List<string>();
-            SUM_ACTUAL_ENROLLMENT = new List<string>();
-
-            var reader = new StreamReader(File.OpenRead(@"Spring 2015 Total Enrollments by Meeting times.csv"));
-
-            bool isDescriptionLine = true;
-            while (!reader.EndOfStream)
+            foreach (Class cl in classes)
             {
-                var line = reader.ReadLine();
-                var values = line.Split(',');
-
-                //Skips the first data description line in the csv
-                if (!isDescriptionLine)
-                {
-                    Meeting_Days_Times.Add(values[0]);
-                    SUM_ACTUAL_ENROLLMENT.Add(values[1]);
-                    numClasses++;
-                }
-                //Setting to false after reading the first line
-                //This could use a more robust solution in case a future input file doesn't have a description
-                isDescriptionLine = false;
+                classestobegrouped = GroupClass(classestobegrouped, cl); // TODO: clean this up
             }
+            return classestobegrouped;
         }
 
 
         /**************************************************************************\
-        Method: ParseClasses
-        Description:  
-        \**************************************************************************/ 
-        public void ParseClasses()
+        Method: removeClass
+        Description: 
+        TODO: Add a description
+        \**************************************************************************/
+        public static List<Class> removeClass(List<Class> classes, Class inClass)
         {
-            setClasses = new Class[numClasses];
-
-            for (int i = 0; i < numClasses; i++)
+            int i = 0;
+            while (i < classes.Count)
             {
-                //Parses enrollment and adds it to class struct
-                string strEnrollment = SUM_ACTUAL_ENROLLMENT[i].ToString();
-                setClasses[i].enrollment = Int32.Parse(strEnrollment);
-
-                //Converting meeting days and times to a char array for parsing
-                string meetingDaysTimes = Meeting_Days_Times[i].ToString();
-                Char[] charMeetingDaysTimes = meetingDaysTimes.ToCharArray();
-                
-                //Used for determining if class start time or end time
-                bool isParsingEndTime = false;
-
-                StringBuilder sbStartTime = new System.Text.StringBuilder();
-                StringBuilder sbEndTime = new System.Text.StringBuilder();
-                string strStartTime;
-                string strEndTime;
-
-                for (int j = 0; j < charMeetingDaysTimes.Length; j++)
+                if (classes[i] == inClass)
                 {
-                    if (Char.IsLetter(charMeetingDaysTimes[j]))
-                    {
-                        //Identifies days of week class is held on and adds to class struct
-                        switch (charMeetingDaysTimes[j])
-                        {
-                            case 'M':
-                                setClasses[i].monday = true;
-                                break;
-                            case 'T':
-                                setClasses[i].tuesday = true;
-                                break;
-                            case 'W':
-                                setClasses[i].wednesday = true;
-                                break;
-                            case 'R':
-                                setClasses[i].thursday = true;
-                                break;
-                            case 'F':
-                                setClasses[i].friday = true;
-                                break;
-                        }
-                    }
-                    //Parsing class start and end times
-                    else if (Char.IsDigit(charMeetingDaysTimes[j]))
-                    {
-                        if (!isParsingEndTime)
-                        {
-                            sbStartTime.Append(charMeetingDaysTimes[j]);
-                        }
-                        else
-                        {
-                            sbEndTime.Append(charMeetingDaysTimes[j]);
-                        }
-                    }
-                    else if (charMeetingDaysTimes[j] == '-')
-                    {
-                        isParsingEndTime = true;
-                    }
+                    classes.RemoveAt(i);
+                    return classes;
                 }
-
-                strStartTime = sbStartTime.ToString();
-                strEndTime = sbEndTime.ToString();
-                setClasses[i].startTime = DateTime.ParseExact(strStartTime, "HHmm", System.Globalization.CultureInfo.InvariantCulture);
-                setClasses[i].endTime = DateTime.ParseExact(strEndTime, "HHmm", System.Globalization.CultureInfo.InvariantCulture);
             }
-
+            return classes;
         }
+
+        //End Methods Section
 
 
         /**************************************************************************\
-        Method: setExamSlots 
-        Description: Sets the number of possible exam slots 
-        \**************************************************************************/ 
-        public void setExamSlots(int numberOfExamSlots)
-        {
-            numExamSlots = numberOfExamSlots;
-        }
+        Class: FETP_Controller 
+        Section: Overloaded Operators 
+        \**************************************************************************/
+        /**************************************************************************\
+        Operator: ==
+        Description: This is an example 
+        \**************************************************************************/
 
+        //End Overloaded Operators Section
     }
 }
