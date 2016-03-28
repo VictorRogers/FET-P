@@ -11,9 +11,6 @@ namespace FETP
     Description: Contains grouped classes and functions to get information
                  on properties of all classes in block 
     \**************************************************************************/
-    //<summary>
-    //thi is this thing
-    //</summary>
     public class Block
     {
         /**************************************************************************\
