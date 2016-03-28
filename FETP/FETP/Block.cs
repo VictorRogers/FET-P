@@ -88,11 +88,11 @@ namespace FETP
                     {
                         fitnessScore += cl.Enrollment * GA_Controller.WEIGHT_OVERLAPPING_CLASSES;
                     }
-                    // ? add more weighting here
+                    // TODO: add more weighting here
                 }
                 return 1/ (1 + fitnessScore);
             }
-        } // ? needs more work
+        } // TODO: needs more work
         public bool AreThereAnyNonOverlappingClasses
         {
             get
@@ -116,7 +116,7 @@ namespace FETP
         /**************************************************************************\
         Constructor: Default 
         Description: Takes in data values and creates Block with those values
-        ? need new constructor
+        TODO: need new constructor
         \**************************************************************************/
         public Block(List<Class> inClasses = null)
         {
@@ -133,7 +133,7 @@ namespace FETP
         /**************************************************************************\
         Constructor: Block 
         Description: Creates a new Block with only the in class in it
-        ? need new constructor
+        TODO: need new constructor
         \**************************************************************************/
         public Block(Class inClass)
         {
@@ -148,8 +148,8 @@ namespace FETP
         Method: addClass
         Description: Addes class to list of classes in block. 
                      doesn't add class if the class does not overlap with group
-                     ? this is maybe lowering cohesion
-                     ? don't need anymore due to enrollment being a property
+                     TODO: this is maybe lowering cohesion
+                     TODO: don't need anymore due to enrollment being a property
         \**************************************************************************/
         public void addClass(Class inClass)
         {
@@ -173,7 +173,7 @@ namespace FETP
 
         /**************************************************************************\
         Method:  
-        Description: ? see addClass
+        Description: TODO: see addClass
         \**************************************************************************/
         //public bool removeClass(Class inClass)
         //{
@@ -187,7 +187,7 @@ namespace FETP
         /**************************************************************************\
         Method: doesClassOverlap
         Description: Determins if the inClass overlaps with ALL classes in block
-        ?
+        TODO: 
         \**************************************************************************/
         public bool doesClassOverlapWithBlock(Class inClass)
         {

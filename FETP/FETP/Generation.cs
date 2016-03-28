@@ -17,7 +17,7 @@ namespace FETP
             }
         }
 
-        public const int SIZE_OF_GENERATION = 100; // ? big generations take a long time ? should be divisable by 2 ? we could write it to take a random number of parents for better crossover
+        public const int SIZE_OF_GENERATION = 100; // TODO: big generations take a long time ? should be divisable by 2 ? we could write it to take a random number of parents for better crossover
         public const int NUMBER_OF_GENERATIONS = 500;
         public const int BEN_ALL_STAR_THREAD_LIMIT = 4;
 
@@ -40,13 +40,13 @@ namespace FETP
             // List<Schedule> nextGeneration = new List<Schedule>(GA_Controller.SIZE_OF_GENERATION);
 
             this.schedules = new List<Schedule>(Generation.SIZE_OF_GENERATION);
-            List<Schedule> currentGeneration = new List<Schedule>(generation.Schedules); // ? a little confusing since currentGeneration isn't a generation object
-            while (currentGeneration.Count > 0) // loop while there are still members in current generation // ? could optimze with just SIZE_OF_GENERATION and minus 2 but this is more scalable and reusable
+            List<Schedule> currentGeneration = new List<Schedule>(generation.Schedules); // TODO: a little confusing since currentGeneration isn't a generation object
+            while (currentGeneration.Count > 0) // loop while there are still members in current generation // TODO: could optimze with just SIZE_OF_GENERATION and minus 2 but this is more scalable and reusable
             {
-                // ? not sure if you're supposed to give the parents a chance to reproduce or not.
-                // ? that should be handled just by selection?
+                // TODO: not sure if you're supposed to give the parents a chance to reproduce or not.
+                // TODO: that should be handled just by selection?
 
-                // get next two parents // separate out into antoher function??
+                // get next two parents // TODO: separate out into antoher function??
                 int indexOfParent1 = this.BenRoutlette(currentGeneration);
                 int indexOfParent2 = this.BenRoutlette(currentGeneration);
                 
@@ -96,17 +96,17 @@ namespace FETP
             return this.schedules.Count <= 0;
         }
 
-        // ? need to weight somewhere by one to avoid divide by zero if perfect population?
+        // TODO: need to weight somewhere by one to avoid divide by zero if perfect population?
         /**************************************************************************\
         Method: BenRoutlette
         Description: Randomly selects an index with weight from fitness scores
         \**************************************************************************/
         public int BenRoutlette(List<Schedule> schedules)
         {
-            double totalFitnessScoreWeight = (this.ComputeTotalFitnessScore(schedules)); // maybe add in one ? it avoids divide by zero
+            double totalFitnessScoreWeight = (this.ComputeTotalFitnessScore(schedules)); // TODO: maybe add in one ? it avoids divide by zero
 
             double randomFloat = GA_Controller.GetRandomFloat() * totalFitnessScoreWeight;
-            for (int i = 0; i < schedules.Count; i++) // ? current generation will shrink as more and more are moved to next generation 
+            for (int i = 0; i < schedules.Count; i++) // TODO: current generation will shrink as more and more are moved to next generation 
             {
 
                 randomFloat -= schedules[i].FitnessScore;
@@ -116,7 +116,7 @@ namespace FETP
                 }
             }
             Console.WriteLine("pls");
-            return this.schedules.Count - 1; // ? This point should never be reached. roundoff error? ? it could fail on empty schedule
+            return this.schedules.Count - 1; // TODO: This point should never be reached. roundoff error? ? it could fail on empty schedule
         }
 
         /**************************************************************************\
@@ -133,7 +133,7 @@ namespace FETP
             return totalFitnessScore;
         }
 
-        // ? see if moving this to controller results in faster programs
+        // TODO: see if moving this to controller results in faster programs
         public void OrderByFitnessScore()
         {
             this.schedules = this.schedules.OrderByDescending(c => c.FitnessScore).ToList();

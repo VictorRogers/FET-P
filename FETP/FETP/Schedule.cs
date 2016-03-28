@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks; // ?? some of these aren't needed
+using System.Threading.Tasks; // TODO: some of these aren't needed
 
-using System.Globalization;  // allows times to be different pased on local ? may can be removed
+using System.Globalization;  // allows times to be different pased on local TODO: may can be removed
 using System.Diagnostics;
 using System.IO;
 
@@ -13,8 +13,7 @@ using System.IO;
 namespace FETP
 {
 
-    // ? if a function can modify the internal variables of class, it should be in that class
-    // ? 
+    // TODO: if a function can modify the internal variables of class, it should be in that class
     /**************************************************************************\
     Class: Schedule (Genetic Algorithm Constraints)
     Description: The Constraints class contains all of the methods needed for
@@ -26,7 +25,7 @@ namespace FETP
         /**************************************************************************\
         Schedule - Constant Data Members 
         \**************************************************************************/
-        private const string CLASS_LENGTH_TO_START_IGNORING = "0120"; // ? clean these up
+        private const string CLASS_LENGTH_TO_START_IGNORING = "0120"; // TODO: clean these up
         private const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
         public const string TIME_EXAMS_MUST_END_BY = "1700";
 
@@ -109,7 +108,7 @@ namespace FETP
         {
             get
             {
-                TimeSpan latestTime = TimeSpan.ParseExact(TIME_EXAMS_MUST_END_BY, @"hhmm", CultureInfo.InvariantCulture); // latest exams can go // ? maybe rewrite
+                TimeSpan latestTime = TimeSpan.ParseExact(TIME_EXAMS_MUST_END_BY, @"hhmm", CultureInfo.InvariantCulture); // latest exams can go // TODO: maybe rewrite
 
                 TimeSpan lengthOfExamDay = latestTime - Schedule.ExamsStartTime; // Figure out how much time available for exams
 
@@ -122,7 +121,7 @@ namespace FETP
                 TimeSpan examFootprint = Schedule.ExamsLength + Schedule.TimeBetweenExams;
 
                 int numberOfExams = 0;
-                // ? bug if exam break is too big
+                // TODO: bug if exam break is too big
                 while ((lengthOfExamDay - Schedule.ExamsLength) >= TimeSpan.Zero)
                 {
                     lengthOfExamDay -= Schedule.ExamsLength;
@@ -149,7 +148,7 @@ namespace FETP
                 // more weighting stuff here
                 return fitnessScore;
             }
-        } // ? possible optimation, if private var is null, set it. then return. ? maybe add in Parallel foreach loop to do that if fitness score is heavy to calculate?
+        } // TODO: possible optimation, if private var is null, set it. then return. TODO: maybe add in Parallel foreach loop to do that if fitness score is heavy to calculate?
 
 
         /**************************************************************************\
@@ -177,7 +176,7 @@ namespace FETP
         Constructor: Random Constructor
         Description: Creates a random schedule off the incoming list of classes
         \**************************************************************************/
-        public Schedule() // ? possibly make classes static. it would make it faster
+        public Schedule() // TODO: possibly make classes static. it would make it faster
         {
             
             
@@ -200,7 +199,7 @@ namespace FETP
         }
 
 
-        // ? call twice for keeeeds. swap postions of parents
+        // TODO: call twice for keeeeds. swap postions of parents
         /**************************************************************************\
         Constructor: Schedule Combining Constructor
         Description: Creates a schedule off parent schedules. I alternates 
@@ -226,9 +225,9 @@ namespace FETP
             }
 
 
-            this.AttemptMutate(); // ? break up for cohesion
+            this.AttemptMutate(); // TODO: break up for cohesion
 
-            // don't need randomness ?
+            // TODO: don't need randomness ?
         }
 
         /**************************************************************************\
@@ -271,7 +270,7 @@ namespace FETP
             Random rnd = new Random();
 
             // select two random blocks to combine
-            int blockIndex1 = rnd.Next(0, this.blocks.Count); // ? this makes it possible to not mutate with 0? maybe. over weigting chance to not mutate?
+            int blockIndex1 = rnd.Next(0, this.blocks.Count); // TODO: this makes it possible to not mutate with 0? maybe. over weigting chance to not mutate?
             int blockIndex2 = rnd.Next(0, this.blocks.Count);
 
             // select a mid point in classes to swap from
@@ -281,9 +280,9 @@ namespace FETP
             // swap parts of classes
             List<Class> tempClasses1 = blocks[blockIndex1].ClassesInBlock.GetRange(0, blocks[blockIndex1].ClassesInBlock.Count); // gets the objects from the beginning to index
 
-            // ? make more readable
+            // TODO: make more readable
             blocks[blockIndex1].ClassesInBlock.RemoveRange(0, blocks[blockIndex1].ClassesInBlock.Count);
-            blocks[blockIndex1].ClassesInBlock.AddRange(blocks[blockIndex2].ClassesInBlock.GetRange(0, blocks[blockIndex2].ClassesInBlock.Count)); // adds the range from the second class to block 1 // maybe not right to get front half from both ???
+            blocks[blockIndex1].ClassesInBlock.AddRange(blocks[blockIndex2].ClassesInBlock.GetRange(0, blocks[blockIndex2].ClassesInBlock.Count)); // adds the range from the second class to block 1 //TODO: maybe not right to get front half from both ???
             blocks[blockIndex2].ClassesInBlock.RemoveRange(0, blocks[blockIndex2].ClassesInBlock.Count);
             blocks[blockIndex2].ClassesInBlock.AddRange(tempClasses1);
         }
@@ -306,8 +305,7 @@ namespace FETP
         }
 
 
-        // ?
-        // needs finishing
+        //TODO: needs finishing
         /**************************************************************************\
         Method: Display
         Description: Displays all informations stored in Schedule instance
@@ -339,9 +337,9 @@ namespace FETP
         }
 
 
-        // ? maybe make bool to see if it is read
-        // ? this might need to be moved
-        // ? catch exception that file couldn't be opened?
+        // TODO: maybe make bool to see if it is read
+        // TODO: this might need to be moved
+        // TODO: catch exception that file couldn't be opened?
         /**************************************************************************\
         Method: readInputConstraintsFile
         Description: Reads in constraints file and intializes static schedule
@@ -350,7 +348,7 @@ namespace FETP
         public static void readInputConstraintsFile(string inFileName)
         {
             FileStream inFile = File.OpenRead(@inFileName);
-            var reader = new StreamReader(inFile); // ?
+            var reader = new StreamReader(inFile); // TODO: 
 
             Schedule.numberOfDays = Int32.Parse(reader.ReadLine());
             Schedule.examsStartTime = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
@@ -362,9 +360,9 @@ namespace FETP
         }
 
 
-        // ? maybe make bool to see if it is read
-        // ? this might need to be moved
-        // ? break up for coehesion and for easier use of manual input
+        // TODO: maybe make bool to see if it is read
+        // TODO: this might need to be moved
+        // TODO: break up for coehesion and for easier use of manual input
         // Programmer: Ben
         // takes in an open data file and returns a list of all the classes
         /**************************************************************************\
@@ -390,7 +388,7 @@ namespace FETP
 
             while (!reader.EndOfStream)
             {
-                // ? possibly change var to string
+                // TODO: possibly change var to string
                 var line = reader.ReadLine(); // reads in next line
                 var values = line.Split(','); // splits into days/times and enrollement
                 var daysAndTimes = values[0].Split(' '); // chops up the days and times to manageable sections
@@ -432,24 +430,24 @@ namespace FETP
         }
 
 
-        // only runs during one generation. maybe move ?
+        // TODO: only runs during one generation. maybe move ?
         //// takes in a list of classes and coalesces them into a list of blocks of classes
         /**************************************************************************\
         Method: PigeonHoleClasses
         Description: Puts classes in blocks sequentially. 
                      Used in random schedule creation
         \**************************************************************************/
-        private void PigeonHoleClasses(List<Class> classes) // ? I LOVE PIGEON HOLE
+        private void PigeonHoleClasses(List<Class> classes) // TODO: I LOVE PIGEON HOLE
         {
             
             foreach (Class cl in classes)
             {
                 int i = GA_Controller.GetRandomInt(this.Blocks.Count);
 
-                // maybe check for empty blocks ?
+                // TODO: maybe check for empty blocks ?
                 this.blocks[i].addClass(cl);
 
-                //if (i < Schedule.NumberOfTimeSlotsAvailable - 1) // ? clean up
+                //if (i < Schedule.NumberOfTimeSlotsAvailable - 1) // TODO: clean up
                 //{
                 //    i++;
                 //}

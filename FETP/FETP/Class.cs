@@ -62,7 +62,7 @@ namespace FETP
 
             if (inDaysMeet == null)
             {
-                //inDaysMeet = new List<DayOfWeek>(); // ? bad
+                //inDaysMeet = new List<DayOfWeek>(); // TODO: bad
                 throw new Exception("Class does not have any days attached. A class must have days it meets on.");
             }
             else
@@ -89,7 +89,7 @@ namespace FETP
             Console.WriteLine("");
         }
 
-        // ? this function does not do anything. The complications of writing a hash function is not needed for current program
+        // TODO: this function does not do anything. The complications of writing a hash function is not needed for current program
         /**************************************************************************\
         Method: GetHashCode
         Description: Overloaded Hash function. It is improperly implemented 
@@ -143,7 +143,7 @@ namespace FETP
         public static bool operator ==(Class class1, Class class2)
         {
             //if (class1 == null && class2 == null) return true;
-            return (class1.StartTime == class2.StartTime && class1.EndTime == class2.EndTime && class1.Enrollment == class2.Enrollment && class1.DaysMeet == class2.DaysMeet); // ? comparing list should work
+            return (class1.StartTime == class2.StartTime && class1.EndTime == class2.EndTime && class1.Enrollment == class2.Enrollment && class1.DaysMeet == class2.DaysMeet); // TODO: comparing list should work
         }
 
         /**************************************************************************\

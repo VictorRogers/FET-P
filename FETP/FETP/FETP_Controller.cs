@@ -10,7 +10,7 @@ using System.Globalization;
 
 namespace FETP
 {
-    // ?? 
+    // TODO: 
     /**************************************************************************\
     Class: FETP_Controller (Final Exam Timetabling Problem Controller)
     Description: This class contains all of the primary functions used for 
@@ -28,7 +28,7 @@ namespace FETP
         //private const string CLASS_LENGTH_TO_START_IGNORING = "0245"; 
         //private const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
 
-        //// ? this might need to be moved
+        //// TODO: this might need to be moved
         //// Programmer: Ben
         //// takes in an open data file and returns a list of all the classes
         ///**************************************************************************\
@@ -53,7 +53,7 @@ namespace FETP
 
         //    while (!reader.EndOfStream)
         //    {
-        //        // ? possibly change var to string
+        //        // TODO: possibly change var to string
         //        var line = reader.ReadLine(); // reads in next line
         //        var values = line.Split(','); // splits into days/times and enrollement
         //        var daysAndTimes = values[0].Split(' '); // chops up the days and times to manageable sections
@@ -95,12 +95,12 @@ namespace FETP
         //    }
         //    Schedule.AllClasses = allClasses;
 
-        //    // ? rewrite
+        //    // TODO: rewrite
         //    return allClasses;
 
         //} 
 
-        //// ? this might need to be moved
+        //// TODO: this might need to be moved
         ///**************************************************************************\
         //Method: readInputConstraintsFile
         //Description: Reads in constraints file and intializes static schedule
@@ -109,7 +109,7 @@ namespace FETP
         //public static void readInputConstraintsFile(string inFileName)
         //{
         //    FileStream inFile = File.OpenRead(@inFileName);
-        //    var reader = new StreamReader(inFile); // ?
+        //    var reader = new StreamReader(inFile); // TODO:
 
         //    Schedule.NumberOfDays = Int32.Parse(reader.ReadLine());
         //    Schedule.ExamsStartTime = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
@@ -268,12 +268,12 @@ namespace FETP
 
             foreach (Class cl in classes)
             {
-                classestobegrouped = GroupClass(classestobegrouped, cl); // ? clean this up
+                classestobegrouped = GroupClass(classestobegrouped, cl); // TODO: clean this up
             }
             return classestobegrouped;
         }
 
-        // ?????
+        // TODO: 
         /**************************************************************************\
         Method:  
         Description: 

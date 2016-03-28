@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 
 
-// ? Although reproduction methods that are based on the use of two parents are more "biology inspired", some research[3][4] suggests that more than two "parents" generate higher quality chromosomes.
+// TODO: Although reproduction methods that are based on the use of two parents are more "biology inspired", some research[3][4] suggests that more than two "parents" generate higher quality chromosomes.
 
 
 namespace FETP
@@ -23,7 +23,7 @@ namespace FETP
         GA_Controller - Data Constants
         \**************************************************************************/ 
         // const int GENERATION_SIZE = 500;
-        //private const int SIZE_OF_GENERATION = 50; // ? big generations take a long time
+        //private const int SIZE_OF_GENERATION = 50; // TODO: big generations take a long time
         //private const int NUMBER_OF_GENERATIONS = 1000;
 
         private const float CROSSOVER_RATE = 0.7F;
@@ -33,7 +33,7 @@ namespace FETP
         /**************************************************************************\
         GA_Controller - Weights
         \**************************************************************************/
-        public static int WEIGHT_OVERLAPPING_CLASSES = 50; // static makes it fuction almost as const ?
+        public static int WEIGHT_OVERLAPPING_CLASSES = 50; // TODO: static makes it fuction almost as const
 
 
 
@@ -41,7 +41,7 @@ namespace FETP
         // private static List<Schedule> currentGeneration;
 
 
-        public static Stopwatch stopwatch = new Stopwatch(); // ? for testing purposes 
+        public static Stopwatch stopwatch = new Stopwatch(); // TODO: for testing purposes 
 
 
         /**************************************************************************\
@@ -63,7 +63,7 @@ namespace FETP
             //{
             //    Generation generation = new Generation(); // sets up intial generation
             //                                              //Console.WriteLine("Starting GA: {0}", index);
-            //    for (int j = 0; j < Generation.NUMBER_OF_GENERATIONS; j++) // ? is i the same for all loops?
+            //    for (int j = 0; j < Generation.NUMBER_OF_GENERATIONS; j++) // TODO: is i the same for all loops
             //    {
             //        generation = new Generation(generation);
             //    }
@@ -80,7 +80,7 @@ namespace FETP
             {
                 Generation generation = new Generation(); // sets up intial generation
                 Console.WriteLine("Starting GA: {0}", index+1);
-                for (int i = 0; i < Generation.NUMBER_OF_GENERATIONS; i++) // ? is i the same for all loops?
+                for (int i = 0; i < Generation.NUMBER_OF_GENERATIONS; i++) // TODO: is i the same for all loops?
                 {
                     generation = new Generation(generation);
                 }
@@ -108,7 +108,7 @@ namespace FETP
 
             foreach(Schedule sch in lastGen.Schedules)
             {
-                CheckSchedule(sch); // ? could be that some groups have less overlapping classes even though more clean blocks?
+                CheckSchedule(sch); // TODO: could be that some groups have less overlapping classes even though more clean blocks?
             }
 
 
@@ -227,7 +227,7 @@ namespace FETP
         /// <returns>int value</returns>
         public static void SetupIntialFields()
         {
-            Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
+            Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // TODO: throw exceptions for invalid input
             Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
         }
 
@@ -267,7 +267,7 @@ namespace FETP
         \**************************************************************************/
         public static bool WillParentsBreed(int indexOfParent1, int indexOfParent2)
         {
-            return true; // ? Rewrite Victor
+            return true; // TODO: Rewrite Victor
         }
 
 
@@ -288,18 +288,18 @@ namespace FETP
         //}
 
 
-        //// ? need to weight somewhere by one to avoid divide by zero if perfect population?
+        //// TODO: need to weight somewhere by one to avoid divide by zero if perfect population?
         ///**************************************************************************\
         //Method: BenRoutlette
         //Description: Randomly selects an index with weight from fitness scores
         //\**************************************************************************/
         //public static int BenRoutlette()
         //{
-        //    int totalFitnessScoreWeight = (ComputeTotalFitnessScore()); // maybe add in one ? it avoids divide by zero
+        //    int totalFitnessScoreWeight = (ComputeTotalFitnessScore()); // TODO: maybe add in one. it avoids divide by zero
 
         //    double randomFloat = GetRandomFloat() * totalFitnessScoreWeight;
 
-        //    for (int i = 0; i < GA_Controller.currentGeneration.Count; i++) // ? current generation will shrink as more and more are moved to next generation 
+        //    for (int i = 0; i < GA_Controller.currentGeneration.Count; i++) // TODO: current generation will shrink as more and more are moved to next generation 
         //    {
         //        randomFloat -= currentGeneration[i].FitnessScore;
         //        if (randomFloat <= 0)
@@ -307,15 +307,15 @@ namespace FETP
         //            return i;
         //        }
         //    }
-        //    return GA_Controller.currentGeneration.Count - 1; // ? This point should never be reached. roundoff error?
+        //    return GA_Controller.currentGeneration.Count - 1; // TODO: This point should never be reached. roundoff error?
         //}
         //public static int BenRoutlette(List<Schedule> schedules)
         //{
-        //    int totalFitnessScoreWeight = (ComputeTotalFitnessScore()); // maybe add in one ? it avoids divide by zero
+        //    int totalFitnessScoreWeight = (ComputeTotalFitnessScore()); // TODO: maybe add in one ? it avoids divide by zero
 
         //    double randomFloat = GetRandomFloat() * totalFitnessScoreWeight;
 
-        //    for (int i = 0; i < GA_Controller.currentGeneration.Count; i++) // ? current generation will shrink as more and more are moved to next generation 
+        //    for (int i = 0; i < GA_Controller.currentGeneration.Count; i++) // TODO: current generation will shrink as more and more are moved to next generation 
         //    {
         //        randomFloat -= currentGeneration[i].FitnessScore;
         //        if (randomFloat <= 0)
@@ -323,7 +323,7 @@ namespace FETP
         //            return i;
         //        }
         //    }
-        //    return GA_Controller.currentGeneration.Count - 1; // ? This point should never be reached. roundoff error?
+        //    return GA_Controller.currentGeneration.Count - 1; // TODO: This point should never be reached. roundoff error?
         //}
 
 
@@ -337,7 +337,7 @@ namespace FETP
         public static double GetRandomFloat()
         {
             return rnd.NextDouble();
-            //return new Random().NextDouble(); // ? we need a better implementation. numbers from this class are known to not be that random
+            //return new Random().NextDouble(); // TODO: we need a better implementation. numbers from this class are known to not be that random
         }
 
         public static int GetRandomInt(int upperRange = Int32.MaxValue, int lowerRange = 0)
@@ -356,12 +356,12 @@ namespace FETP
         //{
 
         //    List<Schedule> nextGeneration = new List<Schedule>(GA_Controller.SIZE_OF_GENERATION);
-        //    while (currentGeneration.Count > 0) // loop while there are still members in current generation // ? could optimze with just SIZE_OF_GENERATION and minus 2 but this is more scalable and reusable
+        //    while (currentGeneration.Count > 0) // loop while there are still members in current generation // TODO: could optimze with just SIZE_OF_GENERATION and minus 2 but this is more scalable and reusable
         //    {
-        //        // ? not sure if you're supposed to give the parents a chance to reproduce or not.
-        //        // ? that should be handled just by selection?
+        //        // TODO: not sure if you're supposed to give the parents a chance to reproduce or not.
+        //        // TODO: that should be handled just by selection?
 
-        //        // get next two parents // separate out into antoher function??
+        //        // get next two parents //TODO: separate out into antoher function??
         //        int indexOfParent1 = BenRoutlette();
         //        int indexOfParent2 = BenRoutlette();
         //        while (indexOfParent1 == indexOfParent2) // makes sure we have two different indexes
@@ -438,7 +438,7 @@ namespace FETP
         \**************************************************************************/
         public static void SaveMostFitSchedule()
         {
-            // ? write
+            // TODO: write
         }
 
 
@@ -448,10 +448,10 @@ namespace FETP
         \**************************************************************************/
         public static void SaveGeneration()
         {
-            // ? write
+            // TODO: write
         }
 
-        public static void CheckSchedule(Schedule schedule) // ? for testing
+        public static void CheckSchedule(Schedule schedule) // TODO: for testing
         {
             Console.WriteLine("\n***********************************************\n");
             Console.WriteLine("How good is this Schedule?... Let's find out!!!");
@@ -508,7 +508,7 @@ namespace FETP
         //}
 
 
-        //// ?
+        //// TODO: 
         //// need finish
         //public static Schedule generateRandomSchedule(List<Class> classes)
         //{
@@ -523,7 +523,7 @@ namespace FETP
 
         
 
-        //// ?
+        //// TODO: 
         //// need finish
         //public static List<Schedule> generateRandomGeneration(List<Class> classes)
         //{
