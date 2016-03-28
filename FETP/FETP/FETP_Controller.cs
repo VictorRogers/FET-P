@@ -10,25 +10,24 @@ using System.Globalization;
 
 namespace FETP
 {
-    // TODO: 
     /**************************************************************************\
     Class: FETP_Controller (Final Exam Timetabling Problem Controller)
-    Description: This class contains all of the primary functions used for 
-    reading in data, adjusting data, outputting data, and running starting the 
-    process of running the genetic algorithm. This is the primary interface 
-    between the front-end and the back-end. It reads from the data file, formats 
-    the data for use by the GA_Controller, receives the solutions from the 
-    GA_Controller, and sends them back to the front-end for display in the GUI.
+    Description: 
+    TODO: Rewrite description. The old one was out of date.
     \**************************************************************************/
     public static class FETP_Controller
     {
+        /**************************************************************************\
+        Class: FETP_Controller
+        Section: Utilities
+        \**************************************************************************/       
         //Used for random number generation
         private static readonly Random random = new Random();
         private static readonly object syncLock = new object();
 
 
         /**************************************************************************\
-        Method: RandomFloatBetween01 
+        Utility Method: RandomFloatBetween01 
         Description: Will return a random float between 0 and 1 
         \**************************************************************************/       
         public static float RandomFloatBetween01()
@@ -38,9 +37,29 @@ namespace FETP
                 return (float)random.NextDouble();
             }
         }
-        
 
-        // Checks if two classes overlap
+
+        /**************************************************************************\
+        Class: FETP_Controller 
+        Section: Data Members 
+        \**************************************************************************/
+
+
+        /**************************************************************************\
+        Class: FETP_Controller 
+        Sections: Properties
+        TODO: Let me know if headers for properties are too excessive (VR)
+        \**************************************************************************/
+        /**************************************************************************\
+        Property: ExampleProperty 
+        Description: This is an example
+        TODO: Delete this if an actual property is added 
+        \**************************************************************************/
+
+
+        /**************************************************************************\
+        Class: FETP_Controller
+        Section: Methods
         /**************************************************************************\
         Method: doClassesOverlap
         Description: Determines if the two input classes overlap.
@@ -129,15 +148,11 @@ namespace FETP
         }
 
 
-
         /**************************************************************************\
-        Schedule - Constant Data Members 
-        \**************************************************************************/
-        // takes in a list of class groups and a class
-        // returns a new list of class groups with class inserted into first possible group
-        /**************************************************************************\
-        method:  
-        description: 
+        Method: GroupClass
+        Description: Takes in a list of class groups and a class. The method then
+                     returns a new list of class groups with the class inserted
+                     into the first possible group.
         \**************************************************************************/
         public static List<Block> GroupClass(List<Block> blocks, Class inclass)
         {
@@ -160,10 +175,10 @@ namespace FETP
         }
 
 
-        // basic grouping for testing  
         /**************************************************************************\
-        method:  
-        description: 
+        Method: CoalesceClassesTogether 
+        Description: 
+        TODO: Add a description
         \**************************************************************************/
         public static List<Block> CoalesceClassesTogether(List<Class> classes)
         {
@@ -176,10 +191,11 @@ namespace FETP
             return classestobegrouped;
         }
 
-        // TODO: 
+
         /**************************************************************************\
-        Method:  
+        Method: removeClass
         Description: 
+        TODO: Add a description
         \**************************************************************************/
         public static List<Class> removeClass(List<Class> classes, Class inClass)
         {
@@ -195,6 +211,14 @@ namespace FETP
             return classes;
         }
 
-        
+
+        /**************************************************************************\
+        Class: FETP_Controller 
+        Section: Overloaded Operators 
+        \**************************************************************************/
+        /**************************************************************************\
+        Operator: ==
+        Description: This is an example 
+        \**************************************************************************/
     }
 }
