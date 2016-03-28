@@ -38,11 +38,25 @@ namespace FETP
             }
         }
 
+        //End Utilities Section
+
+
+        /**************************************************************************\
+        Class: FETP_Controller 
+        Section: Data Constants 
+        \**************************************************************************/
+        //Add data constants here
+
+        //End Data Constants Section 
+
 
         /**************************************************************************\
         Class: FETP_Controller 
         Section: Data Members 
         \**************************************************************************/
+        //Add data members here
+
+        //End Data Members section
 
 
         /**************************************************************************\
@@ -55,6 +69,8 @@ namespace FETP
         Description: This is an example
         TODO: Delete this if an actual property is added 
         \**************************************************************************/
+
+        //End Properties Section
 
 
         /**************************************************************************\
@@ -211,6 +227,8 @@ namespace FETP
             return classes;
         }
 
+        //End Methods Section
+
 
         /**************************************************************************\
         Class: FETP_Controller 
@@ -220,5 +238,7 @@ namespace FETP
         Operator: ==
         Description: This is an example 
         \**************************************************************************/
+
+        //End Overloaded Operators Section
     }
 }

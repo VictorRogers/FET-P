@@ -4,29 +4,58 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-
-
-// TODO: Although reproduction methods that are based on the use of two parents are more "biology inspired", some research[3][4] suggests that more than two "parents" generate higher quality chromosomes.
-
-
 namespace FETP
 {
     /**************************************************************************\
     Class: GA_Controller (Genetic Algorithm Controller)
     Description: Includes all of the primary functions needed for the genetic
                  algorithm and evolving the chromosomes to find a solution.
+    TODO: Although reproduction methods that are based on the use of two 
+          parents are more "biology inspired", some research[3][4] suggests 
+          that more than two "parents" generate higher quality chromosomes.
     \**************************************************************************/ 
     public static class GA_Controller
     {
         /**************************************************************************\
-        GA_Controller - Utilities 
+        Class: GA_Controller
+        Section: Utilities
         \**************************************************************************/ 
-        public static Stopwatch stopwatch = new Stopwatch(); // TODO: for testing purposes 
+        //TODO: For testing purposes
+        public static Stopwatch stopwatch = new Stopwatch();
+
+        //This is up here to make sure we get good randoms, if it wasn't then we'd
+        //get the same random a bunch of times
+        public static Random rnd = new Random();
 
 
         /**************************************************************************\
-        GA_Controller - Data Constants
+        Utility Method: GetRandomFloat
+        Description: Retrieves a random float between 0 and 1
+        \**************************************************************************/
+        public static double GetRandomFloat()
+        {
+            return rnd.NextDouble();
+            //return new Random().NextDouble(); // TODO: we need a better implementation. numbers from this class are known to not be that random
+        }
+
+
+        /**************************************************************************\
+        Utility Method: GetRandomInt
+        Description:
+        TODO: Add an accurate description - The old one was for GetRandomFloat
+        \**************************************************************************/
+        public static int GetRandomInt(int upperRange = Int32.MaxValue, int lowerRange = 0)
+        {
+            return rnd.Next(lowerRange, upperRange);
+            //return new Random().Next(lowerRange, upperRange);
+        }
+
+        //End Utilities Section
+
+
+        /**************************************************************************\
+        Class: GA_Controller
+        Section: Data Constants
         \**************************************************************************/ 
         // const int GENERATION_SIZE = 500;
         //private const int SIZE_OF_GENERATION = 50; // TODO: big generations take a long time
@@ -35,15 +64,22 @@ namespace FETP
         private const float CROSSOVER_RATE = 0.7F;
         public const float MUTATION_RATE = 0.15F;
        
+        //End Data Constants Section
 
         /**************************************************************************\
-        GA_Controller - Weights
+        Class: GA_Controller
+        Section: Data Members
         \**************************************************************************/
-        public static int WEIGHT_OVERLAPPING_CLASSES = 50; // TODO: static makes it fuction almost as const
+        //TODO: Static makes this function almost as a const
+        //TODO: If this is not a const then it probably still shouldn't be all caps (VR)
+        public static int WEIGHT_OVERLAPPING_CLASSES = 50;
+
+        //End Data Members Section
 
 
         /**************************************************************************\
-        GA_Controller - Methods 
+        Class: GA_Controller
+        Section: Methods
         \**************************************************************************/
         /**************************************************************************\
         Method: BenAllStartRun 
@@ -208,40 +244,14 @@ namespace FETP
         /**************************************************************************\
         Method: SetupInitialFields 
         Description: 
+        TODO: This functionality needs to be overhauled to take in a variable path
         \**************************************************************************/
         public static void SetupIntialFields()
         {
-            Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // TODO: throw exceptions for invalid input
+            //TODO: Throw exceptions for invalid input
+            Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv");
             Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
         }
-
-
-        /**************************************************************************\
-        Method: RunGeneticAlgorithm
-        Description: Executes the Genetic Algorithm. For the number of 
-                     generations desired to go through, advances 
-                     the generation
-        \**************************************************************************/
-        //public static void RunGeneticAlgorithm()
-        //{
-        //    for (int i = 0; i < NUMBER_OF_GENERATIONS; i++)
-        //    {
-        //        stopwatch.Start();
-        //        AdvanceGeneration();
-        //        stopwatch.Stop();
-        //        Console.WriteLine("Time to Execute {0} generations: {1}", i + 1, stopwatch.Elapsed);
-        //    }
-        //}
-        //public static void RunGeneticAlgorithm2()
-        //{
-        //    for (int i = 0; i < NUMBER_OF_GENERATIONS; i++)
-        //    {
-        //        stopwatch.Start();
-                
-        //        stopwatch.Stop();
-        //        Console.WriteLine("Time to Execute {0} generations: {1}", i + 1, stopwatch.Elapsed);
-        //    }
-        //}
 
 
         /**************************************************************************\
@@ -252,167 +262,6 @@ namespace FETP
         {
             return true; // TODO: Rewrite Victor
         }
-
-
-        /**************************************************************************\
-        Method: IntializeSeedGeneration
-        Description: Creates the first generation for GA
-        \**************************************************************************/
-        //public static void IntializeSeedGeneration()
-        //{
-        //    // Intialize the current generation
-        //    GA_Controller.currentGeneration = new List<Schedule>(SIZE_OF_GENERATION);
-
-        //    // create seed generation
-        //    for (int i = 0; i < GA_Controller.SIZE_OF_GENERATION; i++)
-        //    {
-        //        GA_Controller.currentGeneration.Add(new Schedule());
-        //    }
-        //}
-
-
-        //// TODO: need to weight somewhere by one to avoid divide by zero if perfect population?
-        ///**************************************************************************\
-        //Method: BenRoutlette
-        //Description: Randomly selects an index with weight from fitness scores
-        //\**************************************************************************/
-        //public static int BenRoutlette()
-        //{
-        //    int totalFitnessScoreWeight = (ComputeTotalFitnessScore()); // TODO: maybe add in one. it avoids divide by zero
-
-        //    double randomFloat = GetRandomFloat() * totalFitnessScoreWeight;
-
-        //    for (int i = 0; i < GA_Controller.currentGeneration.Count; i++) // TODO: current generation will shrink as more and more are moved to next generation 
-        //    {
-        //        randomFloat -= currentGeneration[i].FitnessScore;
-        //        if (randomFloat <= 0)
-        //        {
-        //            return i;
-        //        }
-        //    }
-        //    return GA_Controller.currentGeneration.Count - 1; // TODO: This point should never be reached. roundoff error?
-        //}
-        //public static int BenRoutlette(List<Schedule> schedules)
-        //{
-        //    int totalFitnessScoreWeight = (ComputeTotalFitnessScore()); // TODO: maybe add in one ? it avoids divide by zero
-
-        //    double randomFloat = GetRandomFloat() * totalFitnessScoreWeight;
-
-        //    for (int i = 0; i < GA_Controller.currentGeneration.Count; i++) // TODO: current generation will shrink as more and more are moved to next generation 
-        //    {
-        //        randomFloat -= currentGeneration[i].FitnessScore;
-        //        if (randomFloat <= 0)
-        //        {
-        //            return i;
-        //        }
-        //    }
-        //    return GA_Controller.currentGeneration.Count - 1; // TODO: This point should never be reached. roundoff error?
-        //}
-
-
-        public static Random rnd = new Random(); // this is up here to make sure we get good randoms, if it wasn't then we'd get the same random a bunch of times
-
-        /**************************************************************************\
-        Method: GetRandomFlot
-        Description: Retrieves a random float between 0 and 1
-        \**************************************************************************/
-
-        public static double GetRandomFloat()
-        {
-            return rnd.NextDouble();
-            //return new Random().NextDouble(); // TODO: we need a better implementation. numbers from this class are known to not be that random
-        }
-
-        public static int GetRandomInt(int upperRange = Int32.MaxValue, int lowerRange = 0)
-        {
-            return rnd.Next(lowerRange, upperRange);
-            //return new Random().Next(lowerRange, upperRange);
-        }
-
-
-        ///**************************************************************************\
-        //Method: AdvanceGeneration
-        //Description: Handles crossing over of current generation to the next
-        //             generation
-        //\**************************************************************************/
-        //public static void AdvanceGeneration()
-        //{
-
-        //    List<Schedule> nextGeneration = new List<Schedule>(GA_Controller.SIZE_OF_GENERATION);
-        //    while (currentGeneration.Count > 0) // loop while there are still members in current generation // TODO: could optimze with just SIZE_OF_GENERATION and minus 2 but this is more scalable and reusable
-        //    {
-        //        // TODO: not sure if you're supposed to give the parents a chance to reproduce or not.
-        //        // TODO: that should be handled just by selection?
-
-        //        // get next two parents //TODO: separate out into antoher function??
-        //        int indexOfParent1 = BenRoutlette();
-        //        int indexOfParent2 = BenRoutlette();
-        //        while (indexOfParent1 == indexOfParent2) // makes sure we have two different indexes
-        //        {
-        //            indexOfParent2 = BenRoutlette();
-        //        }
-
-        //        // If parents are going to breed, pass their chidlren on to next generation, else pass parents on to next generation
-        //        if (WillParentsBreed(indexOfParent1, indexOfParent2))
-        //        {
-        //            // Add the two parents new children to the next generation
-        //            nextGeneration.Add(new Schedule(currentGeneration[indexOfParent1], currentGeneration[indexOfParent2]));
-        //            nextGeneration.Add(new Schedule(currentGeneration[indexOfParent2], currentGeneration[indexOfParent1]));                    
-        //        }
-        //        else
-        //        {
-        //            nextGeneration.Add(currentGeneration[indexOfParent1]);
-        //            nextGeneration.Add(currentGeneration[indexOfParent2]);
-        //        }
-
-        //        // Remove the parents from the current pool
-        //        if (indexOfParent1 > indexOfParent2) // this is to make sure removing one parent doesn't move the index of the second
-        //        {
-        //            currentGeneration.RemoveAt(indexOfParent1);
-        //            currentGeneration.RemoveAt(indexOfParent2);
-        //        }
-        //        else
-        //        {
-        //            currentGeneration.RemoveAt(indexOfParent2);
-        //            currentGeneration.RemoveAt(indexOfParent1);
-        //        }
-
-        //    }
-            
-        //    currentGeneration = nextGeneration; // Advance to the next generation
-        //}
-        //public static void AdvanceGeneration2()
-        //{
-            
-        //}
-
-
-
-        ///**************************************************************************\
-        //Method: ComputeTotalFitnessScore
-        //Description: Computes the total fitness score of all schedules
-        //\**************************************************************************/
-        //public static int ComputeTotalFitnessScore()
-        //{
-        //    int totalFitnessScore = 0;
-        //    foreach (Schedule schedule in GA_Controller.currentGeneration)
-        //    {
-        //        totalFitnessScore += schedule.FitnessScore;
-        //    }
-        //    return totalFitnessScore;
-        //}
-
-        //public static int ComputeTotalFitnessScore(List<Schedule> schedules)
-        //{
-        //    int totalFitnessScore = 0;
-        //    foreach (Schedule schedule in schedules)
-        //    {
-        //        totalFitnessScore += schedule.FitnessScore;
-        //    }
-        //    return totalFitnessScore;
-        //}
-
-
 
 
         /**************************************************************************\
@@ -434,6 +283,12 @@ namespace FETP
             // TODO: write
         }
 
+
+        /**************************************************************************\
+        Method: CheckSchedule 
+        Description:
+        TODO: Add a description
+        \**************************************************************************/
         public static void CheckSchedule(Schedule schedule) // TODO: for testing
         {
             Console.WriteLine("\n***********************************************\n");
@@ -459,111 +314,18 @@ namespace FETP
             Console.WriteLine("Number of Blocks that do *NOT* have overlapping Classes: {0}", Schedule.NumberOfTimeSlotsAvailable - failingBlocks);
         }
 
-        /**************************************************************************\
-        Constructor: Default 
-        Description: 
-        \**************************************************************************/ 
-        //GA_Controller()
-        //{
-        //}
-
-
-        ///**************************************************************************\
-        //Constructor: Default 
-        //Description: 
-        //\**************************************************************************/ 
-        //GA_Controller(Class[] incomingSetClasses, int numClasses, int numExams)
-        //{
-        //    setClasses = new Class[numClasses];
-        //    incomingSetClasses.CopyTo(setClasses, numClasses);
-
-        //}
-
-        //List<Schedule> generateChildren(Schedule schedule1, Schedule schedule2)
-        //{
-
-        //}
-
-
-        //Schedule RouletCrossOver(Schedule schedule1, Schedule schedule2)
-        //{
-
-        //}
-
-
-        //// TODO: 
-        //// need finish
-        //public static Schedule generateRandomSchedule(List<Class> classes)
-        //{
-        //    Random rand = new Random();
-        //    classes = classes.OrderBy(c => rand.Next()).Select(c => c.Model).ToList(); // randomly arrange classes
-
-
-
-        //    Schedule schedule = new Schedule(classes);
-
-        //}
-
-        
-
-        //// TODO: 
-        //// need finish
-        //public static List<Schedule> generateRandomGeneration(List<Class> classes)
-        //{
-        //    List<Schedule> generation = new List<Schedule>(); // makes blank generation
-
-        //    for (int i = 0; i < GENERATION_SIZE; i++)
-        //    {
-        //        generation.Add(generateRandomSchedule(classes));
-        //    }
-
-        //    return generation;
-        //}
-
-        ///**************************************************************************\
-        //Method: Assign Fitness 
-        //Description: Should take a chromosome as an input and output its fitness
-        //             score.
-        //\**************************************************************************/
-        //float AssignFitness()
-        //{
-        //    Constraints.CheckSoftConstraints();
-        //    Constraints.CheckHardConstraints();
-
-        //    return 0.0f;
-        //}
+        //End Methods Section
 
 
         /**************************************************************************\
-        Method: Crossover 
-        Description: Takes two chromosomes as an input and performs crossover on
-                     the genes to create two offspring based on the crossover rate.
-        \**************************************************************************/ 
-        //void Crossover()
-        //{
-        //}
-
-
+        Class: GA_Controller 
+        Section: Overloaded Operators 
+        \**************************************************************************/
         /**************************************************************************\
-        Method: Roulette 
-        Description: Selects a chromosome from the population proportional to its
-                     fitness score. This is used to select members from the
-                     population to go on to the next generation. It does not
-                     guarantee that the most fit chromosomes will be selected, but
-                     it does give them a good chance of doing so.
-        \**************************************************************************/ 
-        //void Roulette()
-        //{
-        //}
+        Operator: ==
+        Description: This is an example 
+        \**************************************************************************/
 
-
-        /**************************************************************************\
-        Method: Mutate 
-        Description: Creates a mutation in a chromosome depending on the mutation
-                     rate.
-        \**************************************************************************/ 
-        //void Mutate()
-        //{
-        //}
+        //End Overloaded Operators Section
     }
 }

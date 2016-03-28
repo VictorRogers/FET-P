@@ -12,45 +12,69 @@ using System.IO;
 
 namespace FETP
 {
-
-    // TODO: if a function can modify the internal variables of class, it should be in that class
     /**************************************************************************\
     Class: Schedule (Genetic Algorithm Constraints)
     Description: The Constraints class contains all of the methods needed for
                  checking if a chromosome is meeting soft and hard constraints. 
+    // TODO: if a function can modify the internal variables of class, it should be in that class
     \**************************************************************************/
     public class Schedule
     {
         /**************************************************************************\
-        Schedule - Constant Data Members 
+        Class: Schedule 
+        Section: Utilities
+        \**************************************************************************/
+        //Utility Data Members Here
+
+
+        /**************************************************************************\
+        Utility Method: Example 
+        Description: This is an example header
+        TODO: Remove if a utility method is added
+        \**************************************************************************/
+
+        //End Utilities Section
+
+
+        /**************************************************************************\
+        Class: Block 
+        Section: Data Constants 
         \**************************************************************************/
         private const string CLASS_LENGTH_TO_START_IGNORING = "0120"; // TODO: clean these up
         private const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
         public const string TIME_EXAMS_MUST_END_BY = "1700";
 
+        //End Data Constants Section
+
 
         /**************************************************************************\
-        Schedule - Static Data Members 
+        Class: Schedule
+        Section: Data Members
         \**************************************************************************/
+        //Static Members
         private static int numberOfDays;
         private static TimeSpan examsStartTime;
         private static TimeSpan examsLength;
         private static TimeSpan timeBetweenExams;
         private static TimeSpan lunchLength;
         private static List<Class> allClasses;
-
         private static int numberOfTimeSlotsAvailable;
-       
+
+        //Non-static Members
+        private List<Block> blocks;
+
+        //End Data Members Section
 
 
         /**************************************************************************\
-        Schedule - Data Members 
+        Class: Schedule 
+        Sections: Properties
+        TODO: Let me know if headers for properties are too excessive (VR)
         \**************************************************************************/
-        private List<Block> blocks; 
-        
-
         /**************************************************************************\
-        Schedule - Properties 
+        Property: Blocks 
+        Description: !?!?
+        TODO: Add a description
         \**************************************************************************/
         public List<Block> Blocks
         {
@@ -63,31 +87,73 @@ namespace FETP
             //    this.blocks = value;
             //}
         }
+
+
+        /**************************************************************************\
+        Property: NumberOfDays 
+        Description: !?!?
+        TODO: Add a description
+        \**************************************************************************/
         public static int NumberOfDays
         {
             get { return numberOfDays; }
             //set { Schedule.numberOfDays = value; }
         }
+
+
+        /**************************************************************************\
+        Property: ExamsStartTime 
+        Description: !?!?
+        TODO: Add a description
+        \**************************************************************************/
         public static TimeSpan ExamsStartTime
         {
             get { return examsStartTime; }
             //set { Schedule.examsStartTime = value; }
         }
+
+
+        /**************************************************************************\
+        Property: ExamsLength 
+        Description: !?!?
+        TODO: Add a description
+        \**************************************************************************/
         public static TimeSpan ExamsLength
         {
             get { return examsLength; }
             //set { Schedule.examsLength = value; }
         }
+
+
+        /**************************************************************************\
+        Property: TimeBetweenExams 
+        Description: !?!?
+        TODO: Add a description
+        \**************************************************************************/
         public static TimeSpan TimeBetweenExams
         {
             get { return timeBetweenExams; }
             //set { Schedule.timeBetweenExams = value; }
         }
+
+
+        /**************************************************************************\
+        Property: LunchLength 
+        Description: !?!?
+        TODO: Add a description
+        \**************************************************************************/
         public static TimeSpan LunchLength
         {
             get { return lunchLength; }
             //set { this.lunchLength = value; }
         }
+
+
+        /**************************************************************************\
+        Property: AllClasses 
+        Description: !?!?
+        TODO: Add a description
+        \**************************************************************************/
         public static List<Class> AllClasses
         {
             get
@@ -95,6 +161,13 @@ namespace FETP
                 return Schedule.allClasses;
             }
         }
+
+
+        /**************************************************************************\
+        Property: NumberOfTimeSlotsAvailable 
+        Description: !?!?
+        TODO: Add a description
+        \**************************************************************************/
         public static int NumberOfTimeSlotsAvailable
         {
             get
@@ -103,6 +176,13 @@ namespace FETP
             }
             
         }
+
+
+        /**************************************************************************\
+        Property: NumberOfTimeSlotsAvailablePerDay
+        Description: !?!?
+        TODO: Add a description
+        \**************************************************************************/
         public static int NumberOfTimeSlotsAvailablePerDay
         {
             get
@@ -135,6 +215,13 @@ namespace FETP
                 return numberOfExams;
             }
         }
+
+
+        /**************************************************************************\
+        Property: FitnessScore 
+        Description: !?!?
+        TODO: Add a description
+        \**************************************************************************/
         public double FitnessScore
         {
             get
@@ -149,21 +236,25 @@ namespace FETP
             }
         } // TODO: possible optimation, if private var is null, set it. then return. TODO: maybe add in Parallel foreach loop to do that if fitness score is heavy to calculate?
 
+        //End Properties Section
+
 
         /**************************************************************************\
-        Schedule - Methods 
+        Class: Schedule
+        Section: Methods
         \**************************************************************************/
-
         /**************************************************************************\
-        Constructor: Random Constructor
+        Method: Default Constructor
         Description: Creates a random schedule off the incoming list of classes
+        TODO: possibly make classes static. it would make it faster
         \**************************************************************************/
-        public Schedule() // TODO: possibly make classes static. it would make it faster
+        public Schedule() 
         {
             SetUpBlocks();
 
             this.PigeonHoleClasses(Schedule.AllClasses.OrderBy(c => GA_Controller.GetRandomInt()).ToList()); // sort in randomly order classes
         }
+
 
         /**************************************************************************\
         Method: SetUpBlocks
@@ -179,7 +270,6 @@ namespace FETP
         }
 
 
-        // TODO: call twice for keeeeds. swap postions of parents
         /**************************************************************************\
         Constructor: Schedule Combining Constructor
         Description: Creates a schedule off parent schedules. I alternates 
@@ -209,6 +299,7 @@ namespace FETP
 
             // TODO: don't need randomness ?
         }
+
 
         /**************************************************************************\
         Method: SetNumberOfTimeSlotsAvailable
@@ -285,11 +376,11 @@ namespace FETP
         }
 
 
-        //TODO: needs finishing
         /**************************************************************************\
         Method: Display
         Description: Displays all informations stored in Schedule instance
                      with formatting.
+        TODO: needs finishing
         \**************************************************************************/
         public static void Display()
         {
@@ -317,13 +408,13 @@ namespace FETP
         }
 
 
-        // TODO: maybe make bool to see if it is read
-        // TODO: this might need to be moved
-        // TODO: catch exception that file couldn't be opened?
         /**************************************************************************\
         Method: readInputConstraintsFile
         Description: Reads in constraints file and intializes static schedule
-                     data members
+        TODO: maybe make bool to see if it is read
+        TODO: this might need to be moved
+        TODO: catch exception that file couldn't be opened?
+              data members
         \**************************************************************************/
         public static void readInputConstraintsFile(string inFileName)
         {
@@ -340,16 +431,15 @@ namespace FETP
         }
 
 
-        // TODO: maybe make bool to see if it is read
-        // TODO: this might need to be moved
-        // TODO: break up for coehesion and for easier use of manual input
-        // Programmer: Ben
-        // takes in an open data file and returns a list of all the classes
         /**************************************************************************\
         Method: readInputDataFile
         Description: Reads in data file and constructs list of all classes
                      in the file. Does not add classes in that fall into the
                      criteria of ignorable classes
+        TODO: maybe make bool to see if it is read
+        TODO: this might need to be moved
+        TODO: break up for coehesion and for easier use of manual input
+              takes in an open data file and returns a list of all the classes
         \**************************************************************************/
         public static void readInputDataFile(string inFileName)
         {
@@ -410,12 +500,12 @@ namespace FETP
         }
 
 
-        // TODO: only runs during one generation. maybe move ?
-        //// takes in a list of classes and coalesces them into a list of blocks of classes
         /**************************************************************************\
         Method: PigeonHoleClasses
-        Description: Puts classes in blocks sequentially. 
-                     Used in random schedule creation
+        Description: Puts classes in blocks sequentially. Used in random schedule
+                     creation. Takes in a list of classes and coalesces them into a
+                     list of blocks of classes.
+        // TODO: only runs during one generation. maybe move ?
         \**************************************************************************/
         private void PigeonHoleClasses(List<Class> classes) // TODO: I LOVE PIGEON HOLE
         {
@@ -438,6 +528,18 @@ namespace FETP
             }
         }
 
+        //End Methods Section
 
-    } // end class Schedule
+
+        /**************************************************************************\
+        Class: Schedule 
+        Section: Overloaded Operators 
+        \**************************************************************************/
+        /**************************************************************************\
+        Operator: ==
+        Description: This is an example 
+        \**************************************************************************/
+
+        //End Overloaded Operators Section
+    }
 }

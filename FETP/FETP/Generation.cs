@@ -6,9 +6,62 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 namespace FETP
 {
+    /**************************************************************************\
+    Class: Generation 
+    Description: 
+    TODO: Add a description
+    \**************************************************************************/ 
     class Generation
     {
+        /**************************************************************************\
+        Class: Generation 
+        Section: Utilities
+        \**************************************************************************/
+        //Utility Data Members Here
+
+
+        /**************************************************************************\
+        Utility Method: Example 
+        Description: This is an example header
+        TODO: Remove if a utility method is added
+        \**************************************************************************/
+
+        //End Utilities Section
+
+
+        /**************************************************************************\
+        Class: Generation 
+        Section: Data Constants 
+        \**************************************************************************/
+        //TODO: big generations take a long time?
+        //TODO: should be divisable by 2 ?
+        //TODO: we could write it to take a random number of parents for better crossover
+        public const int SIZE_OF_GENERATION = 100; 
+        public const int NUMBER_OF_GENERATIONS = 500;
+        public const int BEN_ALL_STAR_THREAD_LIMIT = 4;
+
+        //End Data Constants Section
+
+
+        /**************************************************************************\
+        Class: Generation 
+        Section: Data Members 
+        \**************************************************************************/
         private List<Schedule> schedules; // = new List<Schedule>(Generation.SIZE_OF_GENERATION);
+
+        //End Data Members Section
+
+
+        /**************************************************************************\
+        Class: Generation 
+        Sections: Properties
+        TODO: Let me know if headers for properties are too excessive (VR)
+        \**************************************************************************/
+        /**************************************************************************\
+        Property: Schedules 
+        Description:
+        TODO: Add a description
+        \**************************************************************************/
         public List<Schedule> Schedules
         {
             get
@@ -17,11 +70,18 @@ namespace FETP
             }
         }
 
-        public const int SIZE_OF_GENERATION = 100; // TODO: big generations take a long time ? should be divisable by 2 ? we could write it to take a random number of parents for better crossover
-        public const int NUMBER_OF_GENERATIONS = 500;
-        public const int BEN_ALL_STAR_THREAD_LIMIT = 4;
+        //End Properties Section
 
-        // creates seed generation
+
+        /**************************************************************************\
+        Class: Generation 
+        Section: Methods
+        \**************************************************************************/
+        /**************************************************************************\
+        Method: Overloaded Constructor 
+        Description: Creates seed generation?
+        TODO: Add a description 
+        \**************************************************************************/
         public Generation()
         {
             // Intialize the current generation
@@ -34,7 +94,12 @@ namespace FETP
             }
         }
 
-        // creates next gen
+
+        /**************************************************************************\
+        Method: Overloaded Constructor 
+        Description: Creates next generation
+        TODO: Add a description 
+        \**************************************************************************/
         public Generation(Generation generation)
         {
             // List<Schedule> nextGeneration = new List<Schedule>(GA_Controller.SIZE_OF_GENERATION);
@@ -86,6 +151,12 @@ namespace FETP
             //currentGeneration = nextGeneration; // Advance to the next generation
         }
 
+
+        /**************************************************************************\
+        Method: Overloaded Constructor 
+        Description: ?????!??? 
+        TODO: Add a description 
+        \**************************************************************************/
         public Generation(List<Schedule> inSchedules)
         {
             this.schedules = inSchedules;
@@ -96,10 +167,11 @@ namespace FETP
             return this.schedules.Count <= 0;
         }
 
-        // TODO: need to weight somewhere by one to avoid divide by zero if perfect population?
+
         /**************************************************************************\
         Method: BenRoutlette
         Description: Randomly selects an index with weight from fitness scores
+        TODO: need to weight somewhere by one to avoid divide by zero if perfect population?
         \**************************************************************************/
         public int BenRoutlette(List<Schedule> schedules)
         {
@@ -119,6 +191,7 @@ namespace FETP
             return this.schedules.Count - 1; // TODO: This point should never be reached. roundoff error? ? it could fail on empty schedule
         }
 
+
         /**************************************************************************\
         Method: ComputeTotalFitnessScore
         Description: Computes the total fitness score of all schedules
@@ -133,22 +206,53 @@ namespace FETP
             return totalFitnessScore;
         }
 
-        // TODO: see if moving this to controller results in faster programs
+
+        /**************************************************************************\
+        Method: OrderByFitnessScore 
+        Description: !?!? 
+        TODO: Add a description 
+        \**************************************************************************/
         public void OrderByFitnessScore()
         {
             this.schedules = this.schedules.OrderByDescending(c => c.FitnessScore).ToList();
         }
 
+
+        /**************************************************************************\
+        Method: GetMostFit 
+        Description: !?!? 
+        TODO: Add a description 
+        \**************************************************************************/
         public Schedule GetMostFit()
         {
             OrderByFitnessScore();
             return this.Schedules[0];
         }
+
+
+        /**************************************************************************\
+        Method: GetWorstFit 
+        Description: !?!? 
+        TODO: Add a description 
+        \**************************************************************************/
         public Schedule GetWorstFit()
         {
             OrderByFitnessScore();
             return this.Schedules[this.Schedules.Count-1];
         }
 
+        //End Methods Section
+
+
+        /**************************************************************************\
+        Class: Generation 
+        Section: Overloaded Operators 
+        \**************************************************************************/
+        /**************************************************************************\
+        Operator: ==
+        Description: This is an example 
+        \**************************************************************************/
+
+        //End Overloaded Operators Section
     }
 }

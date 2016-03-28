@@ -14,6 +14,31 @@ namespace FETP
     public class Class
     {
         /**************************************************************************\
+        Class: Class 
+        Section: Utilities
+        \**************************************************************************/
+        //Utility Data Members Here
+
+
+        /**************************************************************************\
+        Utility Method: Example 
+        Description: This is an example header
+        TODO: Remove if a utility method is added
+        \**************************************************************************/
+
+        //End Utilities Section
+
+
+        /**************************************************************************\
+        Class: Class 
+        Section: Data Constants 
+        \**************************************************************************/
+        //Data Constants Here
+
+        //End Data Constants Section
+
+
+        /**************************************************************************\
         Class: Class
         Section: Data Members 
         \**************************************************************************/
@@ -21,6 +46,8 @@ namespace FETP
         protected TimeSpan endTime;
         protected int enrollment;
         protected List<DayOfWeek> daysMeet;
+
+        //End Data Members Section
 
 
         /**************************************************************************\
@@ -74,6 +101,8 @@ namespace FETP
             get { return this.daysMeet; }
             set { this.daysMeet = value; }
         }
+
+        //End Properties Section
 
 
         /**************************************************************************\
@@ -152,6 +181,8 @@ namespace FETP
             else return false;
         }
 
+        //End Methods Section
+
 
         /**************************************************************************\
         Class: Class
@@ -180,5 +211,7 @@ namespace FETP
            // if (class1 == null && class2 == null) return false;
             return (class1.StartTime != class2.StartTime || class1.EndTime != class2.EndTime || class1.Enrollment != class2.Enrollment || class1.DaysMeet != class2.DaysMeet); // yay. used cs 245 to make this code faster
         }
+
+        //End Overloaded Operators Section
     }
 }
