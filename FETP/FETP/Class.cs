@@ -81,9 +81,8 @@ namespace FETP
         Section: Methods 
         \**************************************************************************/
         /**************************************************************************\
-        Constructor: Default 
+        Method: Overloaded Constructor
         Description: Takes in data values and creates class with those values
-        TODO: Change name to Overloaded constructor in header?
         \**************************************************************************/
         public Class(TimeSpan inStartTime, TimeSpan inEndTime, int inEnrollment, List<DayOfWeek> inDaysMeet)
         {
