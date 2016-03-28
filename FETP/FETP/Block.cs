@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace FETP
 {
-
     /**************************************************************************\
     Class: Block (Groups of Classes)
     Description: Contains grouped classes and functions to get information
                  on properties of all classes in block 
     \**************************************************************************/
+    //<summary>
+    //thi is this thing
+    //</summary>
     public class Block
     {
         /**************************************************************************\
@@ -22,11 +24,24 @@ namespace FETP
 
         /**************************************************************************\
         Block - Properties 
+        TODO: Let me know if headers for properties are too excessive (VR)
+        \**************************************************************************/
+        /**************************************************************************\
+        Property: ClassesInBlock
+        Description:
+        TODO: Add a description
         \**************************************************************************/
         public List<Class> ClassesInBlock
         {
             get { return classesInBlock; }
         }
+        
+
+        /**************************************************************************\
+        Property: Enrollment 
+        Description:
+        TODO: Add a description
+        \**************************************************************************/
         public int Enrollment
         {
             get
@@ -37,6 +52,13 @@ namespace FETP
                 return enrollment;
             }
         }
+
+        
+        /**************************************************************************\
+        Property: Average
+        Description:
+        TODO: Add a description
+        \**************************************************************************/
         public int Average
         {
             get
@@ -52,6 +74,13 @@ namespace FETP
                 }
             }
         }
+
+
+        /**************************************************************************\
+        Property: Variance 
+        Description:
+        TODO: Add a description
+        \**************************************************************************/
         public int Variance
         {
             get
@@ -70,6 +99,13 @@ namespace FETP
                     return variance;
             }
         }
+
+
+        /**************************************************************************\
+        Property: StandardDeviation
+        Description:
+        TODO: Add a description
+        \**************************************************************************/
         public double StandardDeviation
         {
             get
@@ -77,6 +113,13 @@ namespace FETP
                 return Math.Sqrt(this.Variance);
             }
         }
+
+
+        /**************************************************************************\
+        Property: FitnessScore 
+        Description:
+        TODO: Add a description
+        \**************************************************************************/
         public double FitnessScore
         {
             get
@@ -93,6 +136,13 @@ namespace FETP
                 return 1/ (1 + fitnessScore);
             }
         } // TODO: needs more work
+
+
+        /**************************************************************************\
+        Property: AreThereAnyNonOverlappingClasses 
+        Description:
+        TODO: Add a description
+        \**************************************************************************/
         public bool AreThereAnyNonOverlappingClasses
         {
             get
@@ -112,7 +162,6 @@ namespace FETP
         /**************************************************************************\
         Block - Methods 
         \**************************************************************************/
-
         /**************************************************************************\
         Constructor: Default 
         Description: Takes in data values and creates Block with those values
@@ -131,8 +180,8 @@ namespace FETP
 
 
         /**************************************************************************\
-        Constructor: Block 
-        Description: Creates a new Block with only the in class in it
+        Constructor: Overloaded 
+        Description: Creates a new Block with only the input class in it
         TODO: need new constructor
         \**************************************************************************/
         public Block(Class inClass)
@@ -142,11 +191,9 @@ namespace FETP
         }
 
 
-        // adds class to block and increaments time
-        // only if class overlaps all other classes in block
         /**************************************************************************\
         Method: addClass
-        Description: Addes class to list of classes in block. 
+        Description: Adds class to list of classes in block. 
                      doesn't add class if the class does not overlap with group
                      TODO: this is maybe lowering cohesion
                      TODO: don't need anymore due to enrollment being a property
@@ -157,10 +204,10 @@ namespace FETP
         }
 
 
-        // returns wheter the class was found and removed// returns wheter the class was found and removed.
         /**************************************************************************\
         Method: isClassInGroup
-        Description: Determines if the class is in the group
+        Description: Determines if the class is in the group, and then returns a
+                     bool based on if the class was found and removed successfuly.
         \**************************************************************************/
         public bool isClassInGroup(Class inClass)
         {
@@ -171,22 +218,10 @@ namespace FETP
             return false;
         }
 
-        /**************************************************************************\
-        Method:  
-        Description: TODO: see addClass
-        \**************************************************************************/
-        //public bool removeClass(Class inClass)
-        //{
-        //    if (isClassInGroup(inClass))
-        //    {
-        //        this.enrollment -= inClass.Enrollment;
-        //    }
-        //    return this.classesInBlock.Remove(inClass);  // this should work
-        //}
 
         /**************************************************************************\
         Method: doesClassOverlap
-        Description: Determins if the inClass overlaps with ALL classes in block
+        Description: Determines if the inClass overlaps with ALL classes in block
         TODO: 
         \**************************************************************************/
         public bool doesClassOverlapWithBlock(Class inClass)
@@ -201,9 +236,10 @@ namespace FETP
             return true;
         }
 
+
         /**************************************************************************\
         Method: Display
-        Description: Displays all informations stored in Block instance
+        Description: Displays all information stored in a Block instance
                      with formatting.
         \**************************************************************************/
         public void Display()
@@ -215,15 +251,16 @@ namespace FETP
             Console.WriteLine("Standard Deviation: {0}", this.StandardDeviation);
         }
 
+
         /**************************************************************************\
-        Method:  
+        Method: DisplayAllClasses
         Description: 
+        TODO: Add description
         \**************************************************************************/
         public void DisplayAllClasses()
         {
             foreach (Class cl in this.classesInBlock)
                 cl.Display();
         }
-
-    } // end class Block
+    }
 }

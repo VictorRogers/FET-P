@@ -1224,3 +1224,16 @@ class Generation
 
         // creates a random schedule
         // maybe makes list of all classes static
+
+        /**************************************************************************\
+        Method:  
+        Description: TODO: see addClass
+        \**************************************************************************/
+        //public bool removeClass(Class inClass)
+        //{
+        //    if (isClassInGroup(inClass))
+        //    {
+        //        this.enrollment -= inClass.Enrollment;
+        //    }
+        //    return this.classesInBlock.Remove(inClass);  // this should work
+        //}
