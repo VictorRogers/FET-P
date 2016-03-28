@@ -154,32 +154,13 @@ namespace FETP
         /**************************************************************************\
         Schedule - Methods 
         \**************************************************************************/
-        /**************************************************************************\
-        Method:  
-        Description: 
-        \**************************************************************************/
-        //public Schedule(List<Block> inDays = null)
-        //{
-        //    if (inDays == null)
-        //    {
-        //        this.blocks = new List<Block>();
-        //    } 
-        //    else
-        //    {
-        //        this.blocks = inDays;
-        //    }
-        //}
 
-        // creates a random schedule
-        // maybe makes list of all classes static
         /**************************************************************************\
         Constructor: Random Constructor
         Description: Creates a random schedule off the incoming list of classes
         \**************************************************************************/
         public Schedule() // TODO: possibly make classes static. it would make it faster
         {
-            
-            
             SetUpBlocks();
 
             this.PigeonHoleClasses(Schedule.AllClasses.OrderBy(c => GA_Controller.GetRandomInt()).ToList()); // sort in randomly order classes

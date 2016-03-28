@@ -20,6 +20,12 @@ namespace FETP
     public static class GA_Controller
     {
         /**************************************************************************\
+        GA_Controller - Utilities 
+        \**************************************************************************/ 
+        public static Stopwatch stopwatch = new Stopwatch(); // TODO: for testing purposes 
+
+
+        /**************************************************************************\
         GA_Controller - Data Constants
         \**************************************************************************/ 
         // const int GENERATION_SIZE = 500;
@@ -36,18 +42,14 @@ namespace FETP
         public static int WEIGHT_OVERLAPPING_CLASSES = 50; // TODO: static makes it fuction almost as const
 
 
-
-        //private List<Schedule> currentGeneration;
-        // private static List<Schedule> currentGeneration;
-
-
-        public static Stopwatch stopwatch = new Stopwatch(); // TODO: for testing purposes 
-
-
         /**************************************************************************\
         GA_Controller - Methods 
         \**************************************************************************/
-
+        /**************************************************************************\
+        Method: BenAllStartRun 
+        Description: 
+        TODO: Add a description for this method 
+        \**************************************************************************/
         public static void BenAllStartRun()
         {
             SetupIntialFields();
@@ -59,6 +61,7 @@ namespace FETP
 
             object benLock = new object();
 
+            //TODO: Kill or fix 
             //for (int i = 0; i < Generation.SIZE_OF_GENERATION; i++)
             //{
             //    Generation generation = new Generation(); // sets up intial generation
@@ -90,19 +93,17 @@ namespace FETP
                 //{
                 allStars.Add(generation.GetMostFit());
                 //}
-
-
-
             });
 
-                    //for(int i = 0; i < SIZE_OF_GENERATION; i++)
-                    //{
-                    //    Run();
-                    //    allStars.Add(currentGeneration[0]);
-                    //}
+            //TODO: Kill or fix
+            //for(int i = 0; i < SIZE_OF_GENERATION; i++)
+            //{
+            //    Run();
+            //    allStars.Add(currentGeneration[0]);
+            //}
 
-                    // Do All Star run
-                    Console.WriteLine("Starting allstar run");
+            // Do All Star run
+            Console.WriteLine("Starting allstar run");
             Generation lastGen = new Generation(allStars);
             lastGen.OrderByFitnessScore();
 
@@ -111,14 +112,12 @@ namespace FETP
                 CheckSchedule(sch); // TODO: could be that some groups have less overlapping classes even though more clean blocks?
             }
 
-
-
+            //TODO: Kill or fix
             //Console.WriteLine("Displaying worst fit schedule");
             //Console.WriteLine();
             //lastGen.GetWorstFit().DisplayBlocks();
             //Console.WriteLine("Displaying most fit schedule");
             //Console.WriteLine();
-
 
             //CheckSchedule(lastGen.GetMostFit());
 
@@ -128,14 +127,13 @@ namespace FETP
             //{
             //    CheckSchedule(lastGen.Schedules[i]); // should already be sorted
             //}
-
-
         }
 
         
         /**************************************************************************\
         Method: Run
         Description: Basic Testing Driver for GA
+        TODO: The description for this needs more detail
         \**************************************************************************/
         public static void Run()
         {
@@ -162,9 +160,6 @@ namespace FETP
                 Console.WriteLine("Time to Execute {0} generations: {1}", i + 1, stopwatch.Elapsed);
             }
 
-
-
-
             Console.WriteLine("Displaying worst fit schedule");
             Console.WriteLine();
             //generation.GetMostFit().DisplayBlocks();
@@ -177,54 +172,43 @@ namespace FETP
                 CheckSchedule(generation.Schedules[i]); // should already be sorted
             }
             
-
-            
+            //TODO: Kill or fix
             //currentGeneration.OrderByDescending(c => c.FitnessScore).ToList();
 
             //Console.WriteLine();
             //currentGeneration[0].DisplayBlocks();
             //CheckSchedule(currentGeneration[0]);
-        
-            
 
+            //Console.WriteLine("Begining GA\n");
 
+            //    // Get input
+            //    SetupIntialFields();
 
+            //    // Intialize First Generation
+            //    stopwatch.Restart();
 
+            //    IntializeSeedGeneration();
 
+            //    stopwatch.Stop();
+            //    Console.WriteLine("Time to Create Seed Generation: {0}", stopwatch.Elapsed);
+            //    stopwatch.Reset();
 
+            //    // Run GA
+            //    RunGeneticAlgorithm();
 
-
-        //Console.WriteLine("Begining GA\n");
-
-        //    // Get input
-        //    SetupIntialFields();
-
-        //    // Intialize First Generation
-        //    stopwatch.Restart();
-
-        //    IntializeSeedGeneration();
-
-        //    stopwatch.Stop();
-        //    Console.WriteLine("Time to Create Seed Generation: {0}", stopwatch.Elapsed);
-        //    stopwatch.Reset();
-
-        //    // Run GA
-        //    RunGeneticAlgorithm();
-
-        //    Console.WriteLine("Displaying most fit schedule");
-        //    currentGeneration.OrderByDescending(c => c.FitnessScore).ToList();
-            
-        //    Console.WriteLine();
-        //    currentGeneration[0].DisplayBlocks();
-        //    CheckSchedule(currentGeneration[0]);
+            //    Console.WriteLine("Displaying most fit schedule");
+            //    currentGeneration.OrderByDescending(c => c.FitnessScore).ToList();
+                
+            //    Console.WriteLine();
+            //    currentGeneration[0].DisplayBlocks();
+            //    CheckSchedule(currentGeneration[0]);
         }
 
-        /// <summary> 
-        /// Perform a divide by b
-        ///      e.g a = 1, b = 2
-        /// will return 0, since (1/2) = 0.5
-        /// </summary>
-        /// <returns>int value</returns>
+
+        /**************************************************************************\
+        Method: SetupInitialFields 
+        Description: 
+        \**************************************************************************/
         public static void SetupIntialFields()
         {
             Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // TODO: throw exceptions for invalid input
@@ -232,10 +216,9 @@ namespace FETP
         }
 
 
-
         /**************************************************************************\
         Method: RunGeneticAlgorithm
-        Description: Executtes the Genetic Algorithm. For the number of 
+        Description: Executes the Genetic Algorithm. For the number of 
                      generations desired to go through, advances 
                      the generation
         \**************************************************************************/

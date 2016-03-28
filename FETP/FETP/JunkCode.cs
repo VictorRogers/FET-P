@@ -1176,3 +1176,51 @@ class Generation
                 //Console.WriteLine("3. Test Basic Grouping");
                 
                 Console.WriteLine("5. Test Basic GA with Generation class (broken hard)");
+
+
+        /**************************************************************************\
+        Method: RunGeneticAlgorithm
+        Description: Executes the Genetic Algorithm. For the number of 
+                     generations desired to go through, advances 
+                     the generation
+        \**************************************************************************/
+        //public static void RunGeneticAlgorithm()
+        //{
+        //    for (int i = 0; i < NUMBER_OF_GENERATIONS; i++)
+        //    {
+        //        stopwatch.Start();
+        //        AdvanceGeneration();
+        //        stopwatch.Stop();
+        //        Console.WriteLine("Time to Execute {0} generations: {1}", i + 1, stopwatch.Elapsed);
+        //    }
+        //}
+        //public static void RunGeneticAlgorithm2()
+        //{
+        //    for (int i = 0; i < NUMBER_OF_GENERATIONS; i++)
+        //    {
+        //        stopwatch.Start();
+                
+        //        stopwatch.Stop();
+        //        Console.WriteLine("Time to Execute {0} generations: {1}", i + 1, stopwatch.Elapsed);
+        //    }
+        //}
+
+
+        /**************************************************************************\
+        Method:  
+        Description: 
+        \**************************************************************************/
+        //public Schedule(List<Block> inDays = null)
+        //{
+        //    if (inDays == null)
+        //    {
+        //        this.blocks = new List<Block>();
+        //    } 
+        //    else
+        //    {
+        //        this.blocks = inDays;
+        //    }
+        //}
+
+        // creates a random schedule
+        // maybe makes list of all classes static

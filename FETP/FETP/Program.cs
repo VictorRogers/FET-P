@@ -21,9 +21,9 @@ namespace FETP
                 Console.WriteLine("3. Test Basic GA");
                 Console.WriteLine("4. Test Ben's Allstar GA    <---- will devour CPU like ice cream on a hot day"); // TODO: crashes every now and then. theres a bug somewhere...
 
-
                 string input = Console.ReadLine();
                 Console.WriteLine();
+
                 if (input == "1")
                 {
                     Console.WriteLine(STARS);
@@ -68,11 +68,7 @@ namespace FETP
                     Console.WriteLine(STARS);
                     Console.WriteLine("END Testing Constraints File Operations");
                     Console.WriteLine(STARS);
-
-
-
                 }
-                
                 else if (input == "3") // GA 
                 {
                     GA_Controller.Run();
