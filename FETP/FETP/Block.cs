@@ -6,69 +6,51 @@ using System.Threading.Tasks;
 
 namespace FETP
 {
-    /**************************************************************************\
-    Class: Block (Groups of Classes)
-    Description: Contains grouped classes and functions to get information
-                 on properties of all classes in block 
-    \**************************************************************************/
+    ///<summary>
+    ///Contains grouped classes and functions to get information on
+    ///properties of all classes in block.
+    ///</summary>
     public class Block
     {
-        /**************************************************************************\
-        Class: Block 
-        Section: Utilities
-        \**************************************************************************/
+        #region Utilities
+        //Rationale: Utilities are supporting functions that are used often such as
+        //           Random and others
+
         //Utility Data Members Here
 
+        //Utility Methods Here
 
-        /**************************************************************************\
-        Utility Method: Example 
-        Description: This is an example header
-        TODO: Remove if a utility method is added
-        \**************************************************************************/
-
-        //End Utilities Section
+        #endregion
 
 
-        /**************************************************************************\
-        Class: Block 
-        Section: Data Constants 
-        \**************************************************************************/
+        #region Data Constants
         //Add data constants here
 
-        //End Data Constants Section
+        #endregion
 
 
-        /**************************************************************************\
-        Class: Block 
-        Section: Data Members
-        \**************************************************************************/
+        #region Data Members
         //TODO: This seems ambiguous - There is a member and a property for this
+        /// <summary>
+        /// Add a description
+        /// </summary>
         protected List<Class> classesInBlock;
 
-        //End Data Members Section
-        
+        #endregion
 
-        /**************************************************************************\
-        Class: Block 
-        Sections: Properties
-        TODO: Let me know if headers for properties are too excessive (VR)
-        \**************************************************************************/
-        /**************************************************************************\
-        Property: ClassesInBlock
-        Description:
-        TODO: Add a description
-        \**************************************************************************/
+
+        #region Properties
+        /// <summary>
+        /// Add a description
+        /// </summary>
         public List<Class> ClassesInBlock
         {
             get { return classesInBlock; }
         }
-        
 
-        /**************************************************************************\
-        Property: Enrollment 
-        Description:
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Add a description
+        /// </summary>
         public int Enrollment
         {
             get
@@ -80,12 +62,9 @@ namespace FETP
             }
         }
 
-        
-        /**************************************************************************\
-        Property: Average
-        Description:
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Add a description
+        /// </summary>
         public int Average
         {
             get
@@ -102,12 +81,9 @@ namespace FETP
             }
         }
 
-
-        /**************************************************************************\
-        Property: Variance 
-        Description:
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Add a description
+        /// </summary>
         public int Variance
         {
             get
@@ -127,12 +103,9 @@ namespace FETP
             }
         }
 
-
-        /**************************************************************************\
-        Property: StandardDeviation
-        Description:
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Add a description
+        /// </summary>
         public double StandardDeviation
         {
             get
@@ -141,12 +114,9 @@ namespace FETP
             }
         }
 
-
-        /**************************************************************************\
-        Property: AreThereAnyNonOverlappingClasses 
-        Description:
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Add a description 
+        /// </summary>
         public bool AreThereAnyNonOverlappingClasses
         {
             get
@@ -162,12 +132,9 @@ namespace FETP
             }
         }
 
-
-        /**************************************************************************\
-        Property: AreThereAnyNonOverlappingClasses 
-        Description:
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Add a description
+        /// </summary>
         public TimeSpan WeightedAverageStartTime 
         {
             get
@@ -185,18 +152,15 @@ namespace FETP
 
         }
 
-        //End Properties Section
+        #endregion
 
 
-        /**************************************************************************\
-        Class: Block 
-        Section: Methods
-        \**************************************************************************/
-        /**************************************************************************\
-        Method: Overloaded Constructor 
-        Description: Takes in data values and creates Block with those values
-        TODO: need new constructor
-        \**************************************************************************/
+        #region Methods
+        //TODO: Need a new constructor
+        /// <summary>
+        /// Takes in data values and creates Block with those values
+        /// </summary>
+        /// <param name="inClasses"></param>
         public Block(List<Class> inClasses = null)
         {
             if (inClasses == null)
@@ -209,11 +173,11 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: Overloaded Constructor
-        Description: Creates a new Block with only the input class in it
-        TODO: Looks like one of these overloaded constructors needs to go 
-        \**************************************************************************/
+        //TODO: Looks like one of these overloaded constructors needs to go 
+        /// <summary>
+        /// Creates a new Block with only the input class in it
+        /// </summary>
+        /// <param name="inClass"></param>
         public Block(Class inClass)
         {
             this.classesInBlock = new List<Class>();
@@ -221,24 +185,25 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: addClass
-        Description: Adds class to list of classes in block. 
-                     doesn't add class if the class does not overlap with group
-                     TODO: this is maybe lowering cohesion
-                     TODO: don't need anymore due to enrollment being a property
-        \**************************************************************************/
+        //TODO: this is maybe lowering cohesion
+        //TODO: don't need anymore due to enrollment being a property
+        /// <summary>
+        /// Adds class to list of classes in block. Doesn't add class if the class
+        /// does not overlap with group.
+        /// </summary>
+        /// <param name="inClass"></param>
         public void addClass(Class inClass)
         {
             classesInBlock.Add(inClass);
         }
 
 
-        /**************************************************************************\
-        Method: isClassInGroup
-        Description: Determines if the class is in the group, and then returns a
-                     bool based on if the class was found and removed successfuly.
-        \**************************************************************************/
+        /// <summary>
+        /// Determines if the class is in the group, and then returns a bool based
+        /// on if the class was found and removed successfully.
+        /// </summary>
+        /// <param name="inClass"></param>
+        /// <returns></returns>
         public bool isClassInGroup(Class inClass)
         {
             foreach (Class cl in this.classesInBlock)
@@ -249,11 +214,11 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: doesClassOverlap
-        Description: Determines if the inClass overlaps with ALL classes in block
-        TODO: 
-        \**************************************************************************/
+        /// <summary>
+        /// Determines if the inClass overlaps with ALL classes in the block
+        /// </summary>
+        /// <param name="inClass"></param>
+        /// <returns></returns>
         public bool doesClassOverlapWithBlock(Class inClass)
         {
             foreach (Class cl in this.classesInBlock)
@@ -267,11 +232,9 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: Display
-        Description: Displays all information stored in a Block instance
-                     with formatting.
-        \**************************************************************************/
+        /// <summary>
+        /// Displays all information stored in a Block instance with formatting.
+        /// </summary>
         public void Display()
         {
             Console.WriteLine("Number of Classes in Block: {0}", this.classesInBlock.Count);
@@ -282,29 +245,20 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: DisplayAllClasses
-        Description: 
-        TODO: Add description
-        \**************************************************************************/
+        /// <summary>
+        /// Add a description
+        /// </summary>
         public void DisplayAllClasses()
         {
             foreach (Class cl in this.classesInBlock)
                 cl.Display();
         }
 
-        //End Methods Section
+        #endregion
 
 
-        /**************************************************************************\
-        Class: Block 
-        Section: Overloaded Operators 
-        \**************************************************************************/
-        /**************************************************************************\
-        Operator: ==
-        Description: This is an example 
-        \**************************************************************************/
+        #region Overloaded Operators
 
-        //End Overloaded Operators Section
+        #endregion
     }
 }

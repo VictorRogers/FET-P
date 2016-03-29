@@ -6,113 +6,102 @@ using System.Threading.Tasks;
 
 namespace FETP
 {
-    /**************************************************************************\
-    Class: Class
-    Description: Contains basic information for a single class and functions 
-                 to make use of data
-    \**************************************************************************/ 
+    /// <summary>
+    /// Contains basic information for a single class and functions to make use
+    /// of data.
+    /// </summary>
     public class Class
     {
-        /**************************************************************************\
-        Class: Class 
-        Section: Utilities
-        \**************************************************************************/
+        #region Utilities
+        //Rationale: Utilities are supporting functions that are used often such as
+        //           Random and others
+
         //Utility Data Members Here
 
+        //Utility Methods Here
 
-        /**************************************************************************\
-        Utility Method: Example 
-        Description: This is an example header
-        TODO: Remove if a utility method is added
-        \**************************************************************************/
-
-        //End Utilities Section
+        #endregion
 
 
-        /**************************************************************************\
-        Class: Class 
-        Section: Data Constants 
-        \**************************************************************************/
+        #region Data Constants
         //Data Constants Here
 
-        //End Data Constants Section
+        #endregion
 
 
-        /**************************************************************************\
-        Class: Class
-        Section: Data Members 
-        \**************************************************************************/
+        #region Data Members
+
+        /// <summary>
+        /// Placeholder 
+        /// </summary>
         protected TimeSpan startTime;
+
+        /// <summary>
+        /// Placeholder 
+        /// </summary>
         protected TimeSpan endTime;
+
+        /// <summary>
+        /// Placeholder 
+        /// </summary>
         protected int enrollment;
+
+        /// <summary>
+        /// Placeholder 
+        /// </summary>
         protected List<DayOfWeek> daysMeet;
 
-        //End Data Members Section
+        #endregion
 
 
-        /**************************************************************************\
-        Class: Class
-        Section: Properties
-        TODO: Let me know if headers for properties are too excessive (VR)
-        \**************************************************************************/
-        /**************************************************************************\
-        Property: StartTime
-        Description:
-        TODO: Add a description
-        \**************************************************************************/
+        #region Properties
+        /// <summary>
+        /// Placeholder
+        /// </summary>
         public TimeSpan StartTime
         {
             get { return this.startTime; }
             set { this.startTime = value; }
         }
 
-
-        /**************************************************************************\
-        Property: EndTime 
-        Description:
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
         public TimeSpan EndTime
         {
             get { return this.endTime; }
             set { this.startTime = value; }
         }
 
-
-        /**************************************************************************\
-        Property: Enrollment 
-        Description:
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
         public int Enrollment
         {
             get { return this.enrollment; }
             set { this.enrollment = value; }
         }
 
-
-        /**************************************************************************\
-        Property: DaysMeet 
-        Description:
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
         public List<DayOfWeek> DaysMeet
         {
             get { return this.daysMeet; }
             set { this.daysMeet = value; }
         }
 
-        //End Properties Section
+        #endregion
 
 
-        /**************************************************************************\
-        Class: Class
-        Section: Methods 
-        \**************************************************************************/
-        /**************************************************************************\
-        Method: Overloaded Constructor
-        Description: Takes in data values and creates class with those values
-        \**************************************************************************/
+        #region Methods
+        /// <summary>
+        /// Takes in data values and creates a class with those values.
+        /// </summary>
+        /// <param name="inStartTime"></param>
+        /// <param name="inEndTime"></param>
+        /// <param name="inEnrollment"></param>
+        /// <param name="inDaysMeet"></param>
         public Class(TimeSpan inStartTime, TimeSpan inEndTime, int inEnrollment, List<DayOfWeek> inDaysMeet)
         {
             this.startTime = inStartTime;
@@ -131,11 +120,9 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: Display
-        Description: Displays all informations stored in Class instance
-                     with formatting.
-        \**************************************************************************/
+        /// <summary>
+        /// Displays all information stored in a Class instance with formatting.
+        /// </summary>
         public void Display()
         {
             Console.Write("Days Meet: ");
@@ -149,27 +136,28 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: GetHashCode
-        Description: Overloaded Hash function. It is improperly implemented 
-                     due to the complexity being too high and the function
-                     will not be used. C# requires it to be overloaded if
-                     comparison is overloaded.
-        // TODO: this function does not do anything. The complications of writing a hash function are not needed for current program
-        \**************************************************************************/
+        //TODO: This function does not do anything. The complications of writing a hash
+        //      function are not needed for the current program.
+        /// <summary>
+        /// Overloaded Hash function. It is improperly implemented due to the complexity
+        /// being too high and the function will not be used. C# requires it to be overloaded
+        /// if comparison is overloaded.
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
         }
 
 
-        /**************************************************************************\
-        Method: Equals
-        Description: Overloaded Equals function. It is *possibly* improperly  
-                     implemented due to the complexity being too high and the 
-                     function will not be used. C# requires it to be overloaded 
-                     if comparison is overloaded.
-        \**************************************************************************/
+        //TODO: It is *possibly* improperly implemented due to the complexity being too
+        //      high and the function will not be used. C# requires it to be overloaded
+        //      if comparison is overloaded.
+        /// <summary>
+        /// Overloaded Equals function.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             Class inClass = obj as Class;
@@ -180,19 +168,17 @@ namespace FETP
             else return false;
         }
 
-        //End Methods Section
+        #endregion
 
 
-        /**************************************************************************\
-        Class: Class
-        Section: Overloaded Operators 
-        \**************************************************************************/
-        /**************************************************************************\
-        Operator: == 
-        Description: Should take a chromosome as an input and output its fitness
-                     score.
-        TODO: Remove ambiguity between overloaded == and Equals()
-        \**************************************************************************/
+        #region Overloaded Operators
+        //TODO: Why is there two of these? (== and Equals())
+        /// <summary>
+        /// Placeholder
+        /// </summary>
+        /// <param name="class1"></param>
+        /// <param name="class2"></param>
+        /// <returns></returns>
         public static bool operator ==(Class class1, Class class2)
         {
             //if (class1 == null && class2 == null) return true;
@@ -200,17 +186,18 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Operator: !=
-        Description: Should take a chromosome as an input and output its fitness
-                     score.
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
+        /// <param name="class1"></param>
+        /// <param name="class2"></param>
+        /// <returns></returns>
         public static bool operator !=(Class class1, Class class2)
         {
            // if (class1 == null && class2 == null) return false;
             return (class1.StartTime != class2.StartTime || class1.EndTime != class2.EndTime || class1.Enrollment != class2.Enrollment || class1.DaysMeet != class2.DaysMeet); // yay. used cs 245 to make this code faster
         }
 
-        //End Overloaded Operators Section
+        #endregion
     }
 }

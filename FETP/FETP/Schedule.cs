@@ -12,48 +12,42 @@ using System.IO;
 
 namespace FETP
 {
-    /**************************************************************************\
-    Class: Schedule (Genetic Algorithm Constraints)
-    Description: The Constraints class contains all of the methods needed for
-                 checking if a chromosome is meeting soft and hard constraints. 
-    // TODO: if a function can modify the internal variables of class, it should be in that class
-    \**************************************************************************/
+    /// <summary>
+    /// Placeholder
+    /// </summary>
     public class Schedule
     {
         #region Utilities
-        /**************************************************************************\
-        Class: Schedule 
-        Section: Utilities
-        \**************************************************************************/
+        //Rationale: Utilities are supporting functions that are used often such as
+        //           Random and others
+
         //Utility Data Members Here
 
-
-        /**************************************************************************\
-        Utility Method: Example 
-        Description: This is an example header
-        TODO: Remove if a utility method is added
-        \**************************************************************************/
+        //Utility Methods Here
 
         #endregion
 
 
         #region Data Constants
-        /**************************************************************************\
-        Class: Block 
-        Section: Data Constants 
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
         private const string CLASS_LENGTH_TO_START_IGNORING = "0126"; // TODO: clean these up
+
+        /// <summary>
+        /// Placeholder
+        /// </summary>
         private const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
+
+        /// <summary>
+        /// Placeholder
+        /// </summary>
         public const string TIME_EXAMS_MUST_END_BY = "1700";
 
         #endregion
 
 
         #region Data Members
-        /**************************************************************************\
-        Class: Schedule
-        Section: Data Members
-        \**************************************************************************/
         //Static Members
         private static int numberOfDays;
         private static TimeSpan examsStartTime;
@@ -70,16 +64,9 @@ namespace FETP
 
 
         #region Properties
-        /**************************************************************************\
-        Class: Schedule 
-        Sections: Properties
-        TODO: Let me know if headers for properties are too excessive (VR)
-        \**************************************************************************/
-        /**************************************************************************\
-        Property: Blocks 
-        Description: !?!?
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
         public static Block[] Blocks
         {
             get
@@ -92,72 +79,54 @@ namespace FETP
             //}
         }
 
-
-        /**************************************************************************\
-        Property: NumberOfDays 
-        Description: !?!?
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
         public static int NumberOfDays
         {
             get { return numberOfDays; }
             //set { Schedule.numberOfDays = value; }
         }
 
-
-        /**************************************************************************\
-        Property: ExamsStartTime 
-        Description: !?!?
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
         public static TimeSpan ExamsStartTime
         {
             get { return examsStartTime; }
             //set { Schedule.examsStartTime = value; }
         }
 
-
-        /**************************************************************************\
-        Property: ExamsLength 
-        Description: !?!?
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
         public static TimeSpan ExamsLength
         {
             get { return examsLength; }
             //set { Schedule.examsLength = value; }
         }
 
-
-        /**************************************************************************\
-        Property: TimeBetweenExams 
-        Description: !?!?
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
         public static TimeSpan TimeBetweenExams
         {
             get { return timeBetweenExams; }
             //set { Schedule.timeBetweenExams = value; }
         }
 
-
-        /**************************************************************************\
-        Property: LunchLength 
-        Description: !?!?
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
         public static TimeSpan LunchLength
         {
             get { return lunchLength; }
             //set { this.lunchLength = value; }
         }
 
-
-        /**************************************************************************\
-        Property: AllClasses 
-        Description: !?!?
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
         public static List<Class> AllClasses
         {
             get
@@ -166,12 +135,9 @@ namespace FETP
             }
         }
 
-
-        /**************************************************************************\
-        Property: NumberOfTimeSlotsAvailable 
-        Description: !?!?
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
         public static int NumberOfTimeSlotsAvailable
         {
             get
@@ -181,12 +147,9 @@ namespace FETP
             
         }
 
-
-        /**************************************************************************\
-        Property: NumberOfTimeSlotsAvailablePerDay
-        Description: !?!?
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
         public static int NumberOfTimeSlotsAvailablePerDay
         {
             get
@@ -224,24 +187,19 @@ namespace FETP
 
 
         #region Methods
-        /**************************************************************************\
-        Class: Schedule
-        Section: Methods
-        \**************************************************************************/
-        /**************************************************************************\
-        Method: Default Constructor
-        Description: Creates a random schedule off the incoming list of classes
-        TODO: possibly make classes static. it would make it faster
-        \**************************************************************************/
+        //TODO: Possibly make the classes static. It would make the program faster.
+        /// <summary>
+        /// Placeholder - Currently does nothing
+        /// </summary>
         public Schedule() 
         {
         }
 
 
-        /**************************************************************************\
-        Method: IsFull 
-        Description:
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
+        /// <returns></returns>
         public static bool IsFull()
         {
             if (Schedule.Blocks.Length > Schedule.NumberOfTimeSlotsAvailable)
@@ -252,10 +210,11 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: GetStartTimeOfBlock 
-        Description: 
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
+        /// <param name="indexOfBlock"></param>
+        /// <returns></returns>
         public TimeSpan GetStartTimeOfBlock(int indexOfBlock)
         {
             TimeSpan startTime = Schedule.examsStartTime;
@@ -270,10 +229,11 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: ScheduleBlocks
-        Description: 
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
+        /// <param name="groupedClasses"></param>
+        /// <returns></returns>
         public static List<Block> ScheduleBlocks(List<Block> groupedClasses)
         {
             Schedule.blocks = new Block[Schedule.numberOfTimeSlotsAvailable];
@@ -289,11 +249,9 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: SetUpBlocks
-        Description: Makes a block for each timeslot available
-        TODO: Ben, make sure this isn't wrong
-        \**************************************************************************/
+        /// <summary>
+        /// Makes a block for each timeslot available
+        /// </summary>
         public void SetUpBlocks()
         {
             blocks = new Block[Schedule.NumberOfTimeSlotsAvailable]; // intialize blocks to proper size
@@ -304,22 +262,19 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: SetNumberOfTimeSlotsAvailable
-        Description: Calculates number of timeslots available and sets it.
-        \**************************************************************************/
+        /// <summary>
+        /// Calculates number of timeslots available and sets it.
+        /// </summary>
         private static void SetNumberOfTimeSlotsAvailable()
         {
             Schedule.numberOfTimeSlotsAvailable = Schedule.NumberOfTimeSlotsAvailablePerDay * Schedule.NumberOfDays;
         }
 
 
-        /**************************************************************************\
-        Method: Display
-        Description: Displays all informations stored in Schedule instance
-                     with formatting.
-        TODO: needs finishing
-        \**************************************************************************/
+        //TODO: Needs work
+        /// <summary>
+        /// Displays all information stored in a Schedule instance with formatting.
+        /// </summary>
         public static void Display()
         {
             Console.WriteLine("Number of Days: {0}", Schedule.NumberOfDays);
@@ -330,10 +285,9 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: DisplayBlocks
-        Description: Displays all blocks in schedule
-        \**************************************************************************/
+        /// <summary>
+        /// Displays all blocks in schedule
+        /// </summary>
         public void DisplayBlocks()
         {
             foreach (Block block in blocks)
@@ -346,10 +300,11 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: FindBestTimeslotFit 
-        Description: 
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
+        /// <param name="startTime"></param>
+        /// <returns></returns>
         public static int FindBestTimeslotFit(TimeSpan startTime)
         {
             //Find closest times to start time
@@ -359,18 +314,17 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: readInputConstraintsFile
-        Description: Reads in constraints file and intializes static schedule
-        TODO: maybe make bool to see if it is read
-        TODO: this might need to be moved
-        TODO: catch exception that file couldn't be opened?
-              data members
-        \**************************************************************************/
+        //TODO: Make bool to see if it's read
+        //TODO: This might need to be moved
+        //TODO: Catch exception that file couldn't be opened?
+        /// <summary>
+        /// Reads in the constraints file and initializes a static schedule
+        /// </summary>
+        /// <param name="inFileName"></param>
         public static void readInputConstraintsFile(string inFileName)
         {
             FileStream inFile = File.OpenRead(@inFileName);
-            var reader = new StreamReader(inFile); // TODO: 
+            var reader = new StreamReader(inFile);
 
             Schedule.numberOfDays = Int32.Parse(reader.ReadLine());
             Schedule.examsStartTime = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
@@ -382,16 +336,11 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: readInputDataFile
-        Description: Reads in data file and constructs list of all classes
-                     in the file. Does not add classes in that fall into the
-                     criteria of ignorable classes
-        TODO: maybe make bool to see if it is read
-        TODO: this might need to be moved
-        TODO: break up for coehesion and for easier use of manual input
-              takes in an open data file and returns a list of all the classes
-        \**************************************************************************/
+        /// <summary>
+        /// Reads in a data file and constructs list of all classes in the file. Does
+        /// not add classes in that fall into the criteria of ignorable classes.
+        /// </summary>
+        /// <param name="inFileName"></param>
         public static void readInputDataFile(string inFileName)
         {
 
@@ -451,13 +400,14 @@ namespace FETP
         }
 
 
-
-
-
-        /**************************************************************************\
-        Method: SetupScheduleConstraints 
-        Description: 
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
+        /// <param name="numberOfDay"></param>
+        /// <param name="examsStartTime"></param>
+        /// <param name="examsLength"></param>
+        /// <param name="timeBetweenExams"></param>
+        /// <param name="lunchLength"></param>
         private void SetupScheduleConstraints(int numberOfDay, TimeSpan examsStartTime,
                                               TimeSpan examsLength, TimeSpan timeBetweenExams,
                                               TimeSpan lunchLength)
@@ -474,14 +424,7 @@ namespace FETP
 
 
         #region Overloaded Operators
-        /**************************************************************************\
-        Class: Schedule 
-        Section: Overloaded Operators 
-        \**************************************************************************/
-        /**************************************************************************\
-        Operator: ==
-        Description: This is an example 
-        \**************************************************************************/
+        //Overloaded Operators Here
 
         #endregion
     }
