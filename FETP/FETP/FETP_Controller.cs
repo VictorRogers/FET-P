@@ -22,6 +22,8 @@ namespace FETP
     \**************************************************************************/
     public static class FETP_Controller
     {
+
+        public const int BEN_ALL_STAR_THREAD_LIMIT = 12;
         /**************************************************************************\
         Schedule - Constant Data Members 
         \**************************************************************************/
@@ -124,10 +126,36 @@ namespace FETP
         private static readonly object syncLock = new object();
 
 
+        public static void Run(string dataFileLocation, string constraintsFileLocation)
+        {
+
+            Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
+
+
+
+            Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
+
+            // Sort classes based on Overlapping classes ascending then by enrollment Descedending ????
+            List<Class> sortedClasses = Schedule.AllClasses.OrderBy(c => FETP_Controller.getNumberOfOverlappingClasses(Schedule.AllClasses, c)).ThenBy(c => c.Enrollment).ToList(); // change thenby
+
+
+            List<Block> blocks = FETP_Controller.GroupClasses(sortedClasses);
+
+            Schedule schedule = new Schedule();
+
+
+
+        }
+        public static void Run(string dataFileLocation, int numberOfDay, TimeSpan examsStartTime, TimeSpan examsLength, TimeSpan timeBetweenExams, TimeSpan lunchLength)
+        {
+
+        }
+
+
         /**************************************************************************\
         Method: RandomFloatBetween01 
         Description: Will return a random float between 0 and 1 
-        \**************************************************************************/       
+        \**************************************************************************/
         public static float RandomFloatBetween01()
         {
             lock (syncLock)
@@ -337,15 +365,15 @@ namespace FETP
                 {
                     int indexOfLargest = 0;
                     int currentLargest = 0;
-                    //foreach (int index in indexes)
-                    //{
-                    //    if (groupedClasses[index].ClassesInBlock.Count > currentLargest)
-                    //    {
-                    //        currentLargest = groupedClasses[index].ClassesInBlock.Count;
-                    //        indexOfLargest = index;
-                    //    }
-                    //}
-                    indexOfLargest = indexes[ GA_Controller.GetRandomInt() % indexes.Count];
+                    foreach (int index in indexes)
+                    {
+                        if (groupedClasses[index].ClassesInBlock.Count > currentLargest)
+                        {
+                            currentLargest = groupedClasses[index].ClassesInBlock.Count;
+                            indexOfLargest = index;
+                        }
+                    }
+                    //indexOfLargest = indexes[ GA_Controller.GetRandomInt() % indexes.Count];
                     groupedClasses[indexOfLargest].addClass(cl);
                 }
             }
@@ -375,7 +403,148 @@ namespace FETP
 
 
         }
+
+
+        public static volatile List<List<Class>> listOfLists = new List<List<Class>>(); 
+        public static void Crazy(List<Class> classes)
+        {
+            int index = 0;
+            while(index < classes.Count)
+            {
+
+            }
+        }
+
+        public static int GetNumberOfOverlappingBlocks(List<Block> blocks, Class cl)
+        {
+            int numberOfBlocksClassOverlaps = 0;
+            foreach(Block block in blocks)
+            {
+                if(block.doesClassOverlapWithBlock(cl))
+                {
+                    numberOfBlocksClassOverlaps++;
+                }
+            }
+            return numberOfBlocksClassOverlaps;
+        }
+
+        // attmpts to auto group classes that do not have mutliple ways to group them
+        //public static void GroupingAlgo(List<Class> classes)
+        //{
+        //    List<Class> sortedClasses = classes.OrderBy(c => FETP_Controller.getNumberOfOverlappingClasses(classes, c)).ToList(); // sort by number of other classes overlapping with ascending
+        //    List<Block> blocks = new List<Block>();
+
+        //    for(int j = 0; j < 10; j++)
+        //    {
+        //        int index = 0;
+        //        while (index < sortedClasses.Count)
+        //        {
+        //            int numberOfOverlappingClasses = getNumberOfOverlappingClasses(sortedClasses, sortedClasses[index]);
+        //            int numberOfOverlappingBlocks = GetNumberOfOverlappingBlocks(blocks, sortedClasses[index]);
+        //            if (numberOfOverlappingClasses <= 1 && numberOfOverlappingBlocks == 0)
+        //            {
+        //                blocks.Add(new Block(sortedClasses[index]));
+        //                sortedClasses.RemoveAt(index);
+        //            }
+        //            else if (numberOfOverlappingClasses == 0 && numberOfOverlappingBlocks == 1)
+        //            {
+        //                // find where that one block is and insert
+        //                foreach (Block block in blocks)
+        //                {
+        //                    if (block.doesClassOverlapWithBlock(sortedClasses[index]))
+        //                    {
+        //                        block.addClass(sortedClasses[index]);
+        //                        sortedClasses.RemoveAt(index);
+        //                    }
+        //                }
+        //            }
+        //            else if (numberOfOverlappingClasses > 1 && numberOfOverlappingBlocks == 0)
+        //            {
+        //                // see if they can all be grouped together
+        //                List<int> indexes = new List<int>();
+        //                int curIndex1 = 0;
+
+        //                while(curIndex1 < sortedClasses.Count)
+        //                {
+        //                    int curIndex2 = curIndex1+1;
+        //                    while(curIndex2 < sortedClasses.Count)
+        //                    {
+        //                        if (FETP_Controller.doClassesOverlap(cl, cl2))
+        //                        {
+
+        //                        }
+        //                    }
+        //                }
+
+        //                }
+        //                index++;
+        //            }
+        //            else if (numberOfOverlappingBlocks > 1)
+        //            {
+        //                index++;
+        //            }
+        //            else if (numberOfOverlappingClasses )
+        //            else if(numberOfOverlappingClasses > 1 && numberOfOverlappingBlocks > 1)
+        //            {
+        //                index++;
+        //            }
+        //            else
+        //            {
+        //                Console.WriteLine("we shouldn't be here...");
+        //            }
+
+
+        //    }
+
+        //    Console.WriteLine("Displaying Blocks\n**************\n");
+        //    foreach (Block block in blocks)
+        //    {
+        //        block.Display();
+        //    }
+        //    Console.WriteLine("done with blocks\n***********");
+        //    Console.WriteLine("Displaying Leftover classes\n**************\n");
+        //    foreach (Class cl in sortedClasses)
+        //    {
+        //        cl.Display();
+        //    }
+
+
+
+        //}
+
+        #region Random Functionality
+        public static Random rnd = new Random(); // this is up here to make sure we get good randoms, if it wasn't then we'd get the same random a bunch of times
+        /**************************************************************************\
+        Method: GetRandomFlot
+        Description: Retrieves a random float between 0 and 1
+        \**************************************************************************/
+
+        public static double GetRandomFloat()
+        {
+            return rnd.NextDouble();
+            //return new Random().NextDouble(); // ? we need a better implementation. numbers from this class are known to not be that random
+        }
+
+        public static int GetRandomInt(int upperRange = Int32.MaxValue, int lowerRange = 0)
+        {
+            return rnd.Next(lowerRange, upperRange);
+            //return new Random().Next(lowerRange, upperRange);
+        }
+        #endregion
+
+        public static void SetupIntialFields()
+        {
+            try
+            {
+                Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
+            }
+            catch
+            {
+
+            }
+            Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
+        }
     }
 
-    
+
 }

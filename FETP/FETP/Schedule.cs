@@ -20,7 +20,7 @@ namespace FETP
     Description: The Constraints class contains all of the methods needed for
                  checking if a chromosome is meeting soft and hard constraints. 
     \**************************************************************************/
-    public class Schedule
+    public static class Schedule
     {
 
         /**************************************************************************\
@@ -30,7 +30,7 @@ namespace FETP
         private const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
         public const string TIME_EXAMS_MUST_END_BY = "1700";
 
-
+        #region Static Data Members 
         /**************************************************************************\
         Schedule - Static Data Members 
         \**************************************************************************/
@@ -42,23 +42,24 @@ namespace FETP
         private static List<Class> allClasses;
 
         private static int numberOfTimeSlotsAvailable;
-       
+        #endregion
 
 
         /**************************************************************************\
         Schedule - Data Members 
         \**************************************************************************/
-        private List<Block> blocks; 
-        
+        private static Block[] blocks;
+        //private List<TimeSpan> startTimes = new List<TimeSpan>();
 
+        #region Properties
         /**************************************************************************\
         Schedule - Properties 
         \**************************************************************************/
-        public List<Block> Blocks
+        public static Block[] Blocks
         {
             get
             {
-                return this.blocks;
+                return Schedule.blocks;
             }
             //set
             //{
@@ -137,20 +138,20 @@ namespace FETP
                 return numberOfExams;
             }
         }
-        public double FitnessScore
-        {
-            get
-            {
-                double fitnessScore = 0;
-                foreach(Block block in this.blocks)
-                {
-                    fitnessScore += block.FitnessScore;
-                }
-                // more weighting stuff here
-                return fitnessScore;
-            }
-        } // ? possible optimation, if private var is null, set it. then return. ? maybe add in Parallel foreach loop to do that if fitness score is heavy to calculate?
-
+        //public double FitnessScore
+        //{
+        //    get
+        //    {
+        //        double fitnessScore = 0;
+        //        foreach(Block block in this.blocks)
+        //        {
+        //            fitnessScore += block.FitnessScore;
+        //        }
+        //        // more weighting stuff here
+        //        return fitnessScore;
+        //    }
+        //} // ? possible optimation, if private var is null, set it. then return. ? maybe add in Parallel foreach loop to do that if fitness score is heavy to calculate?
+        #endregion
 
         /**************************************************************************\
         Schedule - Methods 
@@ -171,20 +172,45 @@ namespace FETP
         //    }
         //}
 
-        // creates a random schedule
-        // maybe makes list of all classes static
-        /**************************************************************************\
-        Constructor: Random Constructor
-        Description: Creates a random schedule off the incoming list of classes
-        \**************************************************************************/
-        public Schedule() // ? possibly make classes static. it would make it faster
+      
+        public static List<Block> ScheduleBlocks(List<Block> groupedClasses)
+        {
+            Schedule.blocks = new Block[Schedule.NumberOfTimeSlotsAvailable];
+            List<Block> sortedGroupedClasses = groupedClasses.OrderByDescending(c => c.Enrollment).ToList();
+            while(sortedGroupedClasses.Count > 0 && !Schedule.IsFull())
+            {
+
+                int index = FindBestTimeslotFit(sortedGroupedClasses[0].WeightedAverageStartTime);
+                blocks[index] = sortedGroupedClasses[0];
+                sortedGroupedClasses.RemoveAt(0);
+
+
+            }
+
+        }
+
+        public void SetUpListOfStartTimes()
         {
             
-            
-            SetUpBlocks();
-
-            this.PigeonHoleClasses(Schedule.AllClasses.OrderBy(c => GA_Controller.GetRandomInt()).ToList()); // sort in randomly order classes
         }
+
+        public static int FindBestTimeslotFit(TimeSpan startTime)
+        {
+            // find closest times to start time
+                // if multiple free
+                    // find the one with the least number of people scheduled that day.
+            
+        }
+        
+        public static bool IsFull()
+        {
+            if (Schedule.Blocks.Length > Schedule.NumberOfTimeSlotsAvailable) // scratch this
+            {
+                throw new Exception("Too many blocks schedules");
+            }
+            return (Schedule.Blocks.Length == Schedule.NumberOfTimeSlotsAvailable);
+        }
+      
 
         /**************************************************************************\
         Method: SetUpBlocks
@@ -200,36 +226,6 @@ namespace FETP
         }
 
 
-        // ? call twice for keeeeds. swap postions of parents
-        /**************************************************************************\
-        Constructor: Schedule Combining Constructor
-        Description: Creates a schedule off parent schedules. I alternates 
-                     taking blocks from each parent.
-        Note: for two kids, call constructor twice with parent 
-              schedules in different spots 
-        \**************************************************************************/
-        public Schedule(Schedule schedule1, Schedule schedule2)
-        {
-            SetUpBlocks();
-
-            // int blockCount = Schedule.NumberOfTimeSlotsAvailable;
-            for (int i = 0; i < Schedule.NumberOfTimeSlotsAvailable; i++) // maybe swap just whole halves
-            {
-                if (i % 2 == 0)
-                {
-                    this.blocks[i] = schedule1.Blocks[i];
-                }
-                else
-                {
-                    this.blocks[i] = schedule2.Blocks[i];
-                }
-            }
-
-
-            this.AttemptMutate(); // ? break up for cohesion
-
-            // don't need randomness ?
-        }
 
         /**************************************************************************\
         Method: SetNumberOfTimeSlotsAvailable
@@ -240,70 +236,6 @@ namespace FETP
             Schedule.numberOfTimeSlotsAvailable = Schedule.NumberOfTimeSlotsAvailablePerDay * Schedule.NumberOfDays;
         }
 
-
-        /**************************************************************************\
-        Method: WillMutate
-        Description: Deteremines whether a mutation should occur
-        \**************************************************************************/
-        private bool WillMutate()
-        {
-            bool willItMutate = false;
-            float randFloatBetween01 = FETP_Controller.RandomFloatBetween01();
-
-            if (randFloatBetween01 < GA_Controller.MUTATION_RATE)
-            {
-                willItMutate = true;
-            }
-
-            return willItMutate;
-        }
-
-
-        /**************************************************************************\
-        Method: Mutate
-        Description: Mutates a scheudle
-                     currently picks two random blocks, picks midpoints in those
-                     blocks classes, then cuts the classes at that point, then
-                     swaps them
-        \**************************************************************************/
-        public void Mutate()
-        {
-            Random rnd = new Random();
-
-            // select two random blocks to combine
-            int blockIndex1 = rnd.Next(0, this.blocks.Count); // ? this makes it possible to not mutate with 0? maybe. over weigting chance to not mutate?
-            int blockIndex2 = rnd.Next(0, this.blocks.Count);
-
-            // select a mid point in classes to swap from
-            int midPointInClasses1 = rnd.Next(0, this.blocks[blockIndex1].ClassesInBlock.Count);
-            int midPointInClasses2 = rnd.Next(0, this.blocks[blockIndex2].ClassesInBlock.Count);
-
-            // swap parts of classes
-            List<Class> tempClasses1 = blocks[blockIndex1].ClassesInBlock.GetRange(0, blocks[blockIndex1].ClassesInBlock.Count); // gets the objects from the beginning to index
-
-            // ? make more readable
-            blocks[blockIndex1].ClassesInBlock.RemoveRange(0, blocks[blockIndex1].ClassesInBlock.Count);
-            blocks[blockIndex1].ClassesInBlock.AddRange(blocks[blockIndex2].ClassesInBlock.GetRange(0, blocks[blockIndex2].ClassesInBlock.Count)); // adds the range from the second class to block 1 // maybe not right to get front half from both ???
-            blocks[blockIndex2].ClassesInBlock.RemoveRange(0, blocks[blockIndex2].ClassesInBlock.Count);
-            blocks[blockIndex2].ClassesInBlock.AddRange(tempClasses1);
-        }
-
-
-        /**************************************************************************\
-        Method: AttemptMutate
-        Description: Attempts to mutate a scheudle. Runs a test to see if it
-                     will mutate. If so, it mutates the schedule.                
-        \**************************************************************************/
-        public bool AttemptMutate()
-        {
-            bool didItMutate = false;
-            if (this.WillMutate()) 
-            {
-                this.Mutate();
-                didItMutate = true;
-            }
-            return didItMutate;
-        }
 
 
         // ?
@@ -338,6 +270,20 @@ namespace FETP
             }
         }
 
+        // need to account for lunch ?
+        public TimeSpan GetStartTimeOfBlock(int indexOfBlock)
+        {
+            TimeSpan startTime = Schedule.examsStartTime;
+            indexOfBlock %= Schedule.NumberOfTimeSlotsAvailablePerDay;
+
+            for(int i = 0; i < indexOfBlock; i++)
+            {
+                startTime += Schedule.ExamsLength + Schedule.TimeBetweenExams;
+            }
+            
+
+        }
+
 
         // ? maybe make bool to see if it is read
         // ? this might need to be moved
@@ -359,6 +305,15 @@ namespace FETP
             Schedule.lunchLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
 
             Schedule.SetNumberOfTimeSlotsAvailable();
+        }
+
+        public static void SetUpScheduleConstraints(int numberOfDay, TimeSpan examsStartTime, TimeSpan examsLength, TimeSpan timeBetweenExams, TimeSpan lunchLength)
+        {
+            Schedule.numberOfDays = numberOfDay;
+            Schedule.examsStartTime = examsStartTime;
+            Schedule.examsLength = examsLength;
+            Schedule.timeBetweenExams = timeBetweenExams;
+            Schedule.lunchLength = lunchLength;
         }
 
 
@@ -397,68 +352,44 @@ namespace FETP
 
                 TimeSpan startTime = TimeSpan.ParseExact(daysAndTimes[1], @"hhmm", CultureInfo.InvariantCulture); // 1 postion is the start time, changes formated time to bw more usable 
                 TimeSpan endTime = TimeSpan.ParseExact(daysAndTimes[3], @"hhmm", CultureInfo.InvariantCulture); // 3 position is the end time, changes formated time to bw more usable 
+                List<DayOfWeek> days = new List<DayOfWeek>(); // days the class meets
+                foreach (char day in daysAndTimes[0].ToCharArray()) // changes days from string of chars to list of DayOfWeek type
+                {
+                    switch (day)
+                    {
+                        case 'M':
+                            days.Add(DayOfWeek.Monday);
+                            break;
+                        case 'T':
+                            days.Add(DayOfWeek.Tuesday);
+                            break;
+                        case 'W':
+                            days.Add(DayOfWeek.Wednesday);
+                            break;
+                        case 'R':
+                            days.Add(DayOfWeek.Thursday);
+                            break;
+                        case 'F':
+                            days.Add(DayOfWeek.Friday);
+                            break;
+                    }
+                }
+                int enrollment = Int32.Parse(values[1]); // enrollement values should be in 1 position
 
                 // Checks if class should not be ignored before continuing execution
-                if ((startTime < ignoreClassStartTime) && (endTime - startTime < ignoreClassLength) && ((TimeSpan.Compare(endTime - startTime, TimeSpan.FromMinutes(50))) == 0 || (TimeSpan.Compare(endTime - startTime, TimeSpan.FromMinutes(75)) == 0)))
+                if ((startTime < ignoreClassStartTime) // if start time is in range to be considered
+                    && (endTime - startTime < ignoreClassLength) // if class length is less than ignorable length
+                    && days.Count > 1 // if class occurs on more than one day
+                    && ((TimeSpan.Compare(endTime - startTime, TimeSpan.FromMinutes(50))) == 0 // if class length is 50 minutes
+                        || (TimeSpan.Compare(endTime - startTime, TimeSpan.FromMinutes(75)) == 0))) // if class length is 1:15
                 {
-                    List<DayOfWeek> days = new List<DayOfWeek>(); // days the class meets
-                    foreach (char day in daysAndTimes[0].ToCharArray()) // changes days from string of chars to list of DayOfWeek type
-                    {
-                        switch (day)
-                        {
-                            case 'M':
-                                days.Add(DayOfWeek.Monday);
-                                break;
-                            case 'T':
-                                days.Add(DayOfWeek.Tuesday);
-                                break;
-                            case 'W':
-                                days.Add(DayOfWeek.Wednesday);
-                                break;
-                            case 'R':
-                                days.Add(DayOfWeek.Thursday);
-                                break;
-                            case 'F':
-                                days.Add(DayOfWeek.Friday);
-                                break;
-                        }
-                    }
-
-                    int enrollment = Int32.Parse(values[1]); // enrollement values should be in 1 position
-
                     Schedule.allClasses.Add(new Class(startTime, endTime, enrollment, days)); // add new Class to list
                 }
             }
         }
 
 
-        // only runs during one generation. maybe move ?
-        //// takes in a list of classes and coalesces them into a list of blocks of classes
-        /**************************************************************************\
-        Method: PigeonHoleClasses
-        Description: Puts classes in blocks sequentially. 
-                     Used in random schedule creation
-        \**************************************************************************/
-        private void PigeonHoleClasses(List<Class> classes) // ? I LOVE PIGEON HOLE
-        {
-            
-            foreach (Class cl in classes)
-            {
-                int i = GA_Controller.GetRandomInt(this.Blocks.Count);
-
-                // maybe check for empty blocks ?
-                this.blocks[i].addClass(cl);
-
-                //if (i < Schedule.NumberOfTimeSlotsAvailable - 1) // ? clean up
-                //{
-                //    i++;
-                //}
-                //else
-                //{
-                //    i = 0;
-                //}
-            }
-        }
+       
 
 
     } // end class Schedule

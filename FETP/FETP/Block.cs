@@ -77,22 +77,35 @@ namespace FETP
                 return Math.Sqrt(this.Variance);
             }
         }
-        public double FitnessScore
+        public TimeSpan WeightedAverageStartTime
         {
             get
             {
-                double fitnessScore = 0;
-                foreach(Class cl in this.classesInBlock)
+                TimeSpan weightedAverage = TimeSpan.Zero;
+                long totalTicks = 0;
+                foreach(Class cl in this.ClassesInBlock)
                 {
-                    if(!this.doesClassOverlapWithBlock(cl)) // if the class does not overlap with ALL classes
-                    {
-                        fitnessScore += cl.Enrollment * GA_Controller.WEIGHT_OVERLAPPING_CLASSES;
-                    }
-                    // ? add more weighting here
+                    totalTicks += (cl.StartTime.Ticks * cl.Enrollment);
                 }
-                return 1/ (1 + fitnessScore);
+                return TimeSpan.FromTicks(totalTicks / this.Enrollment);
             }
-        } // ? needs more work
+        }
+        //public double FitnessScore
+        //{
+        //    get
+        //    {
+        //        double fitnessScore = 0;
+        //        foreach(Class cl in this.classesInBlock)
+        //        {
+        //            if(!this.doesClassOverlapWithBlock(cl)) // if the class does not overlap with ALL classes
+        //            {
+        //                fitnessScore += cl.Enrollment * GA_Controller.WEIGHT_OVERLAPPING_CLASSES;
+        //            }
+        //            // ? add more weighting here
+        //        }
+        //        return 1/ (1 + fitnessScore);
+        //    }
+        //} // ? needs more work
         public bool AreThereAnyNonOverlappingClasses
         {
             get
@@ -218,7 +231,7 @@ namespace FETP
             Console.WriteLine("Average Enrollment: {0}", this.Average);
             Console.WriteLine("Variance: {0}", this.Variance);
             Console.WriteLine("Standard Deviation: {0}", this.StandardDeviation);
-            Console.WriteLine("Fitness: {0}", this.FitnessScore);
+            //Console.WriteLine("Fitness: {0}", this.FitnessScore);
         }
 
         /**************************************************************************\
