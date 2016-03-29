@@ -143,29 +143,6 @@ namespace FETP
 
 
         /**************************************************************************\
-        Property: FitnessScore 
-        Description:
-        TODO: Add a description
-        \**************************************************************************/
-        public double FitnessScore
-        {
-            get
-            {
-                double fitnessScore = 0;
-                foreach(Class cl in this.classesInBlock)
-                {
-                    if(!this.doesClassOverlapWithBlock(cl)) // if the class does not overlap with ALL classes
-                    {
-                        fitnessScore += cl.Enrollment * GA_Controller.WEIGHT_OVERLAPPING_CLASSES;
-                    }
-                    // TODO: add more weighting here
-                }
-                return 1/ (1 + fitnessScore);
-            }
-        } // TODO: needs more work
-
-
-        /**************************************************************************\
         Property: AreThereAnyNonOverlappingClasses 
         Description:
         TODO: Add a description
@@ -183,6 +160,29 @@ namespace FETP
                 }
                 return false;
             }
+        }
+
+
+        /**************************************************************************\
+        Property: AreThereAnyNonOverlappingClasses 
+        Description:
+        TODO: Add a description
+        \**************************************************************************/
+        public TimeSpan WeightedAverageStartTime 
+        {
+            get
+            {
+                TimeSpan weightedAverage = TimeSpan.Zero;
+                long totalTicks = 0;
+
+                foreach (Class cl in this.ClassesInBlock)
+                {
+                    totalTicks += (cl.StartTime.Ticks * cl.Enrollment);
+                }
+
+                return TimeSpan.FromTicks(totalTicks / this.Enrollment);
+            }
+
         }
 
         //End Properties Section
@@ -204,7 +204,7 @@ namespace FETP
                 this.classesInBlock = new List<Class>();
             }
             else {
-                this.classesInBlock = inClasses;
+                this.classesInBlock = new List<Class>(inClasses);
             }
         }
 

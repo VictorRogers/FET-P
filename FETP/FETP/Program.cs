@@ -18,8 +18,7 @@ namespace FETP
                 Console.WriteLine("Would you like to test");
                 Console.WriteLine("1. Reading from Enrollment File");
                 Console.WriteLine("2. Reading from Constraints File");
-                Console.WriteLine("3. Test Basic GA");
-                Console.WriteLine("4. Test Ben's Allstar GA    <---- will devour CPU like ice cream on a hot day"); // TODO: crashes every now and then. theres a bug somewhere...
+                Console.WriteLine("3. Basic Grouping");
 
                 string input = Console.ReadLine();
                 Console.WriteLine();
@@ -41,9 +40,7 @@ namespace FETP
 
                     foreach (Class cl in Schedule.AllClasses)
                     {
-
                         cl.Display();
-
                         // Console.WriteLine("Overlaps with: {0} other classes", FETP_Controller.getNumberOfOverlappingDays(allClasses, cl));
                     }
 
@@ -58,7 +55,6 @@ namespace FETP
                     Console.WriteLine("Testing Constraints File Operations");
                     Console.WriteLine(STARS);
 
-
                     // List<Class> allClasses = FETP_Controller.sortClassesByEnrollment(FETP_Controller.readInputDataFile(inFile));
                     Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
                     Schedule.Display();
@@ -69,15 +65,73 @@ namespace FETP
                     Console.WriteLine("END Testing Constraints File Operations");
                     Console.WriteLine(STARS);
                 }
-                else if (input == "3") // GA 
+                else if (input == "3") 
                 {
-                    GA_Controller.Run();
+                    Schedule.readInputDataFile("../../../../Example Data/Fall 2014 Total Enrollments by Meeting times.csv");
+                    Console.WriteLine("Number of Classes: {0}", Schedule.AllClasses.Count);
+
+                    List<Block> blocks = FETP_Controller.GroupClasses(Schedule.AllClasses.OrderBy(c => 
+                                         FETP_Controller.getNumberOfOverlappingClasses(Schedule.AllClasses, c)).ThenBy(c => 
+                                         c.Enrollment).ToList());
+                    int smallest = blocks.Count;
+                    int variance = FETP_Controller.ComputeVarianceOfBlocks(blocks);
+
+                    object benlock = new object();
+                    object benlock2 = new object();
+
+                    int foundNewCount = 0;
+                    int countSearched = 0;
+                    Stopwatch newTimer = new Stopwatch();
+                    newTimer.Start();
+
+                    Console.WriteLine("Searched: {0}: ", countSearched);
+                    Console.WriteLine("New Variance: {0}: ", variance);
+                    Console.WriteLine("Count: {0}: ", foundNewCount);
+                    Console.WriteLine("Number of Blocks: {0}", blocks.Count);
+                    Console.WriteLine("**********************");
+
+                    Parallel.For(0, 100000, new ParallelOptions { MaxDegreeOfParallelism = FETP_Controller.THREAD_LIMIT }, index =>
+                    {
+                        lock (benlock2)
+                        {
+                            countSearched++;
+                        }
+                        List<Block> newblocks = FETP_Controller.GroupClasses(Schedule.AllClasses.OrderBy(c => FETP_Controller.GetRandomInt()).ToList());
+
+                        lock (benlock)
+                        {
+                            if (newblocks.Count < smallest)
+                            {
+                                foundNewCount++;
+                                Console.WriteLine("Searched: {0}: ", countSearched);
+                                Console.WriteLine("Count: {0}: ", foundNewCount);
+                                Console.WriteLine("Number of Blocks: {0}", newblocks.Count);
+                                smallest = newblocks.Count;
+                                blocks = newblocks;
+
+                                variance = FETP_Controller.ComputeVarianceOfBlocks(blocks);
+
+                                Console.WriteLine("New Variance: {0}: ", variance);
+                                Console.WriteLine("**********************");
+                            }
+                        }
+                    });
+
+                    newTimer.Stop();
+                    Console.WriteLine(newTimer.Elapsed);
+                    Console.WriteLine("******DONE************");
+                    Console.WriteLine("Searched: {0}: ", countSearched);
+                    Console.WriteLine("New Variance: {0}: ", variance);
+                    Console.WriteLine("Count: {0}: ", foundNewCount);
+                    Console.WriteLine("Number of Blocks: {0}", blocks.Count);
+                    Console.WriteLine("**********************");
+                    blocks = blocks.OrderByDescending(c => c.Enrollment).ToList();
+                    foreach (Block block in blocks)
+                    {
+                        block.Display();
+                        block.DisplayAllClasses();
+                    }
                 }
-                else if (input == "4")
-                {
-                    GA_Controller.BenAllStartRun();
-                }
-                
                 Console.WriteLine();
             }
         }

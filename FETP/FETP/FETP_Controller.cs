@@ -17,10 +17,11 @@ namespace FETP
     \**************************************************************************/
     public static class FETP_Controller
     {
+        #region Utilities
         /**************************************************************************\
         Class: FETP_Controller
         Section: Utilities
-        \**************************************************************************/       
+        \**************************************************************************/
         //Used for random number generation
         private static readonly Random random = new Random();
         private static readonly object syncLock = new object();
@@ -37,28 +38,42 @@ namespace FETP
                 return (float)random.NextDouble();
             }
         }
+        
+        public static int GetRandomInt()
+        {
+            int upperRange = Int32.MaxValue;
+            int lowerRange = 0;
 
-        //End Utilities Section
+            lock (syncLock)
+            {
+                return random.Next(lowerRange, upperRange);
+            }
+        }
+
+        #endregion
 
 
+        #region Data Constants
         /**************************************************************************\
         Class: FETP_Controller 
         Section: Data Constants 
         \**************************************************************************/
-        //Add data constants here
+        public const int THREAD_LIMIT = 6;
 
-        //End Data Constants Section 
+        #endregion
 
 
+        #region Data Members
         /**************************************************************************\
         Class: FETP_Controller 
         Section: Data Members 
         \**************************************************************************/
         //Add data members here
 
-        //End Data Members section
+        #endregion
 
 
+        #region Properties
         /**************************************************************************\
         Class: FETP_Controller 
         Sections: Properties
@@ -70,12 +85,38 @@ namespace FETP
         TODO: Delete this if an actual property is added 
         \**************************************************************************/
 
-        //End Properties Section
+        #endregion
 
 
+        #region Methods
         /**************************************************************************\
         Class: FETP_Controller
         Section: Methods
+        \**************************************************************************/
+        /**************************************************************************\
+        Method: ComputeVarianceOfBlocks
+        Description: 
+        \**************************************************************************/
+        public static int ComputeVarianceOfBlocks(List<Block> blocks)
+        {
+            int newAverage = 0;
+            foreach (Block block in blocks)
+            {
+                newAverage += block.Enrollment;
+            }
+            newAverage /= blocks.Count;
+
+            int newVariance = 0;
+            foreach (Block block in blocks)
+            {
+                int difference = block.Enrollment - newAverage;
+                newVariance += (difference * difference);
+            }
+
+            return newVariance / blocks.Count;
+        }
+
+
         /**************************************************************************\
         Method: doClassesOverlap
         Description: Determines if the two input classes overlap.
@@ -192,6 +233,53 @@ namespace FETP
 
 
         /**************************************************************************\
+        Method: GroupClass
+        Description: Takes in a list of class groups and a class. The method then
+                     returns a new list of class groups with the class inserted
+                     into the first possible group.
+        \**************************************************************************/
+        public static List<Block> GroupClasses(List<Class> classes)
+        {
+            List<Block> groupedClasses = new List<Block>();
+
+            foreach (Class cl in classes)
+            {
+                List<int> indexes = new List<int>();
+                int i = 0;
+                while (i < groupedClasses.Count)
+                {
+                    if (groupedClasses[i].doesClassOverlapWithBlock(cl))
+                    {
+                        indexes.Add(i);
+                    }
+                    i++;
+                }
+
+                if (indexes.Count == 0)
+                {
+                    groupedClasses.Add(new Block(cl));
+                }
+                else
+                {
+                    int indexOfLargest = 0;
+                    int currentLargest = 0;
+                    foreach (int index in indexes)
+                    {
+                        if (groupedClasses[index].ClassesInBlock.Count > currentLargest)
+                        {
+                            currentLargest = groupedClasses[index].ClassesInBlock.Count;
+                            indexOfLargest = index;
+                        }
+                    }
+                    //indexOfLargest = indexes[ GA_Controller.GetRandomInt() % indexes.Count];
+                    groupedClasses[indexOfLargest].addClass(cl);
+                }
+            }
+            return groupedClasses;
+        }
+
+
+        /**************************************************************************\
         Method: CoalesceClassesTogether 
         Description: 
         TODO: Add a description
@@ -226,10 +314,27 @@ namespace FETP
             }
             return classes;
         }
+        /**************************************************************************\
+        Method: Run 
+        Description: 
+        TODO: Add a description
+        \**************************************************************************/
+        public static void Run(string dataFileLocation, string constraintsFileLocation)
+        {
+            Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
+            Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
+            
+            // Sort classes based on Overlapping classes ascending then by enrollment Descedending ????
+            List < Class > sortedClasses = Schedule.AllClasses.OrderBy(c => FETP_Controller.getNumberOfOverlappingClasses(Schedule.AllClasses, c)).ThenBy(c => c.Enrollment).ToList(); // change thenby
+            List < Block > blocks = FETP_Controller.GroupClasses(sortedClasses);
+            
+            Schedule schedule = new Schedule();
+        }
 
-        //End Methods Section
+        #endregion
 
 
+        #region Overloaded Operators
         /**************************************************************************\
         Class: FETP_Controller 
         Section: Overloaded Operators 
@@ -239,6 +344,6 @@ namespace FETP
         Description: This is an example 
         \**************************************************************************/
 
-        //End Overloaded Operators Section
+        #endregion
     }
 }

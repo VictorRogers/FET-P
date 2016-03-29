@@ -146,7 +146,6 @@ namespace FETP
             Console.WriteLine("Start Time: {0}", this.startTime);
             Console.WriteLine("End Time: {0}", this.endTime);
             Console.WriteLine("Enrollment: {0}", this.enrollment);
-            Console.WriteLine("");
         }
 
 
