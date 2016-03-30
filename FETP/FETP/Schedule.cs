@@ -87,6 +87,7 @@ namespace FETP
 
         /// TODO: figure out how we want to do these datatypes
         private int numberOfTimeSlotsAvailable;
+        private int numberOfTimeSlotsAvailablePerDay;
 
         /// <summary>
         /// Array of all blocks (grouped classes) scheduled
@@ -198,32 +199,7 @@ namespace FETP
         {
             get
             {
-                TimeSpan latestTime = TimeSpan.ParseExact(TIME_EXAMS_MUST_END_BY, @"hhmm", CultureInfo.InvariantCulture); // latest exams can go // TODO: maybe rewrite
-
-                TimeSpan lengthOfExamDay = latestTime - this.ExamsStartTime; // Figure out how much time available for exams
-
-                // if the lunch time is longer than the break time, account for it and the extra break time it will give you
-                if (this.LunchLength > this.TimeBetweenExams)
-                {
-                    lengthOfExamDay -= (this.LunchLength - this.TimeBetweenExams); // takes the lunch break out of available time. also pads for how the lunch will count as a break.
-                }
-
-                TimeSpan examFootprint = this.ExamsLength + this.TimeBetweenExams;
-
-                int numberOfExams = 0;
-                // TODO: bug if exam break is too big
-                while ((lengthOfExamDay - this.ExamsLength) >= TimeSpan.Zero)
-                {
-                    lengthOfExamDay -= this.ExamsLength;
-                    numberOfExams++;
-
-                    // checks if a break is needed due to their being room for another exam after a break
-                    if ((lengthOfExamDay - (this.TimeBetweenExams + this.ExamsLength) >= TimeSpan.Zero))
-                    {
-                        lengthOfExamDay -= this.TimeBetweenExams;
-                    }
-                }
-                return numberOfExams;
+                return this.numberOfTimeSlotsAvailablePerDay;
             }
         }
 
@@ -243,6 +219,7 @@ namespace FETP
             // Intial Setup
             this.readInputDataFile(dataFileAddress);
             this.readInputConstraintsFile(constraintsFileAddress);
+
             SetNumberOfTimeSlotsAvailable(); //TODO: rewire what this function does
 
             this.SetupExamStartTimeTable();
@@ -267,6 +244,7 @@ namespace FETP
             //Intial setup
             this.readInputConstraintsFile(dataFileAddress);
             this.SetupScheduleConstraints(numberOfDays, examsStartTime, examsLength, timeBetweenExams, lunchLength);
+
             this.SetNumberOfTimeSlotsAvailable(); //TODO: rewire what this function does
 
             this.SetupExamStartTimeTable();
@@ -275,17 +253,159 @@ namespace FETP
 
         }
 
-
-        //TODO: rewrite cleaner
         /// <summary>
-        /// Placeholder
+        /// Sets up data member examsStartTimes to be used for quickly finding the start time of an index
         /// </summary>
+        public void SetupExamStartTimeTable()
+        {
+            // setup lower limir for lunch from constant for easier use
+            TimeSpan lowerLimitForLunch = TimeSpan.ParseExact(Schedule.LOWER_TIME_RANGE_FOR_LUNCH, @"hhmm", CultureInfo.InvariantCulture);
+
+            this.startTimesOfExams = new TimeSpan[this.NumberOfTimeSlotsAvailablePerDay]; // intialize start times table
+
+            int index = 0;
+            bool isLunchPast = false; // accounts for exams after lunch to allow lunch time to be added to their start times
+            while (index < startTimesOfExams.Length)
+            {
+                startTimesOfExams[index] = this.ExamsStartTime + TimeSpan.FromTicks((this.ExamsLength.Ticks + this.TimeBetweenExams.Ticks) * index);
+
+                //TODO: could be error if lunch time isn't in this time range, or just an error anywhere in it, or if exam lengths too long
+                // if need to account for lunch
+                if (this.LunchLength > this.timeBetweenExams)
+                {
+                    if (isLunchPast) // lunch period has passed
+                    {
+                        this.startTimesOfExams[index] += (this.LunchLength - this.TimeBetweenExams); // account for lunch time having replaced a break
+                    }
+                    else if (this.startTimesOfExams[index] + this.ExamsLength >= lowerLimitForLunch) // if exam ends in the range of lunch, lunch will immidiatly follow
+                    {
+                        isLunchPast = true;
+                    }
+                }
+                index++;
+            }
+        }
+
+
+        /// <summary>
+        /// Finds the index of the best fit for the block.
+        /// This is done by first creating a list of all
+        /// indexes in order of best fit then finding 
+        /// the first empty spot.
+        /// </summary>
+        /// <param name="startTime">average start time of block to schedule</param>
+        /// <returns>Index of best possible fit</returns>
+        public int FindBestTimeslotFit(TimeSpan startTime)
+        {
+
+            // create ordered list of times
+            // order by closeness to input start time, then by which one is later
+            // it's weird but easiest way
+            //TODO: clean up this
+            //TODO: look into reordering to find most valuable times more weighted by the enrollment numbers of that day.
+            List<TimeSpan> orderedPossibleTime = this.startTimesOfExams.ToList().OrderBy(c => (c - startTime)).ThenByDescending(c => c.Ticks).ToList();
+            List<int> orderedIndexesOfPossibleTime = new List<int>();
+            // sets up ordered list of all indexes 
+            foreach (TimeSpan time in orderedPossibleTime)
+            {
+                // for each index of time, add all indexes with that time to list
+                for (int i = GetIndexOfStartTime(time); i < this.blocks.Length; i += this.NumberOfTimeSlotsAvailablePerDay)
+                {
+                    orderedIndexesOfPossibleTime.Add(i);
+                }
+            }
+
+            //TODO: clean this up, should still work for the mean time
+            // ? could have exception for failing to return. that should never happen
+            // finds the first possible index in ordered list of best indexes that is empty
+            bool wasFound = false;
+            int indexOfIndex = 0;
+            while (indexOfIndex < orderedIndexesOfPossibleTime.Count && !wasFound)
+            {
+                if(this.Blocks.ElementAt(orderedIndexesOfPossibleTime[indexOfIndex]) == null) // if the spot at the index is empty
+                {
+                    wasFound = true;
+                }
+                else
+                {
+                    indexOfIndex++;
+                }
+            }
+
+            if(!wasFound)
+            {
+                throw new Exception("Best Fit not found in FindBestTimslotFit.");
+            }
+            else
+            {
+                return orderedIndexesOfPossibleTime[indexOfIndex];
+            }
+
+            //foreach (int index in orderedIndexesOfPossibleTime)
+            //{
+            //    if (this.Blocks.ElementAt(index) == null)
+            //        return index;
+            //}
+
+            ////TODO: this is bad
+            //Console.WriteLine("NOT GOOD: IN FindBestTimeslotFit");
+            //return 0;
+        }
+
+
+        //TODO: figure out cleaner way to do this. it needs to be converted to list and sorted but that loses indexes
+        /// <summary>
+        /// Finds the index of input start time in table of start times
+        /// </summary>
+        /// <param name="startTime">Start time whose index is desired.</param>
         /// <returns></returns>
+        private int GetIndexOfStartTime(TimeSpan startTime)
+        {
+            bool wasFound = false;
+            int i = 0;
+            while (i < this.startTimesOfExams.Length && !wasFound)
+            {
+                if (startTimesOfExams[i] == startTime)
+                {
+                    wasFound = true;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+            if (!wasFound)
+            {
+                throw new Exception("Invalid input start time. No valid start time was found.");
+            }
+            else
+            {
+                return i;
+            }
+
+            //////TODO: this is bad
+            ////Console.WriteLine("NOT GOOD: IN GetIndexOfStartTime");
+            ////return 0;
+
+        }
+
+        /// <summary>
+        /// Determines if blocks has any empty spaces
+        /// </summary>
+        /// <returns>Whether or not empty spaces exist</returns>
         public bool IsFull()
         {
-            foreach (Block block in blocks)
-                if (block == null) return false;
-            return true;
+            bool isFull = true;
+            int i = 0;
+            while (i < blocks.Length && isFull)
+            {
+                if (blocks[i] == null)
+                {
+                    isFull = false;
+                }
+                i++;
+            }
+            return isFull;
         }
 
 
@@ -325,18 +445,7 @@ namespace FETP
             }
         }
 
-        //TODO: NUKE?
-        /// <summary>
-        /// Makes a block for each timeslot available
-        /// </summary>
-        public void SetUpBlocks()
-        {
-            blocks = new Block[this.NumberOfTimeSlotsAvailable]; // intialize blocks to proper size
-            for (int i = 0; i < this.NumberOfTimeSlotsAvailable; i++)
-            {
-                blocks[i] = new Block();
-            }
-        }
+    
 
         //TODO: move into constructors
         /// <summary>
@@ -344,6 +453,33 @@ namespace FETP
         /// </summary>
         private void SetNumberOfTimeSlotsAvailable()
         {
+            TimeSpan latestTime = TimeSpan.ParseExact(TIME_EXAMS_MUST_END_BY, @"hhmm", CultureInfo.InvariantCulture); // latest exams can go // TODO: maybe rewrite
+
+            TimeSpan lengthOfExamDay = latestTime - this.ExamsStartTime; // Figure out how much time available for exams
+
+            // if the lunch time is longer than the break time, account for it and the extra break time it will give you
+            if (this.LunchLength > this.TimeBetweenExams)
+            {
+                lengthOfExamDay -= (this.LunchLength - this.TimeBetweenExams); // takes the lunch break out of available time. also pads for how the lunch will count as a break.
+            }
+
+            TimeSpan examFootprint = this.ExamsLength + this.TimeBetweenExams;
+
+            int numberOfExams = 0;
+            // TODO: bug if exam break is too big
+            while ((lengthOfExamDay - this.ExamsLength) >= TimeSpan.Zero)
+            {
+                lengthOfExamDay -= this.ExamsLength;
+                numberOfExams++;
+
+                // checks if a break is needed due to their being room for another exam after a break
+                if ((lengthOfExamDay - (this.TimeBetweenExams + this.ExamsLength) >= TimeSpan.Zero))
+                {
+                    lengthOfExamDay -= this.TimeBetweenExams;
+                }
+            }
+            this.numberOfTimeSlotsAvailablePerDay = numberOfExams;
+
             this.numberOfTimeSlotsAvailable = this.NumberOfTimeSlotsAvailablePerDay * this.NumberOfDays;
         }
 
@@ -418,61 +554,7 @@ namespace FETP
         }
 
 
-        /// <summary>
-        /// Placeholder
-        /// </summary>
-        /// <param name="startTime"></param>
-        /// <returns></returns>
-        public int FindBestTimeslotFit(TimeSpan startTime)
-        {
-
-            // create ordered list of times
-            // order by closeness to input start time, then by which one is later
-            // it's weird but easiest way
-            //TODO: clean up this
-            //TODO: look into reordering to find most valuable times more weighted by the enrollment numbers of that day.
-            List<TimeSpan> orderedPossibleTime = this.startTimesOfExams.ToList().OrderBy(c => (c - startTime)).ThenByDescending(c => c.Ticks).ToList();
-            List<int> orderedIndexesOfPossibleTime = new List<int>();
-            // sets up ordered list of all indexes 
-            foreach(TimeSpan time in orderedPossibleTime)
-            {
-                // for each index of time, add all indexes with that time to list
-                for(int i = GetIndexOfStartTime(time); i < this.blocks.Length; i += this.NumberOfTimeSlotsAvailablePerDay) 
-                {
-                    orderedIndexesOfPossibleTime.Add(i);
-                }
-            }
-
-            //TODO: clean this up, should still work for the mean time
-            // ? could have exception for failing to return. that should never happen
-            // finds the first possible index in ordered list of best indexes that is empty
-            foreach (int index in orderedIndexesOfPossibleTime)
-            {
-                if (this.Blocks.ElementAt(index) == null)
-                    return index;
-            }
-
-            //TODO: this is bad
-            Console.WriteLine("NOT GOOD: IN FindBestTimeslotFit");
-            return 0;
-        }
-
-
-        //TODO: figure out cleaner way to do this. it needs to be converted to list and sorted but that loses indexes
-        private int GetIndexOfStartTime(TimeSpan startTime)
-        {
-            int i = 0;
-            while (i < this.startTimesOfExams.Length)
-            {
-                if (startTimesOfExams[i] == startTime) return i;
-                i++;
-            }
-
-            //TODO: this is bad
-            Console.WriteLine("NOT GOOD: IN GetIndexOfStartTime");
-            return 0;
-           
-        }
+        
 
 
         //TODO: Make bool to see if it's read
@@ -581,38 +663,7 @@ namespace FETP
 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public void SetupExamStartTimeTable()
-        {
-            // setup lower limir for lunch from constant for easier use
-            TimeSpan lowerLimitForLunch = TimeSpan.ParseExact(Schedule.LOWER_TIME_RANGE_FOR_LUNCH, @"hhmm", CultureInfo.InvariantCulture);
-
-            this.startTimesOfExams = new TimeSpan[this.NumberOfTimeSlotsAvailablePerDay]; // intialize start times table
-
-            int index = 0;
-            bool isLunchPast = false; // accounts for exams after lunch to allow lunch time to be added to their start times
-            while (index < startTimesOfExams.Length)
-            {
-                startTimesOfExams[index] = this.ExamsStartTime + TimeSpan.FromTicks((this.ExamsLength.Ticks + this.TimeBetweenExams.Ticks) * index);
-
-                //TODO: could be error if lunch time isn't in this time range, or just an error anywhere in it, or if exam lengths too long
-                // if need to account for lunch
-                if (this.LunchLength > this.timeBetweenExams)
-                {
-                    if (isLunchPast) // lunch period has passed
-                    {
-                        this.startTimesOfExams[index] += (this.LunchLength - this.TimeBetweenExams); // account for lunch time having replaced a break
-                    }
-                    else if (this.startTimesOfExams[index] + this.ExamsLength >= lowerLimitForLunch) // if exam ends in the range of lunch, lunch will immidiatly follow
-                    {
-                        isLunchPast = true;
-                    }
-                }
-                index++;
-            }
-        }
+        
 
  
         //public void ScheduleLunch()
