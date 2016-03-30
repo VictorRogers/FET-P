@@ -323,7 +323,6 @@ namespace FETP
                 this.blocks[index] = leftoverBlocks[0];
                 this.leftoverBlocks.RemoveAt(0);
             }
-
         }
 
         //TODO: NUKE?
@@ -339,7 +338,7 @@ namespace FETP
             }
         }
 
-        // move into constructors
+        //TODO: move into constructors
         /// <summary>
         /// Calculates number of timeslots available and sets it.
         /// </summary>
@@ -375,9 +374,9 @@ namespace FETP
         /// </summary>
         public void DisplayBlocks()
         {
-            Console.WriteLine("\n*****************************");
-            Console.WriteLine("DISPLAYING BLOCKS INFORMATION");
-            Console.WriteLine("*****************************");
+            Console.WriteLine("\n***************************************");
+            Console.WriteLine("DISPLAYING SCHEDULED BLOCKS INFORMATION");
+            Console.WriteLine("***************************************");
             for(int i = 0; i < this.blocks.Length; i++)
             { 
                 if (blocks[i] != null)
@@ -401,6 +400,21 @@ namespace FETP
                 }
                 
             }
+
+            Console.WriteLine("\n*******************************************");
+            Console.WriteLine("DISPLAYING NON SCHEDULED BLOCKS INFORMATION");
+            Console.WriteLine("*******************************************");
+            foreach (Block block in this.leftoverBlocks)
+            {
+                Console.WriteLine("**************");
+                Console.WriteLine("Block");
+                Console.WriteLine("**************");
+                block.Display();
+                Console.WriteLine("\nClasses In Block");
+                Console.WriteLine("********");
+                block.DisplayAllClasses();
+                Console.WriteLine();
+            }
         }
 
 
@@ -416,6 +430,7 @@ namespace FETP
             // order by closeness to input start time, then by which one is later
             // it's weird but easiest way
             //TODO: clean up this
+            //TODO: look into reordering to find most valuable times more weighted by the enrollment numbers of that day.
             List<TimeSpan> orderedPossibleTime = this.startTimesOfExams.ToList().OrderBy(c => (c - startTime)).ThenByDescending(c => c.Ticks).ToList();
             List<int> orderedIndexesOfPossibleTime = new List<int>();
             // sets up ordered list of all indexes 
