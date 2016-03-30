@@ -311,23 +311,55 @@ namespace FETP
         }
 
 
-        /// <summary>
-        /// Placeholder
-        /// </summary>
-        /// <param name="dataFileLocation"></param>
-        /// <param name="constraintsFileLocation"></param>
-        public static void Run(string dataFileLocation, string constraintsFileLocation)
-        {
-            Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
-            Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
-            
-            // Sort classes based on Overlapping classes ascending then by enrollment Descedending ????
-            List < Class > sortedClasses = Schedule.AllClasses.OrderBy(c => FETP_Controller.getNumberOfOverlappingClasses(Schedule.AllClasses, c)).ThenBy(c => c.Enrollment).ToList(); // change thenby
-            List < Block > blocks = FETP_Controller.GroupClasses(sortedClasses);
-            
-            Schedule schedule = new Schedule();
-        }
+        ///// <summary>
+        ///// Placeholder
+        ///// </summary>
+        ///// <param name="dataFileLocation"></param>
+        ///// <param name="constraintsFileLocation"></param>
+        //public static void Run(string dataFileLocation, string constraintsFileLocation)
+        //{
+        //    Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
+        //    Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
 
+        //    RunTheRest();
+
+
+        //}
+
+
+        ///// <summary>
+        ///// Placeholder
+        ///// </summary>
+        ///// <param name="dataFileLocation"></param>
+        ///// <param name="numberOfDay"></param>
+        ///// <param name="examsStartTime"></param>
+        ///// <param name="examsLength"></param>
+        ///// <param name="timeBetweenExams"></param>
+        ///// <param name="lunchLength"></param>
+        //public static void Run(string dataFileLocation, int numberOfDays, TimeSpan examsStartTime,
+        //                                      TimeSpan examsLength, TimeSpan timeBetweenExams,
+        //                                      TimeSpan lunchLength)
+        //{
+        //    Schedule.SetupScheduleConstraints(numberOfDays, examsStartTime, examsLength, timeBetweenExams, lunchLength);
+        //    Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
+
+        //    RunTheRest();
+
+        ////}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static void RunTheRest()
+        //{
+
+        //    // Sort classes based on Overlapping classes ascending then by enrollment Descedending ????
+        //    List<Class> sortedClasses = Schedule.AllClasses.OrderBy(c => FETP_Controller.getNumberOfOverlappingClasses(Schedule.AllClasses, c)).ThenBy(c => c.Enrollment).ToList(); // change thenby
+        //    List<Block> blocks = FETP_Controller.GroupClasses(sortedClasses);
+
+
+
+        //}
         #endregion
 
 
