@@ -34,14 +34,14 @@ namespace FETP
         /// <summary>
         /// Add a description
         /// </summary>
-        protected List<Class> classesInBlock;
+        private List<Class> classesInBlock;
 
         #endregion
 
 
         #region Properties
         /// <summary>
-        /// Add a description
+        /// Getter for classes in block
         /// </summary>
         public List<Class> ClassesInBlock
         {
@@ -49,7 +49,7 @@ namespace FETP
         }
 
         /// <summary>
-        /// Add a description
+        /// Getter for total enrollment of block, adds up the enrollment of each class in block
         /// </summary>
         public int Enrollment
         {
@@ -63,7 +63,7 @@ namespace FETP
         }
 
         /// <summary>
-        /// Add a description
+        /// Calculates and returns the average enrollment of all the classes in the block
         /// </summary>
         public int Average
         {
@@ -82,7 +82,7 @@ namespace FETP
         }
 
         /// <summary>
-        /// Add a description
+        /// Calculates and returns the variance of enrollment across all classes
         /// </summary>
         public int Variance
         {
@@ -104,7 +104,7 @@ namespace FETP
         }
 
         /// <summary>
-        /// Add a description
+        /// Calculates and returns the standard deviation of enrollment accross all classes
         /// </summary>
         public double StandardDeviation
         {
@@ -115,7 +115,7 @@ namespace FETP
         }
 
         /// <summary>
-        /// Add a description 
+        /// Determines if there are any classes in the block that do not conflict
         /// </summary>
         public bool AreThereAnyNonOverlappingClasses
         {
@@ -133,7 +133,7 @@ namespace FETP
         }
 
         /// <summary>
-        /// Add a description
+        /// Calculates and returns the average starting time of all classes in block weighted by enrollment
         /// </summary>
         public TimeSpan WeightedAverageStartTime 
         {
@@ -160,7 +160,7 @@ namespace FETP
         /// <summary>
         /// Takes in data values and creates Block with those values
         /// </summary>
-        /// <param name="inClasses"></param>
+        /// <param name="inClasses">List of classes to start block with</param>
         public Block(List<Class> inClasses = null)
         {
             if (inClasses == null)
@@ -202,7 +202,7 @@ namespace FETP
         /// Determines if the class is in the group, and then returns a bool based
         /// on if the class was found and removed successfully.
         /// </summary>
-        /// <param name="inClass"></param>
+        /// <param name="inClass">Class to be compared against other classes already in block</param>
         /// <returns></returns>
         public bool isClassInGroup(Class inClass)
         {
@@ -217,7 +217,7 @@ namespace FETP
         /// <summary>
         /// Determines if the inClass overlaps with ALL classes in the block
         /// </summary>
-        /// <param name="inClass"></param>
+        /// <param name="inClass">Class to compare against other classes already in block</param>
         /// <returns></returns>
         public bool doesClassOverlapWithBlock(Class inClass)
         {
