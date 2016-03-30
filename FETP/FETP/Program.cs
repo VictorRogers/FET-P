@@ -90,46 +90,49 @@ namespace FETP
                     Console.WriteLine("Number of Blocks: {0}", blocks.Count);
                     Console.WriteLine("**********************");
 
-                    Parallel.For(0, 100000, new ParallelOptions { MaxDegreeOfParallelism = FETP_Controller.THREAD_LIMIT }, index =>
-                    {
-                        lock (benlock2)
-                        {
-                            countSearched++;
-                        }
-                        List<Block> newblocks = FETP_Controller.GroupClasses(Schedule.AllClasses.OrderBy(c => FETP_Controller.GetRandomInt()).ToList());
+                    //Parallel.For(0, 100000, new ParallelOptions { MaxDegreeOfParallelism = FETP_Controller.THREAD_LIMIT }, index =>
+                    //{
+                    //    lock (benlock2)
+                    //    {
+                    //        countSearched++;
+                    //    }
+                    //    List<Block> newblocks = FETP_Controller.GroupClasses(Schedule.AllClasses.OrderBy(c => FETP_Controller.GetRandomInt()).ToList());
 
-                        lock (benlock)
-                        {
-                            if (newblocks.Count < smallest)
-                            {
-                                foundNewCount++;
-                                Console.WriteLine("Searched: {0}: ", countSearched);
-                                Console.WriteLine("Count: {0}: ", foundNewCount);
-                                Console.WriteLine("Number of Blocks: {0}", newblocks.Count);
-                                smallest = newblocks.Count;
-                                blocks = newblocks;
+                    //    lock (benlock)
+                    //    {
+                    //        if (newblocks.Count < smallest)
+                    //        {
+                    //            foundNewCount++;
+                    //            Console.WriteLine("Searched: {0}: ", countSearched);
+                    //            Console.WriteLine("Count: {0}: ", foundNewCount);
+                    //            Console.WriteLine("Number of Blocks: {0}", newblocks.Count);
+                    //            smallest = newblocks.Count;
+                    //            blocks = newblocks;
 
-                                variance = FETP_Controller.ComputeVarianceOfBlocks(blocks);
+                    //            variance = FETP_Controller.ComputeVarianceOfBlocks(blocks);
 
-                                Console.WriteLine("New Variance: {0}: ", variance);
-                                Console.WriteLine("**********************");
-                            }
-                        }
-                    });
+                    //            Console.WriteLine("New Variance: {0}: ", variance);
+                    //            Console.WriteLine("**********************");
+                    //        }
+                    //    }
+                    //});
 
-                    newTimer.Stop();
-                    Console.WriteLine(newTimer.Elapsed);
-                    Console.WriteLine("******DONE************");
-                    Console.WriteLine("Searched: {0}: ", countSearched);
-                    Console.WriteLine("New Variance: {0}: ", variance);
-                    Console.WriteLine("Count: {0}: ", foundNewCount);
-                    Console.WriteLine("Number of Blocks: {0}", blocks.Count);
-                    Console.WriteLine("**********************");
+                    //newTimer.Stop();
+                    //Console.WriteLine(newTimer.Elapsed);
+                    //Console.WriteLine("******DONE************");
+                    //Console.WriteLine("Searched: {0}: ", countSearched);
+                    //Console.WriteLine("New Variance: {0}: ", variance);
+                    //Console.WriteLine("Count: {0}: ", foundNewCount);
+                    //Console.WriteLine("Number of Blocks: {0}", blocks.Count);
+                    //Console.WriteLine("**********************");
                     blocks = blocks.OrderByDescending(c => c.Enrollment).ToList();
                     foreach (Block block in blocks)
                     {
+                        Console.WriteLine("****START OF BLOCK****");
                         block.Display();
+                        Console.WriteLine("\nCLASSES IN BLOCK\n*****");
                         block.DisplayAllClasses();
+                        Console.WriteLine("****END OF BLOCK****\n");
                     }
                 }
                 Console.WriteLine();

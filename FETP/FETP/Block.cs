@@ -242,6 +242,7 @@ namespace FETP
             Console.WriteLine("Average Enrollment: {0}", this.Average);
             Console.WriteLine("Variance: {0}", this.Variance);
             Console.WriteLine("Standard Deviation: {0}", this.StandardDeviation);
+            Console.WriteLine("Weighted Average Starting Time: {0}", this.WeightedAverageStartTime);
         }
 
 
