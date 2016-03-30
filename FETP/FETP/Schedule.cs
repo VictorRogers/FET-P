@@ -243,7 +243,7 @@ namespace FETP
             // Intial Setup
             this.readInputDataFile(dataFileAddress);
             this.readInputConstraintsFile(constraintsFileAddress);
-            SetNumberOfTimeSlotsAvailable();
+            SetNumberOfTimeSlotsAvailable(); //TODO: rewire what this function does
 
             this.SetupExamStartTimeTable();
 
@@ -267,7 +267,7 @@ namespace FETP
             //Intial setup
             this.readInputConstraintsFile(dataFileAddress);
             this.SetupScheduleConstraints(numberOfDays, examsStartTime, examsLength, timeBetweenExams, lunchLength);
-            SetNumberOfTimeSlotsAvailable();
+            this.SetNumberOfTimeSlotsAvailable(); //TODO: rewire what this function does
 
             this.SetupExamStartTimeTable();
 
@@ -319,11 +319,9 @@ namespace FETP
             this.leftoverBlocks = groupedClasses.OrderByDescending(c => c.Enrollment).ToList();
             while (this.leftoverBlocks.Count > 0 && !this.IsFull())
             {
-                leftoverBlocks[0].Display();
                 int index = this.FindBestTimeslotFit(this.leftoverBlocks[0].WeightedAverageStartTime);
                 this.blocks[index] = leftoverBlocks[0];
                 this.leftoverBlocks.RemoveAt(0);
-                blocks[index].Display();
             }
 
         }
@@ -352,6 +350,7 @@ namespace FETP
 
 
         //TODO: Needs work
+        // ? gut these display methods before shipping
         /// <summary>
         /// Displays all information stored in a Schedule instance with formatting.
         /// </summary>
@@ -379,14 +378,22 @@ namespace FETP
             Console.WriteLine("\n*****************************");
             Console.WriteLine("DISPLAYING BLOCKS INFORMATION");
             Console.WriteLine("*****************************");
-            foreach (Block block in blocks)
-            {
-                if( block != null)
+            for(int i = 0; i < this.blocks.Length; i++)
+            { 
+                if (blocks[i] != null)
                 {
+
+                    Console.WriteLine("**************");
                     Console.WriteLine("Block");
                     Console.WriteLine("**************");
-                    block.Display();
+                    Console.WriteLine("Block start time: {0}", this.startTimesOfExams[i % this.NumberOfTimeSlotsAvailablePerDay]);
+                    blocks[i].Display();
+                    Console.WriteLine("\nClasses In Block");
+                    Console.WriteLine("********");
+
+                    blocks[i].DisplayAllClasses();
                     Console.WriteLine();
+
                 }
                 else
                 {
