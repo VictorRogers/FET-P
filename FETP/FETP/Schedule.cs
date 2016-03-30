@@ -30,17 +30,17 @@ namespace FETP
 
         #region Data Constants
         /// <summary>
-        /// Placeholder
+        /// Upper Limit of length of classes
         /// </summary>
-        private const string CLASS_LENGTH_TO_START_IGNORING = "0126"; // TODO: clean these up
+        private const string CLASS_LENGTH_TO_START_IGNORING = "0125"; // TODO: clean these up
 
         /// <summary>
-        /// Placeholder
+        /// Start point to begin ignoring classes
         /// </summary>
         private const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
 
         /// <summary>
-        /// Placeholder
+        /// Latest exams can go
         /// </summary>
         public const string TIME_EXAMS_MUST_END_BY = "1700";
 
@@ -49,13 +49,42 @@ namespace FETP
 
         #region Data Members
         //Static Members
+        /// <summary>
+        /// Number of days available for exams
+        /// </summary>
         private static int numberOfDays;
+
+        /// <summary>
+        /// Time for exams to start
+        /// </summary>
         private static TimeSpan examsStartTime;
+
+        /// <summary>
+        /// Length of each exam
+        /// </summary>
         private static TimeSpan examsLength;
+
+        /// <summary>
+        /// Time between each exam (break time)
+        /// </summary>
         private static TimeSpan timeBetweenExams;
+
+        /// <summary>
+        /// Length of the lunch break
+        /// </summary>
         private static TimeSpan lunchLength;
+
+        /// <summary>
+        /// List of all classes to be scheduled in the order read in
+        /// </summary>
         private static List<Class> allClasses;
+
+        /// TODO: figure out how we want to do these datatypes
         private static int numberOfTimeSlotsAvailable;
+
+        /// <summary>
+        /// Array of all blocks (grouped classes) scheduled
+        /// </summary>
         private static Block[] blocks;
 
         //Non-static Members
@@ -65,7 +94,7 @@ namespace FETP
 
         #region Properties
         /// <summary>
-        /// Placeholder
+        /// Getter propertie for array of all blocks (grouped classes) scheduled
         /// </summary>
         public static Block[] Blocks
         {
@@ -73,59 +102,65 @@ namespace FETP
             {
                 return Schedule.blocks;
             }
-            //set
-            //{
-            //    this.blocks = value;
-            //}
         }
 
         /// <summary>
-        /// Placeholder
+        /// Getter property for the number of exams days available for scheduling
         /// </summary>
         public static int NumberOfDays
         {
-            get { return numberOfDays; }
-            //set { Schedule.numberOfDays = value; }
+            get
+            {
+                return numberOfDays;
+            }
         }
 
         /// <summary>
-        /// Placeholder
+        /// Getter property for time for exams to start
         /// </summary>
         public static TimeSpan ExamsStartTime
         {
-            get { return examsStartTime; }
-            //set { Schedule.examsStartTime = value; }
+            get
+            {
+                return examsStartTime;
+            }
         }
 
         /// <summary>
-        /// Placeholder
+        /// Getter property for the length of each exam
         /// </summary>
         public static TimeSpan ExamsLength
         {
-            get { return examsLength; }
-            //set { Schedule.examsLength = value; }
+            get
+            {
+                return examsLength;
+            }
         }
 
         /// <summary>
-        /// Placeholder
+        /// Getter property for the time between each exam (break time)
         /// </summary>
         public static TimeSpan TimeBetweenExams
         {
-            get { return timeBetweenExams; }
-            //set { Schedule.timeBetweenExams = value; }
+            get
+            {
+                return timeBetweenExams;
+            }
         }
 
         /// <summary>
-        /// Placeholder
+        /// Getter property for the length of the lunch period
         /// </summary>
         public static TimeSpan LunchLength
         {
-            get { return lunchLength; }
-            //set { this.lunchLength = value; }
+            get
+            {
+                return lunchLength;
+            }
         }
 
         /// <summary>
-        /// Placeholder
+        /// Getter property for the list of all classes to be scheduled
         /// </summary>
         public static List<Class> AllClasses
         {
@@ -136,7 +171,7 @@ namespace FETP
         }
 
         /// <summary>
-        /// Placeholder
+        /// Getter property for the number of Timeslots available in total
         /// </summary>
         public static int NumberOfTimeSlotsAvailable
         {
@@ -144,9 +179,8 @@ namespace FETP
             {
                 return Schedule.numberOfTimeSlotsAvailable;
             }
-            
         }
-
+        // TODO: convert to data member for faster speed
         /// <summary>
         /// Placeholder
         /// </summary>
@@ -391,7 +425,7 @@ namespace FETP
 
                 int enrollment = Int32.Parse(values[1]); // enrollement values should be in 1 position
 
-                if ((startTime < ignoreClassStartTime) && (endTime - startTime < ignoreClassLength)
+                if ((startTime <= ignoreClassStartTime) && (endTime - startTime < ignoreClassLength)
                     && (days.Count > 1) && (TimeSpan.Compare(endTime - startTime, TimeSpan.FromMinutes(50)) == 0))
                 {
                     Schedule.allClasses.Add(new Class(startTime, endTime, enrollment, days)); // add new Class to list
