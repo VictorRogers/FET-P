@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+//using FETP_GUI;
 
 namespace FETP
 {
@@ -10,9 +12,13 @@ namespace FETP
     {
         static void Main(string[] args)
         {
-            FETP_Controller FETP_Controller = new FETP_Controller();
-            FETP_Controller.ReadInputFile();
-            FETP_Controller.ParseClasses();
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new DataCollection());
+
+            //FETP_Controller FETP_Controller = new FETP_Controller();
+            //FETP_Controller.ReadEnrollmentFile();
+            //FETP_Controller.ParseClasses();
         }
     }
 }

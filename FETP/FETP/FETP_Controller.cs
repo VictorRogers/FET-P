@@ -28,7 +28,7 @@ namespace FETP
     the data for use by the GA_Controller, receives the solutions from the 
     GA_Controller, and sends them back to the front-end for display in the GUI.
     \**************************************************************************/
-    class FETP_Controller
+    public class FETP_Controller
     {
         /**************************************************************************\
         FETP_Controller - Data Members
@@ -38,7 +38,7 @@ namespace FETP
 
         private int numExamSlots;
         private int numClasses;
-        public Class[] setClasses;
+        Class[] setClasses;
 
         /**************************************************************************\
         FETP_Controller - Methods 
@@ -53,10 +53,10 @@ namespace FETP
 
 
         /**************************************************************************\
-        Method: ReadInputFile 
+        Method: ReadEnrollmentFile 
         Description:  
         \**************************************************************************/ 
-        public void ReadInputFile()
+        public void ReadEnrollmentFile()
         {
             numClasses = 0;
             Meeting_Days_Times = new List<string>();
