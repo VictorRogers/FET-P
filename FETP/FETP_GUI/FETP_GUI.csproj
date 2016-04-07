@@ -53,10 +53,34 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataCollection.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="DataCollection.Designer.cs">
       <DependentUpon>DataCollection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataCollectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataCollectionForm.Designer.cs">
+      <DependentUpon>DataCollectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FETP_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FETP_Form.Designer.cs">
+      <DependentUpon>FETP_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FullCalendar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FullCalendar.Designer.cs">
+      <DependentUpon>FullCalendar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SchedulePresenter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SchedulePresenter.Designer.cs">
+      <DependentUpon>SchedulePresenter.cs</DependentUpon>
     </Compile>
     <Compile Include="Full_DragAndDropCalendar.cs">
       <SubType>Form</SubType>
@@ -66,14 +90,38 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SingleDayCalendar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SingleDayCalendar.Designer.cs">
+      <DependentUpon>SingleDayCalendar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Single_DragAndDropCalendar.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Single_DragAndDropCalendar.Designer.cs">
       <DependentUpon>Single_DragAndDropCalendar.cs</DependentUpon>
     </Compile>
+    <Compile Include="TextSchedule.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TextSchedule.Designer.cs">
+      <DependentUpon>TextSchedule.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="DataCollection.resx">
       <DependentUpon>DataCollection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataCollectionForm.resx">
+      <DependentUpon>DataCollectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FETP_Form.resx">
+      <DependentUpon>FETP_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FullCalendar.resx">
+      <DependentUpon>FullCalendar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchedulePresenter.resx">
+      <DependentUpon>SchedulePresenter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Full_DragAndDropCalendar.resx">
       <DependentUpon>Full_DragAndDropCalendar.cs</DependentUpon>
@@ -87,8 +135,14 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="SingleDayCalendar.resx">
+      <DependentUpon>SingleDayCalendar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Single_DragAndDropCalendar.resx">
       <DependentUpon>Single_DragAndDropCalendar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TextSchedule.resx">
+      <DependentUpon>TextSchedule.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

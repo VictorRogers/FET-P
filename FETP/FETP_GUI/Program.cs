@@ -17,13 +17,13 @@ namespace FETP_GUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new DataCollection());
-            Application.Run(new Full_DragAndDropCalendar());
-            Application.Run(new Single_DragAndDropCalendar());
+            Application.Run(new FETP_Form());
+            //Application.Run(new Full_DragAndDropCalendar());
+            //Application.Run(new Single_DragAndDropCalendar());
 
-            FETP_Controller FETP_Controller = new FETP_Controller();
-            FETP_Controller.ReadEnrollmentFile();
-            FETP_Controller.ParseClasses();
+            //FETP_Controller FETP_Controller = new FETP_Controller();
+            //FETP_Controller.ReadEnrollmentFile();
+            //FETP_Controller.ParseClasses();
         }
     }
 }
