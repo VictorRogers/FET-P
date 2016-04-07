@@ -102,20 +102,23 @@
             // oneDayToolStripMenuItem
             // 
             this.oneDayToolStripMenuItem.Name = "oneDayToolStripMenuItem";
-            this.oneDayToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.oneDayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.oneDayToolStripMenuItem.Text = "One Day";
+            this.oneDayToolStripMenuItem.Click += new System.EventHandler(this.oneDayToolStripMenuItem_Click);
             // 
             // fullScheduleToolStripMenuItem
             // 
             this.fullScheduleToolStripMenuItem.Name = "fullScheduleToolStripMenuItem";
-            this.fullScheduleToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.fullScheduleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.fullScheduleToolStripMenuItem.Text = "Full Schedule";
+            this.fullScheduleToolStripMenuItem.Click += new System.EventHandler(this.fullScheduleToolStripMenuItem_Click);
             // 
             // textToolStripMenuItem
             // 
             this.textToolStripMenuItem.Name = "textToolStripMenuItem";
-            this.textToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.textToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.textToolStripMenuItem.Text = "Text";
+            this.textToolStripMenuItem.Click += new System.EventHandler(this.textToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -168,12 +171,12 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem oneDayToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem fullScheduleToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem textToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem oneDayToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem fullScheduleToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem textToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
         private DataCollection dataCollection1;

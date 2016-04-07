@@ -13,7 +13,7 @@ namespace FETP_GUI
     public partial class SchedulePresenter : UserControl
     {
         private static int NUMBER_OF_DAYS = 4;
-        private static int NUMBER_OF_EXAMS_PER_DAY = 4;
+        private static int NUMBER_OF_EXAMS_PER_DAY = 10;
         private static int NUMBER_OF_EXAMS = NUMBER_OF_DAYS * NUMBER_OF_EXAMS_PER_DAY;
 
         private GroupBox classGroups;
@@ -64,8 +64,7 @@ namespace FETP_GUI
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
-            // 
-            //splitContainer1.Panel1.AutoScroll = true;
+            //
             splitContainer1.Panel1.BackColor = Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
             // 
             // splitContainer1.Panel2
