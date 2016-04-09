@@ -25,6 +25,7 @@ namespace FETP_GUI
 
         public void GenerateFullSchedule(object sender, EventArgs e)
         {
+            FormBorderStyle = FormBorderStyle.Sizable;
             panel1.Controls.Clear();
 
             //SchedulePresenter Constructor takes care of getting actual schedule data
@@ -80,6 +81,14 @@ namespace FETP_GUI
             oneDayToolStripMenuItem.Enabled = false;
             fullScheduleToolStripMenuItem.Enabled = true;
             textToolStripMenuItem.Enabled = true;
+        }
+
+        private void FETP_Form_Resize(object sender, EventArgs e)
+        {
+            if(schedule != null)
+            {
+                schedule.splitContainer1.SplitterDistance = schedule.splitContainer1.Width - 221;
+            }
         }
     }
 }

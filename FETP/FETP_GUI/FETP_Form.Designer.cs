@@ -102,21 +102,21 @@
             // oneDayToolStripMenuItem
             // 
             this.oneDayToolStripMenuItem.Name = "oneDayToolStripMenuItem";
-            this.oneDayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.oneDayToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.oneDayToolStripMenuItem.Text = "One Day";
             this.oneDayToolStripMenuItem.Click += new System.EventHandler(this.oneDayToolStripMenuItem_Click);
             // 
             // fullScheduleToolStripMenuItem
             // 
             this.fullScheduleToolStripMenuItem.Name = "fullScheduleToolStripMenuItem";
-            this.fullScheduleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fullScheduleToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.fullScheduleToolStripMenuItem.Text = "Full Schedule";
             this.fullScheduleToolStripMenuItem.Click += new System.EventHandler(this.fullScheduleToolStripMenuItem_Click);
             // 
             // textToolStripMenuItem
             // 
             this.textToolStripMenuItem.Name = "textToolStripMenuItem";
-            this.textToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.textToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.textToolStripMenuItem.Text = "Text";
             this.textToolStripMenuItem.Click += new System.EventHandler(this.textToolStripMenuItem_Click);
             // 
@@ -156,8 +156,10 @@
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "FETP_Form";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FETP_Form";
+            this.Resize += new System.EventHandler(this.FETP_Form_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);

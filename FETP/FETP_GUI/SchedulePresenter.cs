@@ -44,6 +44,7 @@ namespace FETP_GUI
             }
 
             classGroups = new GroupBox();
+            panel1 = new Panel();
             ((ISupportInitialize)(splitContainer1)).BeginInit();
             #endregion
             
@@ -60,41 +61,49 @@ namespace FETP_GUI
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.IsSplitterFixed = true;
             splitContainer1.Location = new Point(0, 0);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             //
-            splitContainer1.Panel1.BackColor = Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            splitContainer1.Panel1.BackColor = Color.FromArgb(70, 22, 107);
             // 
             // splitContainer1.Panel2
-            // 
-            splitContainer1.Panel2.AutoScroll = true;
-            splitContainer1.Panel2.BackColor = Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            //
+            splitContainer1.Panel2.BackColor = Color.FromArgb(45, 12, 73);
             splitContainer1.Panel2.Controls.Add(classGroups);
             splitContainer1.Size = new Size(648, 466);
             splitContainer1.SplitterDistance = 427;
             splitContainer1.TabIndex = 3;
-            #endregion
-
-            #region Dynamic GUI objects
             //
             // classGroups
             //
-            i = NUMBER_OF_EXAMS - 1;
-            for (; i >= 0; i--)
-            {
-                classGroups.Controls.Add(Blocks[i]);
-            }
-            classGroups.Dock = DockStyle.Top;
-            classGroups.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
-            classGroups.ForeColor = Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            classGroups.BackColor = Color.FromArgb(70, 22, 107);
+            classGroups.Controls.Add(panel1);
+            classGroups.Dock = DockStyle.Fill;
+            classGroups.Font = new Font("Microsoft Sans Serif", 8.25F,FontStyle.Bold,GraphicsUnit.Point, ((byte)(0)));
+            classGroups.ForeColor = Color.FromArgb(219, 159, 17);
             classGroups.Location = new Point(0, 0);
-            classGroups.Name = "Class Groups";
-            classGroups.Size = new Size(205, (15 + 68) * (NUMBER_OF_EXAMS + 1));
+            classGroups.Name = "groupBox1";
+            classGroups.Size = new Size(222, 858);
             classGroups.TabIndex = 0;
             classGroups.TabStop = false;
             classGroups.Text = "Class Groups";
+            #endregion
+
+            #region Dynamic GUI objects            
+            // 
+            // panel1
+            // 
+            panel1.AutoScroll = true;
+            panel1.BackColor = Color.Transparent;
+            i = NUMBER_OF_EXAMS - 1;
+            for (; i >= 0; i--)
+            {
+                panel1.Controls.Add(Blocks[i]);
+            }
+            panel1.Dock = DockStyle.Fill;
 
             //
             // Blocks
@@ -103,12 +112,13 @@ namespace FETP_GUI
             foreach (Button b in Blocks)
             {
                 //b.Dock = DockStyle.Top;
-                b.BackColor = Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(12)))), ((int)(((byte)(73)))));
+                b.BackColor = Color.FromArgb(45, 12, 73);
+                b.Enabled = true;
                 b.FlatAppearance.BorderSize = 2;
                 b.FlatStyle = FlatStyle.Flat;
                 b.Location = new Point(6, (15 + ((15 + 68) * i)));
                 b.Name = "Class Group " + (i + 1).ToString();
-                b.Size = new Size(189, 68);
+                b.Size = new Size(180, 68);
                 b.Text = b.Name;
                 b.UseVisualStyleBackColor = false;
                 i++;
@@ -116,8 +126,8 @@ namespace FETP_GUI
             #endregion
 
             // 
-            // FullCalendar
-            // 
+            // SchedulePresenter
+            //
             AutoScaleDimensions = new SizeF(6F, 13F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(splitContainer1);
