@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using FETP;
 
 namespace FETP_GUI
 {
@@ -19,9 +18,6 @@ namespace FETP_GUI
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FETP_Form());
 
-            //FETP_Controller FETP_Controller = new FETP_Controller();
-            //FETP_Controller.ReadEnrollmentFile();
-            //FETP_Controller.ParseClasses();
         }
     }
 }
