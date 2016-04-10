@@ -32,22 +32,22 @@ namespace FETP
         #region Data Members
 
         /// <summary>
-        /// Placeholder 
+        /// Start time of the clas 
         /// </summary>
         protected TimeSpan startTime;
 
         /// <summary>
-        /// Placeholder 
+        /// End time of the class
         /// </summary>
         protected TimeSpan endTime;
 
         /// <summary>
-        /// Placeholder 
+        /// Number of students in class
         /// </summary>
         protected int enrollment;
 
         /// <summary>
-        /// Placeholder 
+        /// Days that the class meets
         /// </summary>
         protected List<DayOfWeek> daysMeet;
 
@@ -56,7 +56,7 @@ namespace FETP
 
         #region Properties
         /// <summary>
-        /// Placeholder
+        /// Getter/setter for the start time of the class
         /// </summary>
         public TimeSpan StartTime
         {
@@ -65,7 +65,7 @@ namespace FETP
         }
 
         /// <summary>
-        /// Placeholder
+        /// Getter/setter for the end time of the class
         /// </summary>
         public TimeSpan EndTime
         {
@@ -74,7 +74,7 @@ namespace FETP
         }
 
         /// <summary>
-        /// Placeholder
+        /// Getter/setter for the number of students in the class
         /// </summary>
         public int Enrollment
         {
@@ -83,7 +83,7 @@ namespace FETP
         }
 
         /// <summary>
-        /// Placeholder
+        /// Getter/setter for the days the class meets
         /// </summary>
         public List<DayOfWeek> DaysMeet
         {
@@ -96,7 +96,8 @@ namespace FETP
 
         #region Methods
         /// <summary>
-        /// Takes in data values and creates a class with those values.
+        /// Takes in data values for the start time, end time, number of students enrolled, 
+        /// days met and creates a class with those values.
         /// </summary>
         /// <param name="inStartTime"></param>
         /// <param name="inEndTime"></param>
@@ -110,7 +111,6 @@ namespace FETP
 
             if (inDaysMeet == null)
             {
-                //inDaysMeet = new List<DayOfWeek>(); // TODO: bad
                 throw new Exception("Class does not have any days attached. A class must have days it meets on.");
             }
             else

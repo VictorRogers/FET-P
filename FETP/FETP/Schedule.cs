@@ -193,7 +193,7 @@ namespace FETP
         }
         // TODO: convert to data member for faster speed
         /// <summary>
-        /// Placeholder
+        /// Getter property for number of Timeslots available per day
         /// </summary>
         public int NumberOfTimeSlotsAvailablePerDay
         {
@@ -410,7 +410,7 @@ namespace FETP
 
 
         /// <summary>
-        /// Placeholder
+        /// Gets the start time of exam block
         /// </summary>
         /// <param name="indexOfBlock"></param>
         /// <returns></returns>
@@ -644,7 +644,7 @@ namespace FETP
 
 
         /// <summary>
-        /// Placeholder
+        /// Takes in data for the constraints required to design a schedule
         /// </summary>
         /// <param name="numberOfDay"></param>
         /// <param name="examsStartTime"></param>
