@@ -191,6 +191,7 @@ namespace FETP
                 return this.numberOfTimeSlotsAvailable;
             }
         }
+
         // TODO: convert to data member for faster speed
         /// <summary>
         /// Getter property for number of Timeslots available per day
@@ -200,6 +201,28 @@ namespace FETP
             get
             {
                 return this.numberOfTimeSlotsAvailablePerDay;
+            }
+        }
+
+        /// <summary>
+         /// Getter property for array of all exams's strt times
+         /// </summary>
+        public TimeSpan[] StartTimesOfExams
+        {
+            get
+            {
+                return this.startTimesOfExams;
+            }
+        }
+
+        /// <summary>
+        /// Getter property for list of leftover blocks
+        /// </summary>
+        public List<Block> LeftoverBlocks
+        {
+            get
+            {
+                return this.leftoverBlocks;
             }
         }
 
@@ -242,7 +265,7 @@ namespace FETP
                         TimeSpan examsLength, TimeSpan timeBetweenExams, TimeSpan lunchLength)
         {
             //Intial setup
-            this.readInputConstraintsFile(dataFileAddress);
+            this.readInputDataFile(dataFileAddress);
             this.SetupScheduleConstraints(numberOfDays, examsStartTime, examsLength, timeBetweenExams, lunchLength);
 
             this.SetNumberOfTimeSlotsAvailable(); //TODO: rewire what this function does

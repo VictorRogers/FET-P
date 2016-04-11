@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FETP;
 
 namespace FETP_GUI
 {
@@ -21,6 +22,9 @@ namespace FETP_GUI
         int breakLength;
         int lunchLength;
 
+        string constraintsFile;
+        string enrollmentFile;
+
         SchedulePresenter scheduleView;
         FullCalendar fullCal;
         SingleDayCalendar miniCal;
@@ -28,6 +32,7 @@ namespace FETP_GUI
         
         Dictionary<string, UserControl> views;
 
+        Schedule schedule;
 
         /// <summary>
         /// FETP_Form Constructor
@@ -67,48 +72,119 @@ namespace FETP_GUI
         /// <param name="e"></param>
         public void GenerateFullSchedule(object sender, EventArgs e)
         {
-            FormBorderStyle = FormBorderStyle.Sizable;
-            panel1.Controls.Clear();
+            bool isSchedulePossible = true;
+            bool isDaysValid = true;
+            bool isBeginValid = true;
+            bool isExamValid = true;
+            bool isBreakValid = true;
+            bool isLunchValid = true;
 
             //Get data from form
+            //using immediate if to get around empty text box exceptions for now - defaults all values to 1
+            daysNum = (dataCollection1.days_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.days_textBox.Text);
+            beginTime = (dataCollection1.startTime_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.startTime_textBox.Text);
+            examLength = (dataCollection1.examLength_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.examLength_textBox.Text);
+            breakLength = (dataCollection1.breakLength_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.breakLength_textBox.Text);
+            lunchLength = (dataCollection1.lunchLength_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.lunchLength_textBox.Text);
 
-                //using immediate if to get around empty text box exceptions for now - defaults all values to 1
-            daysNum = (dataCollection1.days_textBox.Text.Equals(string.Empty)) ? 1 : Convert.ToInt32(dataCollection1.days_textBox.Text);
-            beginTime = (dataCollection1.startTime_textBox.Text.Equals(string.Empty)) ? 1 : Convert.ToInt32(dataCollection1.startTime_textBox.Text);
-            examLength = (dataCollection1.examLength_textBox.Text.Equals(string.Empty)) ? 1 : Convert.ToInt32(dataCollection1.examLength_textBox.Text);
-            breakLength = (dataCollection1.breakLength_textBox.Text.Equals(string.Empty)) ? 1 : Convert.ToInt32(dataCollection1.breakLength_textBox.Text);
-            lunchLength = (dataCollection1.lunchLength_textBox.Text.Equals(string.Empty)) ? 1 : Convert.ToInt32(dataCollection1.lunchLength_textBox.Text);
+            constraintsFile = (dataCollection1.scheduleBrowse_textBox.Text.Equals(string.Empty)) ? string.Empty : dataCollection1.lunchLength_textBox.Text;
+            enrollmentFile = "../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv";// (dataCollection1.enrollmentBrowse_textBox.Text.Equals(string.Empty)) ? string.Empty : dataCollection1.lunchLength_textBox.Text;
 
             //Check 5 ints for valid ranges
+            if (daysNum < 1 || daysNum > 7)
+            {
+                isSchedulePossible = false;
+                isDaysValid = false;
+            }
+            if (beginTime < 7 || beginTime > 16)
+            {
+                isSchedulePossible = false;
+                isBeginValid = false;
+            }
+            if (examLength < 0090 || examLength > 0120)
+            {
+                isSchedulePossible = false;
+                isExamValid = false;
+            }
+            if (breakLength < 0010 || breakLength > 0030)
+            {
+                isSchedulePossible = false;
+                isBreakValid = false;
+            }
+            if (lunchLength < 0 || lunchLength > 60)
+            {
+                isSchedulePossible = false;
+                isLunchValid = false;
+            }
 
-            //Using these 5 ints + enrollmentData file:
-            //Create schedule data structure
+            if (isSchedulePossible)
+            {
+                FormBorderStyle = FormBorderStyle.Sizable;
+                panel1.Controls.Clear();
 
-            //Using schedule data strucutre::
+                //Convert time ints to Timespan objects
+                TimeSpan examsStartTime = TimeSpan.FromHours(beginTime);    //I think this one is wrong.
+                TimeSpan examsLength = TimeSpan.FromMinutes(examLength);
+                TimeSpan timeBetweenExams = TimeSpan.FromMinutes(breakLength);
+                TimeSpan lunchSpan = TimeSpan.FromMinutes(lunchLength);
 
-            //SchedulePresenter Constructor builds SplitContainer base presenter - container for different Schedule Views
-            //This will need the Schedule data structure as a parameter
-            //uses NUMBER_OF_DAYS and NUMBER_OF_EXAMS_PER_DAY from the Schedule data structure
-            scheduleView = new SchedulePresenter(daysNum, NUMBER_OF_EXAMS_PER_DAY);
-            scheduleView.Dock = DockStyle.Fill;
+                //Using these 5 ints + enrollmentData file:
+                //Create schedule data structure
+                schedule = new Schedule(enrollmentFile, daysNum, examsStartTime, examsLength, timeBetweenExams, lunchSpan);
 
-            //If the views Dictionary contains view presenters for a different Schedule object, get rid of them.
-            //You should have saved the schedule if you wanted to keep them.
-            views.Clear();
+                //Using schedule data strucutre::
+                
+                //SchedulePresenter Constructor builds SplitContainer base presenter - container for different Schedule Views
+                //This will need the Schedule data structure as a parameter
+                //uses NUMBER_OF_DAYS and NUMBER_OF_EXAMS_PER_DAY from the Schedule data structure
+                scheduleView = new SchedulePresenter(schedule.NumberOfDays, schedule.NumberOfTimeSlotsAvailablePerDay);
+                scheduleView.Dock = DockStyle.Fill;
 
-            //FullCalendar constructor dynamically builds drag-and-drop button matrix
-            //This will need the Schedule data structure as a parameter
-            //uses daysNum, examsPerDay, examLength, breakLength, and lunchLength from Schedule data structure
-            fullCal = new FullCalendar(daysNum, NUMBER_OF_EXAMS_PER_DAY, examLength, breakLength, lunchLength);
-            fullCal.Dock = DockStyle.Fill;
+                //If the views Dictionary contains view presenters for a different Schedule object, get rid of them.
+                //You should have saved the schedule if you wanted to keep them.
+                views.Clear();
 
-            panel1.Controls.Add(scheduleView);
-            scheduleView.splitContainer1.Panel1.Controls.Add(fullCal);
-            views.Add("Full", fullCal);
-            Size = new Size(681, 492);
-            MaximizeBox = true;
-            viewToolStripMenuItem.Enabled = true;
-            fullScheduleToolStripMenuItem.Enabled = false;
+                //FullCalendar constructor dynamically builds drag-and-drop button matrix
+                //This will need the Schedule data structure as a parameter
+                //uses daysNum, examsPerDay, examLength, breakLength, and lunchLength from Schedule data structure
+                fullCal = new FullCalendar(schedule.NumberOfDays, schedule.NumberOfTimeSlotsAvailablePerDay, examLength, breakLength, lunchLength);
+                fullCal.Dock = DockStyle.Fill;
+
+                panel1.Controls.Add(scheduleView);
+                scheduleView.splitContainer1.Panel1.Controls.Add(fullCal);
+                views.Add("Full", fullCal);
+                Size = new Size(681, 492);
+                MaximizeBox = true;
+                viewToolStripMenuItem.Enabled = true;
+                fullScheduleToolStripMenuItem.Enabled = false;
+            }
+            else
+            {
+                string errorMessage = string.Empty;
+
+                if (!isDaysValid)
+                {
+                    errorMessage += "Invalid number of days - enter a whole number 1 - 7.";
+                }
+                if (!isBeginValid)
+                {
+                    errorMessage += "\nInvalid start time - enter a whole number 7 or greater.";
+                }
+                if (!isExamValid)
+                {
+                    errorMessage += "\nInvalid exam length - enter a whole number 90 - 120.";
+                }
+                if (!isBreakValid)
+                {
+                    errorMessage += "\nInvalid break length - enter a whole number 10 - 30.";
+                }
+                if (!isLunchValid)
+                {
+                    errorMessage += "\nInvalid lunch length - enter a whole number 0 - 60.";
+                }
+
+                MessageBox.Show(errorMessage);
+            }
         }
 
         //------------------------------------------------------------------------------------------
@@ -143,7 +219,7 @@ namespace FETP_GUI
             }
             else
             {
-                fullCal = new FullCalendar(daysNum, NUMBER_OF_EXAMS_PER_DAY, examLength, breakLength, lunchLength);
+                fullCal = new FullCalendar(schedule.NumberOfDays, schedule.NumberOfTimeSlotsAvailablePerDay, examLength, breakLength, lunchLength);
                 views.Add("Full", fullCal);
             }
 
@@ -172,7 +248,7 @@ namespace FETP_GUI
             else
             {
                 //This will need the Schedule data structure as a parameter
-                miniCal = new SingleDayCalendar(daysNum, NUMBER_OF_EXAMS_PER_DAY, examLength, breakLength, lunchLength);
+                miniCal = new SingleDayCalendar(schedule.NumberOfDays, schedule.NumberOfTimeSlotsAvailablePerDay, examLength, breakLength, lunchLength);
             }
 
             miniCal.Dock = DockStyle.Fill;
@@ -200,7 +276,7 @@ namespace FETP_GUI
             {
                 //This will need the Schedule data structure as a parameter
                 //Prints entire schedule data structure in agreed format
-                textCal = new TextSchedule();
+                textCal = new TextSchedule(schedule);
                 views.Add("Text", textCal);
             }
 

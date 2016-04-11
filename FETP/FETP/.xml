@@ -400,6 +400,16 @@
             Getter property for number of Timeslots available per day
             </summary>
         </member>
+        <member name="P:FETP.Schedule.StartTimesOfExams">
+            <summary>
+            Getter property for array of all exams's strt times
+            </summary>
+        </member>
+        <member name="P:FETP.Schedule.LeftoverBlocks">
+            <summary>
+            Getter property for list of leftover blocks
+            </summary>
+        </member>
         <member name="M:FETP.Schedule.#ctor(System.String,System.String)">
             <summary>
             
