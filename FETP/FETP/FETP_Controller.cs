@@ -10,26 +10,20 @@ using System.Globalization;
 
 namespace FETP
 {
-    /**************************************************************************\
-    Class: FETP_Controller (Final Exam Timetabling Problem Controller)
-    Description: 
-    TODO: Rewrite description. The old one was out of date.
-    \**************************************************************************/
+    /// <summary>
+    /// Placeholder
+    /// </summary>
     public static class FETP_Controller
     {
-        /**************************************************************************\
-        Class: FETP_Controller
-        Section: Utilities
-        \**************************************************************************/       
+        #region Utilities
         //Used for random number generation
         private static readonly Random random = new Random();
         private static readonly object syncLock = new object();
 
-
-        /**************************************************************************\
-        Utility Method: RandomFloatBetween01 
-        Description: Will return a random float between 0 and 1 
-        \**************************************************************************/       
+        /// <summary>
+        /// Returns a random float between 0 and 1
+        /// </summary>
+        /// <returns>A random float between 0 and 1</returns>
         public static float RandomFloatBetween01()
         {
             lock (syncLock)
@@ -37,69 +31,103 @@ namespace FETP
                 return (float)random.NextDouble();
             }
         }
+        
 
-        //End Utilities Section
+        /// <summary>
+        /// Returns a random integer
+        /// </summary>
+        /// <returns>A random integer</returns>
+        public static int GetRandomInt()
+        {
+            int upperRange = Int32.MaxValue;
+            int lowerRange = 0;
+
+            lock (syncLock)
+            {
+                return random.Next(lowerRange, upperRange);
+            }
+        }
+
+        #endregion
 
 
-        /**************************************************************************\
-        Class: FETP_Controller 
-        Section: Data Constants 
-        \**************************************************************************/
-        //Add data constants here
+        #region Data Constants
+        /// <summary>
+        /// Placeholder
+        /// </summary>
+        public const int THREAD_LIMIT = 6;
 
-        //End Data Constants Section 
+        #endregion
 
 
-        /**************************************************************************\
-        Class: FETP_Controller 
-        Section: Data Members 
-        \**************************************************************************/
+        #region Data Members
         //Add data members here
 
-        //End Data Members section
+        #endregion
 
 
-        /**************************************************************************\
-        Class: FETP_Controller 
-        Sections: Properties
-        TODO: Let me know if headers for properties are too excessive (VR)
-        \**************************************************************************/
-        /**************************************************************************\
-        Property: ExampleProperty 
-        Description: This is an example
-        TODO: Delete this if an actual property is added 
-        \**************************************************************************/
+        #region Properties
+        //Properties here
 
-        //End Properties Section
+        #endregion
 
 
-        /**************************************************************************\
-        Class: FETP_Controller
-        Section: Methods
-        /**************************************************************************\
-        Method: doClassesOverlap
-        Description: Determines if the two input classes overlap.
-        \**************************************************************************/
+        #region Methods
+        /// <summary>
+        /// Placeholder 
+        /// </summary>
+        /// <param name="blocks"></param>
+        /// <returns></returns>
+        public static int ComputeVarianceOfBlocks(List<Block> blocks)
+        {
+            int newAverage = 0;
+            foreach (Block block in blocks)
+            {
+                newAverage += block.Enrollment;
+            }
+            newAverage /= blocks.Count;
+
+            int newVariance = 0;
+            foreach (Block block in blocks)
+            {
+                int difference = block.Enrollment - newAverage;
+                newVariance += (difference * difference);
+            }
+
+            return newVariance / blocks.Count;
+        }
+
+
+        /// <summary>
+        /// Determines if the two input classes overlap.
+        /// </summary>
+        /// <param name="class1"></param>
+        /// <param name="class2"></param>
+        /// <returns></returns>
         public static bool doClassesOverlap(Class class1, Class class2)
         {
             return (doClassDaysOverlap(class1, class2) && doClassTimesOverlap(class1, class2)); // Broke up to aid readability
         }
 
 
-        /**************************************************************************\
-        Method: doClassDaysOverlap
-        Description: Determines if the two input classes share any days in common
-        \**************************************************************************/
+        /// <summary>
+        /// Determines if the two input classes share any days in common
+        /// </summary>
+        /// <param name="class1"></param>
+        /// <param name="class2"></param>
+        /// <returns></returns>
         public static bool doClassDaysOverlap(Class class1, Class class2)
         {
             return (getNumberOfDaysInCommon(class1, class2) > 0);
         }
 
         
-        /**************************************************************************\
-        Method: doClassTimesOverlap
-        Description: Determines if the two input classes have times that overlap
-        \**************************************************************************/
+        /// <summary>
+        /// Determines if the two input classes have times that overlap
+        /// </summary>
+        /// <param name="class1"></param>
+        /// <param name="class2"></param>
+        /// <returns></returns>
         public static bool doClassTimesOverlap(Class class1, Class class2)
         {
             return (
@@ -111,10 +139,12 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: getNumberOfDaysInCommon
-        Description: Gets the number of overlapping days between two input classes
-        \**************************************************************************/
+        /// <summary>
+        /// Gets the number of overlapping days between two input classes
+        /// </summary>
+        /// <param name="class1"></param>
+        /// <param name="class2"></param>
+        /// <returns></returns>
         public static int getNumberOfDaysInCommon(Class class1, Class class2)
         {
             int daysInCommon = 0;
@@ -129,11 +159,13 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: getNumberOfOverlappingClasses
-        Description: Determines the number of classes in the list of classes 
-                     that the inClass overlaps with
-        \**************************************************************************/
+        /// <summary>
+        /// Determines the number of classes in the list of classes that the inClass
+        /// overlaps with.
+        /// </summary>
+        /// <param name="classes"></param>
+        /// <param name="inClass"></param>
+        /// <returns></returns>
         public static int getNumberOfOverlappingClasses(List<Class> classes, Class inClass)
         {
             int overlappingClasses = 0; 
@@ -145,11 +177,11 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: doAnyClassesOverlap
-        Description: Checks if there are any overlapping classes in the list of
-                     classes
-        \**************************************************************************/
+        /// <summary>
+        /// Checks if there are any overlapping classes in the list of classes.
+        /// </summary>
+        /// <param name="classes"></param>
+        /// <returns></returns>
         public static bool doAnyClassesNotOverlap(List<Class> classes)
         {
             foreach (Class class1 in classes)
@@ -164,12 +196,14 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: GroupClass
-        Description: Takes in a list of class groups and a class. The method then
-                     returns a new list of class groups with the class inserted
-                     into the first possible group.
-        \**************************************************************************/
+        /// <summary>
+        /// Takes in a list of class groups and a class. The method then returns a
+        /// new list of class groups with the class inserted into the first possible
+        /// group.
+        /// </summary>
+        /// <param name="blocks"></param>
+        /// <param name="inclass"></param>
+        /// <returns></returns>
         public static List<Block> GroupClass(List<Block> blocks, Class inclass)
         {
             bool isinserted = false;
@@ -191,11 +225,59 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: CoalesceClassesTogether 
-        Description: 
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Takes in a list of class groups and a class. The method then returns a
+        /// new list of class groups with the class inserted into the first possible
+        /// group.
+        /// </summary>
+        /// <param name="classes"></param>
+        /// <returns></returns>
+        public static List<Block> GroupClasses(List<Class> classes)
+        {
+            List<Block> groupedClasses = new List<Block>();
+
+            foreach (Class cl in classes)
+            {
+                List<int> indexes = new List<int>();
+                int i = 0;
+                while (i < groupedClasses.Count)
+                {
+                    if (groupedClasses[i].doesClassOverlapWithBlock(cl))
+                    {
+                        indexes.Add(i);
+                    }
+                    i++;
+                }
+
+                if (indexes.Count == 0)
+                {
+                    groupedClasses.Add(new Block(cl));
+                }
+                else
+                {
+                    int indexOfLargest = 0;
+                    int currentLargest = 0;
+                    foreach (int index in indexes)
+                    {
+                        if (groupedClasses[index].ClassesInBlock.Count > currentLargest)
+                        {
+                            currentLargest = groupedClasses[index].ClassesInBlock.Count;
+                            indexOfLargest = index;
+                        }
+                    }
+                    //indexOfLargest = indexes[ GA_Controller.GetRandomInt() % indexes.Count];
+                    groupedClasses[indexOfLargest].addClass(cl);
+                }
+            }
+            return groupedClasses;
+        }
+
+
+        /// <summary>
+        /// Placeholder
+        /// </summary>
+        /// <param name="classes"></param>
+        /// <returns></returns>
         public static List<Block> CoalesceClassesTogether(List<Class> classes)
         {
             List<Block> classestobegrouped = new List<Block>(); // variable to contain the list of all grouped classes
@@ -208,11 +290,12 @@ namespace FETP
         }
 
 
-        /**************************************************************************\
-        Method: removeClass
-        Description: 
-        TODO: Add a description
-        \**************************************************************************/
+        /// <summary>
+        /// Placeholder
+        /// </summary>
+        /// <param name="classes"></param>
+        /// <param name="inClass"></param>
+        /// <returns></returns>
         public static List<Class> removeClass(List<Class> classes, Class inClass)
         {
             int i = 0;
@@ -227,18 +310,62 @@ namespace FETP
             return classes;
         }
 
-        //End Methods Section
+
+        ///// <summary>
+        ///// Placeholder
+        ///// </summary>
+        ///// <param name="dataFileLocation"></param>
+        ///// <param name="constraintsFileLocation"></param>
+        //public static void Run(string dataFileLocation, string constraintsFileLocation)
+        //{
+        //    Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
+        //    Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
+
+        //    RunTheRest();
 
 
-        /**************************************************************************\
-        Class: FETP_Controller 
-        Section: Overloaded Operators 
-        \**************************************************************************/
-        /**************************************************************************\
-        Operator: ==
-        Description: This is an example 
-        \**************************************************************************/
+        //}
 
-        //End Overloaded Operators Section
+
+        ///// <summary>
+        ///// Placeholder
+        ///// </summary>
+        ///// <param name="dataFileLocation"></param>
+        ///// <param name="numberOfDay"></param>
+        ///// <param name="examsStartTime"></param>
+        ///// <param name="examsLength"></param>
+        ///// <param name="timeBetweenExams"></param>
+        ///// <param name="lunchLength"></param>
+        //public static void Run(string dataFileLocation, int numberOfDays, TimeSpan examsStartTime,
+        //                                      TimeSpan examsLength, TimeSpan timeBetweenExams,
+        //                                      TimeSpan lunchLength)
+        //{
+        //    Schedule.SetupScheduleConstraints(numberOfDays, examsStartTime, examsLength, timeBetweenExams, lunchLength);
+        //    Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
+
+        //    RunTheRest();
+
+        ////}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static void RunTheRest()
+        //{
+
+        //    // Sort classes based on Overlapping classes ascending then by enrollment Descedending ????
+        //    List<Class> sortedClasses = Schedule.AllClasses.OrderBy(c => FETP_Controller.getNumberOfOverlappingClasses(Schedule.AllClasses, c)).ThenBy(c => c.Enrollment).ToList(); // change thenby
+        //    List<Block> blocks = FETP_Controller.GroupClasses(sortedClasses);
+
+
+
+        //}
+        #endregion
+
+
+        #region Overloaded Operators
+        //Overloaded operators here
+
+        #endregion
     }
 }
