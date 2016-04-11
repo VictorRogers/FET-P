@@ -31,6 +31,8 @@
             this.generate = new System.Windows.Forms.Button();
             this.clear = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label9 = new System.Windows.Forms.Label();
+            this.scheduleBrowse_textBox = new System.Windows.Forms.TextBox();
             this.lunchLength_textBox = new System.Windows.Forms.TextBox();
             this.breakLength_textBox = new System.Windows.Forms.TextBox();
             this.examLength_textBox = new System.Windows.Forms.TextBox();
@@ -61,7 +63,7 @@
             this.generate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.generate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.generate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(12)))), ((int)(((byte)(73)))));
-            this.generate.Location = new System.Drawing.Point(176, 296);
+            this.generate.Location = new System.Drawing.Point(176, 303);
             this.generate.Name = "generate";
             this.generate.Size = new System.Drawing.Size(87, 25);
             this.generate.TabIndex = 5;
@@ -77,12 +79,13 @@
             this.clear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.clear.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.clear.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(12)))), ((int)(((byte)(73)))));
-            this.clear.Location = new System.Drawing.Point(68, 296);
+            this.clear.Location = new System.Drawing.Point(68, 303);
             this.clear.Name = "clear";
             this.clear.Size = new System.Drawing.Size(87, 25);
             this.clear.TabIndex = 4;
             this.clear.Text = "Clear";
             this.clear.UseVisualStyleBackColor = false;
+            this.clear.Click += new System.EventHandler(this.clear_Click);
             // 
             // splitContainer1
             // 
@@ -95,6 +98,8 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.splitContainer1.Panel1.Controls.Add(this.label9);
+            this.splitContainer1.Panel1.Controls.Add(this.scheduleBrowse_textBox);
             this.splitContainer1.Panel1.Controls.Add(this.lunchLength_textBox);
             this.splitContainer1.Panel1.Controls.Add(this.breakLength_textBox);
             this.splitContainer1.Panel1.Controls.Add(this.examLength_textBox);
@@ -116,9 +121,25 @@
             this.splitContainer1.Panel2.Controls.Add(this.label7);
             this.splitContainer1.Panel2.Controls.Add(this.enrollmentBrowse);
             this.splitContainer1.Panel2.Controls.Add(this.enrollmentBrowse_textBox);
-            this.splitContainer1.Size = new System.Drawing.Size(331, 285);
-            this.splitContainer1.SplitterDistance = 167;
+            this.splitContainer1.Size = new System.Drawing.Size(331, 297);
+            this.splitContainer1.SplitterDistance = 190;
             this.splitContainer1.TabIndex = 3;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(15, 164);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(50, 13);
+            this.label9.TabIndex = 18;
+            this.label9.Text = "File path:";
+            // 
+            // scheduleBrowse_textBox
+            // 
+            this.scheduleBrowse_textBox.Location = new System.Drawing.Point(74, 161);
+            this.scheduleBrowse_textBox.Name = "scheduleBrowse_textBox";
+            this.scheduleBrowse_textBox.Size = new System.Drawing.Size(243, 20);
+            this.scheduleBrowse_textBox.TabIndex = 17;
             // 
             // lunchLength_textBox
             // 
@@ -242,9 +263,9 @@
             this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
             this.label8.Location = new System.Drawing.Point(15, 36);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(47, 13);
+            this.label8.Size = new System.Drawing.Size(50, 13);
             this.label8.TabIndex = 35;
-            this.label8.Text = "File path";
+            this.label8.Text = "File path:";
             // 
             // label7
             // 
@@ -288,7 +309,7 @@
             this.Controls.Add(this.clear);
             this.Controls.Add(this.splitContainer1);
             this.Name = "DataCollection";
-            this.Size = new System.Drawing.Size(331, 322);
+            this.Size = new System.Drawing.Size(331, 334);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -304,12 +325,13 @@
         private System.Windows.Forms.Button generate;
         private System.Windows.Forms.Button clear;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.TextBox lunchLength_textBox;
-        private System.Windows.Forms.TextBox breakLength_textBox;
-        private System.Windows.Forms.TextBox examLength_textBox;
-        private System.Windows.Forms.TextBox startTime_textBox;
-        private System.Windows.Forms.TextBox days_textBox;
+        public System.Windows.Forms.TextBox lunchLength_textBox;
+        public System.Windows.Forms.TextBox breakLength_textBox;
+        public System.Windows.Forms.TextBox examLength_textBox;
+        public System.Windows.Forms.TextBox startTime_textBox;
+        public System.Windows.Forms.TextBox days_textBox;
         private System.Windows.Forms.Button scheduleBrowse;
+        public System.Windows.Forms.TextBox scheduleBrowse_textBox;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
@@ -319,6 +341,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button enrollmentBrowse;
-        private System.Windows.Forms.TextBox enrollmentBrowse_textBox;
+        public System.Windows.Forms.TextBox enrollmentBrowse_textBox;
+        private System.Windows.Forms.Label label9;
     }
 }

@@ -12,41 +12,53 @@ namespace FETP_GUI
 {
     public partial class SingleDayCalendar : UserControl
     {
-        private static int NUMBER_OF_DAYS = 4;
-        private static int NUMBER_OF_EXAMS_PER_DAY = 10;
+        //private static int NUMBER_OF_DAYS = 4;
+        //private static int NUMBER_OF_EXAMS_PER_DAY = 10;
+
+        private int NUMBER_OF_DAYS;
+        private int NUMBER_OF_EXAMS_PER_DAY;
 
         private int WHAT_DAY = 0;
 
         private GroupBox[] Days;
         private Panel[] DayPanels;
-        private Button[][] Exams = new Button[NUMBER_OF_DAYS][];
+        private Button[][] Exams;
 
         public SingleDayCalendar()
         {
             InitializeComponent(NUMBER_OF_DAYS, NUMBER_OF_EXAMS_PER_DAY);
         }
 
+        public SingleDayCalendar(int daysNum, int examsPerDay, int examLength, int breakLength, int lunchLength)
+        {
+            NUMBER_OF_DAYS = daysNum;
+            NUMBER_OF_EXAMS_PER_DAY = examsPerDay;
+            Exams = new Button[NUMBER_OF_DAYS][];
+
+            InitializeComponent(NUMBER_OF_DAYS, NUMBER_OF_EXAMS_PER_DAY);
+        }
+
         /// <summary>
         /// Dynamic Initializer using static ints and no event handlers
         /// </summary>
-        /// <param name="NUMBER_OF_DAYS">Number of days in the schedule</param>
-        /// <param name="NUMBER_OF_EXAMS_PER_DAY">Number of exam time slots per day</param>
+        /// <param name="numOfDays">Number of days in the schedule</param>
+        /// <param name="numOfExamsPerDay">Number of exam time slots per day</param>
         /// <param name="NUMBER_OF_EXAMS">Total number of exam time slots in the schedule</param>
-        private void InitializeComponent(int NUMBER_OF_DAYS, int NUMBER_OF_EXAMS_PER_DAY)
+        private void InitializeComponent(int numOfDays, int numOfExamsPerDay)
         {
             #region Initialize new GUI objects
             previous = new Button();
             next = new Button();
-            Days = new GroupBox[NUMBER_OF_DAYS];
-            DayPanels = new Panel[NUMBER_OF_DAYS];
+            Days = new GroupBox[numOfDays];
+            DayPanels = new Panel[numOfDays];
 
             int i = 0;
-            for (; i < NUMBER_OF_DAYS; i++)
+            for (; i < numOfDays; i++)
             {
                 Days[i] = new GroupBox();
                 DayPanels[i] = new Panel();
-                Exams[i] = new Button[NUMBER_OF_EXAMS_PER_DAY];
-                for (int n = 0; n < NUMBER_OF_EXAMS_PER_DAY; n++)
+                Exams[i] = new Button[numOfExamsPerDay];
+                for (int n = 0; n < numOfExamsPerDay; n++)
                 {
                     Exams[i][n] = new Button();
                 }
@@ -67,7 +79,7 @@ namespace FETP_GUI
             // Days
             //
             i = 0;
-            foreach (GroupBox gb in Days)   
+            foreach (GroupBox gb in Days)
             {
                 gb.AutoSize = true;
                 gb.Controls.Add(DayPanels[i]);
@@ -77,7 +89,7 @@ namespace FETP_GUI
                 gb.ForeColor = Color.FromArgb(219, 159, 17);
                 //gb.Location = new Point((201 + 15) * i, 0);
                 gb.Name = "Day " + (i + 1).ToString();
-                gb.Size = new Size(200, ((68 + 15) * (NUMBER_OF_EXAMS_PER_DAY) + 15));
+                gb.Size = new Size(200, ((68 + 15) * (numOfExamsPerDay) + 15));
                 gb.Text = gb.Name;
 
                 i++;
@@ -92,12 +104,12 @@ namespace FETP_GUI
                 p.AutoScroll = true;
                 p.AutoSize = true;
                 p.BackColor = Color.Transparent;
-                for (int n = NUMBER_OF_EXAMS_PER_DAY - 1; n >= 0; n--)
+                for (int n = numOfExamsPerDay - 1; n >= 0; n--)
                 {
                     p.Controls.Add(Exams[i][n]);
                 }
                 p.Dock = DockStyle.Fill;
-                p.Size = new Size(200, (68 + 15) * (NUMBER_OF_EXAMS_PER_DAY + 1));
+                p.Size = new Size(200, (68 + 15) * (numOfExamsPerDay + 1));
 
                 i++;
             }
@@ -106,7 +118,7 @@ namespace FETP_GUI
             // Exams
             //
             int j = 0, k = 1;
-            while (j < NUMBER_OF_DAYS)
+            while (j < numOfDays)
             {
                 int y = 0;
                 foreach (Button b in Exams[j])
@@ -135,7 +147,7 @@ namespace FETP_GUI
             // 
             next.BackColor = Color.FromArgb(45, 12, 73);
             next.Dock = DockStyle.Right;
-            next.Enabled = true;
+            next.Enabled = (Days.Length.Equals(1)) ? false : true;
             next.FlatStyle = FlatStyle.Flat;
             next.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             next.ForeColor = Color.FromArgb(219, 159, 17);
