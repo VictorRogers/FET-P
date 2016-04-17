@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Globalization;  // allows times to be different pased on local TODO: may can be removed
+using System.IO;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks; // TODO: some of these aren't needed
-
-using System.Globalization;  // allows times to be different pased on local TODO: may can be removed
-using System.Diagnostics;
-using System.IO;
+using System.Threading.Tasks; // TODO: some of these aren't needed 
+using System.Xml.Serialization;
 
 
 namespace FETP
@@ -230,6 +230,15 @@ namespace FETP
 
 
         #region Methods
+        /// <summary>
+        /// This parameterless constructor is needed for XML serialization
+        /// </summary>
+        private Schedule()
+        {
+
+        }
+
+
         //TODO: write subfunction for constructor to avoid rewriting the code
 
         /// <summary>
@@ -683,10 +692,20 @@ namespace FETP
             this.examsLength = examsLength;
             this.timeBetweenExams = timeBetweenExams;
             this.lunchLength = lunchLength;
-
         }
 
         
+        /// <summary>
+        /// 
+        /// </summary>
+        public void SaveScheduleToXML()
+        {
+            System.Xml.Serialization.XmlSerializer XML = 
+                new System.Xml.Serialization.XmlSerializer(this.GetType());
+
+            StreamWriter writer = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "schedule.xml");
+            XML.Serialize(writer, this);
+        }        
 
  
         //public void ScheduleLunch()

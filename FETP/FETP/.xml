@@ -50,6 +50,11 @@
             Calculates and returns the average starting time of all classes in block weighted by enrollment
             </summary>
         </member>
+        <member name="M:FETP.Block.#ctor">
+            <summary>
+            Used for XML serialization
+            </summary>
+        </member>
         <member name="M:FETP.Block.#ctor(System.Collections.Generic.List{FETP.Class})">
             <summary>
             Takes in data values and creates Block with those values
@@ -138,6 +143,11 @@
         <member name="P:FETP.Class.DaysMeet">
             <summary>
             Getter/setter for the days the class meets
+            </summary>
+        </member>
+        <member name="M:FETP.Class.#ctor">
+            <summary>
+            Used for XML serialization 
             </summary>
         </member>
         <member name="M:FETP.Class.#ctor(System.TimeSpan,System.TimeSpan,System.Int32,System.Collections.Generic.List{System.DayOfWeek})">
@@ -410,6 +420,11 @@
             Getter property for list of leftover blocks
             </summary>
         </member>
+        <member name="M:FETP.Schedule.#ctor">
+            <summary>
+            This parameterless constructor is needed for XML serialization
+            </summary>
+        </member>
         <member name="M:FETP.Schedule.#ctor(System.String,System.String)">
             <summary>
             
@@ -507,6 +522,11 @@
             <param name="examsLength"></param>
             <param name="timeBetweenExams"></param>
             <param name="lunchLength"></param>
+        </member>
+        <member name="M:FETP.Schedule.SaveScheduleToXML">
+            <summary>
+            
+            </summary>
         </member>
     </members>
 </doc>
