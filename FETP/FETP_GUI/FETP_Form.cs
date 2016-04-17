@@ -87,34 +87,37 @@ namespace FETP_GUI
             breakLength = (dataCollection1.breakLength_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.breakLength_textBox.Text);
             lunchLength = (dataCollection1.lunchLength_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.lunchLength_textBox.Text);
 
-            constraintsFile = (dataCollection1.scheduleBrowse_textBox.Text.Equals(string.Empty)) ? string.Empty : dataCollection1.lunchLength_textBox.Text;
-            enrollmentFile = "../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv";// (dataCollection1.enrollmentBrowse_textBox.Text.Equals(string.Empty)) ? string.Empty : dataCollection1.lunchLength_textBox.Text;
+            constraintsFile = (dataCollection1.scheduleBrowse_textBox.Text.Equals(string.Empty)) ? string.Empty : dataCollection1.scheduleBrowse_textBox.Text;
+            enrollmentFile = (dataCollection1.enrollmentBrowse_textBox.Text.Equals(string.Empty)) ? string.Empty : dataCollection1.enrollmentBrowse_textBox.Text;
 
             //Check 5 ints for valid ranges
-            if (daysNum < 1 || daysNum > 7)
+            if (constraintsFile.Equals(string.Empty))
             {
-                isSchedulePossible = false;
-                isDaysValid = false;
-            }
-            if (beginTime < 7 || beginTime > 16)
-            {
-                isSchedulePossible = false;
-                isBeginValid = false;
-            }
-            if (examLength < 0090 || examLength > 0120)
-            {
-                isSchedulePossible = false;
-                isExamValid = false;
-            }
-            if (breakLength < 0010 || breakLength > 0030)
-            {
-                isSchedulePossible = false;
-                isBreakValid = false;
-            }
-            if (lunchLength < 0 || lunchLength > 60)
-            {
-                isSchedulePossible = false;
-                isLunchValid = false;
+                if (daysNum < 1 || daysNum > 7)
+                {
+                    isSchedulePossible = false;
+                    isDaysValid = false;
+                }
+                if (beginTime < 7 || beginTime > 16)
+                {
+                    isSchedulePossible = false;
+                    isBeginValid = false;
+                }
+                if (examLength < 0090 || examLength > 0120)
+                {
+                    isSchedulePossible = false;
+                    isExamValid = false;
+                }
+                if (breakLength < 0010 || breakLength > 0030)
+                {
+                    isSchedulePossible = false;
+                    isBreakValid = false;
+                }
+                if (lunchLength < 0 || lunchLength > 60)
+                {
+                    isSchedulePossible = false;
+                    isLunchValid = false;
+                }
             }
 
             if (isSchedulePossible)
@@ -122,15 +125,23 @@ namespace FETP_GUI
                 FormBorderStyle = FormBorderStyle.Sizable;
                 panel1.Controls.Clear();
 
-                //Convert time ints to Timespan objects
-                TimeSpan examsStartTime = TimeSpan.FromHours(beginTime);    //I think this one is wrong.
-                TimeSpan examsLength = TimeSpan.FromMinutes(examLength);
-                TimeSpan timeBetweenExams = TimeSpan.FromMinutes(breakLength);
-                TimeSpan lunchSpan = TimeSpan.FromMinutes(lunchLength);
+                if (constraintsFile.Equals(string.Empty))
+                {
+                    //Convert time ints to Timespan objects
+                    TimeSpan examsStartTime = TimeSpan.FromHours(beginTime);    //TODO: I think this one is wrong.
+                    TimeSpan examsLength = TimeSpan.FromMinutes(examLength);
+                    TimeSpan timeBetweenExams = TimeSpan.FromMinutes(breakLength);
+                    TimeSpan lunchSpan = TimeSpan.FromMinutes(lunchLength);
+                    //Using these 5 ints + enrollmentData file:
+                    //Create schedule data structure
+                    schedule = new Schedule(enrollmentFile, daysNum, examsStartTime, examsLength, timeBetweenExams, lunchSpan);
+                }
+                else
+                {
+                    //Create a schedule using the input files
+                    schedule = new Schedule(enrollmentFile, constraintsFile);
+                }
 
-                //Using these 5 ints + enrollmentData file:
-                //Create schedule data structure
-                schedule = new Schedule(enrollmentFile, daysNum, examsStartTime, examsLength, timeBetweenExams, lunchSpan);
 
                 //Using schedule data strucutre::
                 
