@@ -38,5 +38,40 @@ namespace FETP_GUI
                 ClearForm(this, e);
             }
         }
+
+        private void enrollmentBrowse_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                enrollmentBrowse_textBox.Text = openFileDialog.FileName;
+            }
+        }
+
+        private void enrollmentBrowse_textBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void days_textBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void scheduleBrowse_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                scheduleBrowse_textBox.Text = openFileDialog.FileName;
+            }
+        }
+
+        private void scheduleBrowse_textBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

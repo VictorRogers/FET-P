@@ -302,5 +302,10 @@ namespace FETP_GUI
                 scheduleView.splitContainer1.SplitterDistance = scheduleView.splitContainer1.Width - 221;
             }
         }
+
+        private void dataCollection1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
