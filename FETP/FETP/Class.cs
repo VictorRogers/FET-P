@@ -96,6 +96,15 @@ namespace FETP
 
         #region Methods
         /// <summary>
+        /// Used for XML serialization 
+        /// </summary>
+        private Class()
+        {
+
+        }
+
+
+        /// <summary>
         /// Takes in data values for the start time, end time, number of students enrolled, 
         /// days met and creates a class with those values.
         /// </summary>

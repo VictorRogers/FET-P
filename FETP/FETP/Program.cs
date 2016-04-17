@@ -30,6 +30,12 @@ namespace FETP
                     schedule.Display();
                     schedule.DisplayBlocks();
 
+                    Console.WriteLine("Would you like to save the schedule? (Y / N)");
+                    string saveDecision = Console.ReadLine();
+                    if (saveDecision == "Y" || saveDecision == "y")
+                    {
+                        schedule.SaveScheduleToXML();
+                    }
                 }
 
                 //if (input == "1")

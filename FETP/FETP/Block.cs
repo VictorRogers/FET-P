@@ -156,6 +156,15 @@ namespace FETP
 
 
         #region Methods
+        /// <summary>
+        /// Used for XML serialization
+        /// </summary>
+        private Block()
+        {
+
+        }
+
+
         //TODO: Need a new constructor
         /// <summary>
         /// Takes in data values and creates Block with those values

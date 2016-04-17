@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -12,33 +13,54 @@ namespace FETP_GUI
 {
     public partial class SchedulePresenter : UserControl
     {
-        private static int NUMBER_OF_DAYS = 4;
-        private static int NUMBER_OF_EXAMS_PER_DAY = 10;
-        private static int NUMBER_OF_EXAMS = NUMBER_OF_DAYS * NUMBER_OF_EXAMS_PER_DAY;
+        private int NUMBER_OF_DAYS;
+        private int NUMBER_OF_EXAMS_PER_DAY;
+        private int NUMBER_OF_EXAMS;
 
         private GroupBox classGroups;
+        private Button[] Blocks;// = new Button[NUMBER_OF_EXAMS];
+                                //All the Button objects are going to need to be replaced with an extended Button object
+                                //Extended Button object has members Block and Label
+                                //Label is a drag-and-drop GUI object
+                                //Block is attached schedule data
 
-        //All the Button objects are going to need to be replaced with an extended Button object
-        //Extended Button object has members Block and Label
-        //Label is a drag-and-drop GUI object
-        //Block is attached schedule data
+        //Maybe I don't actually care about the extended Button class.
+        //I can probablyjust drag and drop the actual buttons themselves and just use button.text for the label
 
-            //Maybe I don't actually care about the extended Button class.
-            //I can probablyjust drag and drop the actual buttons themselves and just use button.text for the label
-        private Button[] Blocks = new Button[NUMBER_OF_EXAMS];
-
+        ///<summary>
+        ///Generic, unused SchedulePresenter constructor (this was made for design phase)
+        ///</summary>
         public SchedulePresenter()
         {
-            InitializeComponent(NUMBER_OF_DAYS, NUMBER_OF_EXAMS_PER_DAY, NUMBER_OF_EXAMS);
+            InitializeComponent();
         }
 
-        private void InitializeComponent(int NUMBER_OF_DAYS, int NUMBER_OF_EXAMS_PER_DAY, int NUMBER_OF_EXAMS)
+        /// <summary>
+        /// Dynamic SchedulePresnter constructor determines NUMBER_OF_EXAMS and builds the view presenter
+        /// </summary>
+        /// <param name="daysNum">Number of Days in the schedule, determined by scheduler algorithm</param>
+        /// <param name="examsPerDay">Number of Exams per Day, determined by scheduler algorithm</param>
+        public SchedulePresenter(int daysNum, int examsPerDay)
+        {
+            NUMBER_OF_DAYS = daysNum;
+            NUMBER_OF_EXAMS_PER_DAY = examsPerDay;
+            NUMBER_OF_EXAMS = NUMBER_OF_DAYS * NUMBER_OF_EXAMS_PER_DAY;
+            Blocks = new Button[NUMBER_OF_EXAMS];
+
+            InitializeComponent(NUMBER_OF_EXAMS);
+        }
+
+        /// <summary>
+        /// Builds the SchedulePresenter object based on total NUMBER_OF_EXAMS
+        /// </summary>
+        /// <param name="numOfExams">Total Number of Exams in the schedule</param>
+        private void InitializeComponent(int numOfExams)
         {
             #region Initialize new GUI objects
             splitContainer1 = new SplitContainer();
 
             int i = 0;
-            for (; i < NUMBER_OF_EXAMS; i++)
+            for (; i < numOfExams; i++)
             {
                 Blocks[i] = new Button();
             }
@@ -47,14 +69,14 @@ namespace FETP_GUI
             panel1 = new Panel();
             ((ISupportInitialize)(splitContainer1)).BeginInit();
             #endregion
-            
+
             #region suspend layout
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
             classGroups.SuspendLayout();
             SuspendLayout();
             #endregion
-            
+
             #region set GUI object properties
             #region These things stay the same
             // 
@@ -82,7 +104,7 @@ namespace FETP_GUI
             classGroups.BackColor = Color.FromArgb(70, 22, 107);
             classGroups.Controls.Add(panel1);
             classGroups.Dock = DockStyle.Fill;
-            classGroups.Font = new Font("Microsoft Sans Serif", 8.25F,FontStyle.Bold,GraphicsUnit.Point, ((byte)(0)));
+            classGroups.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
             classGroups.ForeColor = Color.FromArgb(219, 159, 17);
             classGroups.Location = new Point(0, 0);
             classGroups.Name = "groupBox1";
@@ -98,7 +120,7 @@ namespace FETP_GUI
             // 
             panel1.AutoScroll = true;
             panel1.BackColor = Color.Transparent;
-            i = NUMBER_OF_EXAMS - 1;
+            i = numOfExams - 1;
             for (; i >= 0; i--)
             {
                 panel1.Controls.Add(Blocks[i]);
@@ -143,6 +165,5 @@ namespace FETP_GUI
             ResumeLayout(false);
             #endregion
         }
-
     }
 }

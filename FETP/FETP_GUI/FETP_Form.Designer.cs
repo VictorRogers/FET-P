@@ -40,6 +40,7 @@
             this.textToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.newScheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataCollection1 = new FETP_GUI.DataCollection();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -61,6 +62,7 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newScheduleToolStripMenuItem,
             this.openToolStripMenuItem,
             this.saveAsToolStripMenuItem,
             this.exportToolStripMenuItem});
@@ -71,21 +73,21 @@
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem.Text = "Open";
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Enabled = false;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveAsToolStripMenuItem.Text = "Save As";
             // 
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.Enabled = false;
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exportToolStripMenuItem.Text = "Export";
             // 
             // viewToolStripMenuItem
@@ -136,6 +138,13 @@
             this.panel1.Size = new System.Drawing.Size(335, 334);
             this.panel1.TabIndex = 6;
             // 
+            // newScheduleToolStripMenuItem
+            // 
+            this.newScheduleToolStripMenuItem.Name = "newScheduleToolStripMenuItem";
+            this.newScheduleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newScheduleToolStripMenuItem.Text = "New Schedule";
+            this.newScheduleToolStripMenuItem.Click += new System.EventHandler(this.newScheduleToolStripMenuItem_Click);
+            // 
             // dataCollection1
             // 
             this.dataCollection1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -182,5 +191,6 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
         private DataCollection dataCollection1;
+        private System.Windows.Forms.ToolStripMenuItem newScheduleToolStripMenuItem;
     }
 }
