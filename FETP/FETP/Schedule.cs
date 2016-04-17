@@ -586,9 +586,6 @@ namespace FETP
         }
 
 
-        
-
-
         //TODO: Make bool to see if it's read
         //TODO: This might need to be moved
         //TODO: Catch exception that file couldn't be opened?
@@ -698,14 +695,23 @@ namespace FETP
         /// <summary>
         /// 
         /// </summary>
-        public void SaveScheduleToXML()
+        public void SaveScheduleToXML(string path)
         {
             System.Xml.Serialization.XmlSerializer XML = 
                 new System.Xml.Serialization.XmlSerializer(this.GetType());
 
-            StreamWriter writer = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "schedule.xml");
+            StreamWriter writer = new StreamWriter(path);
             XML.Serialize(writer, this);
         }        
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void OpenScheduleFromXML()
+        {
+
+        }
 
  
         //public void ScheduleLunch()

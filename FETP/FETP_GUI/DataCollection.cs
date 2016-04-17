@@ -42,6 +42,7 @@ namespace FETP_GUI
         private void enrollmentBrowse_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "CSV-File | *.csv";
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -62,6 +63,7 @@ namespace FETP_GUI
         private void scheduleBrowse_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "TXT-File | *.txt";
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {

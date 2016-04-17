@@ -321,9 +321,21 @@ namespace FETP_GUI
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "XML-File | *.xml";
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+            }
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "XML-File | *.xml";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                schedule.SaveScheduleToXML(saveFileDialog.FileName);
             }
         }
     }
