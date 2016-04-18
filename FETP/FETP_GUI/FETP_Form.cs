@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FETP;
+using System.Diagnostics;
+using System.IO;
 
 namespace FETP_GUI
 {
@@ -338,5 +340,13 @@ namespace FETP_GUI
                 schedule.SaveScheduleToXML(saveFileDialog.FileName);
             }
         }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string locationToSavePdf = Path.Combine(Path.GetTempPath(), "HelpManual.pdf");
+            File.WriteAllBytes(locationToSavePdf, Properties.Resources.HelpManual); 
+            Process.Start(locationToSavePdf);
+        }
+
     }
 }
