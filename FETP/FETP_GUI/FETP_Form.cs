@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace FETP_GUI
         private static int NUMBER_OF_EXAMS; //= NUMBER_OF_DAYS * NUMBER_OF_EXAMS_PER_DAY;
 
         int daysNum;
-        int beginTime;
+        string beginTime;
         int examLength;
         int breakLength;
         int lunchLength;
@@ -88,7 +89,6 @@ namespace FETP_GUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        //Input: sender (dataCollection1), e (
         //Actions:  Collect filenames in dataCollection1's File name text boxes
         //          Collect values in dataCollection1's data text boxes, check their validity, and convert them to correct data types
         //          Use these values and filenames to generate a schedule object
@@ -118,7 +118,7 @@ namespace FETP_GUI
             //Get data from form
             //using immediate if to get around empty text box exceptions for now - defaults all values to 1
             daysNum = (dataCollection1.days_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.days_textBox.Text);
-            beginTime = (dataCollection1.startTime_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.startTime_textBox.Text);
+            beginTime = (dataCollection1.startTime_textBox.Text.Equals(string.Empty)) ? "-1" : dataCollection1.startTime_textBox.Text;
             examLength = (dataCollection1.examLength_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.examLength_textBox.Text);
             breakLength = (dataCollection1.breakLength_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.breakLength_textBox.Text);
             lunchLength = (dataCollection1.lunchLength_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.lunchLength_textBox.Text);
@@ -132,7 +132,10 @@ namespace FETP_GUI
                 isSchedulePossible = false;
                 isDaysValid = false;
             }
-            if (beginTime < 7 || beginTime > 16)
+
+            char[] colon = { ':' };
+            string[] timeParts = beginTime.Split(colon);
+            if (Convert.ToInt32(timeParts[0]) < 7 || Convert.ToInt32(timeParts[0]) > 16)
             {
                 isSchedulePossible = false;
                 isBeginValid = false;
@@ -159,7 +162,11 @@ namespace FETP_GUI
                 panel1.Controls.Clear();
 
                 //Convert time ints to Timespan objects
-                TimeSpan examsStartTime = TimeSpan.FromHours(beginTime);    //I think this one is wrong.
+                //******************************************************
+                //TimeSpan examsStartTime = TimeSpan.FromHours(beginTime);
+                TimeSpan examsStartTime = TimeSpan.FromHours(Convert.ToInt64(timeParts[0])) + TimeSpan.FromMinutes(Convert.ToInt64(timeParts[1]));
+                //TimeSpan examsStartTime = TimeSpan.ParseExact(beginTime.ToString(), @"hhmm", CultureInfo.InvariantCulture);
+                //******************************************************
                 TimeSpan examsLength = TimeSpan.FromMinutes(examLength);
                 TimeSpan timeBetweenExams = TimeSpan.FromMinutes(breakLength);
                 TimeSpan lunchSpan = TimeSpan.FromMinutes(lunchLength);
@@ -182,7 +189,7 @@ namespace FETP_GUI
                 //FullCalendar constructor dynamically builds drag-and-drop button matrix
                 //This will need the Schedule data structure as a parameter
                 //uses daysNum, examsPerDay, examLength, breakLength, and lunchLength from Schedule data structure
-                fullCal = new FullCalendar(schedule.NumberOfDays, schedule.NumberOfTimeSlotsAvailablePerDay, examLength, breakLength, lunchLength);
+                fullCal = new FullCalendar(schedule, examLength, breakLength, lunchLength);
                 fullCal.Dock = DockStyle.Fill;
 
                 panel1.Controls.Add(scheduleView);
@@ -203,7 +210,7 @@ namespace FETP_GUI
                 }
                 if (!isBeginValid)
                 {
-                    errorMessage += "\nInvalid start time - enter a whole number 7 or greater.";
+                    errorMessage += "\nInvalid start time - enter a time from 07:00 to 16:00.";
                 }
                 if (!isExamValid)
                 {
@@ -280,7 +287,7 @@ namespace FETP_GUI
             }
             else
             {
-                fullCal = new FullCalendar(schedule.NumberOfDays, schedule.NumberOfTimeSlotsAvailablePerDay, examLength, breakLength, lunchLength);
+                fullCal = new FullCalendar(schedule, examLength, breakLength, lunchLength);
                 views.Add("Full", fullCal);
             }
 
@@ -318,7 +325,7 @@ namespace FETP_GUI
             else
             {
                 //This will need the Schedule data structure as a parameter
-                miniCal = new SingleDayCalendar(schedule.NumberOfDays, schedule.NumberOfTimeSlotsAvailablePerDay, examLength, breakLength, lunchLength);
+                miniCal = new SingleDayCalendar(schedule, examLength, breakLength, lunchLength);
             }
 
             miniCal.Dock = DockStyle.Fill;

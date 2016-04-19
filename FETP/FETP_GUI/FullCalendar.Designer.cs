@@ -28,331 +28,380 @@
         /// </summary>
         private void InitializeComponent()
         {
-            groupBox5 = new System.Windows.Forms.GroupBox();
-            button17 = new System.Windows.Forms.Button();
-            button18 = new System.Windows.Forms.Button();
-            button19 = new System.Windows.Forms.Button();
-            button20 = new System.Windows.Forms.Button();
-            groupBox3 = new System.Windows.Forms.GroupBox();
-            button16 = new System.Windows.Forms.Button();
-            button15 = new System.Windows.Forms.Button();
-            button14 = new System.Windows.Forms.Button();
-            button13 = new System.Windows.Forms.Button();
-            groupBox4 = new System.Windows.Forms.GroupBox();
-            button12 = new System.Windows.Forms.Button();
-            button11 = new System.Windows.Forms.Button();
-            button10 = new System.Windows.Forms.Button();
-            button9 = new System.Windows.Forms.Button();
-            groupBox2 = new System.Windows.Forms.GroupBox();
-            button8 = new System.Windows.Forms.Button();
-            button7 = new System.Windows.Forms.Button();
-            button6 = new System.Windows.Forms.Button();
-            button5 = new System.Windows.Forms.Button();
-            groupBox5.SuspendLayout();
-            groupBox3.SuspendLayout();
-            groupBox4.SuspendLayout();
-            groupBox2.SuspendLayout();
-            SuspendLayout();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.button17 = new System.Windows.Forms.Button();
+            this.button18 = new System.Windows.Forms.Button();
+            this.button19 = new System.Windows.Forms.Button();
+            this.button20 = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.button16 = new System.Windows.Forms.Button();
+            this.button15 = new System.Windows.Forms.Button();
+            this.button14 = new System.Windows.Forms.Button();
+            this.button13 = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.button12 = new System.Windows.Forms.Button();
+            this.button11 = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.groupBox5.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.SuspendLayout();
             // 
             // groupBox5
             // 
-            groupBox5.Controls.Add(button17);
-            groupBox5.Controls.Add(button18);
-            groupBox5.Controls.Add(button19);
-            groupBox5.Controls.Add(button20);
-            groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            groupBox5.ForeColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            groupBox5.Location = new System.Drawing.Point(630, 3);
-            groupBox5.Name = "groupBox5";
-            groupBox5.Size = new System.Drawing.Size(201, 432);
-            groupBox5.TabIndex = 1;
-            groupBox5.TabStop = false;
-            groupBox5.Text = "Day 4";
+            this.groupBox5.Controls.Add(this.button17);
+            this.groupBox5.Controls.Add(this.button18);
+            this.groupBox5.Controls.Add(this.button19);
+            this.groupBox5.Controls.Add(this.button20);
+            this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.groupBox5.Location = new System.Drawing.Point(630, 3);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(201, 432);
+            this.groupBox5.TabIndex = 1;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Day 4";
             // 
             // button17
             // 
-            button17.BackColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            button17.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(142, 105, 18);
-            button17.FlatAppearance.BorderSize = 2;
-            button17.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            button17.ForeColor = System.Drawing.Color.FromArgb(70, 22, 107);
-            button17.Location = new System.Drawing.Point(6, 19);
-            button17.Name = "button17";
-            button17.Size = new System.Drawing.Size(189, 68);
-            button17.TabIndex = 4;
-            button17.Text = "Exam Time";
-            button17.UseVisualStyleBackColor = false;
+            this.button17.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.button17.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.button17.FlatAppearance.BorderSize = 2;
+            this.button17.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.button17.Location = new System.Drawing.Point(6, 19);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(189, 68);
+            this.button17.TabIndex = 4;
+            this.button17.Text = "Exam Time";
+            this.button17.UseVisualStyleBackColor = false;
             // 
             // button18
             // 
-            button18.BackColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            button18.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(142, 105, 18);
-            button18.FlatAppearance.BorderSize = 2;
-            button18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            button18.ForeColor = System.Drawing.Color.FromArgb(70, 22, 107);
-            button18.Location = new System.Drawing.Point(6, 102);
-            button18.Name = "button18";
-            button18.Size = new System.Drawing.Size(189, 68);
-            button18.TabIndex = 5;
-            button18.Text = "Exam Time";
-            button18.UseVisualStyleBackColor = false;
+            this.button18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.button18.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.button18.FlatAppearance.BorderSize = 2;
+            this.button18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button18.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.button18.Location = new System.Drawing.Point(6, 102);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(189, 68);
+            this.button18.TabIndex = 5;
+            this.button18.Text = "Exam Time";
+            this.button18.UseVisualStyleBackColor = false;
             // 
             // button19
             // 
-            button19.BackColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            button19.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(142, 105, 18);
-            button19.FlatAppearance.BorderSize = 2;
-            button19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            button19.ForeColor = System.Drawing.Color.FromArgb(70, 22, 107);
-            button19.Location = new System.Drawing.Point(6, 185);
-            button19.Name = "button19";
-            button19.Size = new System.Drawing.Size(189, 68);
-            button19.TabIndex = 6;
-            button19.Text = "Exam Time";
-            button19.UseVisualStyleBackColor = false;
+            this.button19.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.button19.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.button19.FlatAppearance.BorderSize = 2;
+            this.button19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button19.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.button19.Location = new System.Drawing.Point(6, 185);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(189, 68);
+            this.button19.TabIndex = 6;
+            this.button19.Text = "Exam Time";
+            this.button19.UseVisualStyleBackColor = false;
             // 
             // button20
             // 
-            button20.BackColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            button20.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(142, 105, 18);
-            button20.FlatAppearance.BorderSize = 2;
-            button20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            button20.ForeColor = System.Drawing.Color.FromArgb(70, 22, 107);
-            button20.Location = new System.Drawing.Point(6, 313);
-            button20.Name = "button20";
-            button20.Size = new System.Drawing.Size(189, 68);
-            button20.TabIndex = 7;
-            button20.Text = "Exam Time";
-            button20.UseVisualStyleBackColor = false;
+            this.button20.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.button20.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.button20.FlatAppearance.BorderSize = 2;
+            this.button20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button20.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.button20.Location = new System.Drawing.Point(6, 313);
+            this.button20.Name = "button20";
+            this.button20.Size = new System.Drawing.Size(189, 68);
+            this.button20.TabIndex = 7;
+            this.button20.Text = "Exam Time";
+            this.button20.UseVisualStyleBackColor = false;
             // 
             // groupBox3
             // 
-            groupBox3.Controls.Add(button16);
-            groupBox3.Controls.Add(button15);
-            groupBox3.Controls.Add(button14);
-            groupBox3.Controls.Add(button13);
-            groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            groupBox3.ForeColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            groupBox3.Location = new System.Drawing.Point(423, 3);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new System.Drawing.Size(201, 432);
-            groupBox3.TabIndex = 2;
-            groupBox3.TabStop = false;
-            groupBox3.Text = "Day 3";
+            this.groupBox3.Controls.Add(this.button16);
+            this.groupBox3.Controls.Add(this.button15);
+            this.groupBox3.Controls.Add(this.button14);
+            this.groupBox3.Controls.Add(this.button13);
+            this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.groupBox3.Location = new System.Drawing.Point(423, 3);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(201, 432);
+            this.groupBox3.TabIndex = 2;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Day 3";
             // 
             // button16
             // 
-            button16.BackColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            button16.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(142, 105, 18);
-            button16.FlatAppearance.BorderSize = 2;
-            button16.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            button16.ForeColor = System.Drawing.Color.FromArgb(70, 22, 107);
-            button16.Location = new System.Drawing.Point(6, 313);
-            button16.Name = "button16";
-            button16.Size = new System.Drawing.Size(189, 68);
-            button16.TabIndex = 3;
-            button16.Text = "Exam Time";
-            button16.UseVisualStyleBackColor = false;
+            this.button16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.button16.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.button16.FlatAppearance.BorderSize = 2;
+            this.button16.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.button16.Location = new System.Drawing.Point(6, 313);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(189, 68);
+            this.button16.TabIndex = 3;
+            this.button16.Text = "Exam Time";
+            this.button16.UseVisualStyleBackColor = false;
             // 
             // button15
             // 
-            button15.BackColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            button15.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(142, 105, 18);
-            button15.FlatAppearance.BorderSize = 2;
-            button15.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            button15.ForeColor = System.Drawing.Color.FromArgb(70, 22, 107);
-            button15.Location = new System.Drawing.Point(6, 185);
-            button15.Name = "button15";
-            button15.Size = new System.Drawing.Size(189, 68);
-            button15.TabIndex = 2;
-            button15.Text = "Exam Time";
-            button15.UseVisualStyleBackColor = false;
+            this.button15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.button15.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.button15.FlatAppearance.BorderSize = 2;
+            this.button15.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button15.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.button15.Location = new System.Drawing.Point(6, 185);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(189, 68);
+            this.button15.TabIndex = 2;
+            this.button15.Text = "Exam Time";
+            this.button15.UseVisualStyleBackColor = false;
             // 
             // button14
             // 
-            button14.BackColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            button14.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(142, 105, 18);
-            button14.FlatAppearance.BorderSize = 2;
-            button14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            button14.ForeColor = System.Drawing.Color.FromArgb(70, 22, 107);
-            button14.Location = new System.Drawing.Point(6, 102);
-            button14.Name = "button14";
-            button14.Size = new System.Drawing.Size(189, 68);
-            button14.TabIndex = 1;
-            button14.Text = "Exam Time";
-            button14.UseVisualStyleBackColor = false;
+            this.button14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.button14.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.button14.FlatAppearance.BorderSize = 2;
+            this.button14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.button14.Location = new System.Drawing.Point(6, 102);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(189, 68);
+            this.button14.TabIndex = 1;
+            this.button14.Text = "Exam Time";
+            this.button14.UseVisualStyleBackColor = false;
             // 
             // button13
             // 
-            button13.BackColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            button13.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(142, 105, 18);
-            button13.FlatAppearance.BorderSize = 2;
-            button13.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            button13.ForeColor = System.Drawing.Color.FromArgb(70, 22, 107);
-            button13.Location = new System.Drawing.Point(6, 19);
-            button13.Name = "button13";
-            button13.Size = new System.Drawing.Size(189, 68);
-            button13.TabIndex = 0;
-            button13.Text = "Exam Time";
-            button13.UseVisualStyleBackColor = false;
+            this.button13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.button13.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.button13.FlatAppearance.BorderSize = 2;
+            this.button13.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.button13.Location = new System.Drawing.Point(6, 19);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(189, 68);
+            this.button13.TabIndex = 0;
+            this.button13.Text = "Exam Time";
+            this.button13.UseVisualStyleBackColor = false;
             // 
             // groupBox4
             // 
-            groupBox4.Controls.Add(button12);
-            groupBox4.Controls.Add(button11);
-            groupBox4.Controls.Add(button10);
-            groupBox4.Controls.Add(button9);
-            groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            groupBox4.ForeColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            groupBox4.Location = new System.Drawing.Point(210, 3);
-            groupBox4.Name = "groupBox4";
-            groupBox4.Size = new System.Drawing.Size(207, 432);
-            groupBox4.TabIndex = 3;
-            groupBox4.TabStop = false;
-            groupBox4.Text = "Day 2";
+            this.groupBox4.Controls.Add(this.button12);
+            this.groupBox4.Controls.Add(this.button11);
+            this.groupBox4.Controls.Add(this.button10);
+            this.groupBox4.Controls.Add(this.button9);
+            this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.groupBox4.Location = new System.Drawing.Point(210, 3);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(207, 432);
+            this.groupBox4.TabIndex = 3;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Day 2";
             // 
             // button12
             // 
-            button12.BackColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            button12.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(142, 105, 18);
-            button12.FlatAppearance.BorderSize = 2;
-            button12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            button12.ForeColor = System.Drawing.Color.FromArgb(70, 22, 107);
-            button12.Location = new System.Drawing.Point(6, 313);
-            button12.Name = "button12";
-            button12.Size = new System.Drawing.Size(189, 68);
-            button12.TabIndex = 3;
-            button12.Text = "Exam Time";
-            button12.UseVisualStyleBackColor = false;
+            this.button12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.button12.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.button12.FlatAppearance.BorderSize = 2;
+            this.button12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.button12.Location = new System.Drawing.Point(6, 313);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(189, 68);
+            this.button12.TabIndex = 3;
+            this.button12.Text = "Exam Time";
+            this.button12.UseVisualStyleBackColor = false;
             // 
             // button11
             // 
-            button11.BackColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            button11.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(142, 105, 18);
-            button11.FlatAppearance.BorderSize = 2;
-            button11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            button11.ForeColor = System.Drawing.Color.FromArgb(70, 22, 107);
-            button11.Location = new System.Drawing.Point(6, 185);
-            button11.Name = "button11";
-            button11.Size = new System.Drawing.Size(189, 68);
-            button11.TabIndex = 2;
-            button11.Text = "Exam Time";
-            button11.UseVisualStyleBackColor = false;
+            this.button11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.button11.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.button11.FlatAppearance.BorderSize = 2;
+            this.button11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.button11.Location = new System.Drawing.Point(6, 185);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(189, 68);
+            this.button11.TabIndex = 2;
+            this.button11.Text = "Exam Time";
+            this.button11.UseVisualStyleBackColor = false;
             // 
             // button10
             // 
-            button10.BackColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            button10.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(142, 105, 18);
-            button10.FlatAppearance.BorderSize = 2;
-            button10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            button10.ForeColor = System.Drawing.Color.FromArgb(70, 22, 107);
-            button10.Location = new System.Drawing.Point(6, 102);
-            button10.Name = "button10";
-            button10.Size = new System.Drawing.Size(189, 68);
-            button10.TabIndex = 1;
-            button10.Text = "Exam Time";
-            button10.UseVisualStyleBackColor = false;
+            this.button10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.button10.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.button10.FlatAppearance.BorderSize = 2;
+            this.button10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.button10.Location = new System.Drawing.Point(6, 102);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(189, 68);
+            this.button10.TabIndex = 1;
+            this.button10.Text = "Exam Time";
+            this.button10.UseVisualStyleBackColor = false;
             // 
             // button9
             // 
-            button9.BackColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            button9.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(142, 105, 18);
-            button9.FlatAppearance.BorderSize = 2;
-            button9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            button9.ForeColor = System.Drawing.Color.FromArgb(70, 22, 107);
-            button9.Location = new System.Drawing.Point(6, 19);
-            button9.Name = "button9";
-            button9.Size = new System.Drawing.Size(189, 68);
-            button9.TabIndex = 0;
-            button9.Text = "Exam Time";
-            button9.UseVisualStyleBackColor = false;
+            this.button9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.button9.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.button9.FlatAppearance.BorderSize = 2;
+            this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.button9.Location = new System.Drawing.Point(6, 19);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(189, 68);
+            this.button9.TabIndex = 0;
+            this.button9.Text = "Exam Time";
+            this.button9.UseVisualStyleBackColor = false;
             // 
             // groupBox2
             // 
-            groupBox2.Controls.Add(button8);
-            groupBox2.Controls.Add(button7);
-            groupBox2.Controls.Add(button6);
-            groupBox2.Controls.Add(button5);
-            groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            groupBox2.ForeColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            groupBox2.Location = new System.Drawing.Point(3, 3);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new System.Drawing.Size(201, 432);
-            groupBox2.TabIndex = 4;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Day 1";
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.button8);
+            this.groupBox2.Controls.Add(this.button7);
+            this.groupBox2.Controls.Add(this.button6);
+            this.groupBox2.Controls.Add(this.button5);
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.groupBox2.Location = new System.Drawing.Point(3, 3);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(201, 432);
+            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Day 1";
             // 
             // button8
             // 
-            button8.BackColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            button8.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(142, 105, 18);
-            button8.FlatAppearance.BorderSize = 2;
-            button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            button8.ForeColor = System.Drawing.Color.FromArgb(70, 22, 107);
-            button8.Location = new System.Drawing.Point(6, 313);
-            button8.Name = "button8";
-            button8.Size = new System.Drawing.Size(189, 68);
-            button8.TabIndex = 3;
-            button8.Text = "Exam Time";
-            button8.UseVisualStyleBackColor = false;
+            this.button8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.button8.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.button8.FlatAppearance.BorderSize = 2;
+            this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.button8.Location = new System.Drawing.Point(6, 323);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(189, 68);
+            this.button8.TabIndex = 3;
+            this.button8.Text = "Exam Time";
+            this.button8.UseVisualStyleBackColor = false;
             // 
             // button7
             // 
-            button7.BackColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            button7.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(142, 105, 18);
-            button7.FlatAppearance.BorderSize = 2;
-            button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            button7.ForeColor = System.Drawing.Color.FromArgb(70, 22, 107);
-            button7.Location = new System.Drawing.Point(6, 185);
-            button7.Name = "button7";
-            button7.Size = new System.Drawing.Size(189, 68);
-            button7.TabIndex = 2;
-            button7.Text = "Exam Time";
-            button7.UseVisualStyleBackColor = false;
+            this.button7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.button7.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.button7.FlatAppearance.BorderSize = 2;
+            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.button7.Location = new System.Drawing.Point(6, 226);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(189, 68);
+            this.button7.TabIndex = 2;
+            this.button7.Text = "Exam Time";
+            this.button7.UseVisualStyleBackColor = false;
             // 
             // button6
             // 
-            button6.BackColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            button6.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(142, 105, 18);
-            button6.FlatAppearance.BorderSize = 2;
-            button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            button6.ForeColor = System.Drawing.Color.FromArgb(70, 22, 107);
-            button6.Location = new System.Drawing.Point(6, 102);
-            button6.Name = "button6";
-            button6.Size = new System.Drawing.Size(189, 68);
-            button6.TabIndex = 1;
-            button6.Text = "Exam Time";
-            button6.UseVisualStyleBackColor = false;
+            this.button6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.button6.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.button6.FlatAppearance.BorderSize = 2;
+            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.button6.Location = new System.Drawing.Point(6, 129);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(189, 68);
+            this.button6.TabIndex = 1;
+            this.button6.Text = "Exam Time";
+            this.button6.UseVisualStyleBackColor = false;
             // 
             // button5
             // 
-            button5.BackColor = System.Drawing.Color.FromArgb(219, 159, 17);
-            button5.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(142, 105, 18);
-            button5.FlatAppearance.BorderSize = 2;
-            button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            button5.ForeColor = System.Drawing.Color.FromArgb(70, 22, 107);
-            button5.Location = new System.Drawing.Point(6, 19);
-            button5.Name = "button5";
-            button5.Size = new System.Drawing.Size(189, 68);
-            button5.TabIndex = 0;
-            button5.Text = "Exam Time";
-            button5.UseVisualStyleBackColor = false;
+            this.button5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
+            this.button5.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.button5.FlatAppearance.BorderSize = 2;
+            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.button5.Location = new System.Drawing.Point(6, 32);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(189, 68);
+            this.button5.TabIndex = 0;
+            this.button5.Text = "Exam Time";
+            this.button5.UseVisualStyleBackColor = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.label1.Location = new System.Drawing.Point(6, 19);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "label1";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.label2.Location = new System.Drawing.Point(7, 113);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(41, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "label2";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.label3.Location = new System.Drawing.Point(6, 210);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(41, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "label3";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(105)))), ((int)(((byte)(18)))));
+            this.label4.Location = new System.Drawing.Point(7, 307);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(41, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "label4";
             // 
             // FullCalendar
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            Controls.Add(groupBox5);
-            Controls.Add(groupBox3);
-            Controls.Add(groupBox4);
-            Controls.Add(groupBox2);
-            Name = "FullCalendar";
-            Size = new System.Drawing.Size(433, 466);
-            groupBox5.ResumeLayout(false);
-            groupBox3.ResumeLayout(false);
-            groupBox4.ResumeLayout(false);
-            groupBox2.ResumeLayout(false);
-            ResumeLayout(false);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox2);
+            this.Name = "FullCalendar";
+            this.Size = new System.Drawing.Size(433, 466);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 
@@ -378,5 +427,9 @@
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }
