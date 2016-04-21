@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FETP;
+using CalendarExtension;
 
 namespace FETP_GUI
 {
@@ -50,24 +51,25 @@ namespace FETP_GUI
         /// <param name="numOfDays">Number of days in the schedule</param>
         /// <param name="numOfExamsPerDay">Number of exam time slots per day</param>
         /// <param name="NUMBER_OF_EXAMS">Total number of exam time slots in the schedule</param>
-        /// //4-14-16: Added labels for start times
+        //4-14-16: Added labels for start times
+        //4-20-16: Added labels on exam buttons
         private void InitializeComponent(int numOfDays, int numOfExamsPerDay)
         {
             #region Initialize new GUI objects
             Days = new GroupBox[numOfDays];
             DayPanels = new Panel[numOfDays];
 
-            int i = 0;
-            for (; i < numOfDays; i++)
+            int day = 0;
+            for (; day < numOfDays; day++)
             {
-                Days[i] = new GroupBox();
-                DayPanels[i] = new Panel();
-                Exams[i] = new Button[numOfExamsPerDay];
-                startTimes[i] = new Label[numOfExamsPerDay];
+                Days[day] = new GroupBox();
+                DayPanels[day] = new Panel();
+                Exams[day] = new Button[numOfExamsPerDay];
+                startTimes[day] = new Label[numOfExamsPerDay];
                 for (int n = 0; n < numOfExamsPerDay; n++)
                 {
-                    Exams[i][n] = new Button();
-                    startTimes[i][n] = new Label();
+                    Exams[day][n] = new Button();
+                    startTimes[day][n] = new Label();
                 }
             }
             #endregion
@@ -84,48 +86,48 @@ namespace FETP_GUI
             //
             // Days
             //
-            i = 0;
+            day = 0;
             foreach (GroupBox gb in Days)
             {
                 gb.Anchor = (AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Bottom);
-                gb.Controls.Add(DayPanels[i]);
+                gb.Controls.Add(DayPanels[day]);
                 gb.BackColor = Color.FromArgb(45, 12, 73);
                 gb.Font = new Font("Microsoft Sans Serif", 16.0F, FontStyle.Bold, GraphicsUnit.Point, 0);
                 gb.ForeColor = Color.FromArgb(219, 159, 17);
-                gb.Location = new Point((201 + 15) * i, 0);
-                gb.Name = "Day " + (i + 1).ToString();
+                gb.Location = new Point((201 + 15) * day, 0);
+                gb.Name = "Day " + (day + 1).ToString();
                 gb.Size = new Size(200, 450);
                 gb.Text = gb.Name;
 
-                i++;
+                day++;
             }
 
             //
             //DayPanels
             //
-            i = 0;
+            day = 0;
             foreach (Panel p in DayPanels)
             {
                 p.AutoScroll = true;
                 p.BackColor = Color.Transparent;
                 for (int n = numOfExamsPerDay - 1; n >= 0; n--)
                 {
-                    p.Controls.Add(Exams[i][n]);
-                    p.Controls.Add(startTimes[i][n]);
+                    p.Controls.Add(Exams[day][n]);
+                    p.Controls.Add(startTimes[day][n]);
                 }
                 p.Dock = DockStyle.Fill;
 
-                i++;
+                day++;
             }
 
             //
             // Exams
             //
-            int j = 0, k = 1;
-            while (j < numOfDays)
+            day = 0;
+            while (day < numOfDays)
             {
-                int y = 0;
-                foreach (Button b in Exams[j])
+                int block = 0;
+                foreach (Button b in Exams[day])
                 {
                     b.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right);
                     b.BackColor = Color.FromArgb(219, 159, 17);
@@ -134,25 +136,25 @@ namespace FETP_GUI
                     b.FlatStyle = FlatStyle.Flat;
                     b.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
                     b.ForeColor = Color.FromArgb(70, 22, 107);
-                    b.Location = new Point(6, (32 + (100) * y));
-                    b.Name = "Exam Time " + (k).ToString();
+                    b.Location = new Point(6, (32 + (100) * block));
+                    b.Name = "Exam Time " + (block + 1).ToString();
                     b.Size = new Size(185, 68);
-                    b.Text = b.Name;
+                    //b.Text = b.Name;
                     b.UseVisualStyleBackColor = false;
-                    y++;
-                    k++;
+                    block++;
                 }
-                j++;
+                day++;
             }
+            this.labelAllScheduledBlocks(_schedule, ref Exams);
 
             //
             // _startTimes
             //
-            j = 0;
-            while (j < numOfDays)
+            day = 0;
+            while (day < numOfDays)
             {
                 int y = 0;
-                foreach (Label l in startTimes[j])
+                foreach (Label l in startTimes[day])
                 {
                     l.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right);
                     l.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
@@ -162,7 +164,7 @@ namespace FETP_GUI
                     l.Text = _schedule.StartTimesOfExams[y].ToString();
                     y++;
                 }
-                j++;
+                day++;
             }
             #endregion
 
@@ -170,9 +172,9 @@ namespace FETP_GUI
             //FullCalendar
             //
             AutoScroll = true;
-            for (i = numOfDays - 1; i >= 0; i--)
+            for (day = numOfDays - 1; day >= 0; day--)
             {
-                Controls.Add(Days[i]);
+                Controls.Add(Days[day]);
             }
             Dock = DockStyle.Fill;
             Size = new Size(433, 466);

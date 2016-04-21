@@ -37,14 +37,11 @@ namespace FETP_GUI
 
         /// <summary>
         /// FETP_Form Constructor
+        /// Create a new FETP Form with the default Data Collection UserControl docked in it
         /// </summary>
-        //Input: none
-        //Actions: Create a new FETP Form with the default Data Collection UserControl docked in it
-        //Output: FETP Form with Data Collection UserControl
         //Author: Amy Brown
         //Date: 3-21-2016
-        //Modifications: Added views Dictionary and delegate events (4-5-2016)
-        //Files Accessed: none
+        //Modifications:    Added views Dictionary and delegate events (4-5-2016)
         //Date(s) Tested:
         //Approved By:
         public FETP_Form()
@@ -64,13 +61,8 @@ namespace FETP_GUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        //Input: 
-        //Actions: 
-        //Output: 
         //Author: Amy Brown
-        //Date: 4-9-2016
-        //Modifications: 
-        //Files Accessed: 
+        //Date: 4-9-2016 
         //Date(s) Tested:
         //Approved By:
         public void ClearAllTextBoxes(object sender, EventArgs e)
@@ -140,12 +132,12 @@ namespace FETP_GUI
                 isSchedulePossible = false;
                 isBeginValid = false;
             }
-            if (examLength < 0090 || examLength > 0120)
+            if (examLength < 90 || examLength > 120)
             {
                 isSchedulePossible = false;
                 isExamValid = false;
             }
-            if (breakLength < 0010 || breakLength > 0030)
+            if (breakLength < 10 || breakLength > 30)
             {
                 isSchedulePossible = false;
                 isBreakValid = false;
@@ -236,13 +228,10 @@ namespace FETP_GUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        //Input: 
-        //Actions: 
         //Output: 
         //Author: Amy Brown
         //Date: 
-        //Modifications: 
-        //Files Accessed: 
+        //Modifications:    Added the reset of form state, size, and style
         //Date(s) Tested:
         //Approved By:
         private void newScheduleToolStripMenuItem_Click(object sender, EventArgs e)
@@ -268,13 +257,10 @@ namespace FETP_GUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        //Input: 
-        //Actions: 
         //Output: 
         //Author: Amy Brown
         //Date: 
-        //Modifications: 
-        //Files Accessed: 
+        //Modifications:    Added dictionary access 
         //Date(s) Tested:
         //Approved By:
         private void fullScheduleToolStripMenuItem_Click(object sender, EventArgs e)
@@ -300,17 +286,14 @@ namespace FETP_GUI
         }
 
         /// <summary>
-        /// Display the Single Day Calendar Schedule View
+        /// Build and/or Display the Single Day Calendar Schedule View
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        //Input: 
-        //Actions: 
         //Output: 
         //Author: Amy Brown
         //Date: 
-        //Modifications: 
-        //Files Accessed: 
+        //Modifications:    Added dictionary access
         //Date(s) Tested:
         //Approved By:
         private void oneDayToolStripMenuItem_Click(object sender, EventArgs e)
@@ -337,17 +320,13 @@ namespace FETP_GUI
         }
 
         /// <summary>
-        /// Display the Text Schedule View
+        /// Build and/or Display the Text Schedule View
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        //Input: 
-        //Actions: 
         //Output: 
         //Author: Amy Brown
         //Date: 
-        //Modifications: 
-        //Files Accessed: 
         //Date(s) Tested:
         //Approved By:
         private void textToolStripMenuItem_Click(object sender, EventArgs e)
@@ -381,16 +360,14 @@ namespace FETP_GUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        //Output: Resized form with repositioned splitter
         //Author: Amy Brown
         //Date: 4-7-2016
-        //Modifications: 
-        //Files Accessed: none
-        //Date(s) Tested: 4-7-2016
+        //Modifications:    Added check for form minimized
+        //Date(s) Tested: 4-7-2016, 4-20-2016
         //Approved By:
         private void FETP_Form_Resize(object sender, EventArgs e)
         {
-            if (scheduleView != null)
+            if (scheduleView != null && !WindowState.Equals(FormWindowState.Minimized))
             {
                 scheduleView.splitContainer1.SplitterDistance = scheduleView.splitContainer1.Width - 221;
             }

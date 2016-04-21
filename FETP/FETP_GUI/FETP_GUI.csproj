@@ -52,6 +52,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalendarExtensions.cs" />
     <Compile Include="DataCollection.cs">
       <SubType>UserControl</SubType>
     </Compile>
