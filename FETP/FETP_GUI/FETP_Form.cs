@@ -171,7 +171,7 @@ namespace FETP_GUI
                 //SchedulePresenter Constructor builds SplitContainer base presenter - container for different Schedule Views
                 //This will need the Schedule data structure as a parameter
                 //uses NUMBER_OF_DAYS and NUMBER_OF_EXAMS_PER_DAY from the Schedule data structure
-                scheduleView = new SchedulePresenter(schedule.NumberOfDays, schedule.NumberOfTimeSlotsAvailablePerDay);
+                scheduleView = new SchedulePresenter(schedule);
                 scheduleView.Dock = DockStyle.Fill;
 
                 //If the views Dictionary contains view presenters for a different Schedule object, get rid of them.
