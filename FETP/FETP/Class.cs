@@ -145,8 +145,7 @@ namespace FETP
         }
 
 
-        //TODO: This function does not do anything. The complications of writing a hash
-        //      function are not needed for the current program.
+        //TODO: This function does not do anything. The complications of writing a hash function are not needed for the current program. Investiagate further. Required to make compiler happy with overloaded "==" operator
         /// <summary>
         /// Overloaded Hash function. It is improperly implemented due to the complexity
         /// being too high and the function will not be used. C# requires it to be overloaded
@@ -181,7 +180,7 @@ namespace FETP
 
 
         #region Overloaded Operators
-        //TODO: Why is there two of these? (== and Equals())
+        //TODO: Why is there two of these? (== and Equals()) // answer: because i think deep down, they sorta do two very slighty different things.
         /// <summary>
         /// Placeholder
         /// </summary>
@@ -191,7 +190,7 @@ namespace FETP
         public static bool operator ==(Class class1, Class class2)
         {
             //if (class1 == null && class2 == null) return true;
-            return (class1.StartTime == class2.StartTime && class1.EndTime == class2.EndTime && class1.Enrollment == class2.Enrollment && class1.DaysMeet == class2.DaysMeet); // TODO: comparing list should work
+            return (class1.StartTime == class2.StartTime && class1.EndTime == class2.EndTime && class1.Enrollment == class2.Enrollment && class1.DaysMeet == class2.DaysMeet); // TODO: comparing list should work, if so, remove todo
         }
 
 

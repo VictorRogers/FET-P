@@ -33,20 +33,20 @@ namespace FETP
         /// <summary>
         /// Upper Limit of length of classes
         /// </summary>
-        private const string CLASS_LENGTH_TO_START_IGNORING = "0125"; // TODO: clean these up
+        private const string CLASS_LENGTH_TO_START_IGNORING = "0125"; // TODO: clean these up // it may be possibly to make them easy to modify and in the right format for easy use
 
         /// <summary>
         /// Start point to begin ignoring classes
         /// </summary>
         private const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
 
-        //TODO: figure out access levels
+        //TODO: figure out access levels // if functions/data members can be private, make them private
         /// <summary>
         /// Latest exams can go
         /// </summary>
         public const string TIME_EXAMS_MUST_END_BY = "1700";
 
-        //TODO: figure these out
+        //TODO: figure these out // not sure which is still needed for lunch time scheduling. Lunch time scheduling still needs work
         public const string LOWER_TIME_RANGE_FOR_LUNCH = "1100";
         public const string UPPER_TIME_RANGE_FOR_LUNCH = "0100";
 
@@ -85,7 +85,7 @@ namespace FETP
         /// </summary>
         private List<Class> allClasses;
 
-        /// TODO: figure out how we want to do these datatypes
+        //TODO: figure out how we want to do these datatypes // not sure if this formmating is the best. but they need commentation
         private int numberOfTimeSlotsAvailable;
         private int numberOfTimeSlotsAvailablePerDay;
         private int numberOfTimeSlotsToBeUsed;
@@ -193,7 +193,6 @@ namespace FETP
             }
         }
 
-        // TODO: convert to data member for faster speed
         /// <summary>
         /// Getter property for number of Timeslots available per day
         /// </summary>
@@ -205,7 +204,7 @@ namespace FETP
             }
         }
 
-        //TODO: write comment
+        //TODO: write comments
         /// <summary>
         /// 
         /// </summary>
@@ -254,8 +253,7 @@ namespace FETP
         }
 
 
-        //TODO: write subfunction for constructor to avoid rewriting the code
-
+        //TODO: write subfunction for constructor to avoid rewriting the code between constructors
         /// <summary>
         /// 
         /// </summary>
@@ -267,7 +265,7 @@ namespace FETP
             this.SetupScheduleConstraintsFromFile(constraintsFileAddress);
             this.SetupClassDataFromFile(dataFileAddress);
 
-            this.SetNumberOfTimeSlotsAvailable(); //TODO: rewire what this function does
+            this.SetNumberOfTimeSlotsAvailable(); //TODO: rewire what this function does // maybe
 
             this.SetupExamStartTimeTable();
 
@@ -288,7 +286,7 @@ namespace FETP
         }
 
         //TODO: clean up constructors. i really don't know how else to word it
-        //TODO: change inputs of constructor all to string to remove conversion work from front end
+        //TODO: change inputs of constructor all to string to remove conversion work from front end // COMFIRM WITH FRONT END BEFORE DOING THIS
         /// <summary>
         /// 
         /// </summary>
@@ -370,7 +368,7 @@ namespace FETP
             }
         }
 
-
+        //TODO: further investigate what makes the best time
         /// <summary>
         /// Finds the index of the best fit for the block.
         /// This is done by first creating a list of all
@@ -431,7 +429,6 @@ namespace FETP
             //        return index;
             //}
 
-            ////TODO: this is bad
             //Console.WriteLine("NOT GOOD: IN FindBestTimeslotFit");
             //return 0;
         }
@@ -531,7 +528,7 @@ namespace FETP
 
     
 
-        //TODO: move into constructors maybe
+        //TODO: move into constructors maybe // may already be done
         /// <summary>
         /// Calculates number of timeslots available and sets it.
         /// </summary>
