@@ -173,6 +173,7 @@ namespace FETP_GUI
                 Size = new Size(681, 492);
                 MaximizeBox = true;
                 viewToolStripMenuItem.Enabled = true;
+                saveAsToolStripMenuItem.Enabled = true;
                 fullScheduleToolStripMenuItem.Enabled = false;
             }
             else
