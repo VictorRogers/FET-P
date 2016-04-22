@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Globalization;  // allows times to be different pased on local TODO: may can be removed
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks; // TODO: some of these aren't needed 
-using System.Xml.Serialization;
 
 
 namespace FETP
@@ -16,6 +16,7 @@ namespace FETP
     /// <summary>
     /// Placeholder
     /// </summary>
+    [Serializable]
     public class Schedule
     {
         #region Utilities
@@ -734,13 +735,12 @@ namespace FETP
         /// <summary>
         /// 
         /// </summary>
-        public void SaveScheduleToXML(string path)
+        public void SaveSchedule(string path)
         {
-            System.Xml.Serialization.XmlSerializer XML = 
-                new System.Xml.Serialization.XmlSerializer(this.GetType());
-
-            StreamWriter writer = new StreamWriter(path);
-            XML.Serialize(writer, this);
+            FileStream stream = File.Create(path);
+            BinaryFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(stream, this);
+            stream.Close();
         }        
 
 

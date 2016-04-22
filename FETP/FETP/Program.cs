@@ -34,7 +34,7 @@ namespace FETP
                     string saveDecision = Console.ReadLine();
                     if (saveDecision == "Y" || saveDecision == "y")
                     {
-                        schedule.SaveScheduleToXML(AppDomain.CurrentDomain.BaseDirectory + "testScheduleSave.xml");
+                        schedule.SaveSchedule(AppDomain.CurrentDomain.BaseDirectory + "testScheduleSave.dat");
                     }
                 }
 

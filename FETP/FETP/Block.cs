@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ namespace FETP
     ///Contains grouped classes and functions to get information on
     ///properties of all classes in block.
     ///</summary>
+    [Serializable]
     public class Block
     {
         #region Utilities

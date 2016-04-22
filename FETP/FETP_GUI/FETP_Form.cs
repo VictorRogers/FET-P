@@ -323,7 +323,7 @@ namespace FETP_GUI
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "XML-File | *.xml";
+            openFileDialog.Filter = "DAT-File | *.dat";
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -333,11 +333,11 @@ namespace FETP_GUI
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "XML-File | *.xml";
+            saveFileDialog.Filter = "DAT-File | *.dat";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                schedule.SaveScheduleToXML(saveFileDialog.FileName);
+                schedule.SaveSchedule(saveFileDialog.FileName);
             }
         }
 

@@ -528,7 +528,7 @@
             <param name="timeBetweenExams"></param>
             <param name="lunchLength"></param>
         </member>
-        <member name="M:FETP.Schedule.SaveScheduleToXML(System.String)">
+        <member name="M:FETP.Schedule.SaveSchedule(System.String)">
             <summary>
             
             </summary>
