@@ -19,8 +19,6 @@ namespace FETP_GUI
         private static int NUMBER_OF_EXAMS_PER_DAY = 10;
         private static int NUMBER_OF_EXAMS; //= NUMBER_OF_DAYS * NUMBER_OF_EXAMS_PER_DAY;
 
-        bool isImportedSchedule;
-
         int daysNum;
         int beginTime;
         int examLength;
@@ -373,5 +371,9 @@ namespace FETP_GUI
             Process.Start(locationToSavePdf);
         }
 
+        private void auth1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

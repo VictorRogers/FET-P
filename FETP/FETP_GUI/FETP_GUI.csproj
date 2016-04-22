@@ -93,6 +93,12 @@
     <Compile Include="TextSchedule.Designer.cs">
       <DependentUpon>TextSchedule.cs</DependentUpon>
     </Compile>
+    <Compile Include="Auth.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Auth.Designer.cs">
+      <DependentUpon>Auth.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="DataCollection.resx">
       <DependentUpon>DataCollection.cs</DependentUpon>
     </EmbeddedResource>
@@ -120,6 +126,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TextSchedule.resx">
       <DependentUpon>TextSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Auth.resx">
+      <DependentUpon>Auth.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
