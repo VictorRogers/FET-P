@@ -250,7 +250,7 @@ namespace FETP
         /// </summary>
         private Schedule()
         {
-
+            throw new Exception("WHY ARE YOU USING THIS?! AND WHY IS IT STILL IN THE CODE?!");
         }
 
 
@@ -264,8 +264,8 @@ namespace FETP
         public Schedule(string dataFileAddress, string constraintsFileAddress)
         {
             // Intial Setup
-            this.readInputConstraintsFile(constraintsFileAddress);
-            this.readInputDataFile(dataFileAddress);
+            this.SetupScheduleConstraintsFromFile(constraintsFileAddress);
+            this.SetupClassDataFromFile(dataFileAddress);
 
             this.SetNumberOfTimeSlotsAvailable(); //TODO: rewire what this function does
 
@@ -288,6 +288,7 @@ namespace FETP
         }
 
         //TODO: clean up constructors. i really don't know how else to word it
+        //TODO: change inputs of constructor all to string to remove conversion work from front end
         /// <summary>
         /// 
         /// </summary>
@@ -301,7 +302,7 @@ namespace FETP
                         TimeSpan examsLength, TimeSpan timeBetweenExams, TimeSpan lunchLength)
         {
             //Intial setup
-            this.readInputDataFile(dataFileAddress);
+            this.SetupClassDataFromFile(dataFileAddress);
             this.SetupScheduleConstraints(numberOfDays, examsStartTime, examsLength, timeBetweenExams, lunchLength);
 
             this.SetNumberOfTimeSlotsAvailable(); //TODO: rewire what this function does
@@ -321,6 +322,19 @@ namespace FETP
 
             this.ScheduleBlocks(this.LeftoverBlocks);
 
+        }
+
+        //TODO: substitue this function in for code snippets
+        private void SetupNumberOfTimeslotsNeeded()
+        {
+            if (LeftoverBlocks.Count < NumberOfTimeSlotsAvailable)
+            {
+                this.numberOfTimeSlotsToBeUsed = LeftoverBlocks.Count;
+            }
+            else
+            {
+                this.numberOfTimeSlotsToBeUsed = NumberOfTimeSlotsAvailable;
+            }
         }
 
         /// <summary>
@@ -517,7 +531,7 @@ namespace FETP
 
     
 
-        //TODO: move into constructors
+        //TODO: move into constructors maybe
         /// <summary>
         /// Calculates number of timeslots available and sets it.
         /// </summary>
@@ -629,21 +643,22 @@ namespace FETP
         //TODO: Make bool to see if it's read
         //TODO: This might need to be moved
         //TODO: Catch exception that file couldn't be opened?
+        //TODO: modify to not parse. Make it read the file then pass off to SetupScheduleConstraints once the function is modified to take only strings and parse. 
         /// <summary>
         /// Reads in the constraints file and initializes a static schedule
         /// </summary>
         /// <param name="inFileName"></param>
-        private void readInputConstraintsFile(string inFileName)
+        private void SetupScheduleConstraintsFromFile(string inFileName)
         {
             FileStream inFile = File.OpenRead(@inFileName);
             var reader = new StreamReader(inFile);
 
-
+            //TODO: possibly implement TryParse or other form of error handling
             this.numberOfDays = Int32.Parse(reader.ReadLine());
-            this.examsStartTime = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+            this.examsStartTime = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture); //TODO: further investigate CultureInfo.InvariantCulture to be sure it's needed and doesn't break stuff
             this.examsLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
-            this.timeBetweenExams = TimeSpan.FromMinutes(Intreader.ReadLine()); //TODO: Test to make sure the from minutes functions with CultureInfo.InvariantCulture
-            this.lunchLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+            this.timeBetweenExams = TimeSpan.FromMinutes(Int32.Parse(reader.ReadLine())); //TODO: Test to make sure the from minutes functions with CultureInfo.InvariantCulture
+            this.lunchLength = TimeSpan.FromMinutes(Int32.Parse(reader.ReadLine()));
 
         }
 
@@ -653,7 +668,7 @@ namespace FETP
         /// not add classes in that fall into the criteria of ignorable classes.
         /// </summary>
         /// <param name="inFileName"></param>
-        private void readInputDataFile(string inFileName)
+        private void SetupClassDataFromFile(string inFileName)
         {
 
             // Make boundaries of ignored classes more usable

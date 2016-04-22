@@ -505,13 +505,13 @@
             Displays all blocks in schedule
             </summary>
         </member>
-        <member name="M:FETP.Schedule.readInputConstraintsFile(System.String)">
+        <member name="M:FETP.Schedule.SetupScheduleConstraintsFromFile(System.String)">
             <summary>
             Reads in the constraints file and initializes a static schedule
             </summary>
             <param name="inFileName"></param>
         </member>
-        <member name="M:FETP.Schedule.readInputDataFile(System.String)">
+        <member name="M:FETP.Schedule.SetupClassDataFromFile(System.String)">
             <summary>
             Reads in a data file and constructs list of all classes in the file. Does
             not add classes in that fall into the criteria of ignorable classes.
