@@ -50,16 +50,6 @@ namespace FETP_GUI
             }
         }
 
-        private void enrollmentBrowse_textBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void days_textBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void scheduleBrowse_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -69,26 +59,6 @@ namespace FETP_GUI
             {
                 scheduleBrowse_textBox.Text = openFileDialog.FileName;
             }
-        }
-
-        private void scheduleBrowse_textBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }
