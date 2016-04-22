@@ -326,7 +326,7 @@ namespace FETP
         /// <summary>
         /// Sets up data member examsStartTimes to be used for quickly finding the start time of an index
         /// </summary>
-        public void SetupExamStartTimeTable()
+        private void SetupExamStartTimeTable()
         {
             // setup lower limir for lunch from constant for easier use
             TimeSpan lowerLimitForLunch = TimeSpan.ParseExact(Schedule.LOWER_TIME_RANGE_FOR_LUNCH, @"hhmm", CultureInfo.InvariantCulture);
@@ -365,7 +365,7 @@ namespace FETP
         /// </summary>
         /// <param name="startTime">average start time of block to schedule</param>
         /// <returns>Index of best possible fit</returns>
-        public int FindBestTimeslotFit(TimeSpan startTime)
+        private int FindBestTimeslotFit(TimeSpan startTime)
         {
 
             // create ordered list of times
@@ -503,7 +503,7 @@ namespace FETP
         /// </summary>
         /// <param name="groupedClasses"></param>
         /// <returns></returns>
-        public void ScheduleBlocks(List<Block> groupedClasses)
+        private void ScheduleBlocks(List<Block> groupedClasses)
         {
             this.blocks = new Block[this.numberOfTimeSlotsAvailable];
             this.leftoverBlocks = groupedClasses.OrderByDescending(c => c.Enrollment).ToList();
@@ -633,15 +633,16 @@ namespace FETP
         /// Reads in the constraints file and initializes a static schedule
         /// </summary>
         /// <param name="inFileName"></param>
-        public void readInputConstraintsFile(string inFileName)
+        private void readInputConstraintsFile(string inFileName)
         {
             FileStream inFile = File.OpenRead(@inFileName);
             var reader = new StreamReader(inFile);
 
+
             this.numberOfDays = Int32.Parse(reader.ReadLine());
             this.examsStartTime = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
             this.examsLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
-            this.timeBetweenExams = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+            this.timeBetweenExams = TimeSpan.FromMinutes(Intreader.ReadLine()); //TODO: Test to make sure the from minutes functions with CultureInfo.InvariantCulture
             this.lunchLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
 
         }
@@ -652,7 +653,7 @@ namespace FETP
         /// not add classes in that fall into the criteria of ignorable classes.
         /// </summary>
         /// <param name="inFileName"></param>
-        public void readInputDataFile(string inFileName)
+        private void readInputDataFile(string inFileName)
         {
 
             // Make boundaries of ignored classes more usable
@@ -719,7 +720,7 @@ namespace FETP
         /// <param name="examsLength"></param>
         /// <param name="timeBetweenExams"></param>
         /// <param name="lunchLength"></param>
-        public void SetupScheduleConstraints(int numberOfDay, TimeSpan examsStartTime,
+        private void SetupScheduleConstraints(int numberOfDay, TimeSpan examsStartTime,
                                               TimeSpan examsLength, TimeSpan timeBetweenExams,
                                               TimeSpan lunchLength)
         {
