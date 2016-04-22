@@ -88,6 +88,7 @@ namespace FETP
         /// TODO: figure out how we want to do these datatypes
         private int numberOfTimeSlotsAvailable;
         private int numberOfTimeSlotsAvailablePerDay;
+        private int numberOfTimeSlotsToBeUsed;
 
         /// <summary>
         /// Array of all blocks (grouped classes) scheduled
@@ -204,6 +205,18 @@ namespace FETP
             }
         }
 
+        //TODO: write comment
+        /// <summary>
+        /// 
+        /// </summary>
+        public int NumberOfTimeSlotsToBeUsed
+        {
+            get
+            {
+                return this.numberOfTimeSlotsToBeUsed;
+            }
+        }
+
         /// <summary>
          /// Getter property for array of all exams's strt times
          /// </summary>
@@ -230,6 +243,8 @@ namespace FETP
 
 
         #region Methods
+
+        //TODO: possibly remove this constructor
         /// <summary>
         /// This parameterless constructor is needed for XML serialization
         /// </summary>
@@ -249,14 +264,26 @@ namespace FETP
         public Schedule(string dataFileAddress, string constraintsFileAddress)
         {
             // Intial Setup
-            this.readInputDataFile(dataFileAddress);
             this.readInputConstraintsFile(constraintsFileAddress);
+            this.readInputDataFile(dataFileAddress);
 
-            SetNumberOfTimeSlotsAvailable(); //TODO: rewire what this function does
+            this.SetNumberOfTimeSlotsAvailable(); //TODO: rewire what this function does
 
             this.SetupExamStartTimeTable();
 
-            this.ScheduleBlocks(FETP_Controller.GroupClasses(this.AllClasses));
+            //TODO: Cleanup this section
+            this.leftoverBlocks = FETP_Controller.GroupClasses(this.AllClasses);
+
+            if (LeftoverBlocks.Count < NumberOfTimeSlotsAvailable)
+            {
+                this.numberOfTimeSlotsToBeUsed = LeftoverBlocks.Count;
+            }
+            else
+            {
+                this.numberOfTimeSlotsToBeUsed = NumberOfTimeSlotsAvailable;
+            }
+
+            this.ScheduleBlocks(this.LeftoverBlocks);
 
         }
 
@@ -281,7 +308,18 @@ namespace FETP
 
             this.SetupExamStartTimeTable();
 
-            this.ScheduleBlocks(FETP_Controller.GroupClasses(this.AllClasses));
+            this.leftoverBlocks = FETP_Controller.GroupClasses(this.AllClasses);
+
+            if (LeftoverBlocks.Count < NumberOfTimeSlotsAvailable)
+            {
+                this.numberOfTimeSlotsToBeUsed = LeftoverBlocks.Count;
+            }
+            else
+            {
+                this.numberOfTimeSlotsToBeUsed = NumberOfTimeSlotsAvailable;
+            }
+
+            this.ScheduleBlocks(this.LeftoverBlocks);
 
         }
 
@@ -341,7 +379,7 @@ namespace FETP
             foreach (TimeSpan time in orderedPossibleTime)
             {
                 // for each index of time, add all indexes with that time to list
-                for (int i = GetIndexOfStartTime(time); i < this.blocks.Length; i += this.NumberOfTimeSlotsAvailablePerDay)
+                for (int i = GetIndexOfStartTime(time); i < this.NumberOfTimeSlotsToBeUsed; i += this.NumberOfTimeSlotsAvailablePerDay)
                 {
                     orderedIndexesOfPossibleTime.Add(i);
                 }
@@ -564,7 +602,9 @@ namespace FETP
                 }
                 else
                 {
-                    Console.WriteLine("NOT GOOD: IN DisplayBlocks");
+                    Console.WriteLine("==============");
+                    Console.WriteLine("EMPTY BLOCK");
+                    Console.WriteLine("==============");
                 }
                 
             }
@@ -604,7 +644,6 @@ namespace FETP
             this.timeBetweenExams = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
             this.lunchLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
 
-            this.SetNumberOfTimeSlotsAvailable();
         }
 
 

@@ -410,6 +410,11 @@
             Getter property for number of Timeslots available per day
             </summary>
         </member>
+        <member name="P:FETP.Schedule.NumberOfTimeSlotsToBeUsed">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:FETP.Schedule.StartTimesOfExams">
             <summary>
             Getter property for array of all exams's strt times
