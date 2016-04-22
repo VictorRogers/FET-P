@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using FETP;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace FETP_GUI
 {
@@ -17,6 +18,8 @@ namespace FETP_GUI
     {
         private static int NUMBER_OF_EXAMS_PER_DAY = 10;
         private static int NUMBER_OF_EXAMS; //= NUMBER_OF_DAYS * NUMBER_OF_EXAMS_PER_DAY;
+
+        bool isImportedSchedule;
 
         int daysNum;
         int beginTime;
@@ -147,6 +150,7 @@ namespace FETP_GUI
 
                 //Using schedule data strucutre::
                 
+                //TODO: Generating this presenter neeeds to be split off into its own function
                 //SchedulePresenter Constructor builds SplitContainer base presenter - container for different Schedule Views
                 //This will need the Schedule data structure as a parameter
                 //uses NUMBER_OF_DAYS and NUMBER_OF_EXAMS_PER_DAY from the Schedule data structure
@@ -327,6 +331,26 @@ namespace FETP_GUI
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                FileStream stream = File.OpenRead(openFileDialog.FileName);
+                BinaryFormatter formatter = new BinaryFormatter();
+                schedule = (Schedule)formatter.Deserialize(stream);
+                stream.Close();
+
+                //TODO: This code needs to be in its own function
+                FormBorderStyle = FormBorderStyle.Sizable;
+                panel1.Controls.Clear();
+                scheduleView = new SchedulePresenter(schedule.NumberOfDays, schedule.NumberOfTimeSlotsAvailablePerDay);
+                scheduleView.Dock = DockStyle.Fill;
+                views.Clear();
+                fullCal = new FullCalendar(schedule.NumberOfDays, schedule.NumberOfTimeSlotsAvailablePerDay, examLength, breakLength, lunchLength);
+                fullCal.Dock = DockStyle.Fill;
+                panel1.Controls.Add(scheduleView);
+                scheduleView.splitContainer1.Panel1.Controls.Add(fullCal);
+                views.Add("Full", fullCal);
+                Size = new Size(681, 492);
+                MaximizeBox = true;
+                viewToolStripMenuItem.Enabled = true;
+                fullScheduleToolStripMenuItem.Enabled = false;
             }
         }
 
