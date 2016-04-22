@@ -425,9 +425,8 @@
             Getter property for list of leftover blocks
             </summary>
         </member>
-        <member name="M:FETP.Schedule.#ctor">
+        <member name="M:FETP.Schedule.#ctor(System.String)">
             <summary>
-            This parameterless constructor is needed for XML serialization
             </summary>
         </member>
         <member name="M:FETP.Schedule.#ctor(System.String,System.String)">
@@ -529,11 +528,6 @@
             <param name="lunchLength"></param>
         </member>
         <member name="M:FETP.Schedule.SaveSchedule(System.String)">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:FETP.Schedule.OpenScheduleFromXML">
             <summary>
             
             </summary>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace FETP
 {
@@ -20,6 +21,7 @@ namespace FETP
                 //Console.WriteLine("2. Reading from Constraints File");
                 //Console.WriteLine("3. Basic Grouping");
                 Console.WriteLine("1. Full Grouping and Scheduling");
+                Console.WriteLine("2. Open a Schedule");
 
                 string input = Console.ReadLine();
                 Console.WriteLine();
@@ -40,7 +42,10 @@ namespace FETP
 
                 if (input == "2")
                 {
-
+                    FileStream stream = File.OpenRead(AppDomain.CurrentDomain.BaseDirectory + "testScheduleSave.dat");
+                    BinaryFormatter formatter = new BinaryFormatter();
+                    Schedule schedule = (Schedule)formatter.Deserialize(stream);
+                    stream.Close();
                 }
 
                 Console.WriteLine();

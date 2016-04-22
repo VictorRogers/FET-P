@@ -244,19 +244,14 @@ namespace FETP
 
 
         #region Methods
-
-        //TODO: possibly remove this constructor
         /// <summary>
-        /// This parameterless constructor is needed for XML serialization
         /// </summary>
-        private Schedule()
+        public Schedule(string path)
         {
-
         }
 
 
         //TODO: write subfunction for constructor to avoid rewriting the code
-
         /// <summary>
         /// 
         /// </summary>
@@ -742,15 +737,6 @@ namespace FETP
             formatter.Serialize(stream, this);
             stream.Close();
         }        
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void OpenScheduleFromXML()
-        {
-
-        }
 
  
         //public void ScheduleLunch()
