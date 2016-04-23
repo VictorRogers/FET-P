@@ -284,7 +284,7 @@ namespace FETP
 
             foreach (Class cl in classes)
             {
-                classestobegrouped = GroupClass(classestobegrouped, cl); // TODO: clean this up
+                classestobegrouped = GroupClass(classestobegrouped, cl); // TODO: clean this up // i don't know what this means anymore
             }
             return classestobegrouped;
         }

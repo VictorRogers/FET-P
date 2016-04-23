@@ -122,7 +122,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.enrollmentBrowse);
             this.splitContainer1.Panel2.Controls.Add(this.enrollmentBrowse_textBox);
             this.splitContainer1.Size = new System.Drawing.Size(331, 297);
-            this.splitContainer1.SplitterDistance = 190;
+            this.splitContainer1.SplitterDistance = 189;
             this.splitContainer1.TabIndex = 3;
             // 
             // label9
@@ -187,6 +187,7 @@
             this.scheduleBrowse.TabIndex = 11;
             this.scheduleBrowse.Text = "Browse...";
             this.scheduleBrowse.UseVisualStyleBackColor = false;
+            this.scheduleBrowse.Click += new System.EventHandler(this.scheduleBrowse_Click);
             // 
             // label6
             // 
@@ -292,6 +293,7 @@
             this.enrollmentBrowse.TabIndex = 33;
             this.enrollmentBrowse.Text = "Browse...";
             this.enrollmentBrowse.UseVisualStyleBackColor = false;
+            this.enrollmentBrowse.Click += new System.EventHandler(this.enrollmentBrowse_Click);
             // 
             // enrollmentBrowse_textBox
             // 

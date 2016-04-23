@@ -50,6 +50,11 @@
             Calculates and returns the average starting time of all classes in block weighted by enrollment
             </summary>
         </member>
+        <member name="M:FETP.Block.#ctor">
+            <summary>
+            Used for XML serialization
+            </summary>
+        </member>
         <member name="M:FETP.Block.#ctor(System.Collections.Generic.List{FETP.Class})">
             <summary>
             Takes in data values and creates Block with those values
@@ -138,6 +143,11 @@
         <member name="P:FETP.Class.DaysMeet">
             <summary>
             Getter/setter for the days the class meets
+            </summary>
+        </member>
+        <member name="M:FETP.Class.#ctor">
+            <summary>
+            Used for XML serialization 
             </summary>
         </member>
         <member name="M:FETP.Class.#ctor(System.TimeSpan,System.TimeSpan,System.Int32,System.Collections.Generic.List{System.DayOfWeek})">
@@ -347,9 +357,6 @@
             List of all classes to be scheduled in the order read in
             </summary>
         </member>
-        <member name="F:FETP.Schedule.numberOfTimeSlotsAvailable">
-            TODO: figure out how we want to do these datatypes
-        </member>
         <member name="F:FETP.Schedule.blocks">
             <summary>
             Array of all blocks (grouped classes) scheduled
@@ -400,6 +407,11 @@
             Getter property for number of Timeslots available per day
             </summary>
         </member>
+        <member name="P:FETP.Schedule.NumberOfTimeSlotsToBeUsed">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:FETP.Schedule.StartTimesOfExams">
             <summary>
             Getter property for array of all exams's strt times
@@ -408,6 +420,10 @@
         <member name="P:FETP.Schedule.LeftoverBlocks">
             <summary>
             Getter property for list of leftover blocks
+            </summary>
+        </member>
+        <member name="M:FETP.Schedule.#ctor(System.String)">
+            <summary>
             </summary>
         </member>
         <member name="M:FETP.Schedule.#ctor(System.String,System.String)">
@@ -485,13 +501,13 @@
             Displays all blocks in schedule
             </summary>
         </member>
-        <member name="M:FETP.Schedule.readInputConstraintsFile(System.String)">
+        <member name="M:FETP.Schedule.SetupScheduleConstraintsFromFile(System.String)">
             <summary>
             Reads in the constraints file and initializes a static schedule
             </summary>
             <param name="inFileName"></param>
         </member>
-        <member name="M:FETP.Schedule.readInputDataFile(System.String)">
+        <member name="M:FETP.Schedule.SetupClassDataFromFile(System.String)">
             <summary>
             Reads in a data file and constructs list of all classes in the file. Does
             not add classes in that fall into the criteria of ignorable classes.
@@ -507,6 +523,11 @@
             <param name="examsLength"></param>
             <param name="timeBetweenExams"></param>
             <param name="lunchLength"></param>
+        </member>
+        <member name="M:FETP.Schedule.SaveSchedule(System.String)">
+            <summary>
+            
+            </summary>
         </member>
     </members>
 </doc>

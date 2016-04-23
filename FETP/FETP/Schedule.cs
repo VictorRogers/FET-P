@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Globalization;  // allows times to be different pased on local TODO: may can be removed
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks; // TODO: some of these aren't needed
-
-using System.Globalization;  // allows times to be different pased on local TODO: may can be removed
-using System.Diagnostics;
-using System.IO;
+using System.Threading.Tasks; // TODO: some of these aren't needed 
 
 
 namespace FETP
@@ -16,6 +16,7 @@ namespace FETP
     /// <summary>
     /// Placeholder
     /// </summary>
+    [Serializable]
     public class Schedule
     {
         #region Utilities
@@ -33,20 +34,20 @@ namespace FETP
         /// <summary>
         /// Upper Limit of length of classes
         /// </summary>
-        private const string CLASS_LENGTH_TO_START_IGNORING = "0125"; // TODO: clean these up
+        private const string CLASS_LENGTH_TO_START_IGNORING = "0125"; // TODO: clean these up // it may be possibly to make them easy to modify and in the right format for easy use
 
         /// <summary>
         /// Start point to begin ignoring classes
         /// </summary>
         private const string HOUR_TO_BEGIN_IGNORE_CLASS = "1800";
 
-        //TODO: figure out access levels
+        //TODO: figure out access levels // if functions/data members can be private, make them private
         /// <summary>
         /// Latest exams can go
         /// </summary>
         public const string TIME_EXAMS_MUST_END_BY = "1700";
 
-        //TODO: figure these out
+        //TODO: figure these out // not sure which is still needed for lunch time scheduling. Lunch time scheduling still needs work
         public const string LOWER_TIME_RANGE_FOR_LUNCH = "1100";
         public const string UPPER_TIME_RANGE_FOR_LUNCH = "0100";
 
@@ -85,9 +86,10 @@ namespace FETP
         /// </summary>
         private List<Class> allClasses;
 
-        /// TODO: figure out how we want to do these datatypes
+        //TODO: figure out how we want to do these datatypes // not sure if this formmating is the best. but they need commentation
         private int numberOfTimeSlotsAvailable;
         private int numberOfTimeSlotsAvailablePerDay;
+        private int numberOfTimeSlotsToBeUsed;
 
         /// <summary>
         /// Array of all blocks (grouped classes) scheduled
@@ -192,7 +194,6 @@ namespace FETP
             }
         }
 
-        // TODO: convert to data member for faster speed
         /// <summary>
         /// Getter property for number of Timeslots available per day
         /// </summary>
@@ -201,6 +202,18 @@ namespace FETP
             get
             {
                 return this.numberOfTimeSlotsAvailablePerDay;
+            }
+        }
+
+        //TODO: write comments
+        /// <summary>
+        /// 
+        /// </summary>
+        public int NumberOfTimeSlotsToBeUsed
+        {
+            get
+            {
+                return this.numberOfTimeSlotsToBeUsed;
             }
         }
 
@@ -230,8 +243,14 @@ namespace FETP
 
 
         #region Methods
-        //TODO: write subfunction for constructor to avoid rewriting the code
+        /// <summary>
+        /// </summary>
+        public Schedule(string path)
+        {
+        }
 
+
+        //TODO: write subfunction for constructor to avoid rewriting the code between constructors
         /// <summary>
         /// 
         /// </summary>
@@ -240,18 +259,31 @@ namespace FETP
         public Schedule(string dataFileAddress, string constraintsFileAddress)
         {
             // Intial Setup
-            this.readInputDataFile(dataFileAddress);
-            this.readInputConstraintsFile(constraintsFileAddress);
+            this.SetupScheduleConstraintsFromFile(constraintsFileAddress);
+            this.SetupClassDataFromFile(dataFileAddress);
 
-            SetNumberOfTimeSlotsAvailable(); //TODO: rewire what this function does
+            this.SetNumberOfTimeSlotsAvailable(); //TODO: rewire what this function does // maybe
 
             this.SetupExamStartTimeTable();
 
-            this.ScheduleBlocks(FETP_Controller.GroupClasses(this.AllClasses));
+            //TODO: Cleanup this section
+            this.leftoverBlocks = FETP_Controller.GroupClasses(this.AllClasses);
+
+            if (LeftoverBlocks.Count < NumberOfTimeSlotsAvailable)
+            {
+                this.numberOfTimeSlotsToBeUsed = LeftoverBlocks.Count;
+            }
+            else
+            {
+                this.numberOfTimeSlotsToBeUsed = NumberOfTimeSlotsAvailable;
+            }
+
+            this.ScheduleBlocks(this.LeftoverBlocks);
 
         }
 
         //TODO: clean up constructors. i really don't know how else to word it
+        //TODO: change inputs of constructor all to string to remove conversion work from front end // COMFIRM WITH FRONT END BEFORE DOING THIS
         /// <summary>
         /// 
         /// </summary>
@@ -265,21 +297,45 @@ namespace FETP
                         TimeSpan examsLength, TimeSpan timeBetweenExams, TimeSpan lunchLength)
         {
             //Intial setup
-            this.readInputDataFile(dataFileAddress);
+            this.SetupClassDataFromFile(dataFileAddress);
             this.SetupScheduleConstraints(numberOfDays, examsStartTime, examsLength, timeBetweenExams, lunchLength);
 
             this.SetNumberOfTimeSlotsAvailable(); //TODO: rewire what this function does
 
             this.SetupExamStartTimeTable();
 
-            this.ScheduleBlocks(FETP_Controller.GroupClasses(this.AllClasses));
+            this.leftoverBlocks = FETP_Controller.GroupClasses(this.AllClasses);
 
+            if (LeftoverBlocks.Count < NumberOfTimeSlotsAvailable)
+            {
+                this.numberOfTimeSlotsToBeUsed = LeftoverBlocks.Count;
+            }
+            else
+            {
+                this.numberOfTimeSlotsToBeUsed = NumberOfTimeSlotsAvailable;
+            }
+
+            this.ScheduleBlocks(this.LeftoverBlocks);
+
+        }
+
+        //TODO: substitue this function in for code snippets
+        private void SetupNumberOfTimeslotsNeeded()
+        {
+            if (LeftoverBlocks.Count < NumberOfTimeSlotsAvailable)
+            {
+                this.numberOfTimeSlotsToBeUsed = LeftoverBlocks.Count;
+            }
+            else
+            {
+                this.numberOfTimeSlotsToBeUsed = NumberOfTimeSlotsAvailable;
+            }
         }
 
         /// <summary>
         /// Sets up data member examsStartTimes to be used for quickly finding the start time of an index
         /// </summary>
-        public void SetupExamStartTimeTable()
+        private void SetupExamStartTimeTable()
         {
             // setup lower limir for lunch from constant for easier use
             TimeSpan lowerLimitForLunch = TimeSpan.ParseExact(Schedule.LOWER_TIME_RANGE_FOR_LUNCH, @"hhmm", CultureInfo.InvariantCulture);
@@ -309,7 +365,7 @@ namespace FETP
             }
         }
 
-
+        //TODO: further investigate what makes the best time
         /// <summary>
         /// Finds the index of the best fit for the block.
         /// This is done by first creating a list of all
@@ -318,7 +374,7 @@ namespace FETP
         /// </summary>
         /// <param name="startTime">average start time of block to schedule</param>
         /// <returns>Index of best possible fit</returns>
-        public int FindBestTimeslotFit(TimeSpan startTime)
+        private int FindBestTimeslotFit(TimeSpan startTime)
         {
 
             // create ordered list of times
@@ -332,7 +388,7 @@ namespace FETP
             foreach (TimeSpan time in orderedPossibleTime)
             {
                 // for each index of time, add all indexes with that time to list
-                for (int i = GetIndexOfStartTime(time); i < this.blocks.Length; i += this.NumberOfTimeSlotsAvailablePerDay)
+                for (int i = GetIndexOfStartTime(time); i < this.NumberOfTimeSlotsToBeUsed; i += this.NumberOfTimeSlotsAvailablePerDay)
                 {
                     orderedIndexesOfPossibleTime.Add(i);
                 }
@@ -370,7 +426,6 @@ namespace FETP
             //        return index;
             //}
 
-            ////TODO: this is bad
             //Console.WriteLine("NOT GOOD: IN FindBestTimeslotFit");
             //return 0;
         }
@@ -456,7 +511,7 @@ namespace FETP
         /// </summary>
         /// <param name="groupedClasses"></param>
         /// <returns></returns>
-        public void ScheduleBlocks(List<Block> groupedClasses)
+        private void ScheduleBlocks(List<Block> groupedClasses)
         {
             this.blocks = new Block[this.numberOfTimeSlotsAvailable];
             this.leftoverBlocks = groupedClasses.OrderByDescending(c => c.Enrollment).ToList();
@@ -470,7 +525,7 @@ namespace FETP
 
     
 
-        //TODO: move into constructors
+        //TODO: move into constructors maybe // may already be done
         /// <summary>
         /// Calculates number of timeslots available and sets it.
         /// </summary>
@@ -555,7 +610,9 @@ namespace FETP
                 }
                 else
                 {
-                    Console.WriteLine("NOT GOOD: IN DisplayBlocks");
+                    Console.WriteLine("==============");
+                    Console.WriteLine("EMPTY BLOCK");
+                    Console.WriteLine("==============");
                 }
                 
             }
@@ -577,28 +634,26 @@ namespace FETP
         }
 
 
-        
-
-
         //TODO: Make bool to see if it's read
         //TODO: This might need to be moved
         //TODO: Catch exception that file couldn't be opened?
+        //TODO: modify to not parse. Make it read the file then pass off to SetupScheduleConstraints once the function is modified to take only strings and parse. 
         /// <summary>
         /// Reads in the constraints file and initializes a static schedule
         /// </summary>
         /// <param name="inFileName"></param>
-        public void readInputConstraintsFile(string inFileName)
+        private void SetupScheduleConstraintsFromFile(string inFileName)
         {
             FileStream inFile = File.OpenRead(@inFileName);
             var reader = new StreamReader(inFile);
 
+            //TODO: possibly implement TryParse or other form of error handling
             this.numberOfDays = Int32.Parse(reader.ReadLine());
-            this.examsStartTime = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+            this.examsStartTime = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture); //TODO: further investigate CultureInfo.InvariantCulture to be sure it's needed and doesn't break stuff
             this.examsLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
-            this.timeBetweenExams = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
-            this.lunchLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+            this.timeBetweenExams = TimeSpan.FromMinutes(Int32.Parse(reader.ReadLine())); //TODO: Test to make sure the from minutes functions with CultureInfo.InvariantCulture
+            this.lunchLength = TimeSpan.FromMinutes(Int32.Parse(reader.ReadLine()));
 
-            this.SetNumberOfTimeSlotsAvailable();
         }
 
 
@@ -607,7 +662,7 @@ namespace FETP
         /// not add classes in that fall into the criteria of ignorable classes.
         /// </summary>
         /// <param name="inFileName"></param>
-        public void readInputDataFile(string inFileName)
+        private void SetupClassDataFromFile(string inFileName)
         {
 
             // Make boundaries of ignored classes more usable
@@ -674,7 +729,7 @@ namespace FETP
         /// <param name="examsLength"></param>
         /// <param name="timeBetweenExams"></param>
         /// <param name="lunchLength"></param>
-        public void SetupScheduleConstraints(int numberOfDay, TimeSpan examsStartTime,
+        private void SetupScheduleConstraints(int numberOfDay, TimeSpan examsStartTime,
                                               TimeSpan examsLength, TimeSpan timeBetweenExams,
                                               TimeSpan lunchLength)
         {
@@ -683,10 +738,19 @@ namespace FETP
             this.examsLength = examsLength;
             this.timeBetweenExams = timeBetweenExams;
             this.lunchLength = lunchLength;
-
         }
 
         
+        /// <summary>
+        /// 
+        /// </summary>
+        public void SaveSchedule(string path)
+        {
+            FileStream stream = File.Create(path);
+            BinaryFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(stream, this);
+            stream.Close();
+        }
 
  
         //public void ScheduleLunch()

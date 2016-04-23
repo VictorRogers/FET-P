@@ -5,10 +5,14 @@ using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FETP;
+using System.Diagnostics;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace FETP_GUI
 {
@@ -26,14 +30,18 @@ namespace FETP_GUI
         string constraintsFile;
         string enrollmentFile;
 
+        Schedule schedule;
+
+        Dictionary<string, UserControl> views;
+
+        DataCollection dataCollection1;
         SchedulePresenter scheduleView;
+
         FullCalendar fullCal;
         SingleDayCalendar miniCal;
         TextSchedule textCal;
         
-        Dictionary<string, UserControl> views;
-
-        Schedule schedule;
+        //------------------------------------------------------------------------------------------
 
         /// <summary>
         /// FETP_Form Constructor
@@ -50,11 +58,68 @@ namespace FETP_GUI
 
             views = new Dictionary<string, UserControl>();
 
-            dataCollection1.GenerateSchedule += new DataCollection.GenerateClickHandler(GenerateFullSchedule);
-            dataCollection1.ClearForm += new DataCollection.ClearClickHandler(ClearAllTextBoxes);
+            //auth1.Login += new Auth.LoginClickHandler(Login);
         }
 
         //------------------------------------------------------------------------------------------
+
+        [System.Runtime.InteropServices.DllImport("advapi32.dll")]
+        public static extern bool LogonUser(string userName, string domainName, string password, int LogonType, int LogonProvider, ref IntPtr phToken);
+
+        public void Login(object sender, EventArgs e)
+        {
+            bool isValid = false;
+            string userName = GetLoggedInUserName();
+
+            if (userName.ToLowerInvariant().Contains(auth1.txtUserName.Text.Trim().ToLowerInvariant()) &&
+                    userName.ToLowerInvariant().Contains(auth1.txtDomain.Text.Trim().ToLowerInvariant()))
+            {
+                isValid = IsValidCredentials(auth1.txtUserName.Text.Trim(), auth1.txtPwd.Text.Trim(), auth1.txtDomain.Text.Trim());
+            }
+
+            if (isValid)
+            {
+                Controls.Clear();
+                Size = new Size(355, 401);
+
+                dataCollection1 = new DataCollection();
+                Controls.Add(dataCollection1);
+
+                dataCollection1.Dock = DockStyle.Fill;
+                dataCollection1.Location = new Point(0, 0);
+                dataCollection1.Margin = new Padding(10, 9, 10, 9);
+                dataCollection1.Name = "dataCollection1";
+                dataCollection1.Size = new Size(335, 334);
+                dataCollection1.TabIndex = 0;
+            dataCollection1.GenerateSchedule += new DataCollection.GenerateClickHandler(GenerateFullSchedule);
+            dataCollection1.ClearForm += new DataCollection.ClearClickHandler(ClearAllTextBoxes);
+        }
+            else
+            {
+                MessageBox.Show("Invalid Windows username or password.");
+            }
+        }
+
+        private string GetLoggedInUserName()
+        {
+            WindowsIdentity currentUser = WindowsIdentity.GetCurrent();
+            return currentUser.Name;
+        }
+
+        private bool IsValidCredentials(string userName, string password, string domain)
+        {
+            if (domain == "")
+            {
+                domain = Environment.MachineName;
+            }
+
+            IntPtr tokenHandler = IntPtr.Zero;
+            bool isValid = LogonUser(userName, domain, password, 2, 0, ref tokenHandler);
+            return isValid;
+        }
+
+        //------------------------------------------------------------------------------------------
+
 
         /// <summary>
         /// Clear values from all text boxes in Data Collection Form
@@ -77,7 +142,7 @@ namespace FETP_GUI
         }
 
         /// <summary>
-        /// Using information from the form's text boxes, generate and present a schedule
+        /// Using information from the DataCollection form's text boxes, generate and present a schedule
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -107,6 +172,9 @@ namespace FETP_GUI
             bool isBreakValid = true;
             bool isLunchValid = true;
 
+            char[] colon = { ':' };
+            string[] timeParts = beginTime.Split(colon);
+
             //Get data from form
             //using immediate if to get around empty text box exceptions for now - defaults all values to 1
             daysNum = (dataCollection1.days_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.days_textBox.Text);
@@ -115,18 +183,19 @@ namespace FETP_GUI
             breakLength = (dataCollection1.breakLength_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.breakLength_textBox.Text);
             lunchLength = (dataCollection1.lunchLength_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.lunchLength_textBox.Text);
 
-            constraintsFile = (dataCollection1.scheduleBrowse_textBox.Text.Equals(string.Empty)) ? string.Empty : dataCollection1.lunchLength_textBox.Text;
-            enrollmentFile = "../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv";// (dataCollection1.enrollmentBrowse_textBox.Text.Equals(string.Empty)) ? string.Empty : dataCollection1.lunchLength_textBox.Text;
+            constraintsFile = (dataCollection1.scheduleBrowse_textBox.Text.Equals(string.Empty)) ? string.Empty : dataCollection1.scheduleBrowse_textBox.Text;
+            enrollmentFile = (dataCollection1.enrollmentBrowse_textBox.Text.Equals(string.Empty)) ? string.Empty : dataCollection1.enrollmentBrowse_textBox.Text;
 
             //Check 5 ints for valid ranges
+            if (constraintsFile.Equals(string.Empty))
+            {
             if (daysNum < 1 || daysNum > 7)
             {
                 isSchedulePossible = false;
                 isDaysValid = false;
             }
 
-            char[] colon = { ':' };
-            string[] timeParts = beginTime.Split(colon);
+
             if (Convert.ToInt32(timeParts[0]) < 7 || Convert.ToInt32(timeParts[0]) > 16)
             {
                 isSchedulePossible = false;
@@ -147,27 +216,38 @@ namespace FETP_GUI
                 isSchedulePossible = false;
                 isLunchValid = false;
             }
+            }
 
             if (isSchedulePossible)
             {
                 FormBorderStyle = FormBorderStyle.Sizable;
                 panel1.Controls.Clear();
 
-                //Convert time ints to Timespan objects
-                //******************************************************
-                //TimeSpan examsStartTime = TimeSpan.FromHours(beginTime);
-                TimeSpan examsStartTime = TimeSpan.FromHours(Convert.ToInt64(timeParts[0])) + TimeSpan.FromMinutes(Convert.ToInt64(timeParts[1]));
-                //TimeSpan examsStartTime = TimeSpan.ParseExact(beginTime.ToString(), @"hhmm", CultureInfo.InvariantCulture);
-                //******************************************************
-                TimeSpan examsLength = TimeSpan.FromMinutes(examLength);
-                TimeSpan timeBetweenExams = TimeSpan.FromMinutes(breakLength);
-                TimeSpan lunchSpan = TimeSpan.FromMinutes(lunchLength);
+                if (constraintsFile.Equals(string.Empty))
+                {
+                    //Convert time ints to Timespan objects
+                    //******************************************************
+                    //TimeSpan examsStartTime = TimeSpan.FromHours(beginTime);
+                    TimeSpan examsStartTime = TimeSpan.FromHours(Convert.ToInt64(timeParts[0])) + TimeSpan.FromMinutes(Convert.ToInt64(timeParts[1]));
+                    //TimeSpan examsStartTime = TimeSpan.ParseExact(beginTime.ToString(), @"hhmm", CultureInfo.InvariantCulture);
+                    //******************************************************
+                    TimeSpan examsLength = TimeSpan.FromMinutes(examLength);
+                    TimeSpan timeBetweenExams = TimeSpan.FromMinutes(breakLength);
+                    TimeSpan lunchSpan = TimeSpan.FromMinutes(lunchLength);
+                    //Using these 5 ints + enrollmentData file:
+                    //Create schedule data structure
+                    schedule = new Schedule(enrollmentFile, daysNum, examsStartTime, examsLength, timeBetweenExams, lunchSpan);
+                }
+                else
+                {
+                    //Create a schedule using the input files
+                    schedule = new Schedule(enrollmentFile, constraintsFile);
+                }
 
-                //Using these 5 ints + enrollmentData file:
-                //Create schedule data structure
-                schedule = new Schedule(enrollmentFile, daysNum, examsStartTime, examsLength, timeBetweenExams, lunchSpan);
 
-                //Using schedule data strucutre:                
+                //Using schedule data strucutre::
+                
+                //TODO: Generating this presenter neeeds to be split off into its own function
                 //SchedulePresenter Constructor builds SplitContainer base presenter - container for different Schedule Views
                 //This will need the Schedule data structure as a parameter
                 //uses NUMBER_OF_DAYS and NUMBER_OF_EXAMS_PER_DAY from the Schedule data structure
@@ -190,6 +270,7 @@ namespace FETP_GUI
                 Size = new Size(681, 492);
                 MaximizeBox = true;
                 viewToolStripMenuItem.Enabled = true;
+                saveAsToolStripMenuItem.Enabled = true;
                 fullScheduleToolStripMenuItem.Enabled = false;
             }
             else
@@ -250,7 +331,46 @@ namespace FETP_GUI
             panel1.Controls.Add(dataCollection1);
         }
 
-        //------------------------------------------------------------------------------------------
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "DAT-File | *.dat";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                FileStream stream = File.OpenRead(openFileDialog.FileName);
+                BinaryFormatter formatter = new BinaryFormatter();
+                schedule = (Schedule)formatter.Deserialize(stream);
+                stream.Close();
+
+                //TODO: This code needs to be in its own function
+                FormBorderStyle = FormBorderStyle.Sizable;
+                panel1.Controls.Clear();
+                scheduleView = new SchedulePresenter(schedule);
+                scheduleView.Dock = DockStyle.Fill;
+                views.Clear();
+                fullCal = new FullCalendar(schedule, examLength, breakLength, lunchLength);
+                fullCal.Dock = DockStyle.Fill;
+                panel1.Controls.Add(scheduleView);
+                scheduleView.splitContainer1.Panel1.Controls.Add(fullCal);
+                views.Add("Full", fullCal);
+                Size = new Size(681, 492);
+                MaximizeBox = true;
+                viewToolStripMenuItem.Enabled = true;
+                fullScheduleToolStripMenuItem.Enabled = false;
+            }
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "DAT-File | *.dat";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                schedule.SaveSchedule(saveFileDialog.FileName);
+            }
+        }
 
         /// <summary>
         /// Display the Full Calendar Schedule View
@@ -351,6 +471,13 @@ namespace FETP_GUI
             oneDayToolStripMenuItem.Enabled = true;
             fullScheduleToolStripMenuItem.Enabled = true;
             textToolStripMenuItem.Enabled = false;
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string locationToSavePdf = Path.Combine(Path.GetTempPath(), "HelpManual.pdf");
+            File.WriteAllBytes(locationToSavePdf, Properties.Resources.HelpManual);
+            Process.Start(locationToSavePdf);
         }
 
         //------------------------------------------------------------------------------------------

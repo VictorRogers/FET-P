@@ -38,5 +38,27 @@ namespace FETP_GUI
                 ClearForm(this, e);
             }
         }
+
+        private void enrollmentBrowse_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "CSV-File | *.csv";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                enrollmentBrowse_textBox.Text = openFileDialog.FileName;
+            }
+        }
+
+        private void scheduleBrowse_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "TXT-File | *.txt";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                scheduleBrowse_textBox.Text = openFileDialog.FileName;
+            }
+        }
     }
 }

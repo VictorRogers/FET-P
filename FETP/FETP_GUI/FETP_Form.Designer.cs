@@ -41,7 +41,8 @@
             this.textToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.dataCollection1 = new FETP_GUI.DataCollection();
+            this.auth1 = new FETP_GUI.Auth();
+            //this.dataCollection1 = new FETP_GUI.DataCollection();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -55,7 +56,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(335, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(258, 24);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -82,13 +83,15 @@
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Enabled = false;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
             this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.saveAsToolStripMenuItem.Text = "Save As";
+            this.saveAsToolStripMenuItem.Text = "Save";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // exportToolStripMenuItem
             // 
@@ -134,30 +137,43 @@
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(12)))), ((int)(((byte)(73)))));
-            this.panel1.Controls.Add(this.dataCollection1);
+            this.panel1.Controls.Add(this.auth1);
+            //this.panel1.Controls.Add(this.dataCollection1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(335, 334);
+            this.panel1.Size = new System.Drawing.Size(258, 175);
             this.panel1.TabIndex = 6;
             // 
-            // dataCollection1
+            // auth1
             // 
-            this.dataCollection1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataCollection1.Location = new System.Drawing.Point(0, 0);
-            this.dataCollection1.Name = "dataCollection1";
-            this.dataCollection1.Size = new System.Drawing.Size(335, 334);
-            this.dataCollection1.TabIndex = 0;
+            this.auth1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.auth1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.auth1.Location = new System.Drawing.Point(0, 0);
+            this.auth1.Name = "auth1";
+            this.auth1.Size = new System.Drawing.Size(258, 175);
+            this.auth1.TabIndex = 1;
+            auth1.Login += new Auth.LoginClickHandler(Login);
+            //// 
+            //// dataCollection1
+            //// 
+            //this.dataCollection1.Dock = System.Windows.Forms.DockStyle.Fill;
+            //this.dataCollection1.Location = new System.Drawing.Point(0, 0);
+            //this.dataCollection1.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
+            //this.dataCollection1.Name = "dataCollection1";
+            //this.dataCollection1.Size = new System.Drawing.Size(258, 175);
+            //this.dataCollection1.TabIndex = 0;
             // 
             // FETP_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(335, 358);
+            this.ClientSize = new System.Drawing.Size(258, 199);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -190,7 +206,8 @@
         public System.Windows.Forms.ToolStripMenuItem textToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
-        private DataCollection dataCollection1;
         private System.Windows.Forms.ToolStripMenuItem newScheduleToolStripMenuItem;
+        private Auth auth1;
+        //private DataCollection dataCollection1;
     }
 }
