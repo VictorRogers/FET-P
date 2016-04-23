@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ namespace FETP
     /// Contains basic information for a single class and functions to make use
     /// of data.
     /// </summary>
+    [Serializable]
     public class Class
     {
         #region Utilities
