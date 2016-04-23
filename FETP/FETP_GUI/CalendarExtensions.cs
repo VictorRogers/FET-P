@@ -22,6 +22,8 @@ namespace CalendarExtension
                 int button = (block - nulls);
                 if (_schedule.Blocks[block] != null)
                 {
+                    ButtonBlocks[button].Text += "Placed\n";
+
                     Class biggestClass = getBiggestClass(_schedule.Blocks[block]);
 
                     foreach (DayOfWeek d in biggestClass.DaysMeet)
@@ -48,7 +50,7 @@ namespace CalendarExtension
 
                     ButtonBlocks[button].Text += "\n " + biggestClass.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
                     ButtonBlocks[button].Text += "-" + biggestClass.EndTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
-                    ButtonBlocks[button].Text += "\n (" + biggestClass.Enrollment.ToString() + ")";
+                    ButtonBlocks[button].Text += "\n (" + biggestClass.Enrollment.ToString() + " students)";
                 }
                 else { nulls++; }
             }
@@ -58,9 +60,11 @@ namespace CalendarExtension
             for(; block < _schedule.Blocks.Count() + _schedule.LeftoverBlocks.Count(); block++)
             {
                 int leftoverBlock = block - _schedule.Blocks.Count();
+                int button = (block - nulls);
                 if (_schedule.LeftoverBlocks[leftoverBlock] != null)
                 {
-                    int button = (block - nulls);
+                    ButtonBlocks[button].Text += "Not Placed\n";
+
                     Class biggestClass = getBiggestClass(_schedule.LeftoverBlocks[leftoverBlock]);
 
                     foreach (DayOfWeek d in biggestClass.DaysMeet)
@@ -87,7 +91,7 @@ namespace CalendarExtension
 
                     ButtonBlocks[button].Text += "\n " + biggestClass.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
                     ButtonBlocks[button].Text += "-" + biggestClass.EndTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
-                    ButtonBlocks[button].Text += "\n (" + biggestClass.Enrollment.ToString() + ")";
+                    ButtonBlocks[button].Text += "\n (" + biggestClass.Enrollment.ToString() + " students)";
                 }
                 else { nulls++; }
             }
@@ -182,7 +186,7 @@ namespace CalendarExtension
 
                     Exams[day][block].Text += "\n " + biggestClass.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
                     Exams[day][block].Text += "-" + biggestClass.EndTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
-                    Exams[day][block].Text += "\n (" + biggestClass.Enrollment.ToString() + ")";
+                    Exams[day][block].Text += "\n (" + biggestClass.Enrollment.ToString() + " students)";
 
                     if (block.Equals(totalPerDay)) { day++; }
                 }
