@@ -1,0 +1,533 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FETP</name>
+    </assembly>
+    <members>
+        <member name="T:FETP.Block">
+            <summary>
+            Contains grouped classes and functions to get information on
+            properties of all classes in block.
+            </summary>
+        </member>
+        <member name="F:FETP.Block.classesInBlock">
+            <summary>
+            Add a description
+            </summary>
+        </member>
+        <member name="P:FETP.Block.ClassesInBlock">
+            <summary>
+            Getter for classes in block
+            </summary>
+        </member>
+        <member name="P:FETP.Block.Enrollment">
+            <summary>
+            Getter for total enrollment of block, adds up the enrollment of each class in block
+            </summary>
+        </member>
+        <member name="P:FETP.Block.Average">
+            <summary>
+            Calculates and returns the average enrollment of all the classes in the block
+            </summary>
+        </member>
+        <member name="P:FETP.Block.Variance">
+            <summary>
+            Calculates and returns the variance of enrollment across all classes
+            </summary>
+        </member>
+        <member name="P:FETP.Block.StandardDeviation">
+            <summary>
+            Calculates and returns the standard deviation of enrollment accross all classes
+            </summary>
+        </member>
+        <member name="P:FETP.Block.AreThereAnyNonOverlappingClasses">
+            <summary>
+            Determines if there are any classes in the block that do not conflict
+            </summary>
+        </member>
+        <member name="P:FETP.Block.WeightedAverageStartTime">
+            <summary>
+            Calculates and returns the average starting time of all classes in block weighted by enrollment
+            </summary>
+        </member>
+        <member name="M:FETP.Block.#ctor">
+            <summary>
+            Used for XML serialization
+            </summary>
+        </member>
+        <member name="M:FETP.Block.#ctor(System.Collections.Generic.List{FETP.Class})">
+            <summary>
+            Takes in data values and creates Block with those values
+            </summary>
+            <param name="inClasses">List of classes to start block with</param>
+        </member>
+        <member name="M:FETP.Block.#ctor(FETP.Class)">
+            <summary>
+            Creates a new Block with only the input class in it
+            </summary>
+            <param name="inClass"></param>
+        </member>
+        <member name="M:FETP.Block.addClass(FETP.Class)">
+            <summary>
+            Adds class to list of classes in block. Doesn't add class if the class
+            does not overlap with group.
+            </summary>
+            <param name="inClass"></param>
+        </member>
+        <member name="M:FETP.Block.isClassInGroup(FETP.Class)">
+            <summary>
+            Determines if the class is in the group, and then returns a bool based
+            on if the class was found and removed successfully.
+            </summary>
+            <param name="inClass">Class to be compared against other classes already in block</param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.Block.doesClassOverlapWithBlock(FETP.Class)">
+            <summary>
+            Determines if the inClass overlaps with ALL classes in the block
+            </summary>
+            <param name="inClass">Class to compare against other classes already in block</param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.Block.Display">
+            <summary>
+            Displays all information stored in a Block instance with formatting.
+            </summary>
+        </member>
+        <member name="M:FETP.Block.DisplayAllClasses">
+            <summary>
+            Add a description
+            </summary>
+        </member>
+        <member name="T:FETP.Class">
+            <summary>
+            Contains basic information for a single class and functions to make use
+            of data.
+            </summary>
+        </member>
+        <member name="F:FETP.Class.startTime">
+            <summary>
+            Start time of the clas 
+            </summary>
+        </member>
+        <member name="F:FETP.Class.endTime">
+            <summary>
+            End time of the class
+            </summary>
+        </member>
+        <member name="F:FETP.Class.enrollment">
+            <summary>
+            Number of students in class
+            </summary>
+        </member>
+        <member name="F:FETP.Class.daysMeet">
+            <summary>
+            Days that the class meets
+            </summary>
+        </member>
+        <member name="P:FETP.Class.StartTime">
+            <summary>
+            Getter/setter for the start time of the class
+            </summary>
+        </member>
+        <member name="P:FETP.Class.EndTime">
+            <summary>
+            Getter/setter for the end time of the class
+            </summary>
+        </member>
+        <member name="P:FETP.Class.Enrollment">
+            <summary>
+            Getter/setter for the number of students in the class
+            </summary>
+        </member>
+        <member name="P:FETP.Class.DaysMeet">
+            <summary>
+            Getter/setter for the days the class meets
+            </summary>
+        </member>
+        <member name="M:FETP.Class.#ctor">
+            <summary>
+            Used for XML serialization 
+            </summary>
+        </member>
+        <member name="M:FETP.Class.#ctor(System.TimeSpan,System.TimeSpan,System.Int32,System.Collections.Generic.List{System.DayOfWeek})">
+            <summary>
+            Takes in data values for the start time, end time, number of students enrolled, 
+            days met and creates a class with those values.
+            </summary>
+            <param name="inStartTime"></param>
+            <param name="inEndTime"></param>
+            <param name="inEnrollment"></param>
+            <param name="inDaysMeet"></param>
+        </member>
+        <member name="M:FETP.Class.Display">
+            <summary>
+            Displays all information stored in a Class instance with formatting.
+            </summary>
+        </member>
+        <member name="M:FETP.Class.GetHashCode">
+            <summary>
+            Overloaded Hash function. It is improperly implemented due to the complexity
+            being too high and the function will not be used. C# requires it to be overloaded
+            if comparison is overloaded.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.Class.Equals(System.Object)">
+            <summary>
+            Overloaded Equals function.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.Class.op_Equality(FETP.Class,FETP.Class)">
+            <summary>
+            Placeholder
+            </summary>
+            <param name="class1"></param>
+            <param name="class2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.Class.op_Inequality(FETP.Class,FETP.Class)">
+            <summary>
+            Placeholder
+            </summary>
+            <param name="class1"></param>
+            <param name="class2"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FETP.FETP_Controller">
+            <summary>
+            Placeholder
+            </summary>
+        </member>
+        <member name="M:FETP.FETP_Controller.RandomFloatBetween01">
+            <summary>
+            Returns a random float between 0 and 1
+            </summary>
+            <returns>A random float between 0 and 1</returns>
+        </member>
+        <member name="M:FETP.FETP_Controller.GetRandomInt">
+            <summary>
+            Returns a random integer
+            </summary>
+            <returns>A random integer</returns>
+        </member>
+        <member name="F:FETP.FETP_Controller.THREAD_LIMIT">
+            <summary>
+            Placeholder
+            </summary>
+        </member>
+        <member name="M:FETP.FETP_Controller.ComputeVarianceOfBlocks(System.Collections.Generic.List{FETP.Block})">
+            <summary>
+            Placeholder 
+            </summary>
+            <param name="blocks"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.FETP_Controller.doClassesOverlap(FETP.Class,FETP.Class)">
+            <summary>
+            Determines if the two input classes overlap.
+            </summary>
+            <param name="class1"></param>
+            <param name="class2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.FETP_Controller.doClassDaysOverlap(FETP.Class,FETP.Class)">
+            <summary>
+            Determines if the two input classes share any days in common
+            </summary>
+            <param name="class1"></param>
+            <param name="class2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.FETP_Controller.doClassTimesOverlap(FETP.Class,FETP.Class)">
+            <summary>
+            Determines if the two input classes have times that overlap
+            </summary>
+            <param name="class1"></param>
+            <param name="class2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.FETP_Controller.getNumberOfDaysInCommon(FETP.Class,FETP.Class)">
+            <summary>
+            Gets the number of overlapping days between two input classes
+            </summary>
+            <param name="class1"></param>
+            <param name="class2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.FETP_Controller.getNumberOfOverlappingClasses(System.Collections.Generic.List{FETP.Class},FETP.Class)">
+            <summary>
+            Determines the number of classes in the list of classes that the inClass
+            overlaps with.
+            </summary>
+            <param name="classes"></param>
+            <param name="inClass"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.FETP_Controller.doAnyClassesNotOverlap(System.Collections.Generic.List{FETP.Class})">
+            <summary>
+            Checks if there are any overlapping classes in the list of classes.
+            </summary>
+            <param name="classes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.FETP_Controller.GroupClass(System.Collections.Generic.List{FETP.Block},FETP.Class)">
+            <summary>
+            Takes in a list of class groups and a class. The method then returns a
+            new list of class groups with the class inserted into the first possible
+            group.
+            </summary>
+            <param name="blocks"></param>
+            <param name="inclass"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.FETP_Controller.GroupClasses(System.Collections.Generic.List{FETP.Class})">
+            <summary>
+            Takes in a list of class groups and a class. The method then returns a
+            new list of class groups with the class inserted into the first possible
+            group.
+            </summary>
+            <param name="classes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.FETP_Controller.CoalesceClassesTogether(System.Collections.Generic.List{FETP.Class})">
+            <summary>
+            Placeholder
+            </summary>
+            <param name="classes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.FETP_Controller.removeClass(System.Collections.Generic.List{FETP.Class},FETP.Class)">
+            <summary>
+            Placeholder
+            </summary>
+            <param name="classes"></param>
+            <param name="inClass"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FETP.Schedule">
+            <summary>
+            Placeholder
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.CLASS_LENGTH_TO_START_IGNORING">
+            <summary>
+            Upper Limit of length of classes
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.HOUR_TO_BEGIN_IGNORE_CLASS">
+            <summary>
+            Start point to begin ignoring classes
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.TIME_EXAMS_MUST_END_BY">
+            <summary>
+            Latest exams can go
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.numberOfDays">
+            <summary>
+            Number of days available for exams
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.examsStartTime">
+            <summary>
+            Time for exams to start
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.examsLength">
+            <summary>
+            Length of each exam
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.timeBetweenExams">
+            <summary>
+            Time between each exam (break time)
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.lunchLength">
+            <summary>
+            Length of the lunch break
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.allClasses">
+            <summary>
+            List of all classes to be scheduled in the order read in
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.blocks">
+            <summary>
+            Array of all blocks (grouped classes) scheduled
+            </summary>
+        </member>
+        <member name="P:FETP.Schedule.Blocks">
+            <summary>
+            Getter propertie for array of all blocks (grouped classes) scheduled
+            </summary>
+        </member>
+        <member name="P:FETP.Schedule.NumberOfDays">
+            <summary>
+            Getter property for the number of exams days available for scheduling
+            </summary>
+        </member>
+        <member name="P:FETP.Schedule.ExamsStartTime">
+            <summary>
+            Getter property for time for exams to start
+            </summary>
+        </member>
+        <member name="P:FETP.Schedule.ExamsLength">
+            <summary>
+            Getter property for the length of each exam
+            </summary>
+        </member>
+        <member name="P:FETP.Schedule.TimeBetweenExams">
+            <summary>
+            Getter property for the time between each exam (break time)
+            </summary>
+        </member>
+        <member name="P:FETP.Schedule.LunchLength">
+            <summary>
+            Getter property for the length of the lunch period
+            </summary>
+        </member>
+        <member name="P:FETP.Schedule.AllClasses">
+            <summary>
+            Getter property for the list of all classes to be scheduled
+            </summary>
+        </member>
+        <member name="P:FETP.Schedule.NumberOfTimeSlotsAvailable">
+            <summary>
+            Getter property for the number of Timeslots available in total
+            </summary>
+        </member>
+        <member name="P:FETP.Schedule.NumberOfTimeSlotsAvailablePerDay">
+            <summary>
+            Getter property for number of Timeslots available per day
+            </summary>
+        </member>
+        <member name="P:FETP.Schedule.NumberOfTimeSlotsToBeUsed">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:FETP.Schedule.StartTimesOfExams">
+            <summary>
+            Getter property for array of all exams's strt times
+            </summary>
+        </member>
+        <member name="P:FETP.Schedule.LeftoverBlocks">
+            <summary>
+            Getter property for list of leftover blocks
+            </summary>
+        </member>
+        <member name="M:FETP.Schedule.#ctor(System.String)">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:FETP.Schedule.#ctor(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="dataFileAddress"></param>
+            <param name="constraintsFileAddress"></param>
+        </member>
+        <member name="M:FETP.Schedule.#ctor(System.String,System.Int32,System.TimeSpan,System.TimeSpan,System.TimeSpan,System.TimeSpan)">
+            <summary>
+            
+            </summary>
+            <param name="dataFileAddress"></param>
+            <param name="numberOfDays"></param>
+            <param name="examsStartTime"></param>
+            <param name="examsLength"></param>
+            <param name="timeBetweenExams"></param>
+            <param name="lunchLength"></param>
+        </member>
+        <member name="M:FETP.Schedule.SetupExamStartTimeTable">
+            <summary>
+            Sets up data member examsStartTimes to be used for quickly finding the start time of an index
+            </summary>
+        </member>
+        <member name="M:FETP.Schedule.FindBestTimeslotFit(System.TimeSpan)">
+            <summary>
+            Finds the index of the best fit for the block.
+            This is done by first creating a list of all
+            indexes in order of best fit then finding 
+            the first empty spot.
+            </summary>
+            <param name="startTime">average start time of block to schedule</param>
+            <returns>Index of best possible fit</returns>
+        </member>
+        <member name="M:FETP.Schedule.GetIndexOfStartTime(System.TimeSpan)">
+            <summary>
+            Finds the index of input start time in table of start times
+            </summary>
+            <param name="startTime">Start time whose index is desired.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.Schedule.IsFull">
+            <summary>
+            Determines if blocks has any empty spaces
+            </summary>
+            <returns>Whether or not empty spaces exist</returns>
+        </member>
+        <member name="M:FETP.Schedule.GetStartTimeOfBlock(System.Int32)">
+            <summary>
+            Gets the start time of exam block
+            </summary>
+            <param name="indexOfBlock"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.Schedule.ScheduleBlocks(System.Collections.Generic.List{FETP.Block})">
+            <summary>
+            Placeholder
+            </summary>
+            <param name="groupedClasses"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.Schedule.SetNumberOfTimeSlotsAvailable">
+            <summary>
+            Calculates number of timeslots available and sets it.
+            </summary>
+        </member>
+        <member name="M:FETP.Schedule.Display">
+            <summary>
+            Displays all information stored in a Schedule instance with formatting.
+            </summary>
+        </member>
+        <member name="M:FETP.Schedule.DisplayBlocks">
+            <summary>
+            Displays all blocks in schedule
+            </summary>
+        </member>
+        <member name="M:FETP.Schedule.SetupScheduleConstraintsFromFile(System.String)">
+            <summary>
+            Reads in the constraints file and initializes a static schedule
+            </summary>
+            <param name="inFileName"></param>
+        </member>
+        <member name="M:FETP.Schedule.SetupClassDataFromFile(System.String)">
+            <summary>
+            Reads in a data file and constructs list of all classes in the file. Does
+            not add classes in that fall into the criteria of ignorable classes.
+            </summary>
+            <param name="inFileName"></param>
+        </member>
+        <member name="M:FETP.Schedule.SetupScheduleConstraints(System.Int32,System.TimeSpan,System.TimeSpan,System.TimeSpan,System.TimeSpan)">
+            <summary>
+            Takes in data for the constraints required to design a schedule
+            </summary>
+            <param name="numberOfDay"></param>
+            <param name="examsStartTime"></param>
+            <param name="examsLength"></param>
+            <param name="timeBetweenExams"></param>
+            <param name="lunchLength"></param>
+        </member>
+        <member name="M:FETP.Schedule.SaveSchedule(System.String)">
+            <summary>
+            
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -8,14 +8,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FETP;
+using CalendarExtension;
 
 namespace FETP_GUI
 {
     public partial class SchedulePresenter : UserControl
     {
-        private int NUMBER_OF_DAYS;
-        private int NUMBER_OF_EXAMS_PER_DAY;
-        private int NUMBER_OF_EXAMS;
+        int NUMBER_OF_BLOCKS;
+        int NULL_BLOCKS;
 
         private GroupBox classGroups;
         private Button[] Blocks;// = new Button[NUMBER_OF_EXAMS];
@@ -40,27 +41,39 @@ namespace FETP_GUI
         /// </summary>
         /// <param name="daysNum">Number of Days in the schedule, determined by scheduler algorithm</param>
         /// <param name="examsPerDay">Number of Exams per Day, determined by scheduler algorithm</param>
-        public SchedulePresenter(int daysNum, int examsPerDay)
+        public SchedulePresenter(Schedule schedule)
         {
-            NUMBER_OF_DAYS = daysNum;
-            NUMBER_OF_EXAMS_PER_DAY = examsPerDay;
-            NUMBER_OF_EXAMS = NUMBER_OF_DAYS * NUMBER_OF_EXAMS_PER_DAY;
-            Blocks = new Button[NUMBER_OF_EXAMS];
+            NUMBER_OF_BLOCKS = schedule.Blocks.Count() + schedule.LeftoverBlocks.Count();
 
-            InitializeComponent(NUMBER_OF_EXAMS);
+            NULL_BLOCKS = 0;
+
+            foreach (Block b in schedule.Blocks)
+            {
+                if (b == null)
+                {
+                    NULL_BLOCKS++;
+                }
+            }
+
+            Blocks = new Button[NUMBER_OF_BLOCKS - NULL_BLOCKS];
+
+            InitializeComponent(schedule);
         }
 
         /// <summary>
         /// Builds the SchedulePresenter object based on total NUMBER_OF_EXAMS
         /// </summary>
         /// <param name="numOfExams">Total Number of Exams in the schedule</param>
-        private void InitializeComponent(int numOfExams)
+        private void InitializeComponent(Schedule schedule)
         {
+            int numOfScheduled = schedule.Blocks.Count() - NULL_BLOCKS;
+            int numofUnscheduled = schedule.LeftoverBlocks.Count();
+
             #region Initialize new GUI objects
             splitContainer1 = new SplitContainer();
 
             int i = 0;
-            for (; i < numOfExams; i++)
+            for (; i < NUMBER_OF_BLOCKS - NULL_BLOCKS; i++)
             {
                 Blocks[i] = new Button();
             }
@@ -120,7 +133,7 @@ namespace FETP_GUI
             // 
             panel1.AutoScroll = true;
             panel1.BackColor = Color.Transparent;
-            i = numOfExams - 1;
+            i = NUMBER_OF_BLOCKS - NULL_BLOCKS - 1;
             for (; i >= 0; i--)
             {
                 panel1.Controls.Add(Blocks[i]);
@@ -131,20 +144,39 @@ namespace FETP_GUI
             // Blocks
             //
             i = 0;
-            foreach (Button b in Blocks)
+            for (; i < numOfScheduled; i++)
             {
-                //b.Dock = DockStyle.Top;
-                b.BackColor = Color.FromArgb(45, 12, 73);
-                b.Enabled = true;
-                b.FlatAppearance.BorderSize = 2;
-                b.FlatStyle = FlatStyle.Flat;
-                b.Location = new Point(6, (15 + ((15 + 68) * i)));
-                b.Name = "Class Group " + (i + 1).ToString();
-                b.Size = new Size(180, 68);
-                b.Text = b.Name;
-                b.UseVisualStyleBackColor = false;
-                i++;
+                //Blocks[i].Dock = DockStyle.Top;
+                Blocks[i].BackColor = Color.FromArgb(45, 12, 73);
+                Blocks[i].Enabled = true;
+                Blocks[i].FlatAppearance.BorderSize = 2;
+                Blocks[i].FlatStyle = FlatStyle.Flat;
+                Blocks[i].Location = new Point(6, (15 + ((15 + 68) * i)));
+                Blocks[i].Name = "Class Group " + (i + 1).ToString();
+                Blocks[i].Size = new Size(180, 68);
+                //Blocks[i].Text = Blocks[i].Name;
+                Blocks[i].UseVisualStyleBackColor = false;
+                //i++;
             }
+            i = numOfScheduled;
+            for (; i < NUMBER_OF_BLOCKS - NULL_BLOCKS; i++)
+            {
+                //Blocks[i].Dock = DockStyle.Top;
+                Blocks[i].BackColor = Color.FromArgb(142, 105, 18);
+                Blocks[i].FlatAppearance.BorderColor = Color.FromArgb(219, 159, 17); 
+                Blocks[i].Enabled = true;
+                Blocks[i].FlatAppearance.BorderSize = 2;
+                Blocks[i].FlatStyle = FlatStyle.Flat;
+                Blocks[i].ForeColor = Color.FromArgb(45, 12, 73);
+                Blocks[i].Location = new Point(6, (15 + ((15 + 68) * i)));
+                Blocks[i].Name = "Class Group " + (i + 1).ToString();
+                Blocks[i].Size = new Size(180, 68);
+                //Blocks[i].Text = Blocks[i].Name;
+                Blocks[i].UseVisualStyleBackColor = false;
+                //i++;
+            }
+            this.labelAllListedBlocks(schedule, ref Blocks);
+
             #endregion
 
             // 

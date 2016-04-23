@@ -36,7 +36,6 @@
             this.lunchLength_textBox = new System.Windows.Forms.TextBox();
             this.breakLength_textBox = new System.Windows.Forms.TextBox();
             this.examLength_textBox = new System.Windows.Forms.TextBox();
-            this.startTime_textBox = new System.Windows.Forms.TextBox();
             this.days_textBox = new System.Windows.Forms.TextBox();
             this.scheduleBrowse = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -45,6 +44,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.startTime_textBox = new System.Windows.Forms.MaskedTextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.enrollmentBrowse = new System.Windows.Forms.Button();
@@ -103,7 +103,6 @@
             this.splitContainer1.Panel1.Controls.Add(this.lunchLength_textBox);
             this.splitContainer1.Panel1.Controls.Add(this.breakLength_textBox);
             this.splitContainer1.Panel1.Controls.Add(this.examLength_textBox);
-            this.splitContainer1.Panel1.Controls.Add(this.startTime_textBox);
             this.splitContainer1.Panel1.Controls.Add(this.days_textBox);
             this.splitContainer1.Panel1.Controls.Add(this.scheduleBrowse);
             this.splitContainer1.Panel1.Controls.Add(this.label6);
@@ -112,6 +111,7 @@
             this.splitContainer1.Panel1.Controls.Add(this.label3);
             this.splitContainer1.Panel1.Controls.Add(this.label2);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
+            this.splitContainer1.Panel1.Controls.Add(this.startTime_textBox);
             this.splitContainer1.Panel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
             // 
             // splitContainer1.Panel2
@@ -164,14 +164,6 @@
             this.examLength_textBox.Name = "examLength_textBox";
             this.examLength_textBox.Size = new System.Drawing.Size(116, 20);
             this.examLength_textBox.TabIndex = 14;
-            // 
-            // startTime_textBox
-            // 
-            this.startTime_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.startTime_textBox.Location = new System.Drawing.Point(107, 57);
-            this.startTime_textBox.Name = "startTime_textBox";
-            this.startTime_textBox.Size = new System.Drawing.Size(116, 20);
-            this.startTime_textBox.TabIndex = 13;
             // 
             // days_textBox
             // 
@@ -258,6 +250,14 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Schedule Information";
             // 
+            // startTime_textBox
+            // 
+            this.startTime_textBox.Location = new System.Drawing.Point(107, 57);
+            this.startTime_textBox.Mask = "00:00";
+            this.startTime_textBox.Name = "startTime_textBox";
+            this.startTime_textBox.Size = new System.Drawing.Size(116, 20);
+            this.startTime_textBox.TabIndex = 13;
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -330,7 +330,7 @@
         public System.Windows.Forms.TextBox lunchLength_textBox;
         public System.Windows.Forms.TextBox breakLength_textBox;
         public System.Windows.Forms.TextBox examLength_textBox;
-        public System.Windows.Forms.TextBox startTime_textBox;
+        public System.Windows.Forms.MaskedTextBox startTime_textBox;
         public System.Windows.Forms.TextBox days_textBox;
         private System.Windows.Forms.Button scheduleBrowse;
         public System.Windows.Forms.TextBox scheduleBrowse_textBox;

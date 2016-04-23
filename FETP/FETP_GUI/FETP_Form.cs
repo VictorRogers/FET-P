@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -21,7 +22,7 @@ namespace FETP_GUI
         private static int NUMBER_OF_EXAMS; //= NUMBER_OF_DAYS * NUMBER_OF_EXAMS_PER_DAY;
 
         int daysNum;
-        int beginTime;
+        string beginTime;
         int examLength;
         int breakLength;
         int lunchLength;
@@ -39,12 +40,18 @@ namespace FETP_GUI
         FullCalendar fullCal;
         SingleDayCalendar miniCal;
         TextSchedule textCal;
-
+        
         //------------------------------------------------------------------------------------------
 
         /// <summary>
         /// FETP_Form Constructor
+        /// Create a new FETP Form with the default Data Collection UserControl docked in it
         /// </summary>
+        //Author: Amy Brown
+        //Date: 3-21-2016
+        //Modifications:    Added views Dictionary and delegate events (4-5-2016)
+        //Date(s) Tested:
+        //Approved By:
         public FETP_Form()
         {
             InitializeComponent();
@@ -84,9 +91,9 @@ namespace FETP_GUI
                 dataCollection1.Name = "dataCollection1";
                 dataCollection1.Size = new Size(335, 334);
                 dataCollection1.TabIndex = 0;
-                dataCollection1.GenerateSchedule += new DataCollection.GenerateClickHandler(GenerateFullSchedule);
-                dataCollection1.ClearForm += new DataCollection.ClearClickHandler(ClearAllTextBoxes);
-            }
+            dataCollection1.GenerateSchedule += new DataCollection.GenerateClickHandler(GenerateFullSchedule);
+            dataCollection1.ClearForm += new DataCollection.ClearClickHandler(ClearAllTextBoxes);
+        }
             else
             {
                 MessageBox.Show("Invalid Windows username or password.");
@@ -119,6 +126,10 @@ namespace FETP_GUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        //Author: Amy Brown
+        //Date: 4-9-2016 
+        //Date(s) Tested:
+        //Approved By:
         public void ClearAllTextBoxes(object sender, EventArgs e)
         {
             dataCollection1.days_textBox.Text = string.Empty;
@@ -135,6 +146,23 @@ namespace FETP_GUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        //Actions:  Collect filenames in dataCollection1's File name text boxes
+        //          Collect values in dataCollection1's data text boxes, check their validity, and convert them to correct data types
+        //          Use these values and filenames to generate a schedule object
+        //          Use the generated schedule object to generate a SchedulePresenter object and a FullCalendar object
+        //          Display generated SchedulePresenter and FullCalendar
+        //          Display invalid data messages
+        //Output:   SchedulePresenter containing FullCalendar
+        //Author:   Amy Brown
+        //Date: 3-31-2016
+        //Modifications:    Added actual data collection from textbox values (4-9-16)
+        //                  Added data value validity checks and type conversions (4-11-16)
+        //                  Added creation of schedule object (4-11-16)
+        //                  Added views Dictionary Clearout (4-11-16)
+        //                  Added invalid data messages and message box (4-11-16)
+        //Files Accessed:   given Scheule Constraints, given Enrollment Data
+        //Date(s) Tested:
+        //Approved By:
         public void GenerateFullSchedule(object sender, EventArgs e)
         {
             bool isSchedulePossible = true;
@@ -144,10 +172,13 @@ namespace FETP_GUI
             bool isBreakValid = true;
             bool isLunchValid = true;
 
+            char[] colon = { ':' };
+            string[] timeParts = beginTime.Split(colon);
+
             //Get data from form
             //using immediate if to get around empty text box exceptions for now - defaults all values to 1
             daysNum = (dataCollection1.days_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.days_textBox.Text);
-            beginTime = (dataCollection1.startTime_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.startTime_textBox.Text);
+            beginTime = (dataCollection1.startTime_textBox.Text.Equals(string.Empty)) ? "-1" : dataCollection1.startTime_textBox.Text;
             examLength = (dataCollection1.examLength_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.examLength_textBox.Text);
             breakLength = (dataCollection1.breakLength_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.breakLength_textBox.Text);
             lunchLength = (dataCollection1.lunchLength_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.lunchLength_textBox.Text);
@@ -158,31 +189,33 @@ namespace FETP_GUI
             //Check 5 ints for valid ranges
             if (constraintsFile.Equals(string.Empty))
             {
-                if (daysNum < 1 || daysNum > 7)
-                {
-                    isSchedulePossible = false;
-                    isDaysValid = false;
-                }
-                if (beginTime < 7 || beginTime > 16)
-                {
-                    isSchedulePossible = false;
-                    isBeginValid = false;
-                }
-                if (examLength < 0090 || examLength > 0120)
-                {
-                    isSchedulePossible = false;
-                    isExamValid = false;
-                }
-                if (breakLength < 0010 || breakLength > 0030)
-                {
-                    isSchedulePossible = false;
-                    isBreakValid = false;
-                }
-                if (lunchLength < 0 || lunchLength > 60)
-                {
-                    isSchedulePossible = false;
-                    isLunchValid = false;
-                }
+            if (daysNum < 1 || daysNum > 7)
+            {
+                isSchedulePossible = false;
+                isDaysValid = false;
+            }
+
+
+            if (Convert.ToInt32(timeParts[0]) < 7 || Convert.ToInt32(timeParts[0]) > 16)
+            {
+                isSchedulePossible = false;
+                isBeginValid = false;
+            }
+            if (examLength < 90 || examLength > 120)
+            {
+                isSchedulePossible = false;
+                isExamValid = false;
+            }
+            if (breakLength < 10 || breakLength > 30)
+            {
+                isSchedulePossible = false;
+                isBreakValid = false;
+            }
+            if (lunchLength < 0 || lunchLength > 60)
+            {
+                isSchedulePossible = false;
+                isLunchValid = false;
+            }
             }
 
             if (isSchedulePossible)
@@ -193,7 +226,11 @@ namespace FETP_GUI
                 if (constraintsFile.Equals(string.Empty))
                 {
                     //Convert time ints to Timespan objects
-                    TimeSpan examsStartTime = TimeSpan.FromHours(beginTime);    //TODO: I think this one is wrong.
+                    //******************************************************
+                    //TimeSpan examsStartTime = TimeSpan.FromHours(beginTime);
+                    TimeSpan examsStartTime = TimeSpan.FromHours(Convert.ToInt64(timeParts[0])) + TimeSpan.FromMinutes(Convert.ToInt64(timeParts[1]));
+                    //TimeSpan examsStartTime = TimeSpan.ParseExact(beginTime.ToString(), @"hhmm", CultureInfo.InvariantCulture);
+                    //******************************************************
                     TimeSpan examsLength = TimeSpan.FromMinutes(examLength);
                     TimeSpan timeBetweenExams = TimeSpan.FromMinutes(breakLength);
                     TimeSpan lunchSpan = TimeSpan.FromMinutes(lunchLength);
@@ -214,7 +251,7 @@ namespace FETP_GUI
                 //SchedulePresenter Constructor builds SplitContainer base presenter - container for different Schedule Views
                 //This will need the Schedule data structure as a parameter
                 //uses NUMBER_OF_DAYS and NUMBER_OF_EXAMS_PER_DAY from the Schedule data structure
-                scheduleView = new SchedulePresenter(schedule.NumberOfDays, schedule.NumberOfTimeSlotsAvailablePerDay);
+                scheduleView = new SchedulePresenter(schedule);
                 scheduleView.Dock = DockStyle.Fill;
 
                 //If the views Dictionary contains view presenters for a different Schedule object, get rid of them.
@@ -224,7 +261,7 @@ namespace FETP_GUI
                 //FullCalendar constructor dynamically builds drag-and-drop button matrix
                 //This will need the Schedule data structure as a parameter
                 //uses daysNum, examsPerDay, examLength, breakLength, and lunchLength from Schedule data structure
-                fullCal = new FullCalendar(schedule.NumberOfDays, schedule.NumberOfTimeSlotsAvailablePerDay, examLength, breakLength, lunchLength);
+                fullCal = new FullCalendar(schedule, examLength, breakLength, lunchLength);
                 fullCal.Dock = DockStyle.Fill;
 
                 panel1.Controls.Add(scheduleView);
@@ -246,7 +283,7 @@ namespace FETP_GUI
                 }
                 if (!isBeginValid)
                 {
-                    errorMessage += "\nInvalid start time - enter a whole number 7 or greater.";
+                    errorMessage += "\nInvalid start time - enter a time from 07:00 to 16:00.";
                 }
                 if (!isExamValid)
                 {
@@ -267,13 +304,27 @@ namespace FETP_GUI
 
         //------------------------------------------------------------------------------------------
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //Output: 
+        //Author: Amy Brown
+        //Date: 
+        //Modifications:    Added the reset of form state, size, and style
+        //Date(s) Tested:
+        //Approved By:
         private void newScheduleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormBorderStyle = FormBorderStyle.Fixed3D;
+            WindowState = FormWindowState.Normal;
             Size = new Size(355, 401);
+            MaximizeBox = false;
+            FormBorderStyle = FormBorderStyle.Fixed3D;
             panel1.Controls.Clear();
 
             dataCollection1 = new DataCollection();
+            dataCollection1.Dock = DockStyle.Fill;
             dataCollection1.GenerateSchedule += new DataCollection.GenerateClickHandler(GenerateFullSchedule);
             dataCollection1.ClearForm += new DataCollection.ClearClickHandler(ClearAllTextBoxes);
 
@@ -295,10 +346,10 @@ namespace FETP_GUI
                 //TODO: This code needs to be in its own function
                 FormBorderStyle = FormBorderStyle.Sizable;
                 panel1.Controls.Clear();
-                scheduleView = new SchedulePresenter(schedule.NumberOfDays, schedule.NumberOfTimeSlotsAvailablePerDay);
+                scheduleView = new SchedulePresenter(schedule);
                 scheduleView.Dock = DockStyle.Fill;
                 views.Clear();
-                fullCal = new FullCalendar(schedule.NumberOfDays, schedule.NumberOfTimeSlotsAvailablePerDay, examLength, breakLength, lunchLength);
+                fullCal = new FullCalendar(schedule, examLength, breakLength, lunchLength);
                 fullCal.Dock = DockStyle.Fill;
                 panel1.Controls.Add(scheduleView);
                 scheduleView.splitContainer1.Panel1.Controls.Add(fullCal);
@@ -326,6 +377,12 @@ namespace FETP_GUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        //Output: 
+        //Author: Amy Brown
+        //Date: 
+        //Modifications:    Added dictionary access 
+        //Date(s) Tested:
+        //Approved By:
         private void fullScheduleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             scheduleView.splitContainer1.Panel1.Controls.Clear();
@@ -336,7 +393,7 @@ namespace FETP_GUI
             }
             else
             {
-                fullCal = new FullCalendar(schedule.NumberOfDays, schedule.NumberOfTimeSlotsAvailablePerDay, examLength, breakLength, lunchLength);
+                fullCal = new FullCalendar(schedule, examLength, breakLength, lunchLength);
                 views.Add("Full", fullCal);
             }
 
@@ -349,10 +406,16 @@ namespace FETP_GUI
         }
 
         /// <summary>
-        /// Display the Single Day Calendar Schedule View
+        /// Build and/or Display the Single Day Calendar Schedule View
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        //Output: 
+        //Author: Amy Brown
+        //Date: 
+        //Modifications:    Added dictionary access
+        //Date(s) Tested:
+        //Approved By:
         private void oneDayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             scheduleView.splitContainer1.Panel1.Controls.Clear();
@@ -365,7 +428,7 @@ namespace FETP_GUI
             else
             {
                 //This will need the Schedule data structure as a parameter
-                miniCal = new SingleDayCalendar(schedule.NumberOfDays, schedule.NumberOfTimeSlotsAvailablePerDay, examLength, breakLength, lunchLength);
+                miniCal = new SingleDayCalendar(schedule, examLength, breakLength, lunchLength);
             }
 
             miniCal.Dock = DockStyle.Fill;
@@ -377,10 +440,15 @@ namespace FETP_GUI
         }
 
         /// <summary>
-        /// Display the Text Schedule View
+        /// Build and/or Display the Text Schedule View
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        //Output: 
+        //Author: Amy Brown
+        //Date: 
+        //Date(s) Tested:
+        //Approved By:
         private void textToolStripMenuItem_Click(object sender, EventArgs e)
         {
             scheduleView.splitContainer1.Panel1.Controls.Clear();
@@ -419,9 +487,14 @@ namespace FETP_GUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        //Author: Amy Brown
+        //Date: 4-7-2016
+        //Modifications:    Added check for form minimized
+        //Date(s) Tested: 4-7-2016, 4-20-2016
+        //Approved By:
         private void FETP_Form_Resize(object sender, EventArgs e)
         {
-            if (scheduleView != null)
+            if (scheduleView != null && !WindowState.Equals(FormWindowState.Minimized))
             {
                 scheduleView.splitContainer1.SplitterDistance = scheduleView.splitContainer1.Width - 221;
             }
