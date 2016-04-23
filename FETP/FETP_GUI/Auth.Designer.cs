@@ -39,37 +39,34 @@
             // 
             // txtUserName
             // 
-            this.txtUserName.Location = new System.Drawing.Point(104, 29);
+            this.txtUserName.Location = new System.Drawing.Point(131, 29);
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(100, 20);
             this.txtUserName.TabIndex = 3;
-            this.txtUserName.TextChanged += new System.EventHandler(this.txtUserName_TextChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
-            this.label1.Location = new System.Drawing.Point(14, 32);
+            this.label1.Location = new System.Drawing.Point(41, 32);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(63, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "User Name:";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
-            this.label2.Location = new System.Drawing.Point(14, 67);
+            this.label2.Location = new System.Drawing.Point(41, 67);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(46, 13);
             this.label2.TabIndex = 5;
             this.label2.Text = "Domain:";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // txtDomain
             // 
-            this.txtDomain.Location = new System.Drawing.Point(104, 60);
+            this.txtDomain.Location = new System.Drawing.Point(131, 60);
             this.txtDomain.Name = "txtDomain";
             this.txtDomain.Size = new System.Drawing.Size(99, 20);
             this.txtDomain.TabIndex = 6;
@@ -78,7 +75,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
-            this.label3.Location = new System.Drawing.Point(14, 102);
+            this.label3.Location = new System.Drawing.Point(41, 102);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(56, 13);
             this.label3.TabIndex = 7;
@@ -86,7 +83,7 @@
             // 
             // txtPwd
             // 
-            this.txtPwd.Location = new System.Drawing.Point(103, 95);
+            this.txtPwd.Location = new System.Drawing.Point(130, 95);
             this.txtPwd.Name = "txtPwd";
             this.txtPwd.Size = new System.Drawing.Size(100, 20);
             this.txtPwd.TabIndex = 8;
@@ -97,7 +94,7 @@
             this.btnLogin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
             this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogin.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(12)))), ((int)(((byte)(73)))));
-            this.btnLogin.Location = new System.Drawing.Point(129, 134);
+            this.btnLogin.Location = new System.Drawing.Point(156, 134);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(75, 23);
             this.btnLogin.TabIndex = 9;
@@ -119,7 +116,6 @@
             this.Controls.Add(this.txtUserName);
             this.Name = "Auth";
             this.Size = new System.Drawing.Size(272, 185);
-            this.Load += new System.EventHandler(this.UserControl1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -127,12 +123,12 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtUserName;
+        public System.Windows.Forms.TextBox txtUserName;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtDomain;
+        public System.Windows.Forms.TextBox txtDomain;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtPwd;
+        public System.Windows.Forms.TextBox txtPwd;
         private System.Windows.Forms.Button btnLogin;
     }
 }

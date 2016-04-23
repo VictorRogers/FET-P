@@ -113,7 +113,6 @@
             this.splitContainer1.Panel1.Controls.Add(this.label2);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
             this.splitContainer1.Panel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(159)))), ((int)(((byte)(17)))));
-            this.splitContainer1.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
             // 
             // splitContainer1.Panel2
             // 
@@ -141,7 +140,6 @@
             this.scheduleBrowse_textBox.Name = "scheduleBrowse_textBox";
             this.scheduleBrowse_textBox.Size = new System.Drawing.Size(243, 20);
             this.scheduleBrowse_textBox.TabIndex = 17;
-            this.scheduleBrowse_textBox.TextChanged += new System.EventHandler(this.scheduleBrowse_textBox_TextChanged);
             // 
             // lunchLength_textBox
             // 
@@ -182,7 +180,6 @@
             this.days_textBox.Name = "days_textBox";
             this.days_textBox.Size = new System.Drawing.Size(116, 20);
             this.days_textBox.TabIndex = 12;
-            this.days_textBox.TextChanged += new System.EventHandler(this.days_textBox_TextChanged);
             // 
             // scheduleBrowse
             // 
@@ -229,7 +226,6 @@
             this.label4.Size = new System.Drawing.Size(69, 13);
             this.label4.TabIndex = 3;
             this.label4.Text = "Exam Length";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // label3
             // 
@@ -250,7 +246,6 @@
             this.label2.Size = new System.Drawing.Size(31, 13);
             this.label2.TabIndex = 1;
             this.label2.Text = "Days";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label1
             // 
@@ -307,7 +302,6 @@
             this.enrollmentBrowse_textBox.Name = "enrollmentBrowse_textBox";
             this.enrollmentBrowse_textBox.Size = new System.Drawing.Size(243, 20);
             this.enrollmentBrowse_textBox.TabIndex = 32;
-            this.enrollmentBrowse_textBox.TextChanged += new System.EventHandler(this.enrollmentBrowse_textBox_TextChanged);
             // 
             // DataCollection
             // 
