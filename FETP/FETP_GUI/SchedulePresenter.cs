@@ -205,13 +205,28 @@ namespace FETP_GUI
 
         public void tooltipAllListedBlocks(Schedule _schedule, ref Button[] ButtonBlocks)
         {
-            Block[] sortedBlocks = _schedule.Blocks.OrderByDescending(c => c.Enrollment).ToArray();
+            int nulls = 0;
+            foreach (Block b in _schedule.Blocks)
+            {
+                if (b == null)
+                {
+                    nulls++;
+                }
+            }
+
+            Block[] nonNullBlocks = new Block[_schedule.Blocks.Count() - nulls];
+            for (int j = 0; _schedule.Blocks[j] != null; j++)
+            {
+                nonNullBlocks[j] = _schedule.Blocks[j];
+            }
+
+            Block[] sortedBlocks = nonNullBlocks.OrderByDescending(b => b.Enrollment).ToArray();
 
             int totalPerDay = _schedule.NumberOfTimeSlotsAvailablePerDay - 1;
 
-            int nulls = 0;
+            nulls = 0;
             int block = 0;
-            for (; block < _schedule.Blocks.Count(); block++)
+            for (; block < sortedBlocks.Length; block++)
             {
                 int button = (block - nulls);
                 if (sortedBlocks[block] != null)
@@ -252,48 +267,52 @@ namespace FETP_GUI
                 else { nulls++; }
             }
 
-            nulls = 0;
-            sortedBlocks = _schedule.LeftoverBlocks.OrderByDescending(c => c.Enrollment).ToArray();
 
-            for (; block < _schedule.Blocks.Count() + _schedule.LeftoverBlocks.Count(); block++)
+            if (_schedule.LeftoverBlocks.Count > 0)
             {
-                int leftoverBlock = block - _schedule.Blocks.Count();
-                int button = (block - nulls);
-                if (sortedBlocks[leftoverBlock] != null)
-                {
-                    ButtonBlocks[button].Tag = sortedBlocks[leftoverBlock].ClassesInBlock.Count.ToString() + " class(es) \t" + sortedBlocks[leftoverBlock].Enrollment.ToString() + " total students\n";
+                nulls = 0;
+                sortedBlocks = _schedule.LeftoverBlocks.OrderByDescending(c => c.Enrollment).ToArray();
 
-                    foreach (Class c in sortedBlocks[leftoverBlock].ClassesInBlock)
+                for (; block < _schedule.Blocks.Count() + _schedule.LeftoverBlocks.Count(); block++)
+                {
+                    int leftoverBlock = block - nonNullBlocks.Count();
+                    int button = (block - nulls);
+                    if (sortedBlocks[leftoverBlock] != null)
                     {
-                        foreach (DayOfWeek d in c.DaysMeet)
+                        ButtonBlocks[button].Tag = sortedBlocks[leftoverBlock].ClassesInBlock.Count.ToString() + " class(es) \t" + sortedBlocks[leftoverBlock].Enrollment.ToString() + " total students\n";
+
+                        foreach (Class c in sortedBlocks[leftoverBlock].ClassesInBlock)
                         {
-                            switch (d)
+                            foreach (DayOfWeek d in c.DaysMeet)
                             {
-                                case DayOfWeek.Monday:
-                                    ButtonBlocks[button].Tag += "M";
-                                    break;
-                                case DayOfWeek.Tuesday:
-                                    ButtonBlocks[button].Tag += "T";
-                                    break;
-                                case DayOfWeek.Wednesday:
-                                    ButtonBlocks[button].Tag += "W";
-                                    break;
-                                case DayOfWeek.Thursday:
-                                    ButtonBlocks[button].Tag += "R";
-                                    break;
-                                case DayOfWeek.Friday:
-                                    ButtonBlocks[button].Tag += "F";
-                                    break;
+                                switch (d)
+                                {
+                                    case DayOfWeek.Monday:
+                                        ButtonBlocks[button].Tag += "M";
+                                        break;
+                                    case DayOfWeek.Tuesday:
+                                        ButtonBlocks[button].Tag += "T";
+                                        break;
+                                    case DayOfWeek.Wednesday:
+                                        ButtonBlocks[button].Tag += "W";
+                                        break;
+                                    case DayOfWeek.Thursday:
+                                        ButtonBlocks[button].Tag += "R";
+                                        break;
+                                    case DayOfWeek.Friday:
+                                        ButtonBlocks[button].Tag += "F";
+                                        break;
+                                }
                             }
+                            ButtonBlocks[button].Tag += "\t" + c.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
+                            ButtonBlocks[button].Tag += "-" + c.EndTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+                            ButtonBlocks[button].Tag += "\t(" + c.Enrollment.ToString() + " students)";
+                            ButtonBlocks[button].Tag += "\n";
                         }
-                        ButtonBlocks[button].Tag += "\t" + c.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
-                        ButtonBlocks[button].Tag += "-" + c.EndTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
-                        ButtonBlocks[button].Tag += "\t(" + c.Enrollment.ToString() + " students)";
-                        ButtonBlocks[button].Tag += "\n";
+                        toolTip1.SetToolTip(ButtonBlocks[button], ButtonBlocks[button].Tag.ToString());
                     }
-                    toolTip1.SetToolTip(ButtonBlocks[button], ButtonBlocks[button].Tag.ToString());
+                    else { nulls++; }
                 }
-                else { nulls++; }
             }
         }
 
