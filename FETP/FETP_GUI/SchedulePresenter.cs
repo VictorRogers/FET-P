@@ -216,7 +216,7 @@ namespace FETP_GUI
                 int button = (block - nulls);
                 if (sortedBlocks[block] != null)
                 {
-                    ButtonBlocks[button].Tag = string.Empty;
+                    ButtonBlocks[button].Tag = sortedBlocks[block].ClassesInBlock.Count.ToString() + " class(es) \t" + sortedBlocks[block].Enrollment.ToString() + " total students\n";
                     
                     foreach(Class c in sortedBlocks[block].ClassesInBlock)
                     {
@@ -242,10 +242,10 @@ namespace FETP_GUI
                             }
                         }
 
-                        ButtonBlocks[button].Tag += "\n " + c.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
+                        ButtonBlocks[button].Tag += "\t" + c.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
                         ButtonBlocks[button].Tag += "-" + c.EndTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
-                        ButtonBlocks[button].Tag += "\n (" + c.Enrollment.ToString() + " students)";
-                        ButtonBlocks[button].Tag += "\n\n";
+                        ButtonBlocks[button].Tag += "\t(" + c.Enrollment.ToString() + " students)";
+                        ButtonBlocks[button].Tag += "\n";
                     }
                     toolTip1.SetToolTip(ButtonBlocks[button], ButtonBlocks[button].Tag.ToString());
                 }
@@ -261,9 +261,9 @@ namespace FETP_GUI
                 int button = (block - nulls);
                 if (sortedBlocks[leftoverBlock] != null)
                 {
-                    ButtonBlocks[button].Text += "Not Placed\n";
+                    ButtonBlocks[button].Tag = sortedBlocks[leftoverBlock].ClassesInBlock.Count.ToString() + " class(es) \t" + sortedBlocks[leftoverBlock].Enrollment.ToString() + " total students\n";
 
-                    foreach(Class c in sortedBlocks[leftoverBlock].ClassesInBlock)
+                    foreach (Class c in sortedBlocks[leftoverBlock].ClassesInBlock)
                     {
                         foreach (DayOfWeek d in c.DaysMeet)
                         {
@@ -286,9 +286,10 @@ namespace FETP_GUI
                                     break;
                             }
                         }
-                        ButtonBlocks[button].Tag += "\n " + c.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
+                        ButtonBlocks[button].Tag += "\t" + c.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
                         ButtonBlocks[button].Tag += "-" + c.EndTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
-                        ButtonBlocks[button].Tag += "\n (" + c.Enrollment.ToString() + " students)";
+                        ButtonBlocks[button].Tag += "\t(" + c.Enrollment.ToString() + " students)";
+                        ButtonBlocks[button].Tag += "\n";
                     }
                     toolTip1.SetToolTip(ButtonBlocks[button], ButtonBlocks[button].Tag.ToString());
                 }
