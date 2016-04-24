@@ -70,6 +70,7 @@ namespace FETP_GUI
             int numofUnscheduled = schedule.LeftoverBlocks.Count();
 
             #region Initialize new GUI objects
+            components = new Container();
             splitContainer1 = new SplitContainer();
 
             int i = 0;
@@ -80,8 +81,10 @@ namespace FETP_GUI
 
             classGroups = new GroupBox();
             panel1 = new Panel();
-            ((ISupportInitialize)(splitContainer1)).BeginInit();
+            toolTip1 = new ToolTip(components);
             #endregion
+
+            ((ISupportInitialize)(splitContainer1)).BeginInit();
 
             #region suspend layout
             splitContainer1.Panel2.SuspendLayout();
@@ -176,6 +179,7 @@ namespace FETP_GUI
                 //i++;
             }
             this.labelAllListedBlocks(schedule, ref Blocks);
+            tooltipAllListedBlocks(schedule, ref Blocks);
 
             #endregion
 
@@ -197,5 +201,100 @@ namespace FETP_GUI
             ResumeLayout(false);
             #endregion
         }
+
+
+        public void tooltipAllListedBlocks(Schedule _schedule, ref Button[] ButtonBlocks)
+        {
+            Block[] sortedBlocks = _schedule.Blocks.OrderByDescending(c => c.Enrollment).ToArray();
+
+            int totalPerDay = _schedule.NumberOfTimeSlotsAvailablePerDay - 1;
+
+            int nulls = 0;
+            int block = 0;
+            for (; block < _schedule.Blocks.Count(); block++)
+            {
+                int button = (block - nulls);
+                if (sortedBlocks[block] != null)
+                {
+                    ButtonBlocks[button].Tag = string.Empty;
+                    
+                    foreach(Class c in sortedBlocks[block].ClassesInBlock)
+                    {
+                        foreach (DayOfWeek d in c.DaysMeet)
+                        {
+                            switch (d)
+                            {
+                                case DayOfWeek.Monday:
+                                    ButtonBlocks[button].Tag += "M";
+                                    break;
+                                case DayOfWeek.Tuesday:
+                                    ButtonBlocks[button].Tag += "T";
+                                    break;
+                                case DayOfWeek.Wednesday:
+                                    ButtonBlocks[button].Tag += "W";
+                                    break;
+                                case DayOfWeek.Thursday:
+                                    ButtonBlocks[button].Tag += "R";
+                                    break;
+                                case DayOfWeek.Friday:
+                                    ButtonBlocks[button].Tag += "F";
+                                    break;
+                            }
+                        }
+
+                        ButtonBlocks[button].Tag += "\n " + c.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
+                        ButtonBlocks[button].Tag += "-" + c.EndTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+                        ButtonBlocks[button].Tag += "\n (" + c.Enrollment.ToString() + " students)";
+                        ButtonBlocks[button].Tag += "\n\n";
+                    }
+                    toolTip1.SetToolTip(ButtonBlocks[button], ButtonBlocks[button].Tag.ToString());
+                }
+                else { nulls++; }
+            }
+
+            nulls = 0;
+            sortedBlocks = _schedule.LeftoverBlocks.OrderByDescending(c => c.Enrollment).ToArray();
+
+            for (; block < _schedule.Blocks.Count() + _schedule.LeftoverBlocks.Count(); block++)
+            {
+                int leftoverBlock = block - _schedule.Blocks.Count();
+                int button = (block - nulls);
+                if (sortedBlocks[leftoverBlock] != null)
+                {
+                    ButtonBlocks[button].Text += "Not Placed\n";
+
+                    foreach(Class c in sortedBlocks[leftoverBlock].ClassesInBlock)
+                    {
+                        foreach (DayOfWeek d in c.DaysMeet)
+                        {
+                            switch (d)
+                            {
+                                case DayOfWeek.Monday:
+                                    ButtonBlocks[button].Tag += "M";
+                                    break;
+                                case DayOfWeek.Tuesday:
+                                    ButtonBlocks[button].Tag += "T";
+                                    break;
+                                case DayOfWeek.Wednesday:
+                                    ButtonBlocks[button].Tag += "W";
+                                    break;
+                                case DayOfWeek.Thursday:
+                                    ButtonBlocks[button].Tag += "R";
+                                    break;
+                                case DayOfWeek.Friday:
+                                    ButtonBlocks[button].Tag += "F";
+                                    break;
+                            }
+                        }
+                        ButtonBlocks[button].Tag += "\n " + c.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
+                        ButtonBlocks[button].Tag += "-" + c.EndTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+                        ButtonBlocks[button].Tag += "\n (" + c.Enrollment.ToString() + " students)";
+                    }
+                    toolTip1.SetToolTip(ButtonBlocks[button], ButtonBlocks[button].Tag.ToString());
+                }
+                else { nulls++; }
+            }
+        }
+
     }
 }

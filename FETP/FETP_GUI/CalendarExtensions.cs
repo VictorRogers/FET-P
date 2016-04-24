@@ -10,21 +10,20 @@ namespace CalendarExtension
     {
         public static void labelAllListedBlocks(this UserControl cal, Schedule _schedule, ref Button[] ButtonBlocks)
         {
-            //Block[] sortedBlocks = _schedule.Blocks;
-            //sortGroupsByEnrollment(ref sortedBlocks);
-
+            Block[] sortedBlocks = _schedule.Blocks.OrderByDescending(c => c.Enrollment).ToArray();
+            
             int totalPerDay = _schedule.NumberOfTimeSlotsAvailablePerDay - 1;
 
-            int day = 0, nulls = 0;
+            int nulls = 0;
             int block = 0;
             for (; block < _schedule.Blocks.Count(); block++)
             {
                 int button = (block - nulls);
-                if (_schedule.Blocks[block] != null)
+                if (sortedBlocks[block] != null)
                 {
                     ButtonBlocks[button].Text += "Placed\n";
 
-                    Class biggestClass = getBiggestClass(_schedule.Blocks[block]);
+                    Class biggestClass = getBiggestClass(sortedBlocks[block]);
 
                     foreach (DayOfWeek d in biggestClass.DaysMeet)
                     {
@@ -56,16 +55,17 @@ namespace CalendarExtension
             }
 
             nulls = 0;
+            sortedBlocks = _schedule.LeftoverBlocks.OrderByDescending(c => c.Enrollment).ToArray();
 
-            for(; block < _schedule.Blocks.Count() + _schedule.LeftoverBlocks.Count(); block++)
+            for (; block < _schedule.Blocks.Count() + _schedule.LeftoverBlocks.Count(); block++)
             {
                 int leftoverBlock = block - _schedule.Blocks.Count();
                 int button = (block - nulls);
-                if (_schedule.LeftoverBlocks[leftoverBlock] != null)
+                if (sortedBlocks[leftoverBlock] != null)
                 {
                     ButtonBlocks[button].Text += "Not Placed\n";
 
-                    Class biggestClass = getBiggestClass(_schedule.LeftoverBlocks[leftoverBlock]);
+                    Class biggestClass = getBiggestClass(sortedBlocks[leftoverBlock]);
 
                     foreach (DayOfWeek d in biggestClass.DaysMeet)
                     {
@@ -96,60 +96,7 @@ namespace CalendarExtension
                 else { nulls++; }
             }
         }
-
-        ////From http://anh.cs.luc.edu/170/notes/CSharpHtml/sorting.html - modified to work with our Block class
-        ////4-20-16
-        //private static void sortGroupsByEnrollment(ref Block[] blocksToSort)
-        //{
-        //    QuickSortByEnrollment(ref blocksToSort, 0, blocksToSort.Length - 1);
-        //}
-
-        ////From http://anh.cs.luc.edu/170/notes/CSharpHtml/sorting.html - modified to work with our Block class
-        ////4-20-16
-        //public static void QuickSortByEnrollment(ref Block[] blocks, int l, int r)
-        //{
-        //    int i, j;
-        //    int x;
-
-        //    i = l;
-        //    j = r;
-
-        //    if(blocks[(l + r) / 2] != null)
-        //    {
-        //        x = blocks[(l + r) / 2].Enrollment; /* find pivot item */
-        //    }
-        //    else
-        //    {
-        //        x = 0;
-        //    }
-        //    while (true)
-        //    {
-        //        while (blocks[i] == null || blocks[i].Enrollment < x)
-        //            i++;
-        //        while (blocks[j]==null || x < blocks[j].Enrollment)
-        //            j--;
-        //        if (i <= j)
-        //        {
-        //            exchange(blocks, i, j);
-        //            i++;
-        //            j--;
-        //        }
-        //        if (i > j)
-        //            break;
-        //    }
-        //    if (l < j)
-        //        QuickSortByEnrollment(ref blocks, l, j);
-        //    if (i < r)
-        //        QuickSortByEnrollment(ref blocks, i, r);
-        //}
-
-        //private static void exchange(Block[] blocks, int i, int j)
-        //{
-        //    Block temp = blocks[i];
-        //    blocks[i] = blocks[j];
-        //    blocks[j] = temp;
-        //}
-
+        
         public static void labelAllScheduledBlocks(this UserControl cal, Schedule _schedule, ref Button[][] Exams)
         {
             int totalPerDay = _schedule.NumberOfTimeSlotsAvailablePerDay - 1;

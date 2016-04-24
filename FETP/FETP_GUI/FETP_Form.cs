@@ -312,11 +312,11 @@ namespace FETP_GUI
 
             if (isValid)
             {
-                Controls.Clear();
+                panel1.Controls.Clear();
                 Size = new Size(355, 401);
 
                 dataCollection1 = new DataCollection();
-                Controls.Add(dataCollection1);
+                panel1.Controls.Add(dataCollection1);
 
                 dataCollection1.Dock = DockStyle.Fill;
                 dataCollection1.Location = new Point(0, 0);
