@@ -40,32 +40,265 @@ namespace FETP_GUI
         FullCalendar fullCal;
         SingleDayCalendar miniCal;
         TextSchedule textCal;
-        
+
         //------------------------------------------------------------------------------------------
+
+        #region FETP_Form native events
 
         /// <summary>
         /// FETP_Form Constructor
-        /// Create a new FETP Form with the default Data Collection UserControl docked in it
+        /// Create a new FETP Form with the default Authentication UserControl docked in it
         /// </summary>
         //Author: Amy Brown
         //Date: 3-21-2016
         //Modifications:    Added views Dictionary and delegate events (4-5-2016)
+        //                  Moved hookups to dataCollection1's delegate events due to change in startup User Control (2-23-2016)
         //Date(s) Tested:
         //Approved By:
         public FETP_Form()
         {
             InitializeComponent();
-
             views = new Dictionary<string, UserControl>();
+        }
 
-            //auth1.Login += new Auth.LoginClickHandler(Login);
+        /// <summary>
+        /// While resizing the SchedulePresenter, keep the splitter in the correct position
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //Author: Amy Brown
+        //Date: 4-7-2016
+        //Modifications:    Added check for form minimized
+        //Date(s) Tested: 4-7-2016, 4-20-2016
+        //Approved By:
+        private void FETP_Form_Resize(object sender, EventArgs e)
+        {
+            if (scheduleView != null && !WindowState.Equals(FormWindowState.Minimized))
+            {
+                scheduleView.splitContainer1.SplitterDistance = scheduleView.splitContainer1.Width - 221;
+            }
         }
 
         //------------------------------------------------------------------------------------------
 
+        #region Toolstrip Menus
+
+            #region File
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //Output: 
+        //Author: Amy Brown
+        //Date: 
+        //Modifications:    Added the reset of form state, size, and style
+        //Date(s) Tested:
+        //Approved By:
+        private void newScheduleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WindowState = FormWindowState.Normal;
+            Size = new Size(355, 401);
+            MaximizeBox = false;
+            FormBorderStyle = FormBorderStyle.Fixed3D;
+            panel1.Controls.Clear();
+
+            dataCollection1 = new DataCollection();
+            dataCollection1.Dock = DockStyle.Fill;
+            dataCollection1.GenerateSchedule += new DataCollection.GenerateClickHandler(GenerateFullSchedule);
+            dataCollection1.ClearForm += new DataCollection.ClearClickHandler(ClearAllTextBoxes);
+
+            panel1.Controls.Add(dataCollection1);
+        }
+
+        //Author: Cory Feliciano (?)
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "DAT-File | *.dat";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                FileStream stream = File.OpenRead(openFileDialog.FileName);
+                BinaryFormatter formatter = new BinaryFormatter();
+                schedule = (Schedule)formatter.Deserialize(stream);
+                stream.Close();
+
+                //TODO: This code needs to be in its own function
+                FormBorderStyle = FormBorderStyle.Sizable;
+                panel1.Controls.Clear();
+                scheduleView = new SchedulePresenter(schedule);
+                scheduleView.Dock = DockStyle.Fill;
+                views.Clear();
+                fullCal = new FullCalendar(schedule, examLength, breakLength, lunchLength);
+                fullCal.Dock = DockStyle.Fill;
+                panel1.Controls.Add(scheduleView);
+                scheduleView.splitContainer1.Panel1.Controls.Add(fullCal);
+                views.Add("Full", fullCal);
+                Size = new Size(681, 492);
+                MaximizeBox = true;
+                viewToolStripMenuItem.Enabled = true;
+                fullScheduleToolStripMenuItem.Enabled = false;
+            }
+        }
+
+        //Author: Cory Feliciano (?)
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "DAT-File | *.dat";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                schedule.SaveSchedule(saveFileDialog.FileName);
+            }
+        }
+
+        //Author: Cory Feliciano
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //implement export functionality here
+        }
+
+        #endregion
+
+            //--------------------------------------------------------------------------------------
+
+            #region View
+
+        /// <summary>
+        /// Display the Full Calendar Schedule View
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //Output: 
+        //Author: Amy Brown
+        //Date: 
+        //Modifications:    Added dictionary access 
+        //Date(s) Tested:
+        //Approved By:
+        private void fullScheduleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            scheduleView.splitContainer1.Panel1.Controls.Clear();
+
+            if (views.Keys.Contains("Full"))
+            {
+                fullCal = (FullCalendar)views["Full"];
+            }
+            else
+            {
+                fullCal = new FullCalendar(schedule, examLength, breakLength, lunchLength);
+                views.Add("Full", fullCal);
+            }
+
+            fullCal.Dock = DockStyle.Fill;
+
+            scheduleView.splitContainer1.Panel1.Controls.Add(fullCal);
+            oneDayToolStripMenuItem.Enabled = true;
+            fullScheduleToolStripMenuItem.Enabled = false;
+            textToolStripMenuItem.Enabled = true;
+        }
+
+        /// <summary>
+        /// Build and/or Display the Single Day Calendar Schedule View
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //Output: 
+        //Author: Amy Brown
+        //Date: 
+        //Modifications:    Added dictionary access
+        //Date(s) Tested:
+        //Approved By:
+        private void oneDayToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            scheduleView.splitContainer1.Panel1.Controls.Clear();
+
+            if (views.Keys.Contains("Single"))
+            {
+                miniCal = (SingleDayCalendar)views["Single"];
+                views.Add("Single", miniCal);
+            }
+            else
+            {
+                //This will need the Schedule data structure as a parameter
+                miniCal = new SingleDayCalendar(schedule, examLength, breakLength, lunchLength);
+            }
+
+            miniCal.Dock = DockStyle.Fill;
+
+            scheduleView.splitContainer1.Panel1.Controls.Add(miniCal);
+            oneDayToolStripMenuItem.Enabled = false;
+            fullScheduleToolStripMenuItem.Enabled = true;
+            textToolStripMenuItem.Enabled = true;
+        }
+
+        /// <summary>
+        /// Build and/or Display the Text Schedule View
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //Output: 
+        //Author: Amy Brown
+        //Date: 
+        //Date(s) Tested:
+        //Approved By:
+        private void textToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            scheduleView.splitContainer1.Panel1.Controls.Clear();
+
+            if (views.Keys.Contains("Text"))
+            {
+                textCal = (TextSchedule)views["Text"];
+            }
+            else
+            {
+                //This will need the Schedule data structure as a parameter
+                //Prints entire schedule data structure in agreed format
+                textCal = new TextSchedule(schedule);
+                views.Add("Text", textCal);
+            }
+
+            textCal.Dock = DockStyle.Fill;
+
+            scheduleView.splitContainer1.Panel1.Controls.Add(textCal);
+            oneDayToolStripMenuItem.Enabled = true;
+            fullScheduleToolStripMenuItem.Enabled = true;
+            textToolStripMenuItem.Enabled = false;
+        }
+
+        #endregion
+
+            //--------------------------------------------------------------------------------------
+
+            //This region contains a single function - It will be changed to contain a set of functions
+            #region Help
+
+        //Author: Cory Feliciano (?)
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string locationToSavePdf = Path.Combine(Path.GetTempPath(), "HelpManual.pdf");
+            File.WriteAllBytes(locationToSavePdf, Properties.Resources.HelpManual);
+            Process.Start(locationToSavePdf);
+        }
+
+        #endregion
+
+        #endregion
+
+        #endregion
+
+        //------------------------------------------------------------------------------------------
+
+        #region Auth button events
+        //Author: Victor Rogers (?)
         [System.Runtime.InteropServices.DllImport("advapi32.dll")]
         public static extern bool LogonUser(string userName, string domainName, string password, int LogonType, int LogonProvider, ref IntPtr phToken);
 
+        //Author: Victor Rogers (?) and Amy Brown
+        //Date:
+        //Modifications:    Amy added GUI change implementation in if(isValid){} (4-22-2016)
         public void Login(object sender, EventArgs e)
         {
             bool isValid = false;
@@ -91,21 +324,23 @@ namespace FETP_GUI
                 dataCollection1.Name = "dataCollection1";
                 dataCollection1.Size = new Size(335, 334);
                 dataCollection1.TabIndex = 0;
-            dataCollection1.GenerateSchedule += new DataCollection.GenerateClickHandler(GenerateFullSchedule);
-            dataCollection1.ClearForm += new DataCollection.ClearClickHandler(ClearAllTextBoxes);
-        }
+                dataCollection1.GenerateSchedule += new DataCollection.GenerateClickHandler(GenerateFullSchedule);
+                dataCollection1.ClearForm += new DataCollection.ClearClickHandler(ClearAllTextBoxes);
+            }
             else
             {
                 MessageBox.Show("Invalid Windows username or password.");
             }
         }
 
+        //Author: Victor Rogers (?)
         private string GetLoggedInUserName()
         {
             WindowsIdentity currentUser = WindowsIdentity.GetCurrent();
             return currentUser.Name;
         }
 
+        //Author: Victor Rogers (?)
         private bool IsValidCredentials(string userName, string password, string domain)
         {
             if (domain == "")
@@ -117,9 +352,11 @@ namespace FETP_GUI
             bool isValid = LogonUser(userName, domain, password, 2, 0, ref tokenHandler);
             return isValid;
         }
+        #endregion
 
         //------------------------------------------------------------------------------------------
 
+        #region DataCollection button events
 
         /// <summary>
         /// Clear values from all text boxes in Data Collection Form
@@ -160,6 +397,7 @@ namespace FETP_GUI
         //                  Added creation of schedule object (4-11-16)
         //                  Added views Dictionary Clearout (4-11-16)
         //                  Added invalid data messages and message box (4-11-16)
+        //                  Added check for provided Enrollment Data File and error message for missing Enrollment Data File (4-24-2016)
         //Files Accessed:   given Scheule Constraints, given Enrollment Data
         //Date(s) Tested:
         //Approved By:
@@ -282,8 +520,11 @@ namespace FETP_GUI
                 views.Add("Full", fullCal);
                 Size = new Size(681, 492);
                 MaximizeBox = true;
-                viewToolStripMenuItem.Enabled = true;
+
                 saveAsToolStripMenuItem.Enabled = true;
+                //exportToolStripMenuItem.Enabled = true;   //Uncomment this line when Export is implemented
+                
+                viewToolStripMenuItem.Enabled = true;
                 fullScheduleToolStripMenuItem.Enabled = false;
             }
             else
@@ -319,202 +560,6 @@ namespace FETP_GUI
             }
         }
 
-        //------------------------------------------------------------------------------------------
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        //Output: 
-        //Author: Amy Brown
-        //Date: 
-        //Modifications:    Added the reset of form state, size, and style
-        //Date(s) Tested:
-        //Approved By:
-        private void newScheduleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            WindowState = FormWindowState.Normal;
-            Size = new Size(355, 401);
-            MaximizeBox = false;
-            FormBorderStyle = FormBorderStyle.Fixed3D;
-            panel1.Controls.Clear();
-
-            dataCollection1 = new DataCollection();
-            dataCollection1.Dock = DockStyle.Fill;
-            dataCollection1.GenerateSchedule += new DataCollection.GenerateClickHandler(GenerateFullSchedule);
-            dataCollection1.ClearForm += new DataCollection.ClearClickHandler(ClearAllTextBoxes);
-
-            panel1.Controls.Add(dataCollection1);
-        }
-
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "DAT-File | *.dat";
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                FileStream stream = File.OpenRead(openFileDialog.FileName);
-                BinaryFormatter formatter = new BinaryFormatter();
-                schedule = (Schedule)formatter.Deserialize(stream);
-                stream.Close();
-
-                //TODO: This code needs to be in its own function
-                FormBorderStyle = FormBorderStyle.Sizable;
-                panel1.Controls.Clear();
-                scheduleView = new SchedulePresenter(schedule);
-                scheduleView.Dock = DockStyle.Fill;
-                views.Clear();
-                fullCal = new FullCalendar(schedule, examLength, breakLength, lunchLength);
-                fullCal.Dock = DockStyle.Fill;
-                panel1.Controls.Add(scheduleView);
-                scheduleView.splitContainer1.Panel1.Controls.Add(fullCal);
-                views.Add("Full", fullCal);
-                Size = new Size(681, 492);
-                MaximizeBox = true;
-                viewToolStripMenuItem.Enabled = true;
-                fullScheduleToolStripMenuItem.Enabled = false;
-            }
-        }
-
-        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "DAT-File | *.dat";
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                schedule.SaveSchedule(saveFileDialog.FileName);
-            }
-        }
-
-        /// <summary>
-        /// Display the Full Calendar Schedule View
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        //Output: 
-        //Author: Amy Brown
-        //Date: 
-        //Modifications:    Added dictionary access 
-        //Date(s) Tested:
-        //Approved By:
-        private void fullScheduleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            scheduleView.splitContainer1.Panel1.Controls.Clear();
-
-            if (views.Keys.Contains("Full"))
-            {
-                fullCal = (FullCalendar)views["Full"];
-            }
-            else
-            {
-                fullCal = new FullCalendar(schedule, examLength, breakLength, lunchLength);
-                views.Add("Full", fullCal);
-            }
-
-            fullCal.Dock = DockStyle.Fill;
-
-            scheduleView.splitContainer1.Panel1.Controls.Add(fullCal);
-            oneDayToolStripMenuItem.Enabled = true;
-            fullScheduleToolStripMenuItem.Enabled = false;
-            textToolStripMenuItem.Enabled = true;
-        }
-
-        /// <summary>
-        /// Build and/or Display the Single Day Calendar Schedule View
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        //Output: 
-        //Author: Amy Brown
-        //Date: 
-        //Modifications:    Added dictionary access
-        //Date(s) Tested:
-        //Approved By:
-        private void oneDayToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            scheduleView.splitContainer1.Panel1.Controls.Clear();
-
-            if (views.Keys.Contains("Single"))
-            {
-                miniCal = (SingleDayCalendar)views["Single"];
-                views.Add("Single", miniCal);
-            }
-            else
-            {
-                //This will need the Schedule data structure as a parameter
-                miniCal = new SingleDayCalendar(schedule, examLength, breakLength, lunchLength);
-            }
-
-            miniCal.Dock = DockStyle.Fill;
-
-            scheduleView.splitContainer1.Panel1.Controls.Add(miniCal);
-            oneDayToolStripMenuItem.Enabled = false;
-            fullScheduleToolStripMenuItem.Enabled = true;
-            textToolStripMenuItem.Enabled = true;
-        }
-
-        /// <summary>
-        /// Build and/or Display the Text Schedule View
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        //Output: 
-        //Author: Amy Brown
-        //Date: 
-        //Date(s) Tested:
-        //Approved By:
-        private void textToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            scheduleView.splitContainer1.Panel1.Controls.Clear();
-
-            if (views.Keys.Contains("Text"))
-            {
-                textCal = (TextSchedule)views["Text"];
-            }
-            else
-            {
-                //This will need the Schedule data structure as a parameter
-                //Prints entire schedule data structure in agreed format
-                textCal = new TextSchedule(schedule);
-                views.Add("Text", textCal);
-            }
-
-            textCal.Dock = DockStyle.Fill;
-
-            scheduleView.splitContainer1.Panel1.Controls.Add(textCal);
-            oneDayToolStripMenuItem.Enabled = true;
-            fullScheduleToolStripMenuItem.Enabled = true;
-            textToolStripMenuItem.Enabled = false;
-        }
-
-        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string locationToSavePdf = Path.Combine(Path.GetTempPath(), "HelpManual.pdf");
-            File.WriteAllBytes(locationToSavePdf, Properties.Resources.HelpManual);
-            Process.Start(locationToSavePdf);
-        }
-
-        //------------------------------------------------------------------------------------------
-
-        /// <summary>
-        /// While resizing the SchedulePresenter, keep the splitter in the correct position
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        //Author: Amy Brown
-        //Date: 4-7-2016
-        //Modifications:    Added check for form minimized
-        //Date(s) Tested: 4-7-2016, 4-20-2016
-        //Approved By:
-        private void FETP_Form_Resize(object sender, EventArgs e)
-        {
-            if (scheduleView != null && !WindowState.Equals(FormWindowState.Minimized))
-            {
-                scheduleView.splitContainer1.SplitterDistance = scheduleView.splitContainer1.Width - 221;
-            }
-        }
+        #endregion        
     }
 }
