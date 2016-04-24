@@ -171,14 +171,15 @@ namespace FETP_GUI
             bool isExamValid = true;
             bool isBreakValid = true;
             bool isLunchValid = true;
+            bool isEnrollmentValid = true;
 
             char[] colon = { ':' };
-            string[] timeParts = beginTime.Split(colon);
+            string[] timeParts = null;
 
             //Get data from form
             //using immediate if to get around empty text box exceptions for now - defaults all values to 1
             daysNum = (dataCollection1.days_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.days_textBox.Text);
-            beginTime = (dataCollection1.startTime_textBox.Text.Equals(string.Empty)) ? "-1" : dataCollection1.startTime_textBox.Text;
+            beginTime = (dataCollection1.startTime_textBox.Text.Equals("  :")) ? "1:1" : dataCollection1.startTime_textBox.Text;
             examLength = (dataCollection1.examLength_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.examLength_textBox.Text);
             breakLength = (dataCollection1.breakLength_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.breakLength_textBox.Text);
             lunchLength = (dataCollection1.lunchLength_textBox.Text.Equals(string.Empty)) ? -1 : Convert.ToInt32(dataCollection1.lunchLength_textBox.Text);
@@ -189,33 +190,44 @@ namespace FETP_GUI
             //Check 5 ints for valid ranges
             if (constraintsFile.Equals(string.Empty))
             {
-            if (daysNum < 1 || daysNum > 7)
-            {
-                isSchedulePossible = false;
-                isDaysValid = false;
+                if (daysNum < 1 || daysNum > 7)
+                {
+                    isSchedulePossible = false;
+                    isDaysValid = false;
+                }
+                
+                timeParts = beginTime.Split(colon);
+
+                if (Convert.ToInt32(timeParts[0]) < 7 || Convert.ToInt32(timeParts[0]) > 16)
+                {
+                    isSchedulePossible = false;
+                    isBeginValid = false;
+                }
+
+                if (examLength < 90 || examLength > 120)
+                {
+                    isSchedulePossible = false;
+                    isExamValid = false;
+                }
+
+                if (breakLength < 10 || breakLength > 30)
+                {
+                    isSchedulePossible = false;
+                    isBreakValid = false;
+                }
+
+                if (lunchLength < 0 || lunchLength > 60)
+                {
+                    isSchedulePossible = false;
+                    isLunchValid = false;
+                }
             }
 
-
-            if (Convert.ToInt32(timeParts[0]) < 7 || Convert.ToInt32(timeParts[0]) > 16)
+            //Check for existing Enrollment Data File
+            if (enrollmentFile.Equals(string.Empty))
             {
                 isSchedulePossible = false;
-                isBeginValid = false;
-            }
-            if (examLength < 90 || examLength > 120)
-            {
-                isSchedulePossible = false;
-                isExamValid = false;
-            }
-            if (breakLength < 10 || breakLength > 30)
-            {
-                isSchedulePossible = false;
-                isBreakValid = false;
-            }
-            if (lunchLength < 0 || lunchLength > 60)
-            {
-                isSchedulePossible = false;
-                isLunchValid = false;
-            }
+                isEnrollmentValid = false;
             }
 
             if (isSchedulePossible)
@@ -234,6 +246,7 @@ namespace FETP_GUI
                     TimeSpan examsLength = TimeSpan.FromMinutes(examLength);
                     TimeSpan timeBetweenExams = TimeSpan.FromMinutes(breakLength);
                     TimeSpan lunchSpan = TimeSpan.FromMinutes(lunchLength);
+                    
                     //Using these 5 ints + enrollmentData file:
                     //Create schedule data structure
                     schedule = new Schedule(enrollmentFile, daysNum, examsStartTime, examsLength, timeBetweenExams, lunchSpan);
@@ -296,6 +309,10 @@ namespace FETP_GUI
                 if (!isLunchValid)
                 {
                     errorMessage += "\nInvalid lunch length - enter a whole number 0 - 60.";
+                }
+                if (!isEnrollmentValid)
+                {
+                    errorMessage += "\nPlease provide an Enrollment Data File.";
                 }
 
                 MessageBox.Show(errorMessage);
