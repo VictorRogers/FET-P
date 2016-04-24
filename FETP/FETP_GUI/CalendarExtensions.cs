@@ -114,6 +114,8 @@ namespace CalendarExtension
                 }
             }
         }
+
+        //------------------------------------------------------------------------------------------
         
         public static void labelAllScheduledBlocks(this UserControl cal, Schedule _schedule, ref Button[][] Exams)
         {

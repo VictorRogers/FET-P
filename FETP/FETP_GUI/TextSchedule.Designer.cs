@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -55,5 +57,6 @@
         #endregion
 
         private System.Windows.Forms.RichTextBox richTextBox1;
+        public System.Windows.Forms.ToolTip toolTip1;
     }
 }

@@ -56,6 +56,7 @@ namespace FETP_GUI
         private void InitializeComponent(int numOfDays, int numOfExamsPerDay)
         {
             #region Initialize new GUI objects
+            components = new Container();
             previous = new Button();
             next = new Button();
             Days = new GroupBox[numOfDays];
@@ -74,6 +75,7 @@ namespace FETP_GUI
                     startTimes[day][n] = new Label();
                 }
             }
+            toolTip1 = new ToolTip(components);
             #endregion
 
             #region suspend layout
@@ -151,6 +153,7 @@ namespace FETP_GUI
                 day++;
             }
             this.labelAllScheduledBlocks(_schedule, ref Exams);
+            tooltipAllScheduledBlocks(_schedule, ref Exams);
 
             //
             // startTimes
@@ -227,6 +230,55 @@ namespace FETP_GUI
             #endregion
 
             PerformLayout();
+        }
+
+        public void tooltipAllScheduledBlocks(Schedule _schedule, ref Button[][] Exams)
+        {
+            int totalPerDay = _schedule.NumberOfTimeSlotsAvailablePerDay - 1;
+
+            int day = 0, nulls = 0;
+            for (int a = 0; a < _schedule.Blocks.Count(); a++)
+            {
+                int block = (a - nulls) % _schedule.NumberOfTimeSlotsAvailablePerDay;
+                if (_schedule.Blocks[a] != null)
+                {
+                    Exams[day][block].Tag += _schedule.Blocks[a].ClassesInBlock.Count.ToString() + " class(es) \t" + _schedule.Blocks[a].Enrollment.ToString() + " total students\n";
+
+                    foreach (Class c in _schedule.Blocks[a].ClassesInBlock)
+                    {
+                        foreach (DayOfWeek d in c.DaysMeet)
+                        {
+                            switch (d)
+                            {
+                                case DayOfWeek.Monday:
+                                    Exams[day][block].Tag += "M";
+                                    break;
+                                case DayOfWeek.Tuesday:
+                                    Exams[day][block].Tag += "T";
+                                    break;
+                                case DayOfWeek.Wednesday:
+                                    Exams[day][block].Tag += "W";
+                                    break;
+                                case DayOfWeek.Thursday:
+                                    Exams[day][block].Tag += "R";
+                                    break;
+                                case DayOfWeek.Friday:
+                                    Exams[day][block].Tag += "F";
+                                    break;
+                            }
+                        }
+
+                        Exams[day][block].Tag += "\t" + c.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
+                        Exams[day][block].Tag += "-" + c.EndTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+                        Exams[day][block].Tag += "\t(" + c.Enrollment.ToString() + " students)";
+                        Exams[day][block].Tag += "\n";
+                    }
+                    toolTip1.SetToolTip(Exams[day][block], Exams[day][block].Tag.ToString());
+
+                    if (block.Equals(totalPerDay)) { day++; }
+                }
+                else { nulls++; }
+            }
         }
 
         private void previous_Click(object sender, EventArgs e)
