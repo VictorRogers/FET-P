@@ -215,7 +215,7 @@ namespace FETP_GUI
             }
 
             Block[] nonNullBlocks = new Block[_schedule.Blocks.Count() - nulls];
-            for (int j = 0; _schedule.Blocks[j] != null; j++)
+            for (int j = 0; (j < (_schedule.Blocks.Count()) && _schedule.Blocks[j] != null); j++)
             {
                 nonNullBlocks[j] = _schedule.Blocks[j];
             }
