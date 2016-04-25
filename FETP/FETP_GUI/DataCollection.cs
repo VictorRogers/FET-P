@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.Globalization;
 
 namespace FETP_GUI
 {
@@ -58,6 +60,16 @@ namespace FETP_GUI
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 scheduleBrowse_textBox.Text = openFileDialog.FileName;
+
+
+                FileStream inFile = File.OpenRead(@openFileDialog.FileName);
+                var reader = new StreamReader(inFile);
+
+                days_textBox.Text = int.Parse(reader.ReadLine()).ToString();
+                startTime_textBox.Text = reader.ReadLine();//TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture).ToString();
+                examLength_textBox.Text = int.Parse(reader.ReadLine()).ToString();//TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture).ToString();
+                breakLength_textBox.Text = int.Parse(reader.ReadLine()).ToString();//TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture).ToString();
+                lunchLength_textBox.Text = int.Parse(reader.ReadLine()).ToString();//TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture).ToString();
             }
         }
     }

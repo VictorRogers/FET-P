@@ -155,7 +155,7 @@ namespace FETP_GUI
                 Blocks[i].FlatAppearance.BorderSize = 2;
                 Blocks[i].FlatStyle = FlatStyle.Flat;
                 Blocks[i].Location = new Point(6, (15 + ((15 + 68) * i)));
-                Blocks[i].Name = "Class Group " + (i + 1).ToString();
+                Blocks[i].Name = "Group #" + (i + 1).ToString();
                 Blocks[i].Size = new Size(180, 68);
                 //Blocks[i].Text = Blocks[i].Name;
                 Blocks[i].UseVisualStyleBackColor = false;
@@ -172,7 +172,7 @@ namespace FETP_GUI
                 Blocks[i].FlatStyle = FlatStyle.Flat;
                 Blocks[i].ForeColor = Color.FromArgb(45, 12, 73);
                 Blocks[i].Location = new Point(6, (15 + ((15 + 68) * i)));
-                Blocks[i].Name = "Class Group " + (i + 1).ToString();
+                Blocks[i].Name = "Group #" + (i + 1).ToString();
                 Blocks[i].Size = new Size(180, 68);
                 //Blocks[i].Text = Blocks[i].Name;
                 Blocks[i].UseVisualStyleBackColor = false;
@@ -205,8 +205,9 @@ namespace FETP_GUI
 
         public void tooltipAllListedBlocks(Schedule _schedule, ref Button[] ButtonBlocks)
         {
+            
             int nulls = 0;
-            foreach (Block b in _schedule.Blocks)
+            foreach(Block b in _schedule.Blocks)
             {
                 if (b == null)
                 {
@@ -215,9 +216,22 @@ namespace FETP_GUI
             }
 
             Block[] nonNullBlocks = new Block[_schedule.Blocks.Count() - nulls];
-            for (int j = 0; (j < (_schedule.Blocks.Count()) && _schedule.Blocks[j] != null); j++)
+            //for(int j=0; (j < (_schedule.Blocks.Count()) && _schedule.Blocks[j] != null); j++)
+            //{
+            //    nonNullBlocks[j] = _schedule.Blocks[j];
+            //}
+
+            for (int i=0, j = 0; i < _schedule.Blocks.Count(); i++, j++)
             {
-                nonNullBlocks[j] = _schedule.Blocks[j];
+                if(_schedule.Blocks[i] != null)
+                {
+                    nonNullBlocks[j] = _schedule.Blocks[i];
+                }
+                else
+                {
+                    j--;
+                    continue;
+                }
             }
 
             Block[] sortedBlocks = nonNullBlocks.OrderByDescending(b => b.Enrollment).ToArray();

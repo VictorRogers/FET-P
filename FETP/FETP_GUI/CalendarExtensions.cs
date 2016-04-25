@@ -8,6 +8,9 @@ namespace CalendarExtension
 {
     public static class CalendarExtension
     {
+        private static Block[] sortedScheduled;
+        private static Block[] sortedUnscheduled;
+
         public static void labelAllListedBlocks(this UserControl cal, Schedule _schedule, ref Button[] ButtonBlocks)
         {
             int nulls = 0;
@@ -20,25 +23,38 @@ namespace CalendarExtension
             }
 
             Block[] nonNullBlocks = new Block[_schedule.Blocks.Count() - nulls];
-            for(int j=0; (j < (_schedule.Blocks.Count()) && _schedule.Blocks[j] != null); j++)
+            //for(int j=0; (j < (_schedule.Blocks.Count()) && _schedule.Blocks[j] != null); j++)
+            //{
+            //    nonNullBlocks[j] = _schedule.Blocks[j];
+            //}
+
+            for (int i=0, j = 0; i < _schedule.Blocks.Count(); i++, j++)
             {
-                nonNullBlocks[j] = _schedule.Blocks[j];
+                if(_schedule.Blocks[i] != null)
+                {
+                    nonNullBlocks[j] = _schedule.Blocks[i];
+                }
+                else
+                {
+                    j--;
+                    continue;
+                }
             }
 
-            Block[] sortedBlocks = nonNullBlocks.OrderByDescending(b => b.Enrollment).ToArray();
+            sortedScheduled = nonNullBlocks.OrderByDescending(b => b.Enrollment).ToArray();
             
             int totalPerDay = _schedule.NumberOfTimeSlotsAvailablePerDay - 1;
 
             nulls = 0;
             int block = 0;
-            for (; block < sortedBlocks.Length; block++)
+            for (; block < sortedScheduled.Length; block++)
             {
                 int button = (block - nulls);
-                if (sortedBlocks[block] != null)
+                if (sortedScheduled[block] != null)
                 {
-                    ButtonBlocks[button].Text += "Placed\n";
+                    ButtonBlocks[button].Text += ButtonBlocks[button].Name + " - Placed\n";
 
-                    Class biggestClass = getBiggestClass(sortedBlocks[block]);
+                    Class biggestClass = getBiggestClass(sortedScheduled[block]);
 
                     foreach (DayOfWeek d in biggestClass.DaysMeet)
                     {
@@ -72,17 +88,17 @@ namespace CalendarExtension
             if(_schedule.LeftoverBlocks.Count > 0)
             {
                 nulls = 0;
-                sortedBlocks = _schedule.LeftoverBlocks.OrderByDescending(c => c.Enrollment).ToArray();
+                sortedUnscheduled = _schedule.LeftoverBlocks.OrderByDescending(c => c.Enrollment).ToArray();
 
                 for (; block < _schedule.Blocks.Count() + _schedule.LeftoverBlocks.Count(); block++)
                 {
                     int leftoverBlock = block - nonNullBlocks.Count();
                     int button = (block - nulls);
-                    if (sortedBlocks[leftoverBlock] != null)
+                    if (sortedUnscheduled[leftoverBlock] != null)
                     {
-                        ButtonBlocks[button].Text += "Not Placed\n";
+                        ButtonBlocks[button].Text += ButtonBlocks[button].Name + " - Not Placed\n";
 
-                        Class biggestClass = getBiggestClass(sortedBlocks[leftoverBlock]);
+                        Class biggestClass = getBiggestClass(sortedUnscheduled[leftoverBlock]);
 
                         foreach (DayOfWeek d in biggestClass.DaysMeet)
                         {
@@ -127,8 +143,17 @@ namespace CalendarExtension
                 int block = (a - nulls) % _schedule.NumberOfTimeSlotsAvailablePerDay;
                 if (_schedule.Blocks[a] != null)
                 {
-                    Class biggestClass = getBiggestClass(_schedule.Blocks[a]);
 
+                    for (int i = 0; i < sortedScheduled.Count(); i++)
+                    {
+                        if (_schedule.Blocks[a].Equals(sortedScheduled[i]))
+                        {
+                            Exams[day][block].Text += "Group #" + (i+1).ToString() + "\n";
+                        }
+                    }
+
+                    Class biggestClass = getBiggestClass(_schedule.Blocks[a]);
+                    
                     foreach (DayOfWeek d in biggestClass.DaysMeet)
                     {
                         switch (d)
