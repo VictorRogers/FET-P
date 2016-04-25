@@ -50,12 +50,15 @@ namespace FETP
         /// </summary>
         public const string TIME_EXAMS_MUST_END_BY = "1700";
 
-        //TODO: figure these out // not sure which is still needed for lunch time scheduling. Lunch time scheduling still needs work
+        //TODO: figure these out // not sure which is still needed for lunch time scheduling. Lunch time scheduling still needs work // TimeSpan cannot be const
         public const string LOWER_TIME_RANGE_FOR_LUNCH = "1100";
         public const string UPPER_TIME_RANGE_FOR_LUNCH = "0100";
 
         public const int MAX_NUMBER_OF_DAYS_FOR_EXAMS = 7;
         public const int MIN_NUMBER_OF_DAYS_FOR_EXAMS = 1;
+
+        public const string MIN_START_TIME = "0700";
+        public const string MAX_START_TIME = "1600";
 
         #endregion
 

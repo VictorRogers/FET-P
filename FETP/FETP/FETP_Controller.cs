@@ -334,7 +334,18 @@ namespace FETP
         public static bool ValidateExamsStartTime(String examsStartTime)
         {
             bool isValid = false;
-            //TODO: implement
+
+            TimeSpan startTime = TimeSpan.FromMinutes(Int32.Parse(examsStartTime));
+
+            // Convert Constants to more usable format
+            TimeSpan minStartTime = TimeSpan.ParseExact(Schedule.MIN_START_TIME, @"hhmm", CultureInfo.InvariantCulture);
+            TimeSpan maxStartTime = TimeSpan.ParseExact(Schedule.MAX_START_TIME, @"hhmm", CultureInfo.InvariantCulture);
+
+            if (startTime > minStartTime && startTime < maxStartTime)
+            {
+                isValid = true;
+            }
+
             return isValid;
         }
 
