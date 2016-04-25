@@ -310,6 +310,70 @@ namespace FETP
             return classes;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="numberOfDays">Number of days available for exam scheduling</param>
+        /// <returns></returns>
+        public static bool ValidateNumberOfDays(String numberOfDays)
+        {
+            bool isValid = false;
+            int value;
+            if(Int32.TryParse(numberOfDays, out value) && value > Schedule.MIN_NUMBER_OF_DAYS_FOR_EXAMS && value < Schedule.MAX_NUMBER_OF_DAYS_FOR_EXAMS)
+            {
+
+            }
+            return isValid;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="examsStartTime">Time for exams to start at</param>
+        /// <returns></returns>
+        public static bool ValidateExamsStartTime(String examsStartTime)
+        {
+            bool isValid = false;
+            //TODO: implement
+            return isValid;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="examsLength">Length exams will run</param>
+        /// <returns></returns>
+        public static bool ValidateExamsLength(String examsLength)
+        {
+            bool isValid = false;
+            //TODO: implement
+            return isValid;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="timeBetweenExams">Length of the break time between exams</param>
+        /// <returns></returns>
+        public static bool ValidateTimeBetweenExams(String timeBetweenExams)
+        {
+            bool isValid = false;
+            //TODO: implement
+            return isValid;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lunchLength">Length of lunch time</param>
+        /// <returns></returns>
+        public static bool ValidateLunchLength(String lunchLength)
+        {
+            bool isValid = false;
+            //TODO: implement
+            return isValid;
+        }
+
 
         ///// <summary>
         ///// Placeholder

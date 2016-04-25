@@ -51,6 +51,9 @@ namespace FETP
         public const string LOWER_TIME_RANGE_FOR_LUNCH = "1100";
         public const string UPPER_TIME_RANGE_FOR_LUNCH = "0100";
 
+        public const int MAX_NUMBER_OF_DAYS_FOR_EXAMS = 7;
+        public const int MIN_NUMBER_OF_DAYS_FOR_EXAMS = 1;
+
         #endregion
 
 
@@ -649,8 +652,8 @@ namespace FETP
 
             //TODO: possibly implement TryParse or other form of error handling
             this.numberOfDays = Int32.Parse(reader.ReadLine());
-            this.examsStartTime = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture); //TODO: further investigate CultureInfo.InvariantCulture to be sure it's needed and doesn't break stuff
-            this.examsLength = TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture);
+            this.examsStartTime = TimeSpan.FromMinutes(Int32.Parse(reader.ReadLine())); //TODO: further investigate CultureInfo.InvariantCulture to be sure it's needed and doesn't break stuff
+            this.examsLength = TimeSpan.FromMinutes(Int32.Parse(reader.ReadLine()));
             this.timeBetweenExams = TimeSpan.FromMinutes(Int32.Parse(reader.ReadLine())); //TODO: Test to make sure the from minutes functions with CultureInfo.InvariantCulture
             this.lunchLength = TimeSpan.FromMinutes(Int32.Parse(reader.ReadLine()));
 
@@ -740,7 +743,19 @@ namespace FETP
             this.lunchLength = lunchLength;
         }
 
-        
+        private void SetupScheduleConstraints(int numberOfDay, int examsStartTime,
+                                              int examsLength, int timeBetweenExams,
+                                              int lunchLength)
+        {
+            this.numberOfDays = numberOfDay;
+            this.examsStartTime = examsStartTime;
+            this.examsLength = examsLength;
+            this.timeBetweenExams = timeBetweenExams;
+            this.lunchLength = lunchLength;
+        }
+
+
+
         /// <summary>
         /// 
         /// </summary>

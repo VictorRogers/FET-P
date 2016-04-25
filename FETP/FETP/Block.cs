@@ -61,7 +61,9 @@ namespace FETP
             {
                 int enrollment = 0;
                 foreach (Class cl in classesInBlock)
+                {
                     enrollment += cl.Enrollment;
+                }
                 return enrollment;
             }
         }
