@@ -63,11 +63,11 @@ namespace FETP
         public const int MIN_EXAM_LENGTH_IN_MINUTES = "90";
         public const int MAX_EXAM_LENGTH_IN_MINUTES = "120"; // TODO: figure these out
 
-        public const int MIN_BREAK_TIME_IN_MINUTES = "10";
-        public const int MAX_BREAK_TIME_IN_MINUTES = "30";
+        public const int MIN_BREAK_TIME_IN_MINUTES = 10;
+        public const int MAX_BREAK_TIME_IN_MINUTES = 30;
 
-        public const int MIN_LUNCH_LENGTH_IN_MINUTES = "0";
-        public const int MAX_LUNCH_LENGTH_IN_MINUTES = "60";
+        public const int MIN_LUNCH_LENGTH_IN_MINUTES = 0;
+        public const int MAX_LUNCH_LENGTH_IN_MINUTES = 60;
 
 
 
