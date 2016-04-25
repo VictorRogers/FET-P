@@ -357,7 +357,12 @@ namespace FETP
         public static bool ValidateExamsLength(String examsLength)
         {
             bool isValid = false;
-            //TODO: implement
+
+            int length;
+            if (Int32.TryParse(examsLength, out length) && length > Schedule.MIN_EXAM_LENGTH_IN_MINUTES && length < Schedule.MAX_EXAM_LENGTH_IN_MINUTES)
+            {
+                isValid = true;   
+            }
             return isValid;
         }
 
