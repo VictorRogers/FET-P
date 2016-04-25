@@ -79,7 +79,7 @@ namespace FETP_GUI
 
             richTextBox1.Text += ("\n*******************************************");
             richTextBox1.Text += ("\nNON SCHEDULED BLOCKS INFORMATION");
-            richTextBox1.Text += ("*******************************************");
+            richTextBox1.Text += ("\n*******************************************");
             foreach (Block block in _schedule.LeftoverBlocks)
             {
                 richTextBox1.Text += ("\n**************");

@@ -97,6 +97,7 @@ namespace FETP_GUI
                 gb.AutoSize = true;
                 gb.Controls.Add(DayPanels[day]);
                 gb.Dock = DockStyle.Fill;
+                gb.Enabled = true;
                 gb.BackColor = Color.FromArgb(70, 22, 107);
                 gb.Font = new Font("Microsoft Sans Serif", 16.0F, FontStyle.Bold, GraphicsUnit.Point, 0);
                 gb.ForeColor = Color.FromArgb(219, 159, 17);
@@ -153,7 +154,7 @@ namespace FETP_GUI
                 day++;
             }
             this.labelAllScheduledBlocks(_schedule, ref Exams);
-            tooltipAllScheduledBlocks(_schedule, ref Exams);
+            tagAllScheduledBlocks(_schedule, ref Exams);
 
             //
             // startTimes
@@ -210,10 +211,17 @@ namespace FETP_GUI
             previous.UseVisualStyleBackColor = false;
             previous.Click += new EventHandler(previous_Click);
             //
+            //tootlTip1
+            //
+            toolTip1.ShowAlways = true;
+            toolTip1.Active = true;
+            //
             //SingleDayCalendar
             //
             //AutoScroll = true;
             Controls.Add(Days[WHAT_DAY]);
+            ActiveControl = Days[WHAT_DAY];
+
             Controls.Add(next);
             Controls.Add(previous);
             AutoScroll = true;
@@ -232,7 +240,7 @@ namespace FETP_GUI
             PerformLayout();
         }
 
-        public void tooltipAllScheduledBlocks(Schedule _schedule, ref Button[][] Exams)
+        public void tagAllScheduledBlocks(Schedule _schedule, ref Button[][] Exams)
         {
             int totalPerDay = _schedule.NumberOfTimeSlotsAvailablePerDay - 1;
 
@@ -242,7 +250,7 @@ namespace FETP_GUI
                 int block = (a - nulls) % _schedule.NumberOfTimeSlotsAvailablePerDay;
                 if (_schedule.Blocks[a] != null)
                 {
-                    Exams[day][block].Tag += _schedule.Blocks[a].ClassesInBlock.Count.ToString() + " class(es) \t" + _schedule.Blocks[a].Enrollment.ToString() + " total students\n";
+                    Exams[day][block].Tag += _schedule.Blocks[a].ClassesInBlock.Count.ToString() + " class(es)\t" + _schedule.Blocks[a].Enrollment.ToString() + " total students\n";
 
                     foreach (Class c in _schedule.Blocks[a].ClassesInBlock)
                     {
@@ -301,8 +309,10 @@ namespace FETP_GUI
                 {
                     next.Enabled = true;
                 }
-
+                
                 Controls.Add(Days[WHAT_DAY]);
+                ActiveControl = Days[WHAT_DAY];
+
                 Controls.Add(next);
                 Controls.Add(previous);
             }

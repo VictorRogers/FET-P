@@ -139,7 +139,9 @@ namespace FETP_GUI
                 Size = new Size(681, 492);
                 MaximizeBox = true;
                 viewToolStripMenuItem.Enabled = true;
+                oneDayToolStripMenuItem.Enabled = true;
                 fullScheduleToolStripMenuItem.Enabled = false;
+                textToolStripMenuItem.Enabled = true;
             }
         }
 
@@ -275,15 +277,15 @@ namespace FETP_GUI
             //This region contains a single function - It will be changed to contain a set of functions
             #region Help
 
-        //Author: Cory Feliciano (?)
-        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string locationToSavePdf = Path.Combine(Path.GetTempPath(), "HelpManual.pdf");
-            File.WriteAllBytes(locationToSavePdf, Properties.Resources.HelpManual);
-            Process.Start(locationToSavePdf);
-        }
+            //Author: Cory Feliciano (?)
+            private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+            {
+                string locationToSavePdf = Path.Combine(Path.GetTempPath(), "HelpManual.pdf");
+                File.WriteAllBytes(locationToSavePdf, Properties.Resources.HelpManual);
+                Process.Start(locationToSavePdf);
+            }
 
-        #endregion
+            #endregion
 
         #endregion
 
@@ -426,8 +428,8 @@ namespace FETP_GUI
             enrollmentFile = (dataCollection1.enrollmentBrowse_textBox.Text.Equals(string.Empty)) ? string.Empty : dataCollection1.enrollmentBrowse_textBox.Text;
 
             //Check 5 ints for valid ranges
-            if (constraintsFile.Equals(string.Empty))
-            {
+            //if (constraintsFile.Equals(string.Empty))
+            //{
                 if (daysNum < 1 || daysNum > 7)
                 {
                     isSchedulePossible = false;
@@ -436,7 +438,7 @@ namespace FETP_GUI
                 
                 timeParts = beginTime.Split(colon);
 
-                if (Convert.ToInt32(timeParts[0]) < 7 || Convert.ToInt32(timeParts[0]) > 16)
+                if (Convert.ToInt32(timeParts[0]) < 7 || Convert.ToInt32(timeParts[0]) > 16 || (Convert.ToInt32(timeParts[0]) == 16 && Convert.ToInt32(timeParts[1]) > 0))
                 {
                     isSchedulePossible = false;
                     isBeginValid = false;
@@ -459,7 +461,7 @@ namespace FETP_GUI
                     isSchedulePossible = false;
                     isLunchValid = false;
                 }
-            }
+            //}
 
             //Check for existing Enrollment Data File
             if (enrollmentFile.Equals(string.Empty))
@@ -473,8 +475,8 @@ namespace FETP_GUI
                 FormBorderStyle = FormBorderStyle.Sizable;
                 panel1.Controls.Clear();
 
-                if (constraintsFile.Equals(string.Empty))
-                {
+                //if (constraintsFile.Equals(string.Empty))
+                //{
                     //Convert time ints to Timespan objects
                     //******************************************************
                     //TimeSpan examsStartTime = TimeSpan.FromHours(beginTime);
@@ -488,12 +490,12 @@ namespace FETP_GUI
                     //Using these 5 ints + enrollmentData file:
                     //Create schedule data structure
                     schedule = new Schedule(enrollmentFile, daysNum, examsStartTime, examsLength, timeBetweenExams, lunchSpan);
-                }
-                else
-                {
-                    //Create a schedule using the input files
-                    schedule = new Schedule(enrollmentFile, constraintsFile);
-                }
+                //}
+                //else
+                //{
+                //    //Create a schedule using the input files
+                //    schedule = new Schedule(enrollmentFile, constraintsFile);
+                //}
 
 
                 //Using schedule data strucutre::
@@ -525,7 +527,9 @@ namespace FETP_GUI
                 //exportToolStripMenuItem.Enabled = true;   //Uncomment this line when Export is implemented
                 
                 viewToolStripMenuItem.Enabled = true;
+                oneDayToolStripMenuItem.Enabled = true;
                 fullScheduleToolStripMenuItem.Enabled = false;
+                textToolStripMenuItem.Enabled = true;
             }
             else
             {
