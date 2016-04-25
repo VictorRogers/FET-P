@@ -60,8 +60,8 @@ namespace FETP
         public const string MIN_START_TIME = "0700";
         public const string MAX_START_TIME = "1600"; // TODO: figure these out
 
-        public const int MIN_EXAM_LENGTH_IN_MINUTES = "90";
-        public const int MAX_EXAM_LENGTH_IN_MINUTES = "120"; // TODO: figure these out
+        public const int MIN_EXAM_LENGTH_IN_MINUTES = 90;
+        public const int MAX_EXAM_LENGTH_IN_MINUTES = 120; // TODO: figure these out
 
         public const int MIN_BREAK_TIME_IN_MINUTES = 10;
         public const int MAX_BREAK_TIME_IN_MINUTES = 30;
