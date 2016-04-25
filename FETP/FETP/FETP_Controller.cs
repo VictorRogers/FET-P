@@ -321,7 +321,7 @@ namespace FETP
             int value;
             if(Int32.TryParse(numberOfDays, out value) && value > Schedule.MIN_NUMBER_OF_DAYS_FOR_EXAMS && value < Schedule.MAX_NUMBER_OF_DAYS_FOR_EXAMS)
             {
-
+                isValid = true;
             }
             return isValid;
         }
