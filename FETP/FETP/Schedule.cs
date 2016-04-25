@@ -340,6 +340,42 @@ namespace FETP
 
         }
 
+        //TODO: clean up constructors. i really don't know how else to word it
+        //TODO: change inputs of constructor all to string to remove conversion work from front end // COMFIRM WITH FRONT END BEFORE DOING THIS //Confirmed just taking strings
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dataFileAddress"></param>
+        /// <param name="numberOfDays"></param>
+        /// <param name="examsStartTime"></param>
+        /// <param name="examsLength"></param>
+        /// <param name="timeBetweenExams"></param>
+        /// <param name="lunchLength"></param>
+        public Schedule(string dataFileAddress, string numberOfDays, string examsStartTime,
+                        string examsLength, string timeBetweenExams, string lunchLength)
+        {
+            //Intial setup
+            this.SetupClassDataFromFile(dataFileAddress);
+            this.SetupScheduleConstraints(numberOfDays, examsStartTime, examsLength, timeBetweenExams, lunchLength);
+
+            this.SetNumberOfTimeSlotsAvailable(); //TODO: rewire what this function does
+
+            this.SetupExamStartTimeTable();
+
+            this.leftoverBlocks = FETP_Controller.GroupClasses(this.AllClasses);
+
+            if (LeftoverBlocks.Count < NumberOfTimeSlotsAvailable)
+            {
+                this.numberOfTimeSlotsToBeUsed = LeftoverBlocks.Count;
+            }
+            else
+            {
+                this.numberOfTimeSlotsToBeUsed = NumberOfTimeSlotsAvailable;
+            }
+
+            this.ScheduleBlocks(this.LeftoverBlocks);
+        }
+
         //TODO: substitue this function in for code snippets
         private void SetupNumberOfTimeslotsNeeded()
         {
@@ -766,7 +802,8 @@ namespace FETP
                                               string lunchLength)
         {
             this.numberOfDays = Int32.Parse(numberOfDays);
-            this.examsStartTime = TimeSpan.FromMinutes(Int32.Parse(examsStartTime)); //TODO: further investigate CultureInfo.InvariantCulture to be sure it's needed and doesn't break stuff
+            DateTime tempStartTime = Convert.ToDateTime(examsStartTime);
+            this.examsStartTime = TimeSpan.FromTicks(tempStartTime.TimeOfDay.Ticks);
             this.examsLength = TimeSpan.FromMinutes(Int32.Parse(examsLength));
             this.timeBetweenExams = TimeSpan.FromMinutes(Int32.Parse(timeBetweenExams)); //TODO: Test to make sure the from minutes functions with CultureInfo.InvariantCulture
             this.lunchLength = TimeSpan.FromMinutes(Int32.Parse(lunchLength));

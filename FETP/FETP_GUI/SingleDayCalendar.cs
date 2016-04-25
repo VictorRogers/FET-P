@@ -35,7 +35,7 @@ namespace FETP_GUI
         }
 
         //Add Schedule object parameter - get generated schedule from FETP_Form
-        public SingleDayCalendar(Schedule schedule, int examLength, int breakLength, int lunchLength)
+        public SingleDayCalendar(Schedule schedule)
         {
             _schedule = schedule;
             NUMBER_OF_DAYS = schedule.NumberOfDays;

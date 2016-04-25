@@ -25,6 +25,7 @@ namespace FETP_GUI
             InitializeComponent();
         }
 
+        //Amy
         private void generate_Click(object sender, EventArgs e)
         {
             if (GenerateSchedule != null)
@@ -33,6 +34,7 @@ namespace FETP_GUI
             }
         }
 
+        //Amy
         private void clear_Click(object sender, EventArgs e)
         {
             if (ClearForm != null)
@@ -52,6 +54,7 @@ namespace FETP_GUI
             }
         }
 
+        //Cory? and Amy
         private void scheduleBrowse_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -66,10 +69,10 @@ namespace FETP_GUI
                 var reader = new StreamReader(inFile);
 
                 days_textBox.Text = int.Parse(reader.ReadLine()).ToString();
-                startTime_textBox.Text = reader.ReadLine();//TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture).ToString();
-                examLength_textBox.Text = int.Parse(reader.ReadLine()).ToString();//TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture).ToString();
-                breakLength_textBox.Text = int.Parse(reader.ReadLine()).ToString();//TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture).ToString();
-                lunchLength_textBox.Text = int.Parse(reader.ReadLine()).ToString();//TimeSpan.ParseExact(reader.ReadLine(), @"hhmm", CultureInfo.InvariantCulture).ToString();
+                startTime_textBox.Text = reader.ReadLine();
+                examLength_textBox.Text = int.Parse(reader.ReadLine()).ToString();
+                breakLength_textBox.Text = int.Parse(reader.ReadLine()).ToString();
+                lunchLength_textBox.Text = int.Parse(reader.ReadLine()).ToString();
             }
         }
     }

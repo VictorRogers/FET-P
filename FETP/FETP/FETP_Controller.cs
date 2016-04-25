@@ -310,6 +310,7 @@ namespace FETP
             return classes;
         }
 
+            #region Data Constraints Validators
         /// <summary>
         /// 
         /// </summary>
@@ -319,7 +320,7 @@ namespace FETP
         {
             bool isValid = false;
             int value;
-            if(Int32.TryParse(numberOfDays, out value) && value > Schedule.MIN_NUMBER_OF_DAYS_FOR_EXAMS && value < Schedule.MAX_NUMBER_OF_DAYS_FOR_EXAMS)
+            if((Int32.TryParse(numberOfDays, out value)) && (value >= Schedule.MIN_NUMBER_OF_DAYS_FOR_EXAMS) && (value <= Schedule.MAX_NUMBER_OF_DAYS_FOR_EXAMS))
             {
                 isValid = true;
             }
@@ -335,13 +336,15 @@ namespace FETP
         {
             bool isValid = false;
 
-            TimeSpan startTime = TimeSpan.FromMinutes(Int32.Parse(examsStartTime));
+            //string examsStartTime parameter is in "hh:mm" format, not minutes.
+            DateTime tempStartTime = Convert.ToDateTime(examsStartTime);
+            TimeSpan startTime = TimeSpan.FromTicks(tempStartTime.TimeOfDay.Ticks);
 
             // Convert Constants to more usable format
             TimeSpan minStartTime = TimeSpan.ParseExact(Schedule.MIN_START_TIME, @"hhmm", CultureInfo.InvariantCulture);
             TimeSpan maxStartTime = TimeSpan.ParseExact(Schedule.MAX_START_TIME, @"hhmm", CultureInfo.InvariantCulture);
 
-            if (startTime > minStartTime && startTime < maxStartTime)
+            if ((startTime >= minStartTime) && (startTime <= maxStartTime))
             {
                 isValid = true;
             }
@@ -359,7 +362,7 @@ namespace FETP
             bool isValid = false;
 
             int length;
-            if (Int32.TryParse(examsLength, out length) && length > Schedule.MIN_EXAM_LENGTH_IN_MINUTES && length < Schedule.MAX_EXAM_LENGTH_IN_MINUTES)
+            if (Int32.TryParse(examsLength, out length) && (length >= Schedule.MIN_EXAM_LENGTH_IN_MINUTES) && (length <= Schedule.MAX_EXAM_LENGTH_IN_MINUTES))
             {
                 isValid = true;   
             }
@@ -377,7 +380,7 @@ namespace FETP
             bool isValid = false;
 
             int length;
-            if (Int32.TryParse(timeBetweenExams, out length) && length > Schedule.MIN_BREAK_TIME_IN_MINUTES && length < Schedule.MAX_BREAK_TIME_IN_MINUTES)
+            if (Int32.TryParse(timeBetweenExams, out length) && (length >= Schedule.MIN_BREAK_TIME_IN_MINUTES) && (length <= Schedule.MAX_BREAK_TIME_IN_MINUTES))
             {
                 isValid = true;
             }
@@ -395,14 +398,14 @@ namespace FETP
             bool isValid = false;
 
             int length;
-            if (Int32.TryParse(lunchLength, out length) && length > Schedule.MIN_LUNCH_LENGTH_IN_MINUTES && length < Schedule.MAX_LUNCH_LENGTH_IN_MINUTES)
+            if (Int32.TryParse(lunchLength, out length) && (length >= Schedule.MIN_LUNCH_LENGTH_IN_MINUTES) && (length <= Schedule.MAX_LUNCH_LENGTH_IN_MINUTES))
             {
                 isValid = true;
             }
 
             return isValid;
         }
-
+            #endregion
 
         ///// <summary>
         ///// Placeholder
