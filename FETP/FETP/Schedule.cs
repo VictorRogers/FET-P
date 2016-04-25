@@ -761,15 +761,15 @@ namespace FETP
             this.lunchLength = lunchLength;
         }
 
-        private void SetupScheduleConstraints(int numberOfDay, int examsStartTime,
-                                              int examsLength, int timeBetweenExams,
-                                              int lunchLength)
+        private void SetupScheduleConstraints(string numberOfDays, string examsStartTime,
+                                              string examsLength, string timeBetweenExams,
+                                              string lunchLength)
         {
-            this.numberOfDays = numberOfDay;
-            this.examsStartTime = examsStartTime;
-            this.examsLength = examsLength;
-            this.timeBetweenExams = timeBetweenExams;
-            this.lunchLength = lunchLength;
+            this.numberOfDays = Int32.Parse(numberOfDays);
+            this.examsStartTime = TimeSpan.FromMinutes(Int32.Parse(examsStartTime)); //TODO: further investigate CultureInfo.InvariantCulture to be sure it's needed and doesn't break stuff
+            this.examsLength = TimeSpan.FromMinutes(Int32.Parse(examsLength));
+            this.timeBetweenExams = TimeSpan.FromMinutes(Int32.Parse(timeBetweenExams)); //TODO: Test to make sure the from minutes functions with CultureInfo.InvariantCulture
+            this.lunchLength = TimeSpan.FromMinutes(Int32.Parse(lunchLength));
         }
 
 

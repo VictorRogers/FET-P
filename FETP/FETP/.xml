@@ -307,6 +307,41 @@
             <param name="inClass"></param>
             <returns></returns>
         </member>
+        <member name="M:FETP.FETP_Controller.ValidateNumberOfDays(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="numberOfDays">Number of days available for exam scheduling</param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.FETP_Controller.ValidateExamsStartTime(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="examsStartTime">Time for exams to start at</param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.FETP_Controller.ValidateExamsLength(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="examsLength">Length exams will run</param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.FETP_Controller.ValidateTimeBetweenExams(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="timeBetweenExams">Length of the break time between exams</param>
+            <returns></returns>
+        </member>
+        <member name="M:FETP.FETP_Controller.ValidateLunchLength(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="lunchLength">Length of lunch time</param>
+            <returns></returns>
+        </member>
         <member name="T:FETP.Schedule">
             <summary>
             Placeholder
