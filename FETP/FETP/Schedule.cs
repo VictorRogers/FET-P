@@ -64,11 +64,11 @@ namespace FETP
         /// <summary>
         /// 
         /// </summary>
-        public const int MAX_NUMBER_OF_DAYS_FOR_EXAMS = 7;
+        public const int MIN_NUMBER_OF_DAYS_FOR_EXAMS = 1;
         /// <summary>
         /// 
         /// </summary>
-        public const int MIN_NUMBER_OF_DAYS_FOR_EXAMS = 1;
+        public const int MAX_NUMBER_OF_DAYS_FOR_EXAMS = 7;
 
         /// <summary>
         /// 
@@ -327,6 +327,8 @@ namespace FETP
 
 
         #region Methods
+
+        #region Constructors
         /// <summary>
         /// </summary>
         public Schedule(string path) //TODO: possibly remove?
@@ -347,28 +349,6 @@ namespace FETP
 
             this.Build();
         }
-
-        ////TODO: clean up constructors. i really don't know how else to word it
-        ////TODO: change inputs of constructor all to string to remove conversion work from front end // COMFIRM WITH FRONT END BEFORE DOING THIS
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="dataFileAddress"></param>
-        ///// <param name="numberOfDays"></param>
-        ///// <param name="examsStartTime"></param>
-        ///// <param name="examsLength"></param>
-        ///// <param name="timeBetweenExams"></param>
-        ///// <param name="lunchLength"></param>
-        //public Schedule(string dataFileAddress, int numberOfDays, TimeSpan examsStartTime,
-        //                TimeSpan examsLength, TimeSpan timeBetweenExams, TimeSpan lunchLength)
-        //{
-        //    //Intial setup
-        //    this.SetupScheduleConstraints(numberOfDays, examsStartTime, examsLength, timeBetweenExams, lunchLength);
-        //    this.SetupClassDataFromFile(dataFileAddress);
-
-        //    this.Build();
-
-        //}
 
         //TODO: clean up constructors. i really don't know how else to word it
         //TODO: change inputs of constructor all to string to remove conversion work from front end // COMFIRM WITH FRONT END BEFORE DOING THIS //Confirmed just taking strings
@@ -392,6 +372,11 @@ namespace FETP
 
         }
 
+        #endregion
+
+
+        #region Setup Methods
+
         /// <summary>
         /// Builds out the rest of schedule
         /// </summary>
@@ -408,44 +393,6 @@ namespace FETP
 
             this.ScheduleBlocks(this.LeftoverBlocks);
         }
-
-        ////TODO: clean up constructors. i really don't know how else to word it
-        ////TODO: change inputs of constructor all to string to remove conversion work from front end // COMFIRM WITH FRONT END BEFORE DOING THIS //Confirmed just taking strings
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="dataFileAddress"></param>
-        ///// <param name="numberOfDays"></param>
-        ///// <param name="examsStartTime"></param>
-        ///// <param name="examsLength"></param>
-        ///// <param name="timeBetweenExams"></param>
-        ///// <param name="lunchLength"></param>
-        //public Schedule(string dataFileAddress, string numberOfDays, string examsStartTime,
-        //                string examsLength, string timeBetweenExams, string lunchLength)
-        //{
-        //    //Intial setup
-        //    this.SetupClassDataFromFile(dataFileAddress);
-        //    this.SetupScheduleConstraints(numberOfDays, examsStartTime, examsLength, timeBetweenExams, lunchLength);
-
-        //    this.SetNumberOfTimeSlotsAvailable(); //TODO: rewire what this function does
-
-        //    this.SetupExamStartTimeTable();
-
-        //    this.leftoverBlocks = FETP_Controller.GroupClasses(this.AllClasses);
-
-        //    if (LeftoverBlocks.Count < NumberOfTimeSlotsAvailable)
-        //    {
-        //        this.numberOfTimeSlotsToBeUsed = LeftoverBlocks.Count;
-        //    }
-        //    else
-        //    {
-        //        this.numberOfTimeSlotsToBeUsed = NumberOfTimeSlotsAvailable;
-        //    }
-
-        //    this.ScheduleBlocks(this.LeftoverBlocks);
-        //}
-
-        #region Setup Methods
 
         /// <summary>
         /// Checks if less timeslots are needed than available. 
@@ -477,7 +424,7 @@ namespace FETP
         {
             // setup lower limir for lunch from constant for easier use
             //TODO: replace hhmm accross the board
-            TimeSpan lowerLimitForLunch = TimeSpan.ParseExact(Schedule.LOWER_TIME_RANGE_FOR_LUNCH, @"hhmm", CultureInfo.InvariantCulture);
+            TimeSpan lowerLimitForLunch = TimeSpan.ParseExact(Schedule.LOWER_TIME_RANGE_FOR_LUNCH, TIME_FORMAT_FROM_FILE, CultureInfo.InvariantCulture);
 
             this.startTimesOfExams = new TimeSpan[this.NumberOfTimeSlotsAvailablePerDay]; // intialize start times table
 
@@ -510,7 +457,7 @@ namespace FETP
         /// </summary>
         private void SetNumberOfTimeSlotsAvailable()
         {
-            TimeSpan latestTime = TimeSpan.ParseExact(TIME_EXAMS_MUST_END_BY, @"hhmm", CultureInfo.InvariantCulture); // latest exams can go // TODO: maybe rewrite
+            TimeSpan latestTime = TimeSpan.ParseExact(TIME_EXAMS_MUST_END_BY, TIME_FORMAT_FROM_FILE, CultureInfo.InvariantCulture); // latest exams can go // TODO: maybe rewrite
 
             TimeSpan lengthOfExamDay = latestTime - this.ExamsStartTime; // Figure out how much time available for exams
 
@@ -549,8 +496,8 @@ namespace FETP
         {
 
             // Make boundaries of ignored classes more usable
-            TimeSpan ignoreClassLength = TimeSpan.ParseExact(Schedule.CLASS_LENGTH_TO_START_IGNORING, @"hhmm", CultureInfo.InvariantCulture); // can't declare TimeSpan as const so do this here
-            TimeSpan ignoreClassStartTime = TimeSpan.ParseExact(Schedule.HOUR_TO_BEGIN_IGNORE_CLASS, @"hhmm", CultureInfo.InvariantCulture);
+            TimeSpan ignoreClassLength = TimeSpan.ParseExact(Schedule.CLASS_LENGTH_TO_START_IGNORING, TIME_FORMAT_FROM_FILE, CultureInfo.InvariantCulture); // can't declare TimeSpan as const so do this here
+            TimeSpan ignoreClassStartTime = TimeSpan.ParseExact(Schedule.HOUR_TO_BEGIN_IGNORE_CLASS, TIME_FORMAT_FROM_FILE, CultureInfo.InvariantCulture);
 
             // Initialize all classes
             this.allClasses = new List<Class>();
@@ -567,8 +514,8 @@ namespace FETP
                 var values = line.Split(','); // splits into days/times and enrollement
                 var daysAndTimes = values[0].Split(' '); // chops up the days and times to manageable sections
 
-                TimeSpan startTime = TimeSpan.ParseExact(daysAndTimes[1], @"hhmm", CultureInfo.InvariantCulture); // 1 postion is the start time, changes formated time to bw more usable 
-                TimeSpan endTime = TimeSpan.ParseExact(daysAndTimes[3], @"hhmm", CultureInfo.InvariantCulture); // 3 position is the end time, changes formated time to bw more usable 
+                TimeSpan startTime = TimeSpan.ParseExact(daysAndTimes[1], TIME_FORMAT_FROM_FILE, CultureInfo.InvariantCulture); // 1 postion is the start time, changes formated time to bw more usable 
+                TimeSpan endTime = TimeSpan.ParseExact(daysAndTimes[3], TIME_FORMAT_FROM_FILE, CultureInfo.InvariantCulture); // 3 position is the end time, changes formated time to bw more usable 
 
                 List<DayOfWeek> days = new List<DayOfWeek>(); // days the class meets
                 foreach (char day in daysAndTimes[0].ToCharArray()) // changes days from string of chars to list of DayOfWeek type
@@ -625,27 +572,6 @@ namespace FETP
 
         }
 
-        //TODO: figure out which setup schedule constraints the front end actually needs
-
-        ///// <summary>
-        ///// Takes in data for the constraints required to design a schedule
-        ///// </summary>
-        ///// <param name="numberOfDay"></param>
-        ///// <param name="examsStartTime"></param>
-        ///// <param name="examsLength"></param>
-        ///// <param name="timeBetweenExams"></param>
-        ///// <param name="lunchLength"></param>
-        //private void SetupScheduleConstraints(int numberOfDay, TimeSpan examsStartTime,
-        //                                      TimeSpan examsLength, TimeSpan timeBetweenExams,
-        //                                      TimeSpan lunchLength)
-        //{
-        //    this.numberOfDays = numberOfDay;
-        //    this.examsStartTime = examsStartTime;
-        //    this.examsLength = examsLength;
-        //    this.timeBetweenExams = timeBetweenExams;
-        //    this.lunchLength = lunchLength;
-        //}
-
         /// <summary>
         /// 
         /// </summary>
@@ -665,48 +591,7 @@ namespace FETP
             this.lunchLength = TimeSpan.FromMinutes(Int32.Parse(lunchLength));
         }
 
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="numberOfDays"></param>
-        ///// <param name="examsStartTime"></param>
-        ///// <param name="examsLength"></param>
-        ///// <param name="timeBetweenExams"></param>
-        ///// <param name="lunchLength"></param>
-        //private void SetupScheduleConstraints(int numberOfDays, int examsStartTime,
-        //                                      int examsLength, int timeBetweenExams,
-        //                                      int lunchLength)
-        //{
-        //    this.numberOfDays = numberOfDays;
-        //    this.examsStartTime = TimeSpan.FromMinutes(examsStartTime); //TODO: further investigate CultureInfo.InvariantCulture to be sure it's needed and doesn't break stuff
-        //    this.examsLength = TimeSpan.FromMinutes(examsLength);
-        //    this.timeBetweenExams = TimeSpan.FromMinutes(timeBetweenExams); //TODO: Test to make sure the from minutes functions with CultureInfo.InvariantCulture
-        //    this.lunchLength = TimeSpan.FromMinutes(lunchLength);
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="numberOfDays"></param>
-        ///// <param name="examsStartTime"></param>
-        ///// <param name="examsLength"></param>
-        ///// <param name="timeBetweenExams"></param>
-        ///// <param name="lunchLength"></param>
-        //private void SetupScheduleConstraints(int numberOfDays, string examsStartTime,
-        //                                      int examsLength, int timeBetweenExams,
-        //                                      int lunchLength)
-        //{
-        //    this.numberOfDays = numberOfDays;
-        //    this.examsStartTime = TimeSpan.FromMinutes(Int32.Parse(examsStartTime));
-        //    this.examsLength = TimeSpan.FromMinutes(examsLength);
-        //    this.timeBetweenExams = TimeSpan.FromMinutes(timeBetweenExams);
-        //    this.lunchLength = TimeSpan.FromMinutes(lunchLength);
-        //}
-
         #endregion
-
-
-
 
 
         #region Scheduling Functions
@@ -844,6 +729,25 @@ namespace FETP
         }
 
         /// <summary>
+        /// Determines if blocks has any empty spaces
+        /// </summary>
+        /// <returns>Whether or not empty spaces exist</returns>
+        public bool IsFull()
+        {
+            bool isFull = true;
+            int i = 0;
+            while (i < blocks.Length && isFull)
+            {
+                if (blocks[i] == null)
+                {
+                    isFull = false;
+                }
+                i++;
+            }
+            return isFull;
+        }
+
+        /// <summary>
         /// Placeholder
         /// </summary>
         /// <param name="groupedClasses"></param>
@@ -863,24 +767,6 @@ namespace FETP
 
         #endregion
 
-        /// <summary>
-        /// Determines if blocks has any empty spaces
-        /// </summary>
-        /// <returns>Whether or not empty spaces exist</returns>
-        public bool IsFull()
-        {
-            bool isFull = true;
-            int i = 0;
-            while (i < blocks.Length && isFull)
-            {
-                if (blocks[i] == null)
-                {
-                    isFull = false;
-                }
-                i++;
-            }
-            return isFull;
-        }
 
         #region Debuging Tools
         //TODO: Needs work
@@ -956,6 +842,7 @@ namespace FETP
 
         #endregion
 
+
         #region Schedule Functionality Tools
 
         /// <summary>
@@ -983,27 +870,6 @@ namespace FETP
         }
 
         #endregion
-
-        //public void ScheduleLunch()
-        //{
-        //    if (this.LunchLength > this.TimeBetweenExams)
-        //    {
-
-        //        TimeSpan lowerLimitForLunch = TimeSpan.ParseExact(Schedule.LOWER_TIME_RANGE_FOR_LUNCH, @"hhmm", CultureInfo.InvariantCulture);
-        //        int index = 0;
-        //        bool isLunchFound = false;
-        //        while (index < this.startTimesOfExams.Length) // while we haven't gone through the whole schedule
-        //        {
-
-
-        //            index++;
-
-
-        //        }
-        //        this.startTimesOfExams
-        //    }
-        //}
-
 
         #endregion
 

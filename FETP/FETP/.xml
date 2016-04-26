@@ -355,12 +355,12 @@
             
             </summary>
         </member>
-        <member name="F:FETP.Schedule.MAX_NUMBER_OF_DAYS_FOR_EXAMS">
+        <member name="F:FETP.Schedule.MIN_NUMBER_OF_DAYS_FOR_EXAMS">
             <summary>
             
             </summary>
         </member>
-        <member name="F:FETP.Schedule.MIN_NUMBER_OF_DAYS_FOR_EXAMS">
+        <member name="F:FETP.Schedule.MAX_NUMBER_OF_DAYS_FOR_EXAMS">
             <summary>
             
             </summary>
@@ -605,18 +605,18 @@
             <param name="indexOfBlock"></param>
             <returns></returns>
         </member>
+        <member name="M:FETP.Schedule.IsFull">
+            <summary>
+            Determines if blocks has any empty spaces
+            </summary>
+            <returns>Whether or not empty spaces exist</returns>
+        </member>
         <member name="M:FETP.Schedule.ScheduleBlocks(System.Collections.Generic.List{FETP.Block})">
             <summary>
             Placeholder
             </summary>
             <param name="groupedClasses"></param>
             <returns></returns>
-        </member>
-        <member name="M:FETP.Schedule.IsFull">
-            <summary>
-            Determines if blocks has any empty spaces
-            </summary>
-            <returns>Whether or not empty spaces exist</returns>
         </member>
         <member name="M:FETP.Schedule.Display">
             <summary>
