@@ -336,9 +336,11 @@ namespace FETP
         {
             bool isValid = false;
 
-            //string examsStartTime parameter is in "hh:mm" format, not minutes.
-            DateTime tempStartTime = Convert.ToDateTime(examsStartTime);
-            TimeSpan startTime = TimeSpan.FromTicks(tempStartTime.TimeOfDay.Ticks);
+            //TODO remove
+            ////string examsStartTime parameter is in "hh:mm" format, not minutes.
+            //DateTime tempStartTime = Convert.ToDateTime(examsStartTime);
+            //TimeSpan startTime = TimeSpan.ParseExact(tempStartTime.TimeOfDay.Ticks);
+            TimeSpan startTime = TimeSpan.ParseExact(examsStartTime, @"hh\:mm", CultureInfo.InvariantCulture);
 
             // Convert Constants to more usable format
             TimeSpan minStartTime = TimeSpan.ParseExact(Schedule.MIN_START_TIME, @"hhmm", CultureInfo.InvariantCulture);

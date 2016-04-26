@@ -205,6 +205,23 @@ namespace FETP
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public List<Block> AllBlocksOrderedByEnrollment
+        {
+            get
+            {
+                List<Block> orderedBlocks = new List<Block>();
+                for (int i = 0; i < this.NumberOfTimeSlotsToBeUsed; i++)
+                {
+                    orderedBlocks.Add(this.Blocks[i]); 
+                }
+                orderedBlocks.AddRange(this.LeftoverBlocks);
+                return orderedBlocks.OrderByDescending(c => c.Enrollment).ToList();
+            }
+        }
+
+        /// <summary>
         /// Getter property for the number of Timeslots available in total
         /// </summary>
         public int NumberOfTimeSlotsAvailable
@@ -797,6 +814,14 @@ namespace FETP
             this.lunchLength = lunchLength;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="numberOfDays"></param>
+        /// <param name="examsStartTime"></param>
+        /// <param name="examsLength"></param>
+        /// <param name="timeBetweenExams"></param>
+        /// <param name="lunchLength"></param>
         private void SetupScheduleConstraints(string numberOfDays, string examsStartTime,
                                               string examsLength, string timeBetweenExams,
                                               string lunchLength)
@@ -808,6 +833,14 @@ namespace FETP
             this.lunchLength = TimeSpan.FromMinutes(Int32.Parse(lunchLength));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="numberOfDays"></param>
+        /// <param name="examsStartTime"></param>
+        /// <param name="examsLength"></param>
+        /// <param name="timeBetweenExams"></param>
+        /// <param name="lunchLength"></param>
         private void SetupScheduleConstraints(int numberOfDays, int examsStartTime,
                                               int examsLength, int timeBetweenExams,
                                               int lunchLength)
@@ -819,6 +852,14 @@ namespace FETP
             this.lunchLength = TimeSpan.FromMinutes(lunchLength);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="numberOfDays"></param>
+        /// <param name="examsStartTime"></param>
+        /// <param name="examsLength"></param>
+        /// <param name="timeBetweenExams"></param>
+        /// <param name="lunchLength"></param>
         private void SetupScheduleConstraints(int numberOfDays, string examsStartTime,
                                               int examsLength, int timeBetweenExams,
                                               int lunchLength)
