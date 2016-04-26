@@ -836,7 +836,7 @@ namespace FETP
         /// <param name="index1"></param>
         /// <param name="index2"></param>
         /// <returns></returns>
-        public void SwitchBlocks(int index1, int index2)
+        public bool SwitchBlocks(int index1, int index2)
         {
             Block temp = this.Blocks[index1];
             this.Blocks[index1] = this.Blocks[index2];
