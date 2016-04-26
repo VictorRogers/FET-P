@@ -22,6 +22,9 @@ namespace FETP_GUI
 
         private int WHAT_DAY = 0;
 
+        private bool selectOrSwitch = true;
+        private Button tempForSwap;
+
         private GroupBox[] Days;
         private Panel[] DayPanels;
         private Button[][] Exams;
@@ -149,6 +152,9 @@ namespace FETP_GUI
                     b.Size = new Size(185, 68);
                     //b.Text = b.Name;
                     b.UseVisualStyleBackColor = false;
+
+                    b.Click += button_Click;
+
                     block++;
                 }
                 day++;
@@ -343,6 +349,137 @@ namespace FETP_GUI
                 Controls.Add(next);
                 Controls.Add(previous);
             }
+        }
+
+        //------------------------------------------------------------------------------------------
+
+            //I think these can go into CalendatExtensions.cs if they're tweaked right
+
+        private void button_Click(object sender, EventArgs e)
+        {
+            if (selectOrSwitch)
+            {
+                //select sender button
+                tempForSwap = (Button)sender;
+
+                //Highlight selected sender Button
+                Button b = (Button)sender;
+                b.Select();
+            }
+
+            //I am aware that this is a mess
+            else
+            {
+                bool swappedBlocks = false;
+                //swap selected and sender button
+                int x1 = 0;
+                int y1 = 0;
+                for (x1 = 0; x1 < Exams.Length; x1++)
+                {
+                    for (y1 = 0; y1 < Exams[x1].Length; y1++)
+                    {
+                        if (Exams[x1][y1].Equals(tempForSwap))
+                        {
+                            SwapButtons(x1, y1, Exams[x1][y1], (Button)sender);
+                            SwapBlocks(x1, y1, (Button)sender);
+                            swappedBlocks = true;
+                            break;
+                        }
+                    }
+                    if (swappedBlocks)
+                    {
+                        break;
+                    }
+                }
+
+                //swap buttons position within Exams[][]
+                bool swappedButtons = false;
+                for (int x2 = 0; x2 < Exams.Length; x2++)
+                {
+                    for (int y2 = 0; y2 < Exams[x2].Length; y2++)
+                    {
+                        if (Exams[x2][y2].Equals((Button)sender))
+                        {
+                            Button temp = Exams[x2][y2];
+                            Exams[x2][y2] = Exams[x1][y1];
+                            Exams[x1][y1] = temp;
+                            swappedButtons = true;
+                            break;
+                        }
+                    }
+                    if (swappedButtons)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            selectOrSwitch = !selectOrSwitch;
+        }
+
+        //Swap Buttons display parent containers, locations, and sizes
+        private void SwapButtons(int x1, int y1, Button source, Button destination)
+        {
+            Panel p1 = (Panel)source.Parent;
+            Panel p2 = (Panel)destination.Parent;
+
+            Point l1 = source.Location;
+            Point l2 = destination.Location;
+
+            Size s1 = source.Size;
+            Size s2 = destination.Size;
+
+            p1.Controls.Remove(source);
+            p2.Controls.Remove(destination);
+
+            p1.Controls.Add(destination);
+            p2.Controls.Add(source);
+
+            source.Parent = p2;
+            destination.Parent = p1;
+
+            source.Location = l2;
+            destination.Location = l1;
+
+            source.Size = s2;
+            destination.Size = s1;
+
+            source.BringToFront();
+            destination.BringToFront();
+
+            //Button temp = destination;
+            //destination = source;
+            //source = destination;
+
+            p1.Refresh();
+            p2.Refresh();
+        }
+
+        //Find and swap positions in _schedule.Blocks[] of Blocks indicated by Buttons
+        private void SwapBlocks(int i, int j, Button destination)
+        {
+            int sourceBlock = i * _schedule.NumberOfTimeSlotsAvailablePerDay + j;
+            int destinationBlock = 0;
+            bool foundDestination = false;
+
+            for (int k = 0; k < Exams.Length; k++)
+            {
+                for (int l = 0; l < Exams[k].Length; l++)
+                {
+                    if (Exams[k][l].Equals(destination))
+                    {
+                        destinationBlock = k * _schedule.NumberOfTimeSlotsAvailablePerDay + l;
+                        foundDestination = true;
+                        break;
+                    }
+                }
+                if (foundDestination)
+                {
+                    break;
+                }
+            }
+
+            _schedule.SwitchBlocks(sourceBlock, destinationBlock);
         }
     }
 }

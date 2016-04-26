@@ -33,7 +33,7 @@ namespace FETP_GUI
         //FETP_Controller controller;
         Schedule schedule;
 
-        Dictionary<string, UserControl> views;
+        //Dictionary<string, UserControl> views;
 
         DataCollection dataCollection1;
         SchedulePresenter scheduleView;
@@ -59,7 +59,7 @@ namespace FETP_GUI
         public FETP_Form()
         {
             InitializeComponent();
-            views = new Dictionary<string, UserControl>();
+            //views = new Dictionary<string, UserControl>();
         }
 
         /// <summary>
@@ -131,12 +131,12 @@ namespace FETP_GUI
                 panel1.Controls.Clear();
                 scheduleView = new SchedulePresenter(schedule);
                 scheduleView.Dock = DockStyle.Fill;
-                views.Clear();
+                //views.Clear();
                 fullCal = new FullCalendar(schedule);
                 fullCal.Dock = DockStyle.Fill;
                 panel1.Controls.Add(scheduleView);
                 scheduleView.splitContainer1.Panel1.Controls.Add(fullCal);
-                views.Add("Full", fullCal);
+                //views.Add("Full", fullCal);
                 Size = new Size(681, 492);
                 MaximizeBox = true;
                 viewToolStripMenuItem.Enabled = true;
@@ -185,15 +185,15 @@ namespace FETP_GUI
         {
             scheduleView.splitContainer1.Panel1.Controls.Clear();
 
-            if (views.Keys.Contains("Full"))
-            {
-                fullCal = (FullCalendar)views["Full"];
-            }
-            else
-            {
+            //if (views.Keys.Contains("Full"))
+            //{
+            //    fullCal = (FullCalendar)views["Full"];
+            //}
+            //else
+            //{
                 fullCal = new FullCalendar(schedule);
-                views.Add("Full", fullCal);
-            }
+                //views.Add("Full", fullCal);
+            //}
 
             fullCal.Dock = DockStyle.Fill;
 
@@ -218,16 +218,16 @@ namespace FETP_GUI
         {
             scheduleView.splitContainer1.Panel1.Controls.Clear();
 
-            if (views.Keys.Contains("Single"))
-            {
-                miniCal = (SingleDayCalendar)views["Single"];
-                views.Add("Single", miniCal);
-            }
-            else
-            {
+            //if (views.Keys.Contains("Single"))
+            //{
+            //    miniCal = (SingleDayCalendar)views["Single"];
+            //}
+            //else
+            //{
                 //This will need the Schedule data structure as a parameter
                 miniCal = new SingleDayCalendar(schedule);
-            }
+            //    views.Add("Single", miniCal);
+            //}
 
             miniCal.Dock = DockStyle.Fill;
 
@@ -251,17 +251,17 @@ namespace FETP_GUI
         {
             scheduleView.splitContainer1.Panel1.Controls.Clear();
 
-            if (views.Keys.Contains("Text"))
-            {
-                textCal = (TextSchedule)views["Text"];
-            }
-            else
-            {
+            //if (views.Keys.Contains("Text"))
+            //{
+            //    textCal = (TextSchedule)views["Text"];
+            //}
+            //else
+            //{
                 //This will need the Schedule data structure as a parameter
                 //Prints entire schedule data structure in agreed format
                 textCal = new TextSchedule(schedule);
-                views.Add("Text", textCal);
-            }
+            //    views.Add("Text", textCal);
+            //}
 
             textCal.Dock = DockStyle.Fill;
 
@@ -481,7 +481,7 @@ namespace FETP_GUI
         //SchedulePresenter Constructor builds SplitContainer base presenter - container for different Schedule Views
         private void generateSchedulePresenter(Schedule schedule)
         {
-            views.Clear();
+            //views.Clear();
 
             scheduleView = new SchedulePresenter(schedule);
             scheduleView.Dock = DockStyle.Fill;
@@ -504,7 +504,7 @@ namespace FETP_GUI
             fullCal.Dock = DockStyle.Fill;
 
             scheduleView.splitContainer1.Panel1.Controls.Add(fullCal);
-            views.Add("Full", fullCal);
+            //views.Add("Full", fullCal);
             Size = new Size(681, 492);
             MaximizeBox = true;
         }
