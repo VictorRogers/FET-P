@@ -31,17 +31,16 @@ namespace FETP_GUI
 
         public void Display()
         {
-            richTextBox1.Text += "\n*******************************";
-            richTextBox1.Text += "\nSCHEDULE INFORMATION";
-            richTextBox1.Text += "\n*******************************";
+            richTextBox1.Text += "\n*******************************************************************************************";
+            richTextBox1.Text += "\nFINAL EXAM SCHEDULE INFORMATION";
+            richTextBox1.Text += "\n*******************************************************************************************";
             richTextBox1.Text += string.Format("\nNumber of Days: {0}", _schedule.NumberOfDays);
             richTextBox1.Text += string.Format("\nStart Time for Exams: {0}", _schedule.ExamsStartTime);
             richTextBox1.Text += string.Format("\nLength of Exams: {0}", _schedule.ExamsLength);
             richTextBox1.Text += string.Format("\nTime Between Exams: {0}", _schedule.TimeBetweenExams);
             richTextBox1.Text += string.Format("\nLength of Lunch Time: {0}", _schedule.LunchLength);
-            richTextBox1.Text += string.Format("\nNumber of Timeslots Per Day: {0}", _schedule.NumberOfTimeSlotsAvailablePerDay);
-            richTextBox1.Text += string.Format("\nNumber of Timeslots: {0}", _schedule.NumberOfTimeSlotsAvailable);
-            richTextBox1.Text += "\n*******************************\n";
+            richTextBox1.Text += string.Format("\nNumber of Exam Times Per Day: {0}", _schedule.NumberOfTimeSlotsAvailablePerDay);
+            richTextBox1.Text += "\n*******************************************************************************************\n";
         }
 
 
@@ -52,54 +51,35 @@ namespace FETP_GUI
         {
             int dayNumber = 0;
 
-            richTextBox1.Text += "\n***************************************";
-            richTextBox1.Text += "\nSCHEDULED CLASSES";
-            richTextBox1.Text += "\n***************************************";
+            richTextBox1.Text += "\n*******************************************************************************************";
+            richTextBox1.Text += "\nSCHEDULED EXAMS";
+            richTextBox1.Text += "\n*******************************************************************************************";
             richTextBox1.Text += "\nClasses which meet\t\t\tExam Time";
             for (int i = 0; i < _schedule.Blocks.Length; i++)
             {
                 if (_schedule.Blocks[i] != null)
                 {
-
-                    //richTextBox1.Text += ("\n**************");
-                    //richTextBox1.Text += ("\nGroup #" + (i + 1).ToString());
-                    //richTextBox1.Text += ("\n**************");
-                    //richTextBox1.Text += string.Format("\nBlock start time: {0}", _schedule.StartTimesOfExams[i % _schedule.NumberOfTimeSlotsAvailablePerDay]);
-                    //DisplayBlock(_schedule.Blocks[i]);
-                    //richTextBox1.Text += ("\nClasses In Block");
-                    //richTextBox1.Text += ("\n********");
-
                     if (_schedule.StartTimesOfExams[i%_schedule.NumberOfTimeSlotsAvailablePerDay].Equals(_schedule.ExamsStartTime))
                     {
                         dayNumber++;
-                        richTextBox1.Text += "\n\n";
+                        richTextBox1.Text += "\n";
                     }
                     DisplayAllClasses(_schedule.Blocks[i].ClassesInBlock, _schedule.StartTimesOfExams[i % _schedule.NumberOfTimeSlotsAvailablePerDay], _schedule.ExamsLength, dayNumber);
-                    richTextBox1.Text += "\n";
-                    //richTextBox1.Text += "\n";
-
                 }
                 else
                 {
                     richTextBox1.Text += ("\nNOT GOOD: IN DisplayBlocks");
                 }
-
             }
 
-            richTextBox1.Text += ("\n*******************************************");
-            richTextBox1.Text += ("\nNON SCHEDULED CLASSES");
-            richTextBox1.Text += ("\n*******************************************");
+            richTextBox1.Text += ("\n\n*******************************************************************************************");
+            richTextBox1.Text += ("\nUNSCHEDULED EXAMS");
+            richTextBox1.Text += ("\n*******************************************************************************************");
             foreach (Block block in _schedule.LeftoverBlocks)
             {
-                //richTextBox1.Text += ("\n**************");
-                //richTextBox1.Text += ("\nBlock");
-                //richTextBox1.Text += ("\n**************");
-                //DisplayBlock(block);
-                //richTextBox1.Text += ("\nClasses In Block");
-                //richTextBox1.Text += ("\n********");
                 DisplayAllClasses(block.ClassesInBlock);
-                //richTextBox1.Text += ("\n");
             }
+            richTextBox1.Text += "\n\n\n\n\n";
         }
 
         /// <summary>
@@ -164,11 +144,10 @@ namespace FETP_GUI
 
             richTextBox1.Text += string.Format("\t{0}", cl.StartTime);
             richTextBox1.Text += string.Format(" - {0}", cl.EndTime);
-            //richTextBox1.Text += string.Format("\nEnrollment: {0}", cl.Enrollment);
             richTextBox1.Text += string.Format("\t\t{0}", startTime);
             richTextBox1.Text += string.Format(" - {0}", startTime+examLength);
             richTextBox1.Text += string.Format("\t\tDay {0}", dayNumber);
-            richTextBox1.Text += "\n";
+            //richTextBox1.Text += "\n";
         }
 
         public void DisplayUnscheduledClass(Class cl)
@@ -199,7 +178,7 @@ namespace FETP_GUI
             richTextBox1.Text += string.Format("\t{0}", cl.StartTime);
             richTextBox1.Text += string.Format(" - {0}", cl.EndTime);
             //richTextBox1.Text += string.Format("\nEnrollment: {0}", cl.Enrollment);
-            richTextBox1.Text += "\n";
+            //richTextBox1.Text += "\n";
         }
     }
 }

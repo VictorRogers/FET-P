@@ -139,6 +139,7 @@ namespace FETP_GUI
                 //views.Add("Full", fullCal);
                 Size = new Size(681, 492);
                 MaximizeBox = true;
+                saveAsToolStripMenuItem.Enabled = true;
                 viewToolStripMenuItem.Enabled = true;
                 oneDayToolStripMenuItem.Enabled = true;
                 fullScheduleToolStripMenuItem.Enabled = false;
