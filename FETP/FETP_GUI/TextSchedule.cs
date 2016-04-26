@@ -66,10 +66,10 @@ namespace FETP_GUI
                     }
                     DisplayAllClasses(_schedule.Blocks[i].ClassesInBlock, _schedule.StartTimesOfExams[i % _schedule.NumberOfTimeSlotsAvailablePerDay], _schedule.ExamsLength, dayNumber);
                 }
-                else
-                {
-                    richTextBox1.Text += ("\nNOT GOOD: IN DisplayBlocks");
-                }
+                //else
+                //{
+                //    richTextBox1.Text += ("\nNOT GOOD: IN DisplayBlocks");
+                //}
             }
 
             richTextBox1.Text += ("\n\n*******************************************************************************************");
