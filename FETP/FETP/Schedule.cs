@@ -239,8 +239,8 @@ namespace FETP
         }
 
         /// <summary>
-         /// Getter property for array of all exams's strt times
-         /// </summary>
+        /// Getter property for array of all exams's strt times
+        /// </summary>
         public TimeSpan[] StartTimesOfExams
         {
             get
@@ -580,7 +580,7 @@ namespace FETP
             }
         }
 
-    
+
 
         //TODO: move into constructors maybe // may already be done
         /// <summary>
@@ -649,7 +649,7 @@ namespace FETP
             Console.WriteLine("DISPLAYING SCHEDULED BLOCKS INFORMATION");
             Console.WriteLine("***************************************");
             for (int i = 0; i < this.blocks.Length; i++)
-            { 
+            {
                 if (blocks[i] != null)
                 {
 
@@ -671,7 +671,7 @@ namespace FETP
                     Console.WriteLine("EMPTY BLOCK");
                     Console.WriteLine("==============");
                 }
-                
+
             }
 
             Console.WriteLine("\n*******************************************");
@@ -802,9 +802,10 @@ namespace FETP
                                               string lunchLength)
         {
             this.numberOfDays = Int32.Parse(numberOfDays);
-            this.examsStartTime = TimeSpan.FromMinutes(Int32.Parse(examsStartTime)); 
+            DateTime tempStartTime = Convert.ToDateTime(examsStartTime);
+            this.examsStartTime = TimeSpan.FromTicks(tempStartTime.TimeOfDay.Ticks);
             this.examsLength = TimeSpan.FromMinutes(Int32.Parse(examsLength));
-            this.timeBetweenExams = TimeSpan.FromMinutes(Int32.Parse(timeBetweenExams));
+            this.timeBetweenExams = TimeSpan.FromMinutes(Int32.Parse(timeBetweenExams)); //TODO: Test to make sure the from minutes functions with CultureInfo.InvariantCulture
             this.lunchLength = TimeSpan.FromMinutes(Int32.Parse(lunchLength));
         }
 
@@ -813,35 +814,13 @@ namespace FETP
                                               int lunchLength)
         {
             this.numberOfDays = numberOfDays;
-            this.examsStartTime = TimeSpan.FromMinutes(examsStartTime); 
+            this.examsStartTime = TimeSpan.FromMinutes(examsStartTime); //TODO: further investigate CultureInfo.InvariantCulture to be sure it's needed and doesn't break stuff
             this.examsLength = TimeSpan.FromMinutes(examsLength);
-            this.timeBetweenExams = TimeSpan.FromMinutes(timeBetweenExams);
+            this.timeBetweenExams = TimeSpan.FromMinutes(timeBetweenExams); //TODO: Test to make sure the from minutes functions with CultureInfo.InvariantCulture
             this.lunchLength = TimeSpan.FromMinutes(lunchLength);
         }
 
-        private void SetupScheduleConstraints(int numberOfDays, string examsStartTime,
-                                              int examsLength, int timeBetweenExams,
-                                              int lunchLength)
-        {
-            this.numberOfDays = numberOfDays;
-            this.examsStartTime = TimeSpan.FromMinutes(Int32.Parse(examsStartTime));
-            this.examsLength = TimeSpan.FromMinutes(examsLength);
-            this.timeBetweenExams = TimeSpan.FromMinutes(timeBetweenExams); 
-            this.lunchLength = TimeSpan.FromMinutes(lunchLength);
-        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="index1"></param>
-        /// <param name="index2"></param>
-        /// <returns></returns>
-        public void SwitchBlocks(int index1, int index2)
-        {
-            Block temp = this.Blocks[index1];
-            this.Blocks[index1] = this.Blocks[index2];
-            this.Blocks[index2] = temp;
-        }
 
         /// <summary>
         /// 
@@ -854,7 +833,7 @@ namespace FETP
             stream.Close();
         }
 
- 
+
         //public void ScheduleLunch()
         //{
         //    if (this.LunchLength > this.TimeBetweenExams)
@@ -865,11 +844,11 @@ namespace FETP
         //        bool isLunchFound = false;
         //        while (index < this.startTimesOfExams.Length) // while we haven't gone through the whole schedule
         //        {
-                    
+
 
         //            index++;
 
-                       
+
         //        }
         //        this.startTimesOfExams
         //    }
