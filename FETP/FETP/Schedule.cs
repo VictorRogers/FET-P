@@ -476,6 +476,7 @@ namespace FETP
         private void SetupExamStartTimeTable()
         {
             // setup lower limir for lunch from constant for easier use
+            //TODO: replace hhmm accross the board
             TimeSpan lowerLimitForLunch = TimeSpan.ParseExact(Schedule.LOWER_TIME_RANGE_FOR_LUNCH, @"hhmm", CultureInfo.InvariantCulture);
 
             this.startTimesOfExams = new TimeSpan[this.NumberOfTimeSlotsAvailablePerDay]; // intialize start times table
@@ -710,6 +711,19 @@ namespace FETP
 
         #region Scheduling Functions
 
+            /* TODO
+                    Ben Notes:
+                        theres an interesting correlation between number of students in class that seems to be weird across days....
+                            could be bug in schdule
+                                // TODO: ITS A BUG
+                            could be oppurtunity for optimizations. 
+                                maybe resort list of best possibly times.
+                                    like start from other end of schdule every other timewhen building it so it spreads out classes better
+
+                        Another possibly schedule improverment,
+                            instead of sticking in biggest block on conflict, stick into tightest fitting block on conflict
+            */
+
         //TODO: further investigate what makes the best time
         /// <summary>
         /// Finds the index of the best fit for the block.
@@ -727,7 +741,7 @@ namespace FETP
             // it's weird but easiest way
             //TODO: clean up this
             //TODO: look into reordering to find most valuable times more weighted by the enrollment numbers of that day.
-            List<TimeSpan> orderedPossibleTime = this.startTimesOfExams.ToList().OrderBy(c => (c - startTime)).ThenByDescending(c => c.Ticks).ToList();
+            List<TimeSpan> orderedPossibleTime = this.startTimesOfExams.ToList().OrderBy(c => (c - startTime).Duration()).ThenByDescending(c => c.Ticks).ToList(); // TODO: FURTHER TEST
             List<int> orderedIndexesOfPossibleTime = new List<int>();
             // sets up ordered list of all indexes 
             foreach (TimeSpan time in orderedPossibleTime)

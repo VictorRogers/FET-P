@@ -28,7 +28,7 @@ namespace FETP
                 
                 if (input == "1")
                 {
-                    Schedule schedule = new Schedule("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv", "../../../../Example Data/Ben Made Constraints Sample.txt");
+                    Schedule schedule = new Schedule("../../../../Example Data/Fall 2014 Total Enrollments by Meeting times.csv", "../../../../Example Data/Ben Made Constraints Sample.txt");
                     schedule.Display();
                     schedule.DisplayBlocks();
 
