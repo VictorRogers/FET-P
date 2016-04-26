@@ -428,7 +428,7 @@ namespace FETP_GUI
             isExamValid = FETP_Controller.ValidateExamsLength(examLength);
             isBreakValid = FETP_Controller.ValidateTimeBetweenExams(breakLength);
             isLunchValid = FETP_Controller.ValidateLunchLength(lunchLength);
-            isEnrollmentValid = !(enrollmentFile.Equals(string.Empty));
+            isEnrollmentValid = !(enrollmentFile.Equals(string.Empty)); //TODO: implement enrollment file validation function
 
             isSchedulePossible = (isDaysValid && isBeginValid && isExamValid && isBreakValid && isLunchValid && isEnrollmentValid);
             

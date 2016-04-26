@@ -273,28 +273,11 @@
             <param name="classes"></param>
             <returns></returns>
         </member>
-        <member name="M:FETP.FETP_Controller.GroupClass(System.Collections.Generic.List{FETP.Block},FETP.Class)">
-            <summary>
-            Takes in a list of class groups and a class. The method then returns a
-            new list of class groups with the class inserted into the first possible
-            group.
-            </summary>
-            <param name="blocks"></param>
-            <param name="inclass"></param>
-            <returns></returns>
-        </member>
         <member name="M:FETP.FETP_Controller.GroupClasses(System.Collections.Generic.List{FETP.Class})">
             <summary>
             Takes in a list of class groups and a class. The method then returns a
             new list of class groups with the class inserted into the first possible
             group.
-            </summary>
-            <param name="classes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:FETP.FETP_Controller.CoalesceClassesTogether(System.Collections.Generic.List{FETP.Class})">
-            <summary>
-            Placeholder
             </summary>
             <param name="classes"></param>
             <returns></returns>
@@ -360,6 +343,76 @@
         <member name="F:FETP.Schedule.TIME_EXAMS_MUST_END_BY">
             <summary>
             Latest exams can go
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.LOWER_TIME_RANGE_FOR_LUNCH">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.UPPER_TIME_RANGE_FOR_LUNCH">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.MAX_NUMBER_OF_DAYS_FOR_EXAMS">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.MIN_NUMBER_OF_DAYS_FOR_EXAMS">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.MIN_START_TIME">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.MAX_START_TIME">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.MIN_EXAM_LENGTH_IN_MINUTES">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.MAX_EXAM_LENGTH_IN_MINUTES">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.MIN_BREAK_TIME_IN_MINUTES">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.MAX_BREAK_TIME_IN_MINUTES">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.MIN_LUNCH_LENGTH_IN_MINUTES">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.MAX_LUNCH_LENGTH_IN_MINUTES">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.TIME_FORMAT_FROM_FILE">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:FETP.Schedule.TIME_FORMAT_FROM_GUI">
+            <summary>
+            
             </summary>
         </member>
         <member name="F:FETP.Schedule.numberOfDays">
@@ -432,6 +485,11 @@
             Getter property for the list of all classes to be scheduled
             </summary>
         </member>
+        <member name="P:FETP.Schedule.AllBlocksOrderedByEnrollment">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:FETP.Schedule.NumberOfTimeSlotsAvailable">
             <summary>
             Getter property for the number of Timeslots available in total
@@ -468,17 +526,6 @@
             <param name="dataFileAddress"></param>
             <param name="constraintsFileAddress"></param>
         </member>
-        <member name="M:FETP.Schedule.#ctor(System.String,System.Int32,System.TimeSpan,System.TimeSpan,System.TimeSpan,System.TimeSpan)">
-            <summary>
-            
-            </summary>
-            <param name="dataFileAddress"></param>
-            <param name="numberOfDays"></param>
-            <param name="examsStartTime"></param>
-            <param name="examsLength"></param>
-            <param name="timeBetweenExams"></param>
-            <param name="lunchLength"></param>
-        </member>
         <member name="M:FETP.Schedule.#ctor(System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             
@@ -490,10 +537,49 @@
             <param name="timeBetweenExams"></param>
             <param name="lunchLength"></param>
         </member>
+        <member name="M:FETP.Schedule.Build">
+            <summary>
+            Builds out the rest of schedule
+            </summary>
+        </member>
+        <member name="M:FETP.Schedule.SetupNumberOfTimeSlotsNeeded">
+            <summary>
+            Checks if less timeslots are needed than available. 
+            If so, then sets up control variable to not consider extra slots when scheduling
+            </summary>
+        </member>
         <member name="M:FETP.Schedule.SetupExamStartTimeTable">
             <summary>
             Sets up data member examsStartTimes to be used for quickly finding the start time of an index
             </summary>
+        </member>
+        <member name="M:FETP.Schedule.SetNumberOfTimeSlotsAvailable">
+            <summary>
+            Calculates number of timeslots available and sets it.
+            </summary>
+        </member>
+        <member name="M:FETP.Schedule.SetupClassDataFromFile(System.String)">
+            <summary>
+            Reads in a data file and constructs list of all classes in the file. Does
+            not add classes in that fall into the criteria of ignorable classes.
+            </summary>
+            <param name="inFileName"></param>
+        </member>
+        <member name="M:FETP.Schedule.SetupScheduleConstraintsFromFile(System.String)">
+            <summary>
+            Reads in the constraints file and initializes a static schedule
+            </summary>
+            <param name="inFileName"></param>
+        </member>
+        <member name="M:FETP.Schedule.SetupScheduleConstraints(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="numberOfDays"></param>
+            <param name="examsStartTime"></param>
+            <param name="examsLength"></param>
+            <param name="timeBetweenExams"></param>
+            <param name="lunchLength"></param>
         </member>
         <member name="M:FETP.Schedule.FindBestTimeslotFit(System.TimeSpan)">
             <summary>
@@ -512,12 +598,6 @@
             <param name="startTime">Start time whose index is desired.</param>
             <returns></returns>
         </member>
-        <member name="M:FETP.Schedule.IsFull">
-            <summary>
-            Determines if blocks has any empty spaces
-            </summary>
-            <returns>Whether or not empty spaces exist</returns>
-        </member>
         <member name="M:FETP.Schedule.GetStartTimeOfBlock(System.Int32)">
             <summary>
             Gets the start time of exam block
@@ -532,10 +612,11 @@
             <param name="groupedClasses"></param>
             <returns></returns>
         </member>
-        <member name="M:FETP.Schedule.SetNumberOfTimeSlotsAvailable">
+        <member name="M:FETP.Schedule.IsFull">
             <summary>
-            Calculates number of timeslots available and sets it.
+            Determines if blocks has any empty spaces
             </summary>
+            <returns>Whether or not empty spaces exist</returns>
         </member>
         <member name="M:FETP.Schedule.Display">
             <summary>
@@ -547,65 +628,12 @@
             Displays all blocks in schedule
             </summary>
         </member>
-        <member name="M:FETP.Schedule.SetupScheduleConstraintsFromFile(System.String)">
-            <summary>
-            Reads in the constraints file and initializes a static schedule
-            </summary>
-            <param name="inFileName"></param>
-        </member>
-        <member name="M:FETP.Schedule.SetupClassDataFromFile(System.String)">
-            <summary>
-            Reads in a data file and constructs list of all classes in the file. Does
-            not add classes in that fall into the criteria of ignorable classes.
-            </summary>
-            <param name="inFileName"></param>
-        </member>
-        <member name="M:FETP.Schedule.SetupScheduleConstraints(System.Int32,System.TimeSpan,System.TimeSpan,System.TimeSpan,System.TimeSpan)">
-            <summary>
-            Takes in data for the constraints required to design a schedule
-            </summary>
-            <param name="numberOfDay"></param>
-            <param name="examsStartTime"></param>
-            <param name="examsLength"></param>
-            <param name="timeBetweenExams"></param>
-            <param name="lunchLength"></param>
-        </member>
-        <member name="M:FETP.Schedule.SetupScheduleConstraints(System.String,System.String,System.String,System.String,System.String)">
-            <summary>
-            
-            </summary>
-            <param name="numberOfDays"></param>
-            <param name="examsStartTime"></param>
-            <param name="examsLength"></param>
-            <param name="timeBetweenExams"></param>
-            <param name="lunchLength"></param>
-        </member>
-        <member name="M:FETP.Schedule.SetupScheduleConstraints(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
-            <summary>
-            
-            </summary>
-            <param name="numberOfDays"></param>
-            <param name="examsStartTime"></param>
-            <param name="examsLength"></param>
-            <param name="timeBetweenExams"></param>
-            <param name="lunchLength"></param>
-        </member>
-        <member name="M:FETP.Schedule.SetupScheduleConstraints(System.Int32,System.String,System.Int32,System.Int32,System.Int32)">
-            <summary>
-            
-            </summary>
-            <param name="numberOfDays"></param>
-            <param name="examsStartTime"></param>
-            <param name="examsLength"></param>
-            <param name="timeBetweenExams"></param>
-            <param name="lunchLength"></param>
-        </member>
         <member name="M:FETP.Schedule.SwitchBlocks(System.Int32,System.Int32)">
             <summary>
-            
+            Swaps the blocks at the inputed indexs //TODO: indices? indexes? 
             </summary>
-            <param name="index1"></param>
-            <param name="index2"></param>
+            <param name="index1">Index of the first block to swap</param>
+            <param name="index2">Index of the second block to swap</param>
             <returns></returns>
         </member>
         <member name="M:FETP.Schedule.SaveSchedule(System.String)">
