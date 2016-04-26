@@ -750,17 +750,17 @@ namespace FETP
         /// <summary>
         /// Placeholder
         /// </summary>
-        /// <param name="groupedClasses"></param>
+        /// <param name="groupedClasses">Schedules inputed grouped classes into Schedule object</param>
         /// <returns></returns>
         private void ScheduleBlocks(List<Block> groupedClasses)
         {
-            this.blocks = new Block[this.numberOfTimeSlotsAvailable];
-            this.leftoverBlocks = groupedClasses.OrderByDescending(c => c.Enrollment).ToList();
+            this.blocks = new Block[this.numberOfTimeSlotsAvailable]; // sets up Scheduled classes array
+            this.leftoverBlocks = groupedClasses.OrderByDescending(c => c.Enrollment).ToList(); // orders all grouped classes by enrollment
             while (this.leftoverBlocks.Count > 0 && !this.IsFull())
             {
-                int index = this.FindBestTimeslotFit(this.leftoverBlocks[0].WeightedAverageStartTime);
-                this.blocks[index] = leftoverBlocks[0];
-                this.leftoverBlocks.RemoveAt(0);
+                int index = this.FindBestTimeslotFit(this.leftoverBlocks[0].WeightedAverageStartTime); // finds best empty slot to insert block
+                this.blocks[index] = leftoverBlocks[0]; // inserts block
+                this.leftoverBlocks.RemoveAt(0); // removes block from list
             }
         }
 

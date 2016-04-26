@@ -238,9 +238,10 @@ namespace FETP
 
             foreach (Class cl in classes)
             {
+                // first, build a list of all indexes of blocks where the class could be placed
                 List<int> indexes = new List<int>();
                 int i = 0;
-                while (i < groupedClasses.Count)
+                while (i < groupedClasses.Count) //TODO: convert to for loop
                 {
                     if (groupedClasses[i].doesClassOverlapWithBlock(cl))
                     {
@@ -249,11 +250,13 @@ namespace FETP
                     i++;
                 }
 
+                // if no overlapping blocks where found, create a new one
                 if (indexes.Count == 0)
                 {
                     groupedClasses.Add(new Block(cl));
                 }
-                else
+                // else find which block to insert class into
+                else //TODO: improve determination of which block to insert class into
                 {
                     int indexOfLargest = 0;
                     int currentLargest = 0;
