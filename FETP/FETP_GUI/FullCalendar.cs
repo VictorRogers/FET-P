@@ -17,9 +17,6 @@ namespace FETP_GUI
         //private static int NUMBER_OF_DAYS = 4;
         //private static int NUMBER_OF_EXAMS_PER_DAY = 10;
 
-        private bool selectOrSwitch = true;
-        private Button tempForSwap;
-
         private int NUMBER_OF_DAYS;
         private int NUMBER_OF_EXAMS_PER_DAY;
 
@@ -113,8 +110,6 @@ namespace FETP_GUI
             day = 0;
             foreach (Panel p in DayPanels)
             {
-                p.AllowDrop = true;
-
                 p.AutoScroll = true;
                 p.BackColor = Color.Transparent;
                 for (int n = numOfExamsPerDay - 1; n >= 0; n--)
@@ -136,8 +131,6 @@ namespace FETP_GUI
                 int block = 0;
                 foreach (Button b in Exams[day])
                 {
-                    b.AllowDrop = true;
-
                     b.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right);
                     b.BackColor = Color.FromArgb(219, 159, 17);
                     b.FlatAppearance.BorderColor = Color.FromArgb(142, 105, 18);
@@ -150,9 +143,6 @@ namespace FETP_GUI
                     b.Size = new Size(185, 68);
                     //b.Text = b.Name;
                     b.UseVisualStyleBackColor = false;
-
-                    b.Click += button_Click;
-
                     block++;
                 }
                 day++;
@@ -252,96 +242,5 @@ namespace FETP_GUI
             }
         }
 
-        private void button_Click(object sender, EventArgs e)
-        {
-            if (selectOrSwitch)
-            {
-                //select sender button
-                tempForSwap = (Button)sender;
-
-                //Highlight selected sender Button
-                Button b = (Button)sender;
-                b.Select();
-            }
-
-            else
-            {
-                //swap selected and sender button
-                for(int i=0; i< Exams.Length; i++)
-                {
-                    for (int j = 0; j < Exams[i].Length; j++)
-                    {
-                        if (Exams[i][j].Equals(tempForSwap))
-                        {
-                            SwapButtons(Exams[i][j], (Button)sender);
-                            //find and swap schedule.Blocks objects
-                            break;
-                        }
-                    }
-                }
-            }
-
-            selectOrSwitch = !selectOrSwitch;
-        }
-
-        private void SwapButtons(Button source, Button destination)
-        {
-            Panel p1 = (Panel)source.Parent;
-            Panel p2 = (Panel)destination.Parent;
-
-            Point l1 = source.Location;
-            Point l2 = destination.Location;
-
-            Size s1 = source.Size;
-            Size s2 = destination.Size;
-
-            p1.Controls.Remove(source);
-            p2.Controls.Remove(destination);
-
-            p1.Controls.Add(destination);
-            p2.Controls.Add(source);
-
-            source.Parent = p2;
-            destination.Parent = p1;
-
-            source.Location = l2;
-            destination.Location = l1;
-
-            source.Size = s2;
-            destination.Size = s1;
-
-            source.BringToFront();
-            destination.BringToFront();
-
-            p1.Refresh();
-            p2.Refresh();
-        }
-
-        //------------------------------------------------------------------------------------------
-
-        //private Button dragSource;
-
-        //private void button_MouseDown(object sender, MouseEventArgs e)
-        //{
-        //    dragSource = (Button)sender;
-        //    dragSource.DoDragDrop(dragSource, DragDropEffects.Copy | DragDropEffects.Move);
-        //}
-
-        //private void button_DragEnter(object sender, DragEventArgs e)
-        //{
-        //    if (e.Data.GetType().Equals(typeof(Button)))
-        //        e.Effect = DragDropEffects.Copy;
-        //    else
-        //        e.Effect = DragDropEffects.None;
-        //}
-
-        //private void button_DragDrop(object sender, DragEventArgs e)
-        //{
-        //    Button b = (Button)sender;
-
-        //    Button temp = b;
-        //    b = dragSource;
-        //    dragSource = temp;
-        //}
     }
 }
