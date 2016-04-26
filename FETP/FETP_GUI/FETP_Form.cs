@@ -111,6 +111,8 @@ namespace FETP_GUI
             dataCollection1.ClearForm += new DataCollection.ClearClickHandler(ClearAllTextBoxes);
 
             panel1.Controls.Add(dataCollection1);
+            saveAsToolStripMenuItem.Enabled = false;
+            //exportToolStripMenuItem.Enabled = false;
         }
 
         //Author: Cory Feliciano (?)
@@ -140,6 +142,7 @@ namespace FETP_GUI
                 Size = new Size(681, 492);
                 MaximizeBox = true;
                 saveAsToolStripMenuItem.Enabled = true;
+                //exportToolStripMenuItem.Enabled = true;
                 viewToolStripMenuItem.Enabled = true;
                 oneDayToolStripMenuItem.Enabled = true;
                 fullScheduleToolStripMenuItem.Enabled = false;
