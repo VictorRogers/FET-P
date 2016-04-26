@@ -766,9 +766,9 @@ namespace FETP
                                               string lunchLength)
         {
             this.numberOfDays = Int32.Parse(numberOfDays);
-            this.examsStartTime = TimeSpan.FromMinutes(Int32.Parse(examsStartTime)); //TODO: further investigate CultureInfo.InvariantCulture to be sure it's needed and doesn't break stuff
+            this.examsStartTime = TimeSpan.FromMinutes(Int32.Parse(examsStartTime)); 
             this.examsLength = TimeSpan.FromMinutes(Int32.Parse(examsLength));
-            this.timeBetweenExams = TimeSpan.FromMinutes(Int32.Parse(timeBetweenExams)); //TODO: Test to make sure the from minutes functions with CultureInfo.InvariantCulture
+            this.timeBetweenExams = TimeSpan.FromMinutes(Int32.Parse(timeBetweenExams));
             this.lunchLength = TimeSpan.FromMinutes(Int32.Parse(lunchLength));
         }
 
@@ -777,13 +777,35 @@ namespace FETP
                                               int lunchLength)
         {
             this.numberOfDays = numberOfDays;
-            this.examsStartTime = TimeSpan.FromMinutes(examsStartTime); //TODO: further investigate CultureInfo.InvariantCulture to be sure it's needed and doesn't break stuff
+            this.examsStartTime = TimeSpan.FromMinutes(examsStartTime); 
             this.examsLength = TimeSpan.FromMinutes(examsLength);
-            this.timeBetweenExams = TimeSpan.FromMinutes(timeBetweenExams); //TODO: Test to make sure the from minutes functions with CultureInfo.InvariantCulture
+            this.timeBetweenExams = TimeSpan.FromMinutes(timeBetweenExams);
             this.lunchLength = TimeSpan.FromMinutes(lunchLength);
         }
 
+        private void SetupScheduleConstraints(int numberOfDays, string examsStartTime,
+                                              int examsLength, int timeBetweenExams,
+                                              int lunchLength)
+        {
+            this.numberOfDays = numberOfDays;
+            this.examsStartTime = TimeSpan.FromMinutes(Int32.Parse(examsStartTime));
+            this.examsLength = TimeSpan.FromMinutes(examsLength);
+            this.timeBetweenExams = TimeSpan.FromMinutes(timeBetweenExams); 
+            this.lunchLength = TimeSpan.FromMinutes(lunchLength);
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index1"></param>
+        /// <param name="index2"></param>
+        /// <returns></returns>
+        public bool SwitchBlocks(int index1, int index2)
+        {
+            Block temp = this.Blocks[index1];
+            this.Blocks[index1] = this.Blocks[index2];
+            this.Blocks[index2] = temp;
+        }
 
         /// <summary>
         /// 
