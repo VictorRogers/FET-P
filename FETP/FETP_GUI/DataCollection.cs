@@ -75,5 +75,10 @@ namespace FETP_GUI
                 lunchLength_textBox.Text = int.Parse(reader.ReadLine()).ToString();
             }
         }
+
+        private void scheduleBrowse_textBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -140,6 +140,7 @@
             this.scheduleBrowse_textBox.Name = "scheduleBrowse_textBox";
             this.scheduleBrowse_textBox.Size = new System.Drawing.Size(243, 20);
             this.scheduleBrowse_textBox.TabIndex = 17;
+            this.scheduleBrowse_textBox.TextChanged += new System.EventHandler(this.scheduleBrowse_textBox_TextChanged);
             // 
             // lunchLength_textBox
             // 

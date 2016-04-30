@@ -161,6 +161,28 @@ namespace FETP_GUI
                 BinaryFormatter formatter = new BinaryFormatter();
                 schedule = (Schedule)formatter.Deserialize(stream);
                 stream.Close();
+
+                WindowState = FormWindowState.Normal;
+                Size = new Size(355, 401);
+                MaximizeBox = false;
+                FormBorderStyle = FormBorderStyle.Fixed3D;
+                panel1.Controls.Clear();
+
+                dataCollection1 = new DataCollection();
+                dataCollection1.Dock = DockStyle.Fill;
+                dataCollection1.GenerateSchedule += new DataCollection.GenerateClickHandler(GenerateFullSchedule);
+                dataCollection1.ClearForm += new DataCollection.ClearClickHandler(ClearAllTextBoxes);
+
+                panel1.Controls.Add(dataCollection1);
+                saveAsToolStripMenuItem.Enabled = false;
+
+                dataCollection1.scheduleBrowse_textBox.Text = schedule.OriginalConstraintsFilename;
+                dataCollection1.enrollmentBrowse_textBox.Text = schedule.OriginalEnrollmentFilename;
+                dataCollection1.days_textBox.Text = schedule.OriginalNumberOfDays;
+                dataCollection1.startTime_textBox.Text = schedule.OriginalStartTime;
+                dataCollection1.examLength_textBox.Text = schedule.OriginalExamLength;
+                dataCollection1.breakLength_textBox.Text = schedule.OriginalBreakLength;
+                dataCollection1.lunchLength_textBox.Text = schedule.OriginalLunchLength;
             }
         }
 
@@ -457,6 +479,9 @@ namespace FETP_GUI
 
                 //Create schedule data structure
                 schedule = new Schedule(enrollmentFile, daysNum, beginTime, examLength, breakLength, lunchLength);
+
+                //Maintain path to original contraints file
+                schedule.OriginalConstraintsFilename = dataCollection1.scheduleBrowse_textBox.Text;
 
                 //Using schedule data strucutre::
                 generateSchedulePresenter(schedule);
