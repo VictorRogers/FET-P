@@ -615,7 +615,7 @@
             <summary>
             Placeholder
             </summary>
-            <param name="groupedClasses"></param>
+            <param name="groupedClasses">Schedules inputed grouped classes into Schedule object</param>
             <returns></returns>
         </member>
         <member name="M:FETP.Schedule.Display">

@@ -41,6 +41,7 @@
             this.textToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.openConstraintsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.auth1 = new FETP_GUI.Auth();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -63,32 +64,34 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newScheduleToolStripMenuItem,
+            this.openConstraintsToolStripMenuItem,
             this.openToolStripMenuItem,
             this.saveAsToolStripMenuItem,
             this.exportToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
+            this.fileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
             // 
             // newScheduleToolStripMenuItem
             // 
             this.newScheduleToolStripMenuItem.Name = "newScheduleToolStripMenuItem";
-            this.newScheduleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newScheduleToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.newScheduleToolStripMenuItem.Text = "New Schedule";
             this.newScheduleToolStripMenuItem.Click += new System.EventHandler(this.newScheduleToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.openToolStripMenuItem.Text = "Open Schedule";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Enabled = false;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.saveAsToolStripMenuItem.Text = "Save";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
@@ -96,7 +99,7 @@
             // 
             this.exportToolStripMenuItem.Enabled = false;
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.exportToolStripMenuItem.Text = "Export";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
@@ -110,25 +113,26 @@
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
+            this.viewToolStripMenuItem.Click += new System.EventHandler(this.viewToolStripMenuItem_Click);
             // 
             // oneDayToolStripMenuItem
             // 
             this.oneDayToolStripMenuItem.Name = "oneDayToolStripMenuItem";
-            this.oneDayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.oneDayToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.oneDayToolStripMenuItem.Text = "One Day";
             this.oneDayToolStripMenuItem.Click += new System.EventHandler(this.oneDayToolStripMenuItem_Click);
             // 
             // fullScheduleToolStripMenuItem
             // 
             this.fullScheduleToolStripMenuItem.Name = "fullScheduleToolStripMenuItem";
-            this.fullScheduleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fullScheduleToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.fullScheduleToolStripMenuItem.Text = "Full Schedule";
             this.fullScheduleToolStripMenuItem.Click += new System.EventHandler(this.fullScheduleToolStripMenuItem_Click);
             // 
             // textToolStripMenuItem
             // 
             this.textToolStripMenuItem.Name = "textToolStripMenuItem";
-            this.textToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.textToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.textToolStripMenuItem.Text = "Text";
             this.textToolStripMenuItem.Click += new System.EventHandler(this.textToolStripMenuItem_Click);
             // 
@@ -148,6 +152,13 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(258, 175);
             this.panel1.TabIndex = 6;
+            // 
+            // openConstraintsToolStripMenuItem
+            // 
+            this.openConstraintsToolStripMenuItem.Name = "openConstraintsToolStripMenuItem";
+            this.openConstraintsToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.openConstraintsToolStripMenuItem.Text = "Open Constraints";
+            this.openConstraintsToolStripMenuItem.Click += new System.EventHandler(this.openConstraintsToolStripMenuItem_Click);
             // 
             // auth1
             // 
@@ -198,6 +209,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStripMenuItem newScheduleToolStripMenuItem;
         private Auth auth1;
+        private System.Windows.Forms.ToolStripMenuItem openConstraintsToolStripMenuItem;
         //private DataCollection dataCollection1;
     }
 }

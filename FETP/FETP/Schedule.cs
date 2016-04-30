@@ -167,6 +167,18 @@ namespace FETP
 
         private TimeSpan[] startTimesOfExams;
 
+        private string originalConstraintsFilename;
+
+        private string originalStartTime;
+
+        private string originalExamLength;
+
+        private string originalBreakLength;
+
+        private string originalLunchLength;
+
+        private string originalEnrollmentFilename;
+
         //Non-static Members
 
         #endregion
@@ -494,6 +506,8 @@ namespace FETP
         /// <param name="inFileName"></param>
         private void SetupClassDataFromFile(string inFileName)
         {
+            //Maintain the path to the original file used to generate schedule
+            this.originalEnrollmentFilename = inFileName;
 
             // Make boundaries of ignored classes more usable
             TimeSpan ignoreClassLength = TimeSpan.ParseExact(Schedule.CLASS_LENGTH_TO_START_IGNORING, TIME_FORMAT_FROM_FILE, CultureInfo.InvariantCulture); // can't declare TimeSpan as const so do this here
@@ -560,6 +574,9 @@ namespace FETP
         /// <param name="inFileName"></param>
         private void SetupScheduleConstraintsFromFile(string inFileName)
         {
+            //Maintain original path to constraints file
+            this.originalConstraintsFilename = inFileName;
+
             FileStream inFile = File.OpenRead(@inFileName);
             var reader = new StreamReader(inFile); // TODO: maybe remove var to conform to standards
 

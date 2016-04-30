@@ -115,7 +115,7 @@ namespace FETP_GUI
             //exportToolStripMenuItem.Enabled = false;
         }
 
-        //Author: Cory Feliciano (?)
+
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -128,7 +128,6 @@ namespace FETP_GUI
                 schedule = (Schedule)formatter.Deserialize(stream);
                 stream.Close();
 
-                //TODO: This code needs to be in its own function
                 FormBorderStyle = FormBorderStyle.Sizable;
                 panel1.Controls.Clear();
                 scheduleView = new SchedulePresenter(schedule);
@@ -150,7 +149,22 @@ namespace FETP_GUI
             }
         }
 
-        //Author: Cory Feliciano (?)
+
+        private void openConstraintsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "DAT-File | *.dat";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                FileStream stream = File.OpenRead(openFileDialog.FileName);
+                BinaryFormatter formatter = new BinaryFormatter();
+                schedule = (Schedule)formatter.Deserialize(stream);
+                stream.Close();
+            }
+        }
+
+
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -305,7 +319,7 @@ namespace FETP_GUI
 
         //Author: Victor Rogers (?) and Amy Brown
         //Date:
-        //Modifications:    Amy added GUI change implementation in if(isValid){} (4-22-2016)
+        //Modifications: Amy added GUI change implementation in if(isValid){} (4-22-2016)
         public void Login(object sender, EventArgs e)
         {
             bool isValid = false;
@@ -513,6 +527,17 @@ namespace FETP_GUI
             MaximizeBox = true;
         }
 
-        #endregion        
+        #endregion
+
+        private void viewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
