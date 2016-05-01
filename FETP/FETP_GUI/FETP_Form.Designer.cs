@@ -32,6 +32,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newScheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openConstraintsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,7 +42,6 @@
             this.textToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.openConstraintsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.auth1 = new FETP_GUI.Auth();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -50,6 +50,7 @@
             // menuStrip1
             // 
             this.menuStrip1.BackColor = System.Drawing.SystemColors.Control;
+            this.menuStrip1.Enabled = false;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.viewToolStripMenuItem,
@@ -59,6 +60,7 @@
             this.menuStrip1.Size = new System.Drawing.Size(258, 24);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.Visible = false;
             // 
             // fileToolStripMenuItem
             // 
@@ -79,6 +81,13 @@
             this.newScheduleToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.newScheduleToolStripMenuItem.Text = "New Schedule";
             this.newScheduleToolStripMenuItem.Click += new System.EventHandler(this.newScheduleToolStripMenuItem_Click);
+            // 
+            // openConstraintsToolStripMenuItem
+            // 
+            this.openConstraintsToolStripMenuItem.Name = "openConstraintsToolStripMenuItem";
+            this.openConstraintsToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.openConstraintsToolStripMenuItem.Text = "Open Constraints";
+            this.openConstraintsToolStripMenuItem.Click += new System.EventHandler(this.openConstraintsToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
@@ -152,13 +161,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(258, 175);
             this.panel1.TabIndex = 6;
-            // 
-            // openConstraintsToolStripMenuItem
-            // 
-            this.openConstraintsToolStripMenuItem.Name = "openConstraintsToolStripMenuItem";
-            this.openConstraintsToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
-            this.openConstraintsToolStripMenuItem.Text = "Open Constraints";
-            this.openConstraintsToolStripMenuItem.Click += new System.EventHandler(this.openConstraintsToolStripMenuItem_Click);
             // 
             // auth1
             // 
