@@ -345,13 +345,7 @@ namespace FETP_GUI
         public void Login(object sender, EventArgs e)
         {
             bool isValid = false;
-            string userName = GetLoggedInUserName();
-
-            if (userName.ToLowerInvariant().Contains(auth1.txtUserName.Text.Trim().ToLowerInvariant()) &&
-                    userName.ToLowerInvariant().Contains(auth1.txtDomain.Text.Trim().ToLowerInvariant()))
-            {
-                isValid = IsValidCredentials(auth1.txtUserName.Text.Trim(), auth1.txtPwd.Text.Trim(), auth1.txtDomain.Text.Trim());
-            }
+            isValid = IsValidCredentials(auth1.txtUserName.Text.Trim(), auth1.txtPwd.Text.Trim(), auth1.txtDomain.Text.Trim());
 
             if (isValid)
             {
@@ -386,13 +380,20 @@ namespace FETP_GUI
         //Author: Victor Rogers (?)
         private bool IsValidCredentials(string userName, string password, string domain)
         {
+            bool isValid = false;
+            
             if (domain == "")
             {
                 domain = Environment.MachineName;
+                IntPtr tokenHandler = IntPtr.Zero;
+                isValid = LogonUser(userName, domain, password, 2, 0, ref tokenHandler);
+            }
+            else if (domain == "main.local.una.edu")
+            {
+                System.DirectoryServices.AccountManagement.PrincipalContext pC = new System.DirectoryServices.AccountManagement.PrincipalContext(System.DirectoryServices.AccountManagement.ContextType.Domain, domain);
+                isValid = pC.ValidateCredentials(userName, password);
             }
 
-            IntPtr tokenHandler = IntPtr.Zero;
-            bool isValid = LogonUser(userName, domain, password, 2, 0, ref tokenHandler);
             return isValid;
         }
         #endregion
