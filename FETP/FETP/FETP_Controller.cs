@@ -55,7 +55,7 @@ namespace FETP
         /// <summary>
         /// Placeholder
         /// </summary>
-        public const int THREAD_LIMIT = 6;
+        public const int THREAD_LIMIT = 6; //TODO: possibly gut
 
         #endregion
 
@@ -196,33 +196,33 @@ namespace FETP
         }
 
 
-        /// <summary>
-        /// Takes in a list of class groups and a class. The method then returns a
-        /// new list of class groups with the class inserted into the first possible
-        /// group.
-        /// </summary>
-        /// <param name="blocks"></param>
-        /// <param name="inclass"></param>
-        /// <returns></returns>
-        public static List<Block> GroupClass(List<Block> blocks, Class inclass)
-        {
-            bool isinserted = false;
-             int i = 0;
-            while(i<blocks.Count && !isinserted)
-            {
-                if(blocks[i].doesClassOverlapWithBlock(inclass))
-                {
-                    blocks[i].addClass(inclass);
-                    isinserted = true;
-                    i++;
-                }
-            }
-            if (!isinserted)
-            {
-                blocks.Add(new Block(inclass));
-            }
-            return blocks;
-        }
+        ///// <summary>
+        ///// Takes in a list of class groups and a class. The method then returns a
+        ///// new list of class groups with the class inserted into the first possible
+        ///// group.
+        ///// </summary>
+        ///// <param name="blocks"></param>
+        ///// <param name="inclass"></param>
+        ///// <returns></returns>
+        //public static List<Block> GroupClass(List<Block> blocks, Class inclass)
+        //{
+        //    bool isinserted = false;
+        //     int i = 0;
+        //    while(i<blocks.Count && !isinserted)
+        //    {
+        //        if(blocks[i].doesClassOverlapWithBlock(inclass))
+        //        {
+        //            blocks[i].addClass(inclass);
+        //            isinserted = true;
+        //            i++;
+        //        }
+        //    }
+        //    if (!isinserted)
+        //    {
+        //        blocks.Add(new Block(inclass));
+        //    }
+        //    return blocks;
+        //}
 
 
         /// <summary>
@@ -238,9 +238,10 @@ namespace FETP
 
             foreach (Class cl in classes)
             {
+                // first, build a list of all indexes of blocks where the class could be placed
                 List<int> indexes = new List<int>();
                 int i = 0;
-                while (i < groupedClasses.Count)
+                while (i < groupedClasses.Count) //TODO: convert to for loop
                 {
                     if (groupedClasses[i].doesClassOverlapWithBlock(cl))
                     {
@@ -249,11 +250,13 @@ namespace FETP
                     i++;
                 }
 
+                // if no overlapping blocks where found, create a new one
                 if (indexes.Count == 0)
                 {
                     groupedClasses.Add(new Block(cl));
                 }
-                else
+                // else find which block to insert class into
+                else //TODO: improve determination of which block to insert class into
                 {
                     int indexOfLargest = 0;
                     int currentLargest = 0;
@@ -273,21 +276,21 @@ namespace FETP
         }
 
 
-        /// <summary>
-        /// Placeholder
-        /// </summary>
-        /// <param name="classes"></param>
-        /// <returns></returns>
-        public static List<Block> CoalesceClassesTogether(List<Class> classes)
-        {
-            List<Block> classestobegrouped = new List<Block>(); // variable to contain the list of all grouped classes
+        ///// <summary>
+        ///// Placeholder
+        ///// </summary>
+        ///// <param name="classes"></param>
+        ///// <returns></returns>
+        //public static List<Block> CoalesceClassesTogether(List<Class> classes)
+        //{
+        //    List<Block> classestobegrouped = new List<Block>(); // variable to contain the list of all grouped classes
 
-            foreach (Class cl in classes)
-            {
-                classestobegrouped = GroupClass(classestobegrouped, cl); // TODO: clean this up
-            }
-            return classestobegrouped;
-        }
+        //    foreach (Class cl in classes)
+        //    {
+        //        classestobegrouped = GroupClass(classestobegrouped, cl); // TODO: clean this up // i don't know what this means anymore
+        //    }
+        //    return classestobegrouped;
+        //}
 
 
         /// <summary>
@@ -310,6 +313,111 @@ namespace FETP
             return classes;
         }
 
+            #region Data Constraints Validators
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="numberOfDays">Number of days available for exam scheduling</param>
+        /// <returns></returns>
+        public static bool ValidateNumberOfDays(string numberOfDays)
+        {
+            bool isValid = false;
+            int value;
+            if((Int32.TryParse(numberOfDays, out value)) && (value >= Schedule.MIN_NUMBER_OF_DAYS_FOR_EXAMS) && (value <= Schedule.MAX_NUMBER_OF_DAYS_FOR_EXAMS))
+            {
+                isValid = true;
+            }
+            return isValid;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="examsStartTime">Time for exams to start at</param>
+        /// <returns></returns>
+        public static bool ValidateExamsStartTime(string examsStartTime)
+        {
+            bool isValid = false;
+
+            //TODO remove
+            ////string examsStartTime parameter is in "hh:mm" format, not minutes.
+            //DateTime tempStartTime = Convert.ToDateTime(examsStartTime);
+            //TimeSpan startTime = TimeSpan.ParseExact(tempStartTime.TimeOfDay.Ticks);
+            try //TODO: need better error catching for invalid times
+            {
+                TimeSpan startTime = TimeSpan.ParseExact(examsStartTime, @Schedule.TIME_FORMAT_FROM_GUI, CultureInfo.InvariantCulture);
+                // Convert Constants to more usable format
+                TimeSpan minStartTime = TimeSpan.ParseExact(Schedule.MIN_START_TIME, @"hhmm", CultureInfo.InvariantCulture);
+                TimeSpan maxStartTime = TimeSpan.ParseExact(Schedule.MAX_START_TIME, @"hhmm", CultureInfo.InvariantCulture);
+
+                if ((startTime >= minStartTime) && (startTime <= maxStartTime))
+                {
+                    isValid = true;
+                }
+            }
+            catch
+            {
+
+            }
+            
+
+            return isValid;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="examsLength">Length exams will run</param>
+        /// <returns></returns>
+        public static bool ValidateExamsLength(string examsLength)
+        {
+            bool isValid = false;
+
+            int length;
+            if (Int32.TryParse(examsLength, out length) && (length >= Schedule.MIN_EXAM_LENGTH_IN_MINUTES) && (length <= Schedule.MAX_EXAM_LENGTH_IN_MINUTES))
+            {
+                isValid = true;   
+            }
+
+            return isValid;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="timeBetweenExams">Length of the break time between exams</param>
+        /// <returns></returns>
+        public static bool ValidateTimeBetweenExams(string timeBetweenExams)
+        {
+            bool isValid = false;
+
+            int length;
+            if (Int32.TryParse(timeBetweenExams, out length) && (length >= Schedule.MIN_BREAK_TIME_IN_MINUTES) && (length <= Schedule.MAX_BREAK_TIME_IN_MINUTES))
+            {
+                isValid = true;
+            }
+
+            return isValid;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lunchLength">Length of lunch time</param>
+        /// <returns></returns>
+        public static bool ValidateLunchLength(string lunchLength)
+        {
+            bool isValid = false;
+
+            int length;
+            if (Int32.TryParse(lunchLength, out length) && (length >= Schedule.MIN_LUNCH_LENGTH_IN_MINUTES) && (length <= Schedule.MAX_LUNCH_LENGTH_IN_MINUTES))
+            {
+                isValid = true;
+            }
+
+            return isValid;
+        }
+            #endregion
 
         ///// <summary>
         ///// Placeholder

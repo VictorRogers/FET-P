@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button8 = new System.Windows.Forms.Button();
@@ -36,6 +37,7 @@
             this.button6 = new System.Windows.Forms.Button();
             this.next = new System.Windows.Forms.Button();
             this.previous = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -191,5 +193,6 @@
         private System.Windows.Forms.Button next;
         private System.Windows.Forms.Button previous;
         private System.Windows.Forms.Panel panel1;
+        public System.Windows.Forms.ToolTip toolTip1;
     }
 }

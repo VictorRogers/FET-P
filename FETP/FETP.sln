@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FETP_GUI", "FETP_GUI\FETP_G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FETP", "FETP\FETP.csproj", "{4ECB06C2-5726-4319-9FEE-3CA97A1F6141}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FETPTests", "FETPTests\FETPTests.csproj", "{DCB67551-0203-4FDD-A5A5-D82B9E79166E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4ECB06C2-5726-4319-9FEE-3CA97A1F6141}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4ECB06C2-5726-4319-9FEE-3CA97A1F6141}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4ECB06C2-5726-4319-9FEE-3CA97A1F6141}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCB67551-0203-4FDD-A5A5-D82B9E79166E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCB67551-0203-4FDD-A5A5-D82B9E79166E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCB67551-0203-4FDD-A5A5-D82B9E79166E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCB67551-0203-4FDD-A5A5-D82B9E79166E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

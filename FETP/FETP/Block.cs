@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ namespace FETP
     ///Contains grouped classes and functions to get information on
     ///properties of all classes in block.
     ///</summary>
+    [Serializable]
     public class Block
     {
         #region Utilities
@@ -30,7 +32,6 @@ namespace FETP
 
 
         #region Data Members
-        //TODO: This seems ambiguous - There is a member and a property for this
         /// <summary>
         /// Add a description
         /// </summary>
@@ -45,7 +46,10 @@ namespace FETP
         /// </summary>
         public List<Class> ClassesInBlock
         {
-            get { return classesInBlock; }
+            get
+            {
+                return classesInBlock;
+            }
         }
 
         /// <summary>
@@ -57,7 +61,9 @@ namespace FETP
             {
                 int enrollment = 0;
                 foreach (Class cl in classesInBlock)
+                {
                     enrollment += cl.Enrollment;
+                }
                 return enrollment;
             }
         }
@@ -156,7 +162,16 @@ namespace FETP
 
 
         #region Methods
-        //TODO: Need a new constructor
+        /// <summary>
+        /// Used for XML serialization
+        /// </summary>
+        private Block()
+        {
+
+        }
+
+
+        //TODO: Figure out which constructors are and are not being used. move all unused code to JunkCode file
         /// <summary>
         /// Takes in data values and creates Block with those values
         /// </summary>
@@ -186,7 +201,7 @@ namespace FETP
 
 
         //TODO: this is maybe lowering cohesion
-        //TODO: don't need anymore due to enrollment being a property
+        //TODO: don't need anymore due to enrollment being a property, possibly remove
         /// <summary>
         /// Adds class to list of classes in block. Doesn't add class if the class
         /// does not overlap with group.

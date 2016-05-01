@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FETP_Form));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newScheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,7 +41,8 @@
             this.textToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.dataCollection1 = new FETP_GUI.DataCollection();
+            this.openConstraintsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.auth1 = new FETP_GUI.Auth();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -54,39 +56,52 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(335, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(258, 24);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newScheduleToolStripMenuItem,
+            this.openConstraintsToolStripMenuItem,
             this.openToolStripMenuItem,
             this.saveAsToolStripMenuItem,
             this.exportToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
+            this.fileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
+            // 
+            // newScheduleToolStripMenuItem
+            // 
+            this.newScheduleToolStripMenuItem.Name = "newScheduleToolStripMenuItem";
+            this.newScheduleToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.newScheduleToolStripMenuItem.Text = "New Schedule";
+            this.newScheduleToolStripMenuItem.Click += new System.EventHandler(this.newScheduleToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
-            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.openToolStripMenuItem.Text = "Open Schedule";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Enabled = false;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
-            this.saveAsToolStripMenuItem.Text = "Save As";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.saveAsToolStripMenuItem.Text = "Save";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.Enabled = false;
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.exportToolStripMenuItem.Text = "Export";
+            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -98,6 +113,7 @@
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
+            this.viewToolStripMenuItem.Click += new System.EventHandler(this.viewToolStripMenuItem_Click);
             // 
             // oneDayToolStripMenuItem
             // 
@@ -125,33 +141,43 @@
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(12)))), ((int)(((byte)(73)))));
-            this.panel1.Controls.Add(this.dataCollection1);
+            this.panel1.Controls.Add(this.auth1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(335, 334);
+            this.panel1.Size = new System.Drawing.Size(258, 175);
             this.panel1.TabIndex = 6;
             // 
-            // dataCollection1
+            // openConstraintsToolStripMenuItem
             // 
-            this.dataCollection1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataCollection1.Location = new System.Drawing.Point(0, 0);
-            this.dataCollection1.Name = "dataCollection1";
-            this.dataCollection1.Size = new System.Drawing.Size(335, 334);
-            this.dataCollection1.TabIndex = 0;
+            this.openConstraintsToolStripMenuItem.Name = "openConstraintsToolStripMenuItem";
+            this.openConstraintsToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.openConstraintsToolStripMenuItem.Text = "Open Constraints";
+            this.openConstraintsToolStripMenuItem.Click += new System.EventHandler(this.openConstraintsToolStripMenuItem_Click);
+            // 
+            // auth1
+            // 
+            this.auth1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
+            this.auth1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.auth1.Location = new System.Drawing.Point(0, 0);
+            this.auth1.Name = "auth1";
+            this.auth1.Size = new System.Drawing.Size(258, 175);
+            this.auth1.TabIndex = 1;
+            this.auth1.Login += new FETP_GUI.Auth.LoginClickHandler(this.Login);
             // 
             // FETP_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(335, 358);
+            this.ClientSize = new System.Drawing.Size(258, 199);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
@@ -181,6 +207,9 @@
         public System.Windows.Forms.ToolStripMenuItem textToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
-        private DataCollection dataCollection1;
+        private System.Windows.Forms.ToolStripMenuItem newScheduleToolStripMenuItem;
+        private Auth auth1;
+        private System.Windows.Forms.ToolStripMenuItem openConstraintsToolStripMenuItem;
+        //private DataCollection dataCollection1;
     }
 }

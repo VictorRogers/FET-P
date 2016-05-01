@@ -33,10 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="itextsharp">
+      <HintPath>..\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -52,6 +56,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalendarExtensions.cs" />
     <Compile Include="DataCollection.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -90,6 +95,12 @@
     <Compile Include="TextSchedule.Designer.cs">
       <DependentUpon>TextSchedule.cs</DependentUpon>
     </Compile>
+    <Compile Include="Auth.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Auth.Designer.cs">
+      <DependentUpon>Auth.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="DataCollection.resx">
       <DependentUpon>DataCollection.cs</DependentUpon>
     </EmbeddedResource>
@@ -110,12 +121,16 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="SingleDayCalendar.resx">
       <DependentUpon>SingleDayCalendar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TextSchedule.resx">
       <DependentUpon>TextSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Auth.resx">
+      <DependentUpon>Auth.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -126,9 +141,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\HelpManual.pdf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FETP\FETP.csproj">
+      <Project>{4ecb06c2-5726-4319-9fee-3ca97a1f6141}</Project>
+      <Name>FETP</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
