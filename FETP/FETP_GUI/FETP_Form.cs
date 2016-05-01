@@ -355,6 +355,8 @@ namespace FETP_GUI
                 dataCollection1 = new DataCollection();
                 panel1.Controls.Add(dataCollection1);
 
+                menuStrip1.Enabled = true;
+                menuStrip1.Visible = true;
                 dataCollection1.Dock = DockStyle.Fill;
                 dataCollection1.Location = new Point(0, 0);
                 dataCollection1.Margin = new Padding(10, 9, 10, 9);
