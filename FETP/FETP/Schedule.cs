@@ -167,12 +167,109 @@ namespace FETP
 
         private TimeSpan[] startTimesOfExams;
 
+        private string originalConstraintsFilename;
+
+        private string originalEnrollmentFilename;
+
+        private string originalStartTime;
+
+        private string originalExamLength;
+
+        private string originalBreakLength;
+
+        private string originalNumberOfDays;
+        
+        private string originalLunchLength;
         //Non-static Members
 
         #endregion
 
 
         #region Properties
+        /// <summary>
+        /// 
+        /// </summary>
+        public string OriginalConstraintsFilename
+        {
+            get
+            {
+                return this.originalConstraintsFilename;
+            }
+            set
+            {
+                //This is in here due to the constraints file name never
+                //being passed to the schedule object.
+                originalConstraintsFilename = value;
+            }
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public string OriginalEnrollmentFilename
+        {
+            get
+            {
+                return this.originalEnrollmentFilename;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string OriginalExamLength
+        {
+            get
+            {
+                return this.originalExamLength;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string OriginalStartTime
+        {
+            get
+            {
+                return this.originalStartTime;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string OriginalBreakLength
+        {
+            get
+            {
+                return this.originalBreakLength;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string OriginalLunchLength
+        {
+            get
+            {
+                return this.originalLunchLength;
+            }
+        }
+
+        /// <summary>
+        /// 
+       /// </summary>
+        public string OriginalNumberOfDays
+        {
+            get
+            {
+                return this.originalNumberOfDays;
+            }
+        }
+        
+
         /// <summary>
         /// Getter propertie for array of all blocks (grouped classes) scheduled
         /// </summary>
@@ -364,6 +461,14 @@ namespace FETP
         public Schedule(string dataFileAddress, string numberOfDays, string examsStartTime,
                         string examsLength, string timeBetweenExams, string lunchLength)
         {
+            //Persist original input data
+            this.originalEnrollmentFilename = dataFileAddress;
+            this.originalNumberOfDays = numberOfDays;
+            this.originalStartTime = examsStartTime;
+            this.originalExamLength = examsLength;
+            this.originalBreakLength = timeBetweenExams;
+            this.originalLunchLength = lunchLength;
+
             //Intial setup
             this.SetupScheduleConstraints(numberOfDays, examsStartTime, examsLength, timeBetweenExams, lunchLength);
             this.SetupClassDataFromFile(dataFileAddress);
@@ -494,6 +599,8 @@ namespace FETP
         /// <param name="inFileName"></param>
         private void SetupClassDataFromFile(string inFileName)
         {
+            //Maintain the path to the original file used to generate schedule
+            this.originalEnrollmentFilename = inFileName;
 
             // Make boundaries of ignored classes more usable
             TimeSpan ignoreClassLength = TimeSpan.ParseExact(Schedule.CLASS_LENGTH_TO_START_IGNORING, TIME_FORMAT_FROM_FILE, CultureInfo.InvariantCulture); // can't declare TimeSpan as const so do this here

@@ -117,7 +117,7 @@ namespace FETP_GUI
             exportToolStripMenuItem.Enabled = false;
         }
 
-        //Author: Cory Feliciano (?)
+
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -152,7 +152,44 @@ namespace FETP_GUI
             }
         }
 
-        //Author: Cory Feliciano (?)
+
+        private void openConstraintsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "DAT-File | *.dat";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                FileStream stream = File.OpenRead(openFileDialog.FileName);
+                BinaryFormatter formatter = new BinaryFormatter();
+                schedule = (Schedule)formatter.Deserialize(stream);
+                stream.Close();
+
+                WindowState = FormWindowState.Normal;
+                Size = new Size(355, 401);
+                MaximizeBox = false;
+                FormBorderStyle = FormBorderStyle.Fixed3D;
+                panel1.Controls.Clear();
+
+                dataCollection1 = new DataCollection();
+                dataCollection1.Dock = DockStyle.Fill;
+                dataCollection1.GenerateSchedule += new DataCollection.GenerateClickHandler(GenerateFullSchedule);
+                dataCollection1.ClearForm += new DataCollection.ClearClickHandler(ClearAllTextBoxes);
+
+                panel1.Controls.Add(dataCollection1);
+                saveAsToolStripMenuItem.Enabled = false;
+
+                dataCollection1.scheduleBrowse_textBox.Text = schedule.OriginalConstraintsFilename;
+                dataCollection1.enrollmentBrowse_textBox.Text = schedule.OriginalEnrollmentFilename;
+                dataCollection1.days_textBox.Text = schedule.OriginalNumberOfDays;
+                dataCollection1.startTime_textBox.Text = schedule.OriginalStartTime;
+                dataCollection1.examLength_textBox.Text = schedule.OriginalExamLength;
+                dataCollection1.breakLength_textBox.Text = schedule.OriginalBreakLength;
+                dataCollection1.lunchLength_textBox.Text = schedule.OriginalLunchLength;
+            }
+        }
+
+
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -164,7 +201,7 @@ namespace FETP_GUI
             }
         }
 
-        //Author: Cory Feliciano
+
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //implement export functionality here
@@ -301,23 +338,13 @@ namespace FETP_GUI
         //------------------------------------------------------------------------------------------
 
         #region Auth button events
-        //Author: Victor Rogers (?)
         [System.Runtime.InteropServices.DllImport("advapi32.dll")]
         public static extern bool LogonUser(string userName, string domainName, string password, int LogonType, int LogonProvider, ref IntPtr phToken);
 
-        //Author: Victor Rogers (?) and Amy Brown
-        //Date:
-        //Modifications:    Amy added GUI change implementation in if(isValid){} (4-22-2016)
         public void Login(object sender, EventArgs e)
         {
             bool isValid = false;
-            string userName = GetLoggedInUserName();
-
-            if (userName.ToLowerInvariant().Contains(auth1.txtUserName.Text.Trim().ToLowerInvariant()) &&
-                    userName.ToLowerInvariant().Contains(auth1.txtDomain.Text.Trim().ToLowerInvariant()))
-            {
-                isValid = IsValidCredentials(auth1.txtUserName.Text.Trim(), auth1.txtPwd.Text.Trim(), auth1.txtDomain.Text.Trim());
-            }
+            isValid = IsValidCredentials(auth1.txtUserName.Text.Trim(), auth1.txtPwd.Text.Trim(), auth1.txtDomain.Text.Trim());
 
             if (isValid)
             {
@@ -343,23 +370,30 @@ namespace FETP_GUI
             }
         }
 
-        //Author: Victor Rogers (?)
+
         private string GetLoggedInUserName()
         {
             WindowsIdentity currentUser = WindowsIdentity.GetCurrent();
             return currentUser.Name;
         }
 
-        //Author: Victor Rogers (?)
+
         private bool IsValidCredentials(string userName, string password, string domain)
         {
+            bool isValid = false;
+
             if (domain == "")
             {
                 domain = Environment.MachineName;
+                IntPtr tokenHandler = IntPtr.Zero;
+                isValid = LogonUser(userName, domain, password, 2, 0, ref tokenHandler);
+            }
+            else if (domain == "main.local.una.edu")
+            {
+                System.DirectoryServices.AccountManagement.PrincipalContext pC = new System.DirectoryServices.AccountManagement.PrincipalContext(System.DirectoryServices.AccountManagement.ContextType.Domain, domain);
+                isValid = pC.ValidateCredentials(userName, password);
             }
 
-            IntPtr tokenHandler = IntPtr.Zero;
-            bool isValid = LogonUser(userName, domain, password, 2, 0, ref tokenHandler);
             return isValid;
         }
         #endregion
@@ -446,6 +480,9 @@ namespace FETP_GUI
 
                 //Create schedule data structure
                 schedule = new Schedule(enrollmentFile, daysNum, beginTime, examLength, breakLength, lunchLength);
+
+                //Maintain path to original constraints file
+                schedule.OriginalConstraintsFilename = dataCollection1.scheduleBrowse_textBox.Text;
 
                 //Using schedule data strucutre::
                 generateSchedulePresenter(schedule);
@@ -571,6 +608,11 @@ namespace FETP_GUI
                 string[] lines = textCal.richTextBox1.Text.Split(newline, StringSplitOptions.RemoveEmptyEntries);
                 schedule.ExportTextSchedule(saveFileDialog.FileName, lines);
             }
+        }
+
+        private void FETP_Form_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

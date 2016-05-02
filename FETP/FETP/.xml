@@ -676,5 +676,10 @@
             
             </summary>
         </member>
+        <member name="M:FETP.Schedule.ExportTextSchedule(System.String,System.String[])">
+            <summary>
+            
+            </summary>
+        </member>
     </members>
 </doc>
