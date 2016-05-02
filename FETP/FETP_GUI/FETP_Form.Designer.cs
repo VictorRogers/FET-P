@@ -42,6 +42,8 @@
             this.textToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.as_PDFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.as_textToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.auth1 = new FETP_GUI.Auth();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -50,7 +52,6 @@
             // menuStrip1
             // 
             this.menuStrip1.BackColor = System.Drawing.SystemColors.Control;
-            this.menuStrip1.Enabled = false;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.viewToolStripMenuItem,
@@ -60,7 +61,6 @@
             this.menuStrip1.Size = new System.Drawing.Size(258, 24);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
-            this.menuStrip1.Visible = false;
             // 
             // fileToolStripMenuItem
             // 
@@ -73,7 +73,6 @@
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
-            this.fileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
             // 
             // newScheduleToolStripMenuItem
             // 
@@ -87,7 +86,6 @@
             this.openConstraintsToolStripMenuItem.Name = "openConstraintsToolStripMenuItem";
             this.openConstraintsToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.openConstraintsToolStripMenuItem.Text = "Open Constraints";
-            this.openConstraintsToolStripMenuItem.Click += new System.EventHandler(this.openConstraintsToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
@@ -106,6 +104,9 @@
             // 
             // exportToolStripMenuItem
             // 
+            this.exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.as_PDFToolStripMenuItem,
+            this.as_textToolStripMenuItem1});
             this.exportToolStripMenuItem.Enabled = false;
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
             this.exportToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
@@ -122,26 +123,25 @@
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
-            this.viewToolStripMenuItem.Click += new System.EventHandler(this.viewToolStripMenuItem_Click);
             // 
             // oneDayToolStripMenuItem
             // 
             this.oneDayToolStripMenuItem.Name = "oneDayToolStripMenuItem";
-            this.oneDayToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.oneDayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.oneDayToolStripMenuItem.Text = "One Day";
             this.oneDayToolStripMenuItem.Click += new System.EventHandler(this.oneDayToolStripMenuItem_Click);
             // 
             // fullScheduleToolStripMenuItem
             // 
             this.fullScheduleToolStripMenuItem.Name = "fullScheduleToolStripMenuItem";
-            this.fullScheduleToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.fullScheduleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.fullScheduleToolStripMenuItem.Text = "Full Schedule";
             this.fullScheduleToolStripMenuItem.Click += new System.EventHandler(this.fullScheduleToolStripMenuItem_Click);
             // 
             // textToolStripMenuItem
             // 
             this.textToolStripMenuItem.Name = "textToolStripMenuItem";
-            this.textToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.textToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.textToolStripMenuItem.Text = "Text";
             this.textToolStripMenuItem.Click += new System.EventHandler(this.textToolStripMenuItem_Click);
             // 
@@ -162,6 +162,20 @@
             this.panel1.Size = new System.Drawing.Size(258, 175);
             this.panel1.TabIndex = 6;
             // 
+            // as_PDFToolStripMenuItem
+            // 
+            this.as_PDFToolStripMenuItem.Name = "as_PDFToolStripMenuItem";
+            this.as_PDFToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.as_PDFToolStripMenuItem.Text = "As PDF";
+            this.as_PDFToolStripMenuItem.Click += new System.EventHandler(this.as_PDFToolStripMenuItem_Click);
+            // 
+            // as_textToolStripMenuItem1
+            // 
+            this.as_textToolStripMenuItem1.Name = "as_textToolStripMenuItem1";
+            this.as_textToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.as_textToolStripMenuItem1.Text = "As Text";
+            this.as_textToolStripMenuItem1.Click += new System.EventHandler(this.as_textToolStripMenuItem_Click);
+            // 
             // auth1
             // 
             this.auth1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(22)))), ((int)(((byte)(107)))));
@@ -178,7 +192,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(258, 199);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.menuStrip1);
+            //this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -212,6 +226,8 @@
         private System.Windows.Forms.ToolStripMenuItem newScheduleToolStripMenuItem;
         private Auth auth1;
         private System.Windows.Forms.ToolStripMenuItem openConstraintsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem as_PDFToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem as_textToolStripMenuItem1;
         //private DataCollection dataCollection1;
     }
 }
