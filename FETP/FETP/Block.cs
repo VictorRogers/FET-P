@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FETP
 {
@@ -176,6 +172,11 @@ namespace FETP
         /// Takes in data values and creates Block with those values
         /// </summary>
         /// <param name="inClasses">List of classes to start block with</param>
+        //Author: Benjamin Etheredge
+        //Date: 3-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public Block(List<Class> inClasses = null)
         {
             if (inClasses == null)
@@ -193,6 +194,11 @@ namespace FETP
         /// Creates a new Block with only the input class in it
         /// </summary>
         /// <param name="inClass"></param>
+        //Author: Benjamin Etheredge
+        //Date: 3-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public Block(Class inClass)
         {
             this.classesInBlock = new List<Class>();
@@ -207,6 +213,11 @@ namespace FETP
         /// does not overlap with group.
         /// </summary>
         /// <param name="inClass"></param>
+        //Author: Benjamin Etheredge
+        //Date: 3-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public void addClass(Class inClass)
         {
             classesInBlock.Add(inClass);
@@ -234,6 +245,11 @@ namespace FETP
         /// </summary>
         /// <param name="inClass">Class to compare against other classes already in block</param>
         /// <returns></returns>
+        //Author: Benjamin Etheredge
+        //Date: 3-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public bool doesClassOverlapWithBlock(Class inClass)
         {
             foreach (Class cl in this.classesInBlock)
@@ -246,29 +262,6 @@ namespace FETP
             return true;
         }
 
-
-        /// <summary>
-        /// Displays all information stored in a Block instance with formatting.
-        /// </summary>
-        public void Display()
-        {
-            Console.WriteLine("Number of Classes in Block: {0}", this.classesInBlock.Count);
-            Console.WriteLine("Total Enrollment: {0}", this.Enrollment);
-            Console.WriteLine("Average Enrollment: {0}", this.Average);
-            Console.WriteLine("Variance: {0}", this.Variance);
-            Console.WriteLine("Standard Deviation: {0}", this.StandardDeviation);
-            Console.WriteLine("Weighted Average Starting Time: {0}", this.WeightedAverageStartTime);
-        }
-
-
-        /// <summary>
-        /// Add a description
-        /// </summary>
-        public void DisplayAllClasses()
-        {
-            foreach (Class cl in this.classesInBlock)
-                cl.Display();
-        }
 
         #endregion
 

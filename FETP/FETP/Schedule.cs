@@ -1,20 +1,14 @@
 ﻿// TODO: need to figure out standard for usage of this."
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Globalization;  // allows times to be different pased on local TODO: may can be removed
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks; // TODO: some of these aren't needed 
 
 
 namespace FETP
 {
-    #region NULL BLOCKS AT END OF SCHEDULE
-
     //TODO: rearrange method positions 
     /// <summary>
     /// Placeholder
@@ -51,71 +45,70 @@ namespace FETP
         public const string TIME_EXAMS_MUST_END_BY = "1700";
 
         /// <summary>
-        /// 
+        /// Lower limit for when lunch can start
         /// </summary>
         public const string LOWER_TIME_RANGE_FOR_LUNCH = "1100";
 
         /// <summary>
-        /// 
+        /// Upper limit for when lunch can start
+        /// TODO: May not currently be in use
         /// </summary>
         public const string UPPER_TIME_RANGE_FOR_LUNCH = "0100";
 
         /// <summary>
-        /// 
+        /// Lower limit for number of exam days
         /// </summary>
         public const int MIN_NUMBER_OF_DAYS_FOR_EXAMS = 1;
         /// <summary>
-        /// 
+        /// Upper limit for number of exam days
         /// </summary>
         public const int MAX_NUMBER_OF_DAYS_FOR_EXAMS = 7;
 
         /// <summary>
-        /// 
+        /// Lower limit for exam start time
         /// </summary>
         public const string MIN_START_TIME = "0700";
         /// <summary>
-        /// 
+        /// Upper limit for exam start time
         /// </summary>
         public const string MAX_START_TIME = "1600"; // TODO: figure these out
 
         /// <summary>
-        /// 
+        /// Lower limit for exam length
         /// </summary>
         public const int MIN_EXAM_LENGTH_IN_MINUTES = 90;
         /// <summary>
-        /// 
+        /// Upper limit for exam length
         /// </summary>
         public const int MAX_EXAM_LENGTH_IN_MINUTES = 120; // TODO: figure these out
 
         /// <summary>
-        /// 
+        /// Lower limit for break time length
         /// </summary>
         public const int MIN_BREAK_TIME_IN_MINUTES = 10;
         /// <summary>
-        /// 
+        /// Upper limit for break time length
         /// </summary>
         public const int MAX_BREAK_TIME_IN_MINUTES = 30;
 
         /// <summary>
-        /// 
+        /// Lower limit for lunch length 
         /// </summary>
         public const int MIN_LUNCH_LENGTH_IN_MINUTES = 0;
         /// <summary>
-        /// 
+        /// Upper limit for lunch length
         /// </summary>
         public const int MAX_LUNCH_LENGTH_IN_MINUTES = 60;
 
         /// <summary>
-        /// 
+        /// Format of time in files
         /// </summary>
         public const string TIME_FORMAT_FROM_FILE = @"hhmm";
         /// <summary>
-        /// 
+        /// Format of time from GUI
         /// </summary>
         public const string TIME_FORMAT_FROM_GUI = @"hh\:mm";
-
-
-
+   
 
         #endregion
 
@@ -162,24 +155,51 @@ namespace FETP
         /// </summary>
         private Block[] blocks;
 
+        /// <summary>
+        /// List of blocks not scheduled
+        /// </summary>
         private List<Block> leftoverBlocks;
 
+        /// <summary>
+        /// Array of start times on a day of exams
+        /// </summary>
         private TimeSpan[] startTimesOfExams;
 
+        /// <summary>
+        /// Name of file for original constraints file
+        /// </summary>
         private string originalConstraintsFilename;
 
+        /// <summary>
+        /// Name of file for original enrollment file
+        /// </summary>
         private string originalEnrollmentFilename;
 
+        /// <summary>
+        /// Inputed start time
+        /// </summary>
         private string originalStartTime;
 
+        /// <summary>
+        /// Inputed exam length
+        /// </summary>
         private string originalExamLength;
 
+        /// <summary>
+        /// Inputed break length
+        /// </summary>
         private string originalBreakLength;
 
+        /// <summary>
+        /// Inputed number of days
+        /// </summary>
         private string originalNumberOfDays;
-        
+
+        /// <summary>
+        /// INputed lunch length
+        /// </summary>
         private string originalLunchLength;
-        //Non-static Members
+        
 
         #endregion
 
@@ -347,7 +367,7 @@ namespace FETP
         }
 
         /// <summary>
-        /// 
+        /// Gets all blocks in schedule ordered by enrollment
         /// </summary>
         public List<Block> AllBlocksOrderedByEnrollment
         {
@@ -386,7 +406,7 @@ namespace FETP
         }
 
         /// <summary>
-        /// 
+        /// Getter property for number of timeslots used for scheduling
         /// </summary>
         public int NumberOfTimeSlotsToBeUsed
         {
@@ -430,21 +450,6 @@ namespace FETP
         {
         }
 
-        //TODO: write subfunction for constructor to avoid rewriting the code between constructors
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="dataFileAddress"></param>
-        /// <param name="constraintsFileAddress"></param>
-        public Schedule(string dataFileAddress, string constraintsFileAddress)
-        {
-            // Intial Setup
-            this.SetupScheduleConstraintsFromFile(constraintsFileAddress);
-            this.SetupClassDataFromFile(dataFileAddress);
-
-            this.Build();
-        }
-
 
         /// <summary>
         /// 
@@ -455,6 +460,7 @@ namespace FETP
         /// <param name="examsLength"></param>
         /// <param name="timeBetweenExams"></param>
         /// <param name="lunchLength"></param>
+        
         public Schedule(string dataFileAddress, string numberOfDays, string examsStartTime,
                         string examsLength, string timeBetweenExams, string lunchLength)
         {
@@ -482,6 +488,11 @@ namespace FETP
         /// <summary>
         /// Builds out the rest of schedule
         /// </summary>
+        //Author: Benjamin Etheredge
+        //Date: 4-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public void Build() //TODO: refine
         {
             this.SetNumberOfTimeSlotsAvailable(); //TODO: rewire what this function does // maybe
@@ -500,6 +511,11 @@ namespace FETP
         /// Checks if less timeslots are needed than available. 
         /// If so, then sets up control variable to not consider extra slots when scheduling
         /// </summary>
+        //Author: Benjamin Etheredge
+        //Date: 4-29-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         private void SetupNumberOfTimeSlotsNeeded()
         {
             if (this.LeftoverBlocks == null) // TODO: work on error checking
@@ -522,6 +538,11 @@ namespace FETP
         /// <summary>
         /// Sets up data member examsStartTimes to be used for quickly finding the start time of an index
         /// </summary>
+        //Author: Benjamin Etheredge
+        //Date: 3-30-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         private void SetupExamStartTimeTable()
         {
             // setup lower limir for lunch from constant for easier use
@@ -553,6 +574,11 @@ namespace FETP
         /// <summary>
         /// Calculates number of timeslots available and sets it.
         /// </summary>
+        //Author: Benjamin Etheredge
+        //Date: 4-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         private void SetNumberOfTimeSlotsAvailable()
         {
             TimeSpan latestTime = TimeSpan.ParseExact(TIME_EXAMS_MUST_END_BY, TIME_FORMAT_FROM_FILE, CultureInfo.InvariantCulture); // latest exams can go // TODO: maybe rewrite
@@ -590,6 +616,11 @@ namespace FETP
         /// not add classes in that fall into the criteria of ignorable classes.
         /// </summary>
         /// <param name="inFileName"></param>
+        //Author: Benjamin Etheredge
+        //Date: 4-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         private void SetupClassDataFromFile(string inFileName)
         {
             //Maintain the path to the original file used to generate schedule
@@ -653,6 +684,11 @@ namespace FETP
         /// Reads in the constraints file and initializes a static schedule
         /// </summary>
         /// <param name="inFileName"></param>
+        //Author: Benjamin Etheredge
+        //Date: 4-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         private void SetupScheduleConstraintsFromFile(string inFileName)
         {
             FileStream inFile = File.OpenRead(@inFileName);
@@ -668,13 +704,18 @@ namespace FETP
         }
 
         /// <summary>
-        /// 
+        /// Sets up all constraints for scheduling
         /// </summary>
         /// <param name="numberOfDays"></param>
         /// <param name="examsStartTime"></param>
         /// <param name="examsLength"></param>
         /// <param name="timeBetweenExams"></param>
         /// <param name="lunchLength"></param>
+        //Author: Benjamin Etheredge
+        //Date: 3-30-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         private void SetupScheduleConstraints(string numberOfDays, string examsStartTime,
                                               string examsLength, string timeBetweenExams,
                                               string lunchLength)
@@ -691,18 +732,6 @@ namespace FETP
 
         #region Scheduling Functions
 
-        /* TODO
-                Ben Notes:
-                    theres an interesting correlation between number of students in class that seems to be weird across days....
-                        could be bug in schdule
-                            // TODO: ITS A BUG
-                        could be oppurtunity for optimizations. 
-                            maybe resort list of best possibly times.
-                                like start from other end of schdule every other timewhen building it so it spreads out classes better
-
-                    Another possibly schedule improverment,
-                        instead of sticking in biggest block on conflict, stick into tightest fitting block on conflict
-        */
 
         //TODO: further investigate what makes the best time
         /// <summary>
@@ -713,6 +742,11 @@ namespace FETP
         /// </summary>
         /// <param name="startTime">average start time of block to schedule</param>
         /// <returns>Index of best possible fit</returns>
+        //Author: Benjamin Etheredge
+        //Date: 3-30-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         private int FindBestTimeslotFit(TimeSpan startTime)
         {
 
@@ -774,7 +808,12 @@ namespace FETP
         /// Finds the index of input start time in table of start times
         /// </summary>
         /// <param name="startTime">Start time whose index is desired.</param>
-        /// <returns></returns>
+        /// <returns>Index of inputed start time</returns>
+        //Author: Benjamin Etheredge
+        //Date: 3-30-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         private int GetIndexOfStartTime(TimeSpan startTime)
         {
             bool wasFound = false;
@@ -809,7 +848,12 @@ namespace FETP
         /// Gets the start time of exam block
         /// </summary>
         /// <param name="indexOfBlock"></param>
-        /// <returns></returns>
+        /// <returns>Start time of inputed indexes block</returns>
+        //Author: Benjamin Etheredge
+        //Date: 3-30-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public TimeSpan GetStartTimeOfBlock(int indexOfBlock)
         {
             TimeSpan startTime = this.examsStartTime;
@@ -827,6 +871,11 @@ namespace FETP
         /// Determines if blocks has any empty spaces
         /// </summary>
         /// <returns>Whether or not empty spaces exist</returns>
+        //Author: Benjamin Etheredge
+        //Date: 3-30-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public bool IsFull()
         {
             bool isFull = true;
@@ -843,10 +892,14 @@ namespace FETP
         }
 
         /// <summary>
-        /// Placeholder
+        /// Schedules inputed grouped classes
         /// </summary>
         /// <param name="groupedClasses">Schedules inputed grouped classes into Schedule object</param>
-        /// <returns></returns>
+        //Author: Benjamin Etheredge
+        //Date: 3-30-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         private void ScheduleBlocks(List<Block> groupedClasses)
         {
             this.blocks = new Block[this.numberOfTimeSlotsAvailable]; // sets up Scheduled classes array
@@ -982,7 +1035,6 @@ namespace FETP
 
         #endregion
     }
-    #endregion
 }
 
 

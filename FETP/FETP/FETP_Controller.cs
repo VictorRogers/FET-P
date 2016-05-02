@@ -13,68 +13,17 @@ namespace FETP
     /// <summary>
     /// Placeholder
     /// </summary>
+    //Author: Victor Rogers, Benjamin Etheredge
+    //Date: 3-25-2016
+    //Modifications:  
+    //Date(s) Tested:
+    //Approved By:
     public static class FETP_Controller
     {
-        #region Utilities
-        //Used for random number generation
-        private static readonly Random random = new Random();
-        private static readonly object syncLock = new object();
-
-        /// <summary>
-        /// Returns a random float between 0 and 1
-        /// </summary>
-        /// <returns>A random float between 0 and 1</returns>
-        public static float RandomFloatBetween01()
-        {
-            lock (syncLock)
-            {
-                return (float)random.NextDouble();
-            }
-        }
-        
-
-        /// <summary>
-        /// Returns a random integer
-        /// </summary>
-        /// <returns>A random integer</returns>
-        public static int GetRandomInt()
-        {
-            int upperRange = Int32.MaxValue;
-            int lowerRange = 0;
-
-            lock (syncLock)
-            {
-                return random.Next(lowerRange, upperRange);
-            }
-        }
-
-        #endregion
-
-
-        #region Data Constants
-        /// <summary>
-        /// Placeholder
-        /// </summary>
-        public const int THREAD_LIMIT = 6; //TODO: possibly gut
-
-        #endregion
-
-
-        #region Data Members
-        //Add data members here
-
-        #endregion
-
-
-        #region Properties
-        //Properties here
-
-        #endregion
-
 
         #region Methods
         /// <summary>
-        /// Placeholder 
+        /// Computes variance of all blocks 
         /// </summary>
         /// <param name="blocks"></param>
         /// <returns></returns>
@@ -104,6 +53,11 @@ namespace FETP
         /// <param name="class1"></param>
         /// <param name="class2"></param>
         /// <returns></returns>
+        //Author: Benjamin Etheredge
+        //Date: 3-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public static bool doClassesOverlap(Class class1, Class class2)
         {
             return (doClassDaysOverlap(class1, class2) && doClassTimesOverlap(class1, class2)); // Broke up to aid readability
@@ -116,18 +70,28 @@ namespace FETP
         /// <param name="class1"></param>
         /// <param name="class2"></param>
         /// <returns></returns>
+        //Author: Benjamin Etheredge
+        //Date: 3-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public static bool doClassDaysOverlap(Class class1, Class class2)
         {
             return (getNumberOfDaysInCommon(class1, class2) > 0);
         }
 
-        
+
         /// <summary>
         /// Determines if the two input classes have times that overlap
         /// </summary>
         /// <param name="class1"></param>
         /// <param name="class2"></param>
         /// <returns></returns>
+        //Author: Benjamin Etheredge
+        //Date: 3-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public static bool doClassTimesOverlap(Class class1, Class class2)
         {
             return (
@@ -145,6 +109,11 @@ namespace FETP
         /// <param name="class1"></param>
         /// <param name="class2"></param>
         /// <returns></returns>
+        //Author: Benjamin Etheredge
+        //Date: 3-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public static int getNumberOfDaysInCommon(Class class1, Class class2)
         {
             int daysInCommon = 0;
@@ -166,6 +135,11 @@ namespace FETP
         /// <param name="classes"></param>
         /// <param name="inClass"></param>
         /// <returns></returns>
+        //Author: Benjamin Etheredge
+        //Date: 3-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public static int getNumberOfOverlappingClasses(List<Class> classes, Class inClass)
         {
             int overlappingClasses = 0; 
@@ -182,6 +156,11 @@ namespace FETP
         /// </summary>
         /// <param name="classes"></param>
         /// <returns></returns>
+        //Author: Benjamin Etheredge
+        //Date: 3-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public static bool doAnyClassesNotOverlap(List<Class> classes)
         {
             foreach (Class class1 in classes)
@@ -195,43 +174,18 @@ namespace FETP
             return false;
         }
 
-
-        ///// <summary>
-        ///// Takes in a list of class groups and a class. The method then returns a
-        ///// new list of class groups with the class inserted into the first possible
-        ///// group.
-        ///// </summary>
-        ///// <param name="blocks"></param>
-        ///// <param name="inclass"></param>
-        ///// <returns></returns>
-        //public static List<Block> GroupClass(List<Block> blocks, Class inclass)
-        //{
-        //    bool isinserted = false;
-        //     int i = 0;
-        //    while(i<blocks.Count && !isinserted)
-        //    {
-        //        if(blocks[i].doesClassOverlapWithBlock(inclass))
-        //        {
-        //            blocks[i].addClass(inclass);
-        //            isinserted = true;
-        //            i++;
-        //        }
-        //    }
-        //    if (!isinserted)
-        //    {
-        //        blocks.Add(new Block(inclass));
-        //    }
-        //    return blocks;
-        //}
-
-
         /// <summary>
         /// Takes in a list of class groups and a class. The method then returns a
         /// new list of class groups with the class inserted into the first possible
         /// group.
         /// </summary>
         /// <param name="classes"></param>
-        /// <returns></returns>
+        /// <returns>List of blocks which are grouped classes</returns>
+        //Author: Benjamin Etheredge
+        //Date: 3-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public static List<Block> GroupClasses(List<Class> classes)
         {
             List<Block> groupedClasses = new List<Block>();
@@ -276,29 +230,17 @@ namespace FETP
         }
 
 
-        ///// <summary>
-        ///// Placeholder
-        ///// </summary>
-        ///// <param name="classes"></param>
-        ///// <returns></returns>
-        //public static List<Block> CoalesceClassesTogether(List<Class> classes)
-        //{
-        //    List<Block> classestobegrouped = new List<Block>(); // variable to contain the list of all grouped classes
-
-        //    foreach (Class cl in classes)
-        //    {
-        //        classestobegrouped = GroupClass(classestobegrouped, cl); // TODO: clean this up // i don't know what this means anymore
-        //    }
-        //    return classestobegrouped;
-        //}
-
-
         /// <summary>
         /// Placeholder
         /// </summary>
         /// <param name="classes"></param>
         /// <param name="inClass"></param>
         /// <returns></returns>
+        //Author: Benjamin Etheredge
+        //Date: 3-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public static List<Class> removeClass(List<Class> classes, Class inClass)
         {
             int i = 0;
@@ -313,12 +255,18 @@ namespace FETP
             return classes;
         }
 
-            #region Data Constraints Validators
+        #region Data Constraints Validators
+
         /// <summary>
-        /// 
+        /// Validates number of days
         /// </summary>
         /// <param name="numberOfDays">Number of days available for exam scheduling</param>
         /// <returns></returns>
+        //Author: Benjamin Etheredge
+        //Date: 4-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public static bool ValidateNumberOfDays(string numberOfDays)
         {
             bool isValid = false;
@@ -335,6 +283,11 @@ namespace FETP
         /// </summary>
         /// <param name="examsStartTime">Time for exams to start at</param>
         /// <returns></returns>
+        //Author: Benjamin Etheredge
+        //Date: 4-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public static bool ValidateExamsStartTime(string examsStartTime)
         {
             bool isValid = false;
@@ -359,7 +312,6 @@ namespace FETP
             {
 
             }
-            
 
             return isValid;
         }
@@ -369,6 +321,11 @@ namespace FETP
         /// </summary>
         /// <param name="examsLength">Length exams will run</param>
         /// <returns></returns>
+        //Author: Benjamin Etheredge
+        //Date: 4-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public static bool ValidateExamsLength(string examsLength)
         {
             bool isValid = false;
@@ -387,6 +344,11 @@ namespace FETP
         /// </summary>
         /// <param name="timeBetweenExams">Length of the break time between exams</param>
         /// <returns></returns>
+        //Author: Benjamin Etheredge
+        //Date: 4-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public static bool ValidateTimeBetweenExams(string timeBetweenExams)
         {
             bool isValid = false;
@@ -405,6 +367,11 @@ namespace FETP
         /// </summary>
         /// <param name="lunchLength">Length of lunch time</param>
         /// <returns></returns>
+        //Author: Benjamin Etheredge
+        //Date: 4-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public static bool ValidateLunchLength(string lunchLength)
         {
             bool isValid = false;
@@ -419,55 +386,7 @@ namespace FETP
         }
             #endregion
 
-        ///// <summary>
-        ///// Placeholder
-        ///// </summary>
-        ///// <param name="dataFileLocation"></param>
-        ///// <param name="constraintsFileLocation"></param>
-        //public static void Run(string dataFileLocation, string constraintsFileLocation)
-        //{
-        //    Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
-        //    Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
 
-        //    RunTheRest();
-
-
-        //}
-
-
-        ///// <summary>
-        ///// Placeholder
-        ///// </summary>
-        ///// <param name="dataFileLocation"></param>
-        ///// <param name="numberOfDay"></param>
-        ///// <param name="examsStartTime"></param>
-        ///// <param name="examsLength"></param>
-        ///// <param name="timeBetweenExams"></param>
-        ///// <param name="lunchLength"></param>
-        //public static void Run(string dataFileLocation, int numberOfDays, TimeSpan examsStartTime,
-        //                                      TimeSpan examsLength, TimeSpan timeBetweenExams,
-        //                                      TimeSpan lunchLength)
-        //{
-        //    Schedule.SetupScheduleConstraints(numberOfDays, examsStartTime, examsLength, timeBetweenExams, lunchLength);
-        //    Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
-
-        //    RunTheRest();
-
-        ////}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public static void RunTheRest()
-        //{
-
-        //    // Sort classes based on Overlapping classes ascending then by enrollment Descedending ????
-        //    List<Class> sortedClasses = Schedule.AllClasses.OrderBy(c => FETP_Controller.getNumberOfOverlappingClasses(Schedule.AllClasses, c)).ThenBy(c => c.Enrollment).ToList(); // change thenby
-        //    List<Block> blocks = FETP_Controller.GroupClasses(sortedClasses);
-
-
-
-        //}
         #endregion
 
 

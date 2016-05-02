@@ -2209,3 +2209,262 @@ namespace FETP
                 return 1/ (1 + fitnessScore);
             }
         } // TODO: needs more work
+
+
+
+/// <summary>
+        /// Displays all information stored in a Block instance with formatting.
+        /// </summary>
+        public void Display()
+        {
+            Console.WriteLine("Number of Classes in Block: {0}", this.classesInBlock.Count);
+            Console.WriteLine("Total Enrollment: {0}", this.Enrollment);
+            Console.WriteLine("Average Enrollment: {0}", this.Average);
+            Console.WriteLine("Variance: {0}", this.Variance);
+            Console.WriteLine("Standard Deviation: {0}", this.StandardDeviation);
+            Console.WriteLine("Weighted Average Starting Time: {0}", this.WeightedAverageStartTime);
+        }
+
+
+        /// <summary>
+        /// Add a description
+        /// </summary>
+        public void DisplayAllClasses()
+        {
+            foreach (Class cl in this.classesInBlock)
+                cl.Display();
+        }
+///// <summary>
+        ///// Takes in a list of class groups and a class. The method then returns a
+        ///// new list of class groups with the class inserted into the first possible
+        ///// group.
+        ///// </summary>
+        ///// <param name="blocks"></param>
+        ///// <param name="inclass"></param>
+        ///// <returns></returns>
+        //public static List<Block> GroupClass(List<Block> blocks, Class inclass)
+        //{
+        //    bool isinserted = false;
+        //     int i = 0;
+        //    while(i<blocks.Count && !isinserted)
+        //    {
+        //        if(blocks[i].doesClassOverlapWithBlock(inclass))
+        //        {
+        //            blocks[i].addClass(inclass);
+        //            isinserted = true;
+        //            i++;
+        //        }
+        //    }
+        //    if (!isinserted)
+        //    {
+        //        blocks.Add(new Block(inclass));
+        //    }
+        //    return blocks;
+        //}
+
+
+using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+
+namespace FETP
+{
+    class Program
+    {
+        public const string STARS = "*******************************************";
+        static void Main(string[] args)
+        {
+            while(true)
+            {
+                Console.WriteLine("Would you like to test");
+                //Console.WriteLine("1. Reading from Enrollment File");
+                //Console.WriteLine("2. Reading from Constraints File");
+                //Console.WriteLine("3. Basic Grouping");
+                Console.WriteLine("1. Full Grouping and Scheduling");
+                Console.WriteLine("2. Open a Schedule");
+
+                string input = Console.ReadLine();
+                Console.WriteLine();
+                
+                if (input == "1")
+                {
+                    Schedule schedule = new Schedule("../../../../Example Data/Fall 2014 Total Enrollments by Meeting times.csv", "../../../../Example Data/Ben Made Constraints Sample.txt");
+                    schedule.Display();
+                    schedule.DisplayBlocks();
+
+                    Console.WriteLine("Would you like to save the schedule? (Y / N)");
+                    string saveDecision = Console.ReadLine();
+                    if (saveDecision == "Y" || saveDecision == "y")
+                    {
+                        schedule.SaveSchedule(AppDomain.CurrentDomain.BaseDirectory + "testScheduleSave.dat");
+                    }
+                }
+
+                if (input == "2")
+                {
+                    FileStream stream = File.OpenRead(AppDomain.CurrentDomain.BaseDirectory + "testScheduleSave.dat");
+                    BinaryFormatter formatter = new BinaryFormatter();
+                    Schedule schedule = (Schedule)formatter.Deserialize(stream);
+                    stream.Close();
+                }
+
+                Console.WriteLine();
+            }
+        }
+       
+    }
+}
+
+
+
+   ///// <summary>
+        ///// Placeholder
+        ///// </summary>
+        ///// <param name="classes"></param>
+        ///// <returns></returns>
+        //public static List<Block> CoalesceClassesTogether(List<Class> classes)
+        //{
+        //    List<Block> classestobegrouped = new List<Block>(); // variable to contain the list of all grouped classes
+
+        //    foreach (Class cl in classes)
+        //    {
+        //        classestobegrouped = GroupClass(classestobegrouped, cl); // TODO: clean this up // i don't know what this means anymore
+        //    }
+        //    return classestobegrouped;
+        //}
+
+
+
+        ///// <summary>
+        ///// Placeholder
+        ///// </summary>
+        ///// <param name="dataFileLocation"></param>
+        ///// <param name="constraintsFileLocation"></param>
+        //public static void Run(string dataFileLocation, string constraintsFileLocation)
+        //{
+        //    Schedule.readInputConstraintsFile("../../../../Example Data/Ben Made Constraints Sample.txt");
+        //    Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
+
+        //    RunTheRest();
+
+
+        //}
+
+
+        ///// <summary>
+        ///// Placeholder
+        ///// </summary>
+        ///// <param name="dataFileLocation"></param>
+        ///// <param name="numberOfDay"></param>
+        ///// <param name="examsStartTime"></param>
+        ///// <param name="examsLength"></param>
+        ///// <param name="timeBetweenExams"></param>
+        ///// <param name="lunchLength"></param>
+        //public static void Run(string dataFileLocation, int numberOfDays, TimeSpan examsStartTime,
+        //                                      TimeSpan examsLength, TimeSpan timeBetweenExams,
+        //                                      TimeSpan lunchLength)
+        //{
+        //    Schedule.SetupScheduleConstraints(numberOfDays, examsStartTime, examsLength, timeBetweenExams, lunchLength);
+        //    Schedule.readInputDataFile("../../../../Example Data/Spring 2015 Total Enrollments by Meeting times.csv"); // ? throw exceptions for invalid input
+
+        //    RunTheRest();
+
+        ////}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static void RunTheRest()
+        //{
+
+        //    // Sort classes based on Overlapping classes ascending then by enrollment Descedending ????
+        //    List<Class> sortedClasses = Schedule.AllClasses.OrderBy(c => FETP_Controller.getNumberOfOverlappingClasses(Schedule.AllClasses, c)).ThenBy(c => c.Enrollment).ToList(); // change thenby
+        //    List<Block> blocks = FETP_Controller.GroupClasses(sortedClasses);
+
+
+
+        //}
+
+
+
+/// <summary>
+        /// Returns a random float between 0 and 1
+        /// </summary>
+        /// <returns>A random float between 0 and 1</returns>
+        public static float RandomFloatBetween01()
+        {
+            lock (syncLock)
+            {
+                return (float)random.NextDouble();
+            }
+        }
+
+
+ /// <summary>
+        /// Returns a random integer
+        /// </summary>
+        /// <returns>A random integer</returns>
+        public static int GetRandomInt()
+        {
+            int upperRange = Int32.MaxValue;
+            int lowerRange = 0;
+
+            lock (syncLock)
+            {
+                return random.Next(lowerRange, upperRange);
+            }
+        }
+
+
+#region Data Constants
+        /// <summary>
+        /// Placeholder
+        /// </summary>
+        public const int THREAD_LIMIT = 6; //TODO: possibly gut
+
+        #endregion#region Utilities
+        //Used for random number generation
+        private static readonly Random random = new Random();
+        private static readonly object syncLock = new object();
+
+        
+        
+
+       
+
+        #endregion
+
+
+        
+
+
+        #region Data Members
+        //Add data members here
+
+        #endregion
+
+
+        #region Properties
+        //Properties here
+
+        #endregion
+
+
+
+
+ ////TODO: write subfunction for constructor to avoid rewriting the code between constructors
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="dataFileAddress"></param>
+        ///// <param name="constraintsFileAddress"></param>
+        //public Schedule(string dataFileAddress, string constraintsFileAddress)
+        //{
+        //    // Intial Setup
+        //    this.SetupScheduleConstraintsFromFile(constraintsFileAddress);
+        //    this.SetupClassDataFromFile(dataFileAddress);
+
+        //    this.Build();
+        //}
+
+

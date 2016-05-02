@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FETP
 {
@@ -114,6 +110,11 @@ namespace FETP
         /// <param name="inEndTime"></param>
         /// <param name="inEnrollment"></param>
         /// <param name="inDaysMeet"></param>
+        //Author: Benjamin Etheredge
+        //Date: 3-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public Class(TimeSpan inStartTime, TimeSpan inEndTime, int inEnrollment, List<DayOfWeek> inDaysMeet)
         {
             this.startTime = inStartTime;
@@ -134,6 +135,11 @@ namespace FETP
         /// <summary>
         /// Displays all information stored in a Class instance with formatting.
         /// </summary>
+        //Author: Benjamin Etheredge
+        //Date: 3-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public void Display()
         {
             Console.Write("Days Meet: ");
@@ -154,6 +160,11 @@ namespace FETP
         /// if comparison is overloaded.
         /// </summary>
         /// <returns></returns>
+        //Author: Benjamin Etheredge
+        //Date: 3-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -167,7 +178,11 @@ namespace FETP
         /// Overloaded Equals function.
         /// </summary>
         /// <param name="obj"></param>
-        /// <returns></returns>
+        //Author: Benjamin Etheredge
+        //Date: 3-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public override bool Equals(object obj)
         {
             Class inClass = obj as Class;
@@ -202,6 +217,11 @@ namespace FETP
         /// <param name="class1"></param>
         /// <param name="class2"></param>
         /// <returns></returns>
+        //Author: Benjamin Etheredge
+        //Date: 3-25-2016
+        //Modifications:  
+        //Date(s) Tested:
+        //Approved By:
         public static bool operator !=(Class class1, Class class2)
         {
            // if (class1 == null && class2 == null) return false;
