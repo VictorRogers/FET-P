@@ -50,7 +50,6 @@ namespace FETP
         /// </summary>
         public const string TIME_EXAMS_MUST_END_BY = "1700";
 
-        //TODO: figure these out // not sure which is still needed for lunch time scheduling. Lunch time scheduling still needs work // TimeSpan cannot be const
         /// <summary>
         /// 
         /// </summary>
@@ -386,7 +385,6 @@ namespace FETP
             }
         }
 
-        //TODO: write comments
         /// <summary>
         /// 
         /// </summary>
@@ -447,8 +445,7 @@ namespace FETP
             this.Build();
         }
 
-        //TODO: clean up constructors. i really don't know how else to word it
-        //TODO: change inputs of constructor all to string to remove conversion work from front end // COMFIRM WITH FRONT END BEFORE DOING THIS //Confirmed just taking strings
+
         /// <summary>
         /// 
         /// </summary>
@@ -528,7 +525,6 @@ namespace FETP
         private void SetupExamStartTimeTable()
         {
             // setup lower limir for lunch from constant for easier use
-            //TODO: replace hhmm accross the board
             TimeSpan lowerLimitForLunch = TimeSpan.ParseExact(Schedule.LOWER_TIME_RANGE_FOR_LUNCH, TIME_FORMAT_FROM_FILE, CultureInfo.InvariantCulture);
 
             this.startTimesOfExams = new TimeSpan[this.NumberOfTimeSlotsAvailablePerDay]; // intialize start times table
@@ -539,8 +535,6 @@ namespace FETP
             {
                 startTimesOfExams[index] = this.ExamsStartTime + TimeSpan.FromTicks((this.ExamsLength.Ticks + this.TimeBetweenExams.Ticks) * index);
 
-                //TODO: could be error if lunch time isn't in this time range, or just an error anywhere in it, or if exam lengths too long
-                // if need to account for lunch
                 if (this.LunchLength > this.timeBetweenExams)
                 {
                     if (isLunchPast) // lunch period has passed
@@ -556,7 +550,6 @@ namespace FETP
             }
         }
 
-        //TODO: move into constructors maybe // may already be done
         /// <summary>
         /// Calculates number of timeslots available and sets it.
         /// </summary>
@@ -616,7 +609,6 @@ namespace FETP
 
             while (!reader.EndOfStream)
             {
-                // TODO: possibly change var to string
                 var line = reader.ReadLine(); // reads in next line
                 var values = line.Split(','); // splits into days/times and enrollement
                 var daysAndTimes = values[0].Split(' '); // chops up the days and times to manageable sections
@@ -657,10 +649,6 @@ namespace FETP
             }
         }
 
-        //TODO: Make bool to see if it's read
-        //TODO: This might need to be moved
-        //TODO: Catch exception that file couldn't be opened?
-        //TODO: modify to not parse. Make it read the file then pass off to SetupScheduleConstraints once the function is modified to take only strings and parse. 
         /// <summary>
         /// Reads in the constraints file and initializes a static schedule
         /// </summary>
