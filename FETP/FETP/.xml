@@ -450,41 +450,6 @@
             Array of all blocks (grouped classes) scheduled
             </summary>
         </member>
-        <member name="P:FETP.Schedule.OriginalConstraintsFilename">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:FETP.Schedule.OriginalEnrollmentFilename">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:FETP.Schedule.OriginalExamLength">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:FETP.Schedule.OriginalStartTime">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:FETP.Schedule.OriginalBreakLength">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:FETP.Schedule.OriginalLunchLength">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:FETP.Schedule.OriginalNumberOfDays">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="P:FETP.Schedule.Blocks">
             <summary>
             Getter propertie for array of all blocks (grouped classes) scheduled
@@ -672,6 +637,11 @@
             <returns></returns>
         </member>
         <member name="M:FETP.Schedule.SaveSchedule(System.String)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:FETP.Schedule.ExportTextSchedule(System.String,System.String[])">
             <summary>
             
             </summary>

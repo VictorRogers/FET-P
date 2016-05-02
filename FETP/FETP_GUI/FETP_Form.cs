@@ -326,6 +326,7 @@ namespace FETP_GUI
 
                 dataCollection1 = new DataCollection();
                 panel1.Controls.Add(dataCollection1);
+                Controls.Add(auth1);
 
                 dataCollection1.Dock = DockStyle.Fill;
                 dataCollection1.Location = new Point(0, 0);
