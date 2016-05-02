@@ -86,6 +86,7 @@
             this.openConstraintsToolStripMenuItem.Name = "openConstraintsToolStripMenuItem";
             this.openConstraintsToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.openConstraintsToolStripMenuItem.Text = "Open Constraints";
+            this.openConstraintsToolStripMenuItem.Click += new System.EventHandler(this.openConstraintsToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
