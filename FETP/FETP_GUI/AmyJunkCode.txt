@@ -1,0 +1,24 @@
+﻿From FETP_Form.cs:
+
+        private static int NUMBER_OF_EXAMS_PER_DAY;
+        private static int NUMBER_OF_EXAMS;
+
+		    //views = new Dictionary<string, UserControl>();
+
+			//if (views.Keys.Contains("Single"))
+			//{
+			//    miniCal = (SingleDayCalendar)views["Single"];
+			//}
+			//else
+			//{
+			//    views.Add("Single", miniCal);
+			//}
+
+			//if (views.Keys.Contains("Text"))
+            //{
+            //    textCal = (TextSchedule)views["Text"];
+            //}
+            //else
+            //{
+            //    views.Add("Text", textCal);
+            //}
