@@ -167,107 +167,12 @@ namespace FETP
 
         private TimeSpan[] startTimesOfExams;
 
-        private string originalConstraintsFilename;
-
-        private string originalEnrollmentFilename;
-
-        private string originalStartTime;
-
-        private string originalExamLength;
-
-        private string originalBreakLength;
-
-        private string originalNumberOfDays;
-        
-        private string originalLunchLength;
+        //Non-static Members
 
         #endregion
 
 
         #region Properties
-        /// <summary>
-        /// 
-        /// </summary>
-        public string OriginalConstraintsFilename
-        {
-            get
-            {
-                return this.originalConstraintsFilename;
-            }
-            set
-            {
-                //This is in here due to the constraints file name never
-                //being passed to the schedule object.
-                originalConstraintsFilename = value;
-            }
-        }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        public string OriginalEnrollmentFilename
-        {
-            get
-            {
-                return this.originalEnrollmentFilename;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string OriginalExamLength
-        {
-            get
-            {
-                return this.originalExamLength;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string OriginalStartTime
-        {
-            get
-            {
-                return this.originalStartTime;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string OriginalBreakLength
-        {
-            get
-            {
-                return this.originalBreakLength;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string OriginalLunchLength
-        {
-            get
-            {
-                return this.originalLunchLength;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string OriginalNumberOfDays
-        {
-            get
-            {
-                return this.originalNumberOfDays;
-            }
-        }
-
         /// <summary>
         /// Getter propertie for array of all blocks (grouped classes) scheduled
         /// </summary>
@@ -355,7 +260,7 @@ namespace FETP
                 List<Block> orderedBlocks = new List<Block>();
                 for (int i = 0; i < this.NumberOfTimeSlotsToBeUsed; i++)
                 {
-                    orderedBlocks.Add(this.Blocks[i]); 
+                    orderedBlocks.Add(this.Blocks[i]);
                 }
                 orderedBlocks.AddRange(this.LeftoverBlocks);
                 return orderedBlocks.OrderByDescending(c => c.Enrollment).ToList();
@@ -397,8 +302,8 @@ namespace FETP
         }
 
         /// <summary>
-         /// Getter property for array of all exams's strt times
-         /// </summary>
+        /// Getter property for array of all exams's strt times
+        /// </summary>
         public TimeSpan[] StartTimesOfExams
         {
             get
@@ -459,14 +364,6 @@ namespace FETP
         public Schedule(string dataFileAddress, string numberOfDays, string examsStartTime,
                         string examsLength, string timeBetweenExams, string lunchLength)
         {
-            //Persist original input data
-            this.originalEnrollmentFilename = dataFileAddress;
-            this.originalNumberOfDays = numberOfDays;
-            this.originalStartTime = examsStartTime;
-            this.originalExamLength = examsLength;
-            this.originalBreakLength = timeBetweenExams;
-            this.originalLunchLength = lunchLength;
-
             //Intial setup
             this.SetupScheduleConstraints(numberOfDays, examsStartTime, examsLength, timeBetweenExams, lunchLength);
             this.SetupClassDataFromFile(dataFileAddress);
@@ -503,7 +400,7 @@ namespace FETP
         /// </summary>
         private void SetupNumberOfTimeSlotsNeeded()
         {
-            if(this.LeftoverBlocks == null) // TODO: work on error checking
+            if (this.LeftoverBlocks == null) // TODO: work on error checking
             {
                 throw new Exception("Classes have not been grouped yet");
             }
@@ -597,8 +494,6 @@ namespace FETP
         /// <param name="inFileName"></param>
         private void SetupClassDataFromFile(string inFileName)
         {
-            //Maintain the path to the original file used to generate schedule
-            this.originalEnrollmentFilename = inFileName;
 
             // Make boundaries of ignored classes more usable
             TimeSpan ignoreClassLength = TimeSpan.ParseExact(Schedule.CLASS_LENGTH_TO_START_IGNORING, TIME_FORMAT_FROM_FILE, CultureInfo.InvariantCulture); // can't declare TimeSpan as const so do this here
@@ -665,9 +560,6 @@ namespace FETP
         /// <param name="inFileName"></param>
         private void SetupScheduleConstraintsFromFile(string inFileName)
         {
-            //Maintain original path to constraints file
-            this.originalConstraintsFilename = inFileName;
-
             FileStream inFile = File.OpenRead(@inFileName);
             var reader = new StreamReader(inFile); // TODO: maybe remove var to conform to standards
 
@@ -704,18 +596,18 @@ namespace FETP
 
         #region Scheduling Functions
 
-            /* TODO
-                    Ben Notes:
-                        theres an interesting correlation between number of students in class that seems to be weird across days....
-                            could be bug in schdule
-                                // TODO: ITS A BUG
-                            could be oppurtunity for optimizations. 
-                                maybe resort list of best possibly times.
-                                    like start from other end of schdule every other timewhen building it so it spreads out classes better
+        /* TODO
+                Ben Notes:
+                    theres an interesting correlation between number of students in class that seems to be weird across days....
+                        could be bug in schdule
+                            // TODO: ITS A BUG
+                        could be oppurtunity for optimizations. 
+                            maybe resort list of best possibly times.
+                                like start from other end of schdule every other timewhen building it so it spreads out classes better
 
-                        Another possibly schedule improverment,
-                            instead of sticking in biggest block on conflict, stick into tightest fitting block on conflict
-            */
+                    Another possibly schedule improverment,
+                        instead of sticking in biggest block on conflict, stick into tightest fitting block on conflict
+        */
 
         //TODO: further investigate what makes the best time
         /// <summary>
@@ -907,7 +799,7 @@ namespace FETP
             Console.WriteLine("DISPLAYING SCHEDULED BLOCKS INFORMATION");
             Console.WriteLine("***************************************");
             for (int i = 0; i < this.blocks.Length; i++)
-            { 
+            {
                 if (blocks[i] != null)
                 {
 
@@ -929,7 +821,7 @@ namespace FETP
                     Console.WriteLine("EMPTY BLOCK");
                     Console.WriteLine("==============");
                 }
-                
+
             }
 
             Console.WriteLine("\n*******************************************");
@@ -975,6 +867,14 @@ namespace FETP
             BinaryFormatter formatter = new BinaryFormatter();
             formatter.Serialize(stream, this);
             stream.Close();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ExportTextSchedule(string path, string[] text)
+        {
+            File.WriteAllLines(path, text);
         }
 
         #endregion

@@ -13,6 +13,8 @@ using FETP;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace FETP_GUI
 {
@@ -84,7 +86,7 @@ namespace FETP_GUI
 
         #region Toolstrip Menus
 
-            #region File
+        #region File
 
         /// <summary>
         /// 
@@ -112,10 +114,10 @@ namespace FETP_GUI
 
             panel1.Controls.Add(dataCollection1);
             saveAsToolStripMenuItem.Enabled = false;
-            //exportToolStripMenuItem.Enabled = false;
+            exportToolStripMenuItem.Enabled = false;
         }
 
-
+        //Author: Cory Feliciano (?)
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -128,6 +130,7 @@ namespace FETP_GUI
                 schedule = (Schedule)formatter.Deserialize(stream);
                 stream.Close();
 
+                //TODO: This code needs to be in its own function
                 FormBorderStyle = FormBorderStyle.Sizable;
                 panel1.Controls.Clear();
                 scheduleView = new SchedulePresenter(schedule);
@@ -141,7 +144,7 @@ namespace FETP_GUI
                 Size = new Size(681, 492);
                 MaximizeBox = true;
                 saveAsToolStripMenuItem.Enabled = true;
-                //exportToolStripMenuItem.Enabled = true;
+                exportToolStripMenuItem.Enabled = true;
                 viewToolStripMenuItem.Enabled = true;
                 oneDayToolStripMenuItem.Enabled = true;
                 fullScheduleToolStripMenuItem.Enabled = false;
@@ -149,44 +152,7 @@ namespace FETP_GUI
             }
         }
 
-
-        private void openConstraintsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "DAT-File | *.dat";
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                FileStream stream = File.OpenRead(openFileDialog.FileName);
-                BinaryFormatter formatter = new BinaryFormatter();
-                schedule = (Schedule)formatter.Deserialize(stream);
-                stream.Close();
-
-                WindowState = FormWindowState.Normal;
-                Size = new Size(355, 401);
-                MaximizeBox = false;
-                FormBorderStyle = FormBorderStyle.Fixed3D;
-                panel1.Controls.Clear();
-
-                dataCollection1 = new DataCollection();
-                dataCollection1.Dock = DockStyle.Fill;
-                dataCollection1.GenerateSchedule += new DataCollection.GenerateClickHandler(GenerateFullSchedule);
-                dataCollection1.ClearForm += new DataCollection.ClearClickHandler(ClearAllTextBoxes);
-
-                panel1.Controls.Add(dataCollection1);
-                saveAsToolStripMenuItem.Enabled = false;
-
-                dataCollection1.scheduleBrowse_textBox.Text = schedule.OriginalConstraintsFilename;
-                dataCollection1.enrollmentBrowse_textBox.Text = schedule.OriginalEnrollmentFilename;
-                dataCollection1.days_textBox.Text = schedule.OriginalNumberOfDays;
-                dataCollection1.startTime_textBox.Text = schedule.OriginalStartTime;
-                dataCollection1.examLength_textBox.Text = schedule.OriginalExamLength;
-                dataCollection1.breakLength_textBox.Text = schedule.OriginalBreakLength;
-                dataCollection1.lunchLength_textBox.Text = schedule.OriginalLunchLength;
-            }
-        }
-
-
+        //Author: Cory Feliciano (?)
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -204,11 +170,11 @@ namespace FETP_GUI
             //implement export functionality here
         }
 
-            #endregion
+        #endregion
 
-            //--------------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------------
 
-            #region View
+        #region View
 
         /// <summary>
         /// Display the Full Calendar Schedule View
@@ -231,8 +197,8 @@ namespace FETP_GUI
             //}
             //else
             //{
-                fullCal = new FullCalendar(schedule);
-                //views.Add("Full", fullCal);
+            fullCal = new FullCalendar(schedule);
+            //views.Add("Full", fullCal);
             //}
 
             fullCal.Dock = DockStyle.Fill;
@@ -264,8 +230,8 @@ namespace FETP_GUI
             //}
             //else
             //{
-                //This will need the Schedule data structure as a parameter
-                miniCal = new SingleDayCalendar(schedule);
+            //This will need the Schedule data structure as a parameter
+            miniCal = new SingleDayCalendar(schedule);
             //    views.Add("Single", miniCal);
             //}
 
@@ -297,9 +263,9 @@ namespace FETP_GUI
             //}
             //else
             //{
-                //This will need the Schedule data structure as a parameter
-                //Prints entire schedule data structure in agreed format
-                textCal = new TextSchedule(schedule);
+            //This will need the Schedule data structure as a parameter
+            //Prints entire schedule data structure in agreed format
+            textCal = new TextSchedule(schedule);
             //    views.Add("Text", textCal);
             //}
 
@@ -311,22 +277,22 @@ namespace FETP_GUI
             textToolStripMenuItem.Enabled = false;
         }
 
-            #endregion
+        #endregion
 
-            //--------------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------------
 
-            //This region contains a single function - It will be changed to contain a set of functions
-            #region Help
+        //This region contains a single function - It will be changed to contain a set of functions
+        #region Help
 
-            //Author: Cory Feliciano (?)
-            private void helpToolStripMenuItem_Click(object sender, EventArgs e)
-            {
-                string locationToSavePdf = Path.Combine(Path.GetTempPath(), "HelpManual.pdf");
-                File.WriteAllBytes(locationToSavePdf, Properties.Resources.HelpManual);
-                Process.Start(locationToSavePdf);
-            }
+        //Author: Cory Feliciano (?)
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string locationToSavePdf = Path.Combine(Path.GetTempPath(), "HelpManual.pdf");
+            File.WriteAllBytes(locationToSavePdf, Properties.Resources.HelpManual);
+            Process.Start(locationToSavePdf);
+        }
 
-            #endregion
+        #endregion
 
         #endregion
 
@@ -341,11 +307,17 @@ namespace FETP_GUI
 
         //Author: Victor Rogers (?) and Amy Brown
         //Date:
-        //Modifications: Amy added GUI change implementation in if(isValid){} (4-22-2016)
+        //Modifications:    Amy added GUI change implementation in if(isValid){} (4-22-2016)
         public void Login(object sender, EventArgs e)
         {
             bool isValid = false;
-            isValid = IsValidCredentials(auth1.txtUserName.Text.Trim(), auth1.txtPwd.Text.Trim(), auth1.txtDomain.Text.Trim());
+            string userName = GetLoggedInUserName();
+
+            if (userName.ToLowerInvariant().Contains(auth1.txtUserName.Text.Trim().ToLowerInvariant()) &&
+                    userName.ToLowerInvariant().Contains(auth1.txtDomain.Text.Trim().ToLowerInvariant()))
+            {
+                isValid = IsValidCredentials(auth1.txtUserName.Text.Trim(), auth1.txtPwd.Text.Trim(), auth1.txtDomain.Text.Trim());
+            }
 
             if (isValid)
             {
@@ -355,8 +327,6 @@ namespace FETP_GUI
                 dataCollection1 = new DataCollection();
                 panel1.Controls.Add(dataCollection1);
 
-                menuStrip1.Enabled = true;
-                menuStrip1.Visible = true;
                 dataCollection1.Dock = DockStyle.Fill;
                 dataCollection1.Location = new Point(0, 0);
                 dataCollection1.Margin = new Padding(10, 9, 10, 9);
@@ -382,20 +352,13 @@ namespace FETP_GUI
         //Author: Victor Rogers (?)
         private bool IsValidCredentials(string userName, string password, string domain)
         {
-            bool isValid = false;
-            
             if (domain == "")
             {
                 domain = Environment.MachineName;
-                IntPtr tokenHandler = IntPtr.Zero;
-                isValid = LogonUser(userName, domain, password, 2, 0, ref tokenHandler);
-            }
-            else if (domain == "main.local.una.edu")
-            {
-                System.DirectoryServices.AccountManagement.PrincipalContext pC = new System.DirectoryServices.AccountManagement.PrincipalContext(System.DirectoryServices.AccountManagement.ContextType.Domain, domain);
-                isValid = pC.ValidateCredentials(userName, password);
             }
 
+            IntPtr tokenHandler = IntPtr.Zero;
+            bool isValid = LogonUser(userName, domain, password, 2, 0, ref tokenHandler);
             return isValid;
         }
         #endregion
@@ -474,7 +437,7 @@ namespace FETP_GUI
             isEnrollmentValid = !(enrollmentFile.Equals(string.Empty)); //TODO: implement enrollment file validation function
 
             isSchedulePossible = (isDaysValid && isBeginValid && isExamValid && isBreakValid && isLunchValid && isEnrollmentValid);
-            
+
             if (isSchedulePossible)
             {
                 FormBorderStyle = FormBorderStyle.Sizable;
@@ -482,9 +445,6 @@ namespace FETP_GUI
 
                 //Create schedule data structure
                 schedule = new Schedule(enrollmentFile, daysNum, beginTime, examLength, breakLength, lunchLength);
-
-                //Maintain path to original contraints file
-                schedule.OriginalConstraintsFilename = dataCollection1.scheduleBrowse_textBox.Text;
 
                 //Using schedule data strucutre::
                 generateSchedulePresenter(schedule);
@@ -534,7 +494,7 @@ namespace FETP_GUI
             panel1.Controls.Add(scheduleView);
 
             saveAsToolStripMenuItem.Enabled = true;
-            //exportToolStripMenuItem.Enabled = true;   //Uncomment this line when Export is implemented
+            exportToolStripMenuItem.Enabled = true;   //Uncomment this line when Export is implemented
 
             viewToolStripMenuItem.Enabled = true;
             oneDayToolStripMenuItem.Enabled = true;
@@ -557,15 +517,59 @@ namespace FETP_GUI
 
         #endregion
 
-        private void viewToolStripMenuItem_Click(object sender, EventArgs e)
+        private void as_PDFToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "PDF File | *.pdf";
 
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                char[] newline = { '\n' };
+                TextSchedule textCal = new TextSchedule(schedule);
+                string[] lines = textCal.richTextBox1.Text.Split(newline, StringSplitOptions.RemoveEmptyEntries);
+                ExportPDFSchedule(saveFileDialog.FileName, lines);
+            }
         }
 
-        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ExportPDFSchedule(string path, string[] text)
         {
+            FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
+            Document doc = new Document();
+            PdfWriter writer = PdfWriter.GetInstance(doc, fs);
+            doc.Open();
 
+            foreach (string s in text)
+            {
+                char[] tab = { '\t' };
+                string[] phrases = s.Split(tab, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string p in phrases)
+                {
+                    doc.Add(new Phrase(p));
+                    doc.Add(new Phrase("        "));
+                }
+                doc.Add(new Phrase("\n"));
+
+            }
+
+            doc.Close();
         }
 
+
+        private void as_textToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Text File | *.txt";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                char[] newline = { '\n' };
+                TextSchedule textCal = new TextSchedule(schedule);
+                string[] lines = textCal.richTextBox1.Text.Split(newline, StringSplitOptions.RemoveEmptyEntries);
+                schedule.ExportTextSchedule(saveFileDialog.FileName, lines);
+            }
+        }
     }
 }
