@@ -1,4 +1,5 @@
 ﻿From CalendarExtensions.cs:
+	using FETP_GUI;
 
 	//for(int j=0; (j < (_schedule.Blocks.Count()) && _schedule.Blocks[j] != null); j++)
 	//{
@@ -13,6 +14,16 @@
 
 	// _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
 	// _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+
+From DataCollection.cs:
+	using System.Collections.Generic;
+	using System.ComponentModel;
+	using System.Drawing;
+	using System.Data;
+	using System.Linq;
+	using System.Text;
+	using System.Threading.Tasks;
+	using System.Globalization;
 
 From FETP_Form.Designer.cs:
         
@@ -128,7 +139,15 @@ From FullCalendar.Designer.cs:
 	
 	The entire InitializeComponent() function
 
+From Program.cs:
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Threading.Tasks;
+
 From SchedulePresenter.cs:
+	using System.Collections.Generic;
+	using System.Text;
+	using System.Threading.Tasks;
 
     ///<summary>
     ///Generic, unused SchedulePresenter constructor (this was made for design phase)
@@ -163,7 +182,11 @@ From SchedulePresenter.Designer.cs:
 	The entire InitializeComponent() function
 
 From SingleDayCalendar.cs:
-	
+	using System.Collections.Generic;
+	using System.Data;
+	using System.Text;
+	using System.Threading.Tasks;
+
     //private static int NUMBER_OF_DAYS = 4;
     //private static int NUMBER_OF_EXAMS_PER_DAY = 10;
 	
