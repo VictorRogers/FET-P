@@ -11,6 +11,13 @@ namespace CalendarExtension
         private static Block[] sortedScheduled;
         private static Block[] sortedUnscheduled;
 
+        /// <summary>
+        /// Set text of all Buttons in the Sorted list panel
+        /// </summary>
+        /// <param name="cal">Schedule Presenter containing sorted list panel</param>
+        /// <param name="_schedule">Schedule object containing class blocks to sort</param>
+        /// <param name="ButtonBlocks">Set of Button objects in the Schedule Presenter</param>
+        //Amy Brown
         public static void labelAllListedBlocks(this UserControl cal, Schedule _schedule, ref Button[] ButtonBlocks)
         {
             int nulls = 0;
@@ -23,11 +30,7 @@ namespace CalendarExtension
             }
 
             Block[] nonNullBlocks = new Block[_schedule.Blocks.Count() - nulls];
-            //for(int j=0; (j < (_schedule.Blocks.Count()) && _schedule.Blocks[j] != null); j++)
-            //{
-            //    nonNullBlocks[j] = _schedule.Blocks[j];
-            //}
-
+            
             for (int i=0, j = 0; i < _schedule.Blocks.Count(); i++, j++)
             {
                 if(_schedule.Blocks[i] != null)
@@ -78,8 +81,8 @@ namespace CalendarExtension
                         }
                     }
 
-                    ButtonBlocks[button].Text += "\n " + biggestClass.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
-                    ButtonBlocks[button].Text += "-" + biggestClass.EndTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+                    ButtonBlocks[button].Text += "\n " + biggestClass.StartTime.ToString();
+                    ButtonBlocks[button].Text += "-" + biggestClass.EndTime.ToString();
                     ButtonBlocks[button].Text += "\n (" + biggestClass.Enrollment.ToString() + " students)";
                 }
                 else { nulls++; }
@@ -122,8 +125,8 @@ namespace CalendarExtension
                             }
                         }
 
-                        ButtonBlocks[button].Text += "\n " + biggestClass.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
-                        ButtonBlocks[button].Text += "-" + biggestClass.EndTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+                        ButtonBlocks[button].Text += "\n " + biggestClass.StartTime.ToString();
+                        ButtonBlocks[button].Text += "-" + biggestClass.EndTime.ToString();
                         ButtonBlocks[button].Text += "\n (" + biggestClass.Enrollment.ToString() + " students)";
                     }
                     else { nulls++; }
@@ -133,6 +136,13 @@ namespace CalendarExtension
 
         //------------------------------------------------------------------------------------------
         
+        /// <summary>
+        /// Set text of all Buttons in the given Calendar view
+        /// </summary>
+        /// <param name="cal">Calendar view UserControl containing Buttons</param>
+        /// <param name="_schedule">Schedule object containing scheduled classes</param>
+        /// <param name="Exams">Set of Button objects in the Calendar View</param>
+        //Amy Brown
         public static void labelAllScheduledBlocks(this UserControl cal, Schedule _schedule, ref Button[][] Exams)
         {
             int totalPerDay = _schedule.NumberOfTimeSlotsAvailablePerDay - 1;
@@ -176,8 +186,8 @@ namespace CalendarExtension
                         }
                     }
 
-                    Exams[day][block].Text += "\n " + biggestClass.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
-                    Exams[day][block].Text += "-" + biggestClass.EndTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+                    Exams[day][block].Text += "\n " + biggestClass.StartTime.ToString();
+                    Exams[day][block].Text += "-" + biggestClass.EndTime.ToString();
                     Exams[day][block].Text += "\n (" + biggestClass.Enrollment.ToString() + " students)";
 
                     if (block.Equals(totalPerDay)) { day++; }
@@ -186,6 +196,12 @@ namespace CalendarExtension
             }
         }
 
+        /// <summary>
+        /// Find the Class with the largest enrollment in the given Block
+        /// </summary>
+        /// <param name="block">Block to search</param>
+        /// <returns>Class with the largest enrollment in the given Block</returns>
+        //Amy Brown
         private static Class getBiggestClass(Block block)
         {
             int maxEnrollment = 0;
