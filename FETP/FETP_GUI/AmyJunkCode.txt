@@ -69,11 +69,3 @@ From FullCalendar.cs:
                 //Highlight selected sender Button
                 Button b = (Button)sender;
                 b.Select();
-
-From CalendarExtension.cs:
-
-
-            //for(int j=0; (j < (_schedule.Blocks.Count()) && _schedule.Blocks[j] != null); j++)
-            //{
-            //    nonNullBlocks[j] = _schedule.Blocks[j];
-            //}
