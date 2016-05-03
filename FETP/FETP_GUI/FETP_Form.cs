@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Globalization;
-using System.Linq;
 using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using FETP;
 using System.Diagnostics;
@@ -20,9 +13,6 @@ namespace FETP_GUI
 {
     public partial class FETP_Form : Form
     {
-        private static int NUMBER_OF_EXAMS_PER_DAY;// = 10;
-        private static int NUMBER_OF_EXAMS; //= NUMBER_OF_DAYS * NUMBER_OF_EXAMS_PER_DAY;
-
         string daysNum;
         string beginTime;
         string examLength;
@@ -32,10 +22,7 @@ namespace FETP_GUI
         string constraintsFile;
         string enrollmentFile;
 
-        //FETP_Controller controller;
         Schedule schedule;
-
-        //Dictionary<string, UserControl> views;
 
         DataCollection dataCollection1;
         SchedulePresenter scheduleView;
@@ -61,7 +48,6 @@ namespace FETP_GUI
         public FETP_Form()
         {
             InitializeComponent();
-            //views = new Dictionary<string, UserControl>();
         }
 
         /// <summary>
@@ -89,11 +75,10 @@ namespace FETP_GUI
         #region File
 
         /// <summary>
-        /// 
+        /// Return to the Data Collection screen
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        //Output: 
         //Author: Amy Brown
         //Date: 
         //Modifications:    Added the reset of form state, size, and style
@@ -117,7 +102,11 @@ namespace FETP_GUI
             exportToolStripMenuItem.Enabled = false;
         }
 
-
+        /// <summary>
+        /// From the File Browser, select a Schedule file to open in the Full Calendar View
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -129,18 +118,15 @@ namespace FETP_GUI
                 BinaryFormatter formatter = new BinaryFormatter();
                 schedule = (Schedule)formatter.Deserialize(stream);
                 stream.Close();
-
-                //TODO: This code needs to be in its own function
+                
                 FormBorderStyle = FormBorderStyle.Sizable;
                 panel1.Controls.Clear();
                 scheduleView = new SchedulePresenter(schedule);
                 scheduleView.Dock = DockStyle.Fill;
-                //views.Clear();
                 fullCal = new FullCalendar(schedule);
                 fullCal.Dock = DockStyle.Fill;
                 panel1.Controls.Add(scheduleView);
                 scheduleView.splitContainer1.Panel1.Controls.Add(fullCal);
-                //views.Add("Full", fullCal);
                 Size = new Size(681, 492);
                 MaximizeBox = true;
                 saveAsToolStripMenuItem.Enabled = true;
@@ -152,7 +138,11 @@ namespace FETP_GUI
             }
         }
 
-
+        /// <summary>
+        /// From the File Browser, select a Schedule file to open in the Data Constraints screen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void openConstraintsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -189,7 +179,11 @@ namespace FETP_GUI
             }
         }
 
-
+        /// <summary>
+        /// Set a File Name and Path  to save the current Schedule to a .dat file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -201,43 +195,96 @@ namespace FETP_GUI
             }
         }
 
-
-        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Set a File Name and Path to save the current Schedule to a .pdf file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //Amy Brown and Cory Feliciano 5-1-2016
+        private void as_PDFToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //implement export functionality here
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "PDF File | *.pdf";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                char[] newline = { '\n' };
+                TextSchedule textCal = new TextSchedule(schedule);
+                string[] lines = textCal.richTextBox1.Text.Split(newline, StringSplitOptions.RemoveEmptyEntries);
+                ExportPDFSchedule(saveFileDialog.FileName, lines);
+            }
+        }
+        
+        /// <summary>
+        /// Write the given text to a .pdf file at the given filepath
+        /// </summary>
+        /// <param name="path">Location of file</param>
+        /// <param name="text">Text to write</param>
+        //Amy Brown and Cory Feliciano 5-1-2016
+        public void ExportPDFSchedule(string path, string[] text)
+        {
+            FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
+            Document doc = new Document();
+            PdfWriter writer = PdfWriter.GetInstance(doc, fs);
+            doc.Open();
+
+            foreach (string s in text)
+            {
+                char[] tab = { '\t' };
+                string[] phrases = s.Split(tab, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string p in phrases)
+                {
+                    doc.Add(new Phrase(p));
+                    doc.Add(new Phrase("        "));
+                }
+                doc.Add(new Phrase("\n"));
+
+            }
+            doc.Close();
+        }
+
+        /// <summary>
+        /// Set a File Name and Path to save the current Schedule to a .txt file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //Amy Brown and Cory Feliciano 5-1-2016
+        private void as_textToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Text File | *.txt";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                char[] newline = { '\n' };
+                TextSchedule textCal = new TextSchedule(schedule);
+                string[] lines = textCal.richTextBox1.Text.Split(newline, StringSplitOptions.RemoveEmptyEntries);
+                schedule.ExportTextSchedule(saveFileDialog.FileName, lines);
+            }
         }
 
         #endregion
-
+        
         //--------------------------------------------------------------------------------------
 
         #region View
 
         /// <summary>
-        /// Display the Full Calendar Schedule View
+        /// Build and Display the Full Calendar Schedule View
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        //Output: 
         //Author: Amy Brown
         //Date: 
-        //Modifications:    Added dictionary access 
+        //Modifications:    Added dictionary access
+        //                  removed dictionary access 
         //Date(s) Tested:
         //Approved By:
         private void fullScheduleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             scheduleView.splitContainer1.Panel1.Controls.Clear();
 
-            //if (views.Keys.Contains("Full"))
-            //{
-            //    fullCal = (FullCalendar)views["Full"];
-            //}
-            //else
-            //{
             fullCal = new FullCalendar(schedule);
-            //views.Add("Full", fullCal);
-            //}
-
             fullCal.Dock = DockStyle.Fill;
 
             scheduleView.splitContainer1.Panel1.Controls.Add(fullCal);
@@ -247,31 +294,21 @@ namespace FETP_GUI
         }
 
         /// <summary>
-        /// Build and/or Display the Single Day Calendar Schedule View
+        /// Build and Display the Single Day Calendar Schedule View
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        //Output: 
         //Author: Amy Brown
         //Date: 
         //Modifications:    Added dictionary access
+        //                  Removed dictionary access
         //Date(s) Tested:
         //Approved By:
         private void oneDayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             scheduleView.splitContainer1.Panel1.Controls.Clear();
 
-            //if (views.Keys.Contains("Single"))
-            //{
-            //    miniCal = (SingleDayCalendar)views["Single"];
-            //}
-            //else
-            //{
-            //This will need the Schedule data structure as a parameter
             miniCal = new SingleDayCalendar(schedule);
-            //    views.Add("Single", miniCal);
-            //}
-
             miniCal.Dock = DockStyle.Fill;
 
             scheduleView.splitContainer1.Panel1.Controls.Add(miniCal);
@@ -281,31 +318,21 @@ namespace FETP_GUI
         }
 
         /// <summary>
-        /// Build and/or Display the Text Schedule View
+        /// Build and Display the Text Schedule View
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        //Output: 
         //Author: Amy Brown
         //Date: 
+        //Modifications:    Added dictionary access
+        //                  Removed dictionary access
         //Date(s) Tested:
         //Approved By:
         private void textToolStripMenuItem_Click(object sender, EventArgs e)
         {
             scheduleView.splitContainer1.Panel1.Controls.Clear();
 
-            //if (views.Keys.Contains("Text"))
-            //{
-            //    textCal = (TextSchedule)views["Text"];
-            //}
-            //else
-            //{
-            //This will need the Schedule data structure as a parameter
-            //Prints entire schedule data structure in agreed format
             textCal = new TextSchedule(schedule);
-            //    views.Add("Text", textCal);
-            //}
-
             textCal.Dock = DockStyle.Fill;
 
             scheduleView.splitContainer1.Panel1.Controls.Add(textCal);
@@ -318,10 +345,14 @@ namespace FETP_GUI
 
         //--------------------------------------------------------------------------------------
 
-        //This region contains a single function - It will be changed to contain a set of functions
         #region Help
 
-        //Author: Cory Feliciano (?)
+        /// <summary>
+        /// Open the HelpManual.pdf document
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //Author: Cory Feliciano
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string locationToSavePdf = Path.Combine(Path.GetTempPath(), "HelpManual.pdf");
@@ -341,6 +372,12 @@ namespace FETP_GUI
         [System.Runtime.InteropServices.DllImport("advapi32.dll")]
         public static extern bool LogonUser(string userName, string domainName, string password, int LogonType, int LogonProvider, ref IntPtr phToken);
 
+        /// <summary>
+        /// If valid creddentials are given, open Data Collection Screen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //Victor Rogers
         public void Login(object sender, EventArgs e)
         {
             bool isValid = false;
@@ -370,14 +407,25 @@ namespace FETP_GUI
             }
         }
 
-
+        /// <summary>
+        /// Get username of currently logged in Windows Account
+        /// </summary>
+        /// <returns>Username of currently logged in Windows Account</returns>
+        //Victor Rogers
         private string GetLoggedInUserName()
         {
             WindowsIdentity currentUser = WindowsIdentity.GetCurrent();
             return currentUser.Name;
         }
 
-
+        /// <summary>
+        /// Validate given credentials
+        /// </summary>
+        /// <param name="userName">Username</param>
+        /// <param name="password">Password</param>
+        /// <param name="domain">Local Network Domain</param>
+        /// <returns>isValid -> true if valid credentials, otherwise false</returns>
+        //Victor Rogers
         private bool IsValidCredentials(string userName, string password, string domain)
         {
             bool isValid = false;
@@ -433,7 +481,6 @@ namespace FETP_GUI
         //          Use the generated schedule object to generate a SchedulePresenter object and a FullCalendar object
         //          Display generated SchedulePresenter and FullCalendar
         //          Display invalid data messages
-        //Output:   SchedulePresenter containing FullCalendar
         //Author:   Amy Brown
         //Date: 3-31-2016
         //Modifications:    Added actual data collection from textbox values (4-9-16)
@@ -442,6 +489,7 @@ namespace FETP_GUI
         //                  Added views Dictionary Clearout (4-11-16)
         //                  Added invalid data messages and message box (4-11-16)
         //                  Added check for provided Enrollment Data File and error message for missing Enrollment Data File (4-24-2016)
+        //                  Removed views Dictionary entirely
         //Files Accessed:   given Scheule Constraints, given Enrollment Data
         //Date(s) Tested:
         //Approved By:
@@ -469,7 +517,7 @@ namespace FETP_GUI
             isExamValid = FETP_Controller.ValidateExamsLength(examLength);
             isBreakValid = FETP_Controller.ValidateTimeBetweenExams(breakLength);
             isLunchValid = FETP_Controller.ValidateLunchLength(lunchLength);
-            isEnrollmentValid = !(enrollmentFile.Equals(string.Empty)); //TODO: implement enrollment file validation function
+            isEnrollmentValid = !(enrollmentFile.Equals(string.Empty));
 
             isSchedulePossible = (isDaysValid && isBeginValid && isExamValid && isBreakValid && isLunchValid && isEnrollmentValid);
 
@@ -521,18 +569,19 @@ namespace FETP_GUI
             }
         }
 
-        //Amy
-        //SchedulePresenter Constructor builds SplitContainer base presenter - container for different Schedule Views
+        /// <summary>
+        /// Build and Display SplitContainer base presenter - container for different Schedule Views
+        /// </summary>
+        /// <param name="schedule"></param>
+        //Amy Brown
         private void generateSchedulePresenter(Schedule schedule)
         {
-            //views.Clear();
-
             scheduleView = new SchedulePresenter(schedule);
             scheduleView.Dock = DockStyle.Fill;
             panel1.Controls.Add(scheduleView);
 
             saveAsToolStripMenuItem.Enabled = true;
-            exportToolStripMenuItem.Enabled = true;   //Uncomment this line when Export is implemented
+            exportToolStripMenuItem.Enabled = true;
 
             viewToolStripMenuItem.Enabled = true;
             oneDayToolStripMenuItem.Enabled = true;
@@ -540,79 +589,21 @@ namespace FETP_GUI
             textToolStripMenuItem.Enabled = true;
         }
 
-        //Amy
-        //FullCalendar constructor dynamically builds drag-and-drop button matrix
+        /// <summary>
+        /// Dynamically Build and Display drag-and-drop button matrix
+        /// </summary>
+        /// <param name="schedule"></param>
+        //Amy Brown
         private void generateFullCalendar(Schedule schedule)
         {
             fullCal = new FullCalendar(schedule);
             fullCal.Dock = DockStyle.Fill;
 
             scheduleView.splitContainer1.Panel1.Controls.Add(fullCal);
-            //views.Add("Full", fullCal);
             Size = new Size(681, 492);
             MaximizeBox = true;
         }
 
         #endregion
-
-        private void as_PDFToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "PDF File | *.pdf";
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                char[] newline = { '\n' };
-                TextSchedule textCal = new TextSchedule(schedule);
-                string[] lines = textCal.richTextBox1.Text.Split(newline, StringSplitOptions.RemoveEmptyEntries);
-                ExportPDFSchedule(saveFileDialog.FileName, lines);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void ExportPDFSchedule(string path, string[] text)
-        {
-            FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
-            Document doc = new Document();
-            PdfWriter writer = PdfWriter.GetInstance(doc, fs);
-            doc.Open();
-
-            foreach (string s in text)
-            {
-                char[] tab = { '\t' };
-                string[] phrases = s.Split(tab, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string p in phrases)
-                {
-                    doc.Add(new Phrase(p));
-                    doc.Add(new Phrase("        "));
-                }
-                doc.Add(new Phrase("\n"));
-
-            }
-
-            doc.Close();
-        }
-
-
-        private void as_textToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Text File | *.txt";
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                char[] newline = { '\n' };
-                TextSchedule textCal = new TextSchedule(schedule);
-                string[] lines = textCal.richTextBox1.Text.Split(newline, StringSplitOptions.RemoveEmptyEntries);
-                schedule.ExportTextSchedule(saveFileDialog.FileName, lines);
-            }
-        }
-
-        private void FETP_Form_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

@@ -112,7 +112,6 @@
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
             this.exportToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.exportToolStripMenuItem.Text = "Export";
-            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
             // as_PDFToolStripMenuItem
             // 
@@ -201,7 +200,6 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Final Exam Timetabling Program";
-            this.Load += new System.EventHandler(this.FETP_Form_Load);
             this.Resize += new System.EventHandler(this.FETP_Form_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -228,6 +226,5 @@
         private System.Windows.Forms.ToolStripMenuItem openConstraintsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem as_PDFToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem as_textToolStripMenuItem1;
-        //private DataCollection dataCollection1;
     }
 }

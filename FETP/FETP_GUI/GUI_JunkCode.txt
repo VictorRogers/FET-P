@@ -1,20 +1,76 @@
 ﻿From CalendarExtensions.cs:
 
-//for(int j=0; (j < (_schedule.Blocks.Count()) && _schedule.Blocks[j] != null); j++)
-//{
-//    nonNullBlocks[j] = _schedule.Blocks[j];
-//}
+	//for(int j=0; (j < (_schedule.Blocks.Count()) && _schedule.Blocks[j] != null); j++)
+	//{
+	//    nonNullBlocks[j] = _schedule.Blocks[j];
+	//}
 
-// _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
-// _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+	// _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
+	// _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
 
-// _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
-// _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+	// _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
+	// _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
 
-// _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
-// _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+	// _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
+	// _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
 
+From FETP_Form.Designer.cs:
+        
+	//private DataCollection dataCollection1;
 
+From FETP_Form.cs:
+	using System.Collections.Generic;
+	using System.ComponentModel;
+	using System.Data;
+	using System.Globalization;
+	using System.Linq;
+	using System.Text;
+	using System.Threading.Tasks;
 
-From DataCollection.cs:
-From DataCollection.Designer.cs:
+    private static int NUMBER_OF_EXAMS_PER_DAY;// = 10;
+    private static int NUMBER_OF_EXAMS; //= NUMBER_OF_DAYS * NUMBER_OF_EXAMS_PER_DAY;
+	                            
+	//FETP_Controller controller;
+    //Dictionary<string, UserControl> views;
+
+    //views = new Dictionary<string, UserControl>();
+    
+	//views.Clear();
+	//views.Add("Full", fullCal);
+    
+	//if (views.Keys.Contains("Full"))
+    //{
+    //    fullCal = (FullCalendar)views["Full"];
+    //}
+    //else
+    //{
+    fullCal = new FullCalendar(schedule);
+    //views.Add("Full", fullCal);
+    //}
+	
+    //if (views.Keys.Contains("Single"))
+    //{
+    //    miniCal = (SingleDayCalendar)views["Single"];
+    //}
+    //else
+    //{
+    //This will need the Schedule data structure as a parameter
+    miniCal = new SingleDayCalendar(schedule);
+    //    views.Add("Single", miniCal);
+    //}
+
+    //if (views.Keys.Contains("Text"))
+    //{
+    //    textCal = (TextSchedule)views["Text"];
+    //}
+    //else
+    //{
+    //This will need the Schedule data structure as a parameter
+    //Prints entire schedule data structure in agreed format
+    textCal = new TextSchedule(schedule);
+    //    views.Add("Text", textCal);
+    //}
+	
+    //views.Clear();
+	
+    //views.Add("Full", fullCal);
