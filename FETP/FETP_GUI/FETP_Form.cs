@@ -381,7 +381,11 @@ namespace FETP_GUI
         public void Login(object sender, EventArgs e)
         {
             bool isValid = false;
-            isValid = IsValidCredentials(auth1.txtUserName.Text.Trim(), auth1.txtPwd.Text.Trim(), auth1.txtDomain.Text.Trim());
+
+            if (auth1.txtUserName.Text.Trim() == GetLoggedInUserName())
+            {
+                isValid = IsValidCredentials(auth1.txtUserName.Text.Trim(), auth1.txtPwd.Text.Trim(), auth1.txtDomain.Text.Trim());
+            }
 
             if (isValid)
             {
@@ -414,8 +418,7 @@ namespace FETP_GUI
         //Victor Rogers
         private string GetLoggedInUserName()
         {
-            WindowsIdentity currentUser = WindowsIdentity.GetCurrent();
-            return currentUser.Name;
+            return System.Environment.UserName;
         }
 
         /// <summary>
