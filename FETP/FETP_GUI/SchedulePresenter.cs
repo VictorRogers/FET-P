@@ -19,28 +19,14 @@ namespace FETP_GUI
         int NULL_BLOCKS;
 
         private GroupBox classGroups;
-        private Button[] Blocks;// = new Button[NUMBER_OF_EXAMS];
-                                //All the Button objects are going to need to be replaced with an extended Button object
-                                //Extended Button object has members Block and Label
-                                //Label is a drag-and-drop GUI object
-                                //Block is attached schedule data
-
-        //Maybe I don't actually care about the extended Button class.
-        //I can probablyjust drag and drop the actual buttons themselves and just use button.text for the label
-
-        ///<summary>
-        ///Generic, unused SchedulePresenter constructor (this was made for design phase)
-        ///</summary>
-        public SchedulePresenter()
-        {
-            InitializeComponent();
-        }
+        private Button[] Blocks;
 
         /// <summary>
         /// Dynamic SchedulePresnter constructor determines NUMBER_OF_EXAMS and builds the view presenter
         /// </summary>
         /// <param name="daysNum">Number of Days in the schedule, determined by scheduler algorithm</param>
         /// <param name="examsPerDay">Number of Exams per Day, determined by scheduler algorithm</param>
+        //Amy Brown
         public SchedulePresenter(Schedule schedule)
         {
             NUMBER_OF_BLOCKS = schedule.Blocks.Count() + schedule.LeftoverBlocks.Count();
@@ -64,6 +50,7 @@ namespace FETP_GUI
         /// Builds the SchedulePresenter object based on total NUMBER_OF_EXAMS
         /// </summary>
         /// <param name="numOfExams">Total Number of Exams in the schedule</param>
+        //Amy Brown
         private void InitializeComponent(Schedule schedule)
         {
             int numOfScheduled = schedule.Blocks.Count() - NULL_BLOCKS;
@@ -149,7 +136,6 @@ namespace FETP_GUI
             i = 0;
             for (; i < numOfScheduled; i++)
             {
-                //Blocks[i].Dock = DockStyle.Top;
                 Blocks[i].BackColor = Color.FromArgb(45, 12, 73);
                 Blocks[i].Enabled = true;
                 Blocks[i].FlatAppearance.BorderSize = 2;
@@ -157,14 +143,11 @@ namespace FETP_GUI
                 Blocks[i].Location = new Point(6, (15 + ((15 + 68) * i)));
                 Blocks[i].Name = "Group #" + (i + 1).ToString();
                 Blocks[i].Size = new Size(180, 68);
-                //Blocks[i].Text = Blocks[i].Name;
-                Blocks[i].UseVisualStyleBackColor = false;
-                //i++;
+                Blocks[i].UseVisualStyleBackColor = false;                
             }
             i = numOfScheduled;
             for (; i < NUMBER_OF_BLOCKS - NULL_BLOCKS; i++)
             {
-                //Blocks[i].Dock = DockStyle.Top;
                 Blocks[i].BackColor = Color.FromArgb(142, 105, 18);
                 Blocks[i].FlatAppearance.BorderColor = Color.FromArgb(219, 159, 17); 
                 Blocks[i].Enabled = true;
@@ -174,9 +157,7 @@ namespace FETP_GUI
                 Blocks[i].Location = new Point(6, (15 + ((15 + 68) * i)));
                 Blocks[i].Name = "Group #" + (i + 1).ToString();
                 Blocks[i].Size = new Size(180, 68);
-                //Blocks[i].Text = Blocks[i].Name;
                 Blocks[i].UseVisualStyleBackColor = false;
-                //i++;
             }
             this.labelAllListedBlocks(schedule, ref Blocks);
             tooltipAllListedBlocks(schedule, ref Blocks);
@@ -202,7 +183,12 @@ namespace FETP_GUI
             #endregion
         }
 
-
+        /// <summary>
+        /// Set Tooltip text for all Button objects in the Schedule Presenter
+        /// </summary>
+        /// <param name="_schedule">Schedule containing Block data</param>
+        /// <param name="ButtonBlocks">Set of Blocks in sorted list panel</param>
+        //Amy Brown
         public void tooltipAllListedBlocks(Schedule _schedule, ref Button[] ButtonBlocks)
         {
             
@@ -216,11 +202,7 @@ namespace FETP_GUI
             }
 
             Block[] nonNullBlocks = new Block[_schedule.Blocks.Count() - nulls];
-            //for(int j=0; (j < (_schedule.Blocks.Count()) && _schedule.Blocks[j] != null); j++)
-            //{
-            //    nonNullBlocks[j] = _schedule.Blocks[j];
-            //}
-
+            
             for (int i=0, j = 0; i < _schedule.Blocks.Count(); i++, j++)
             {
                 if(_schedule.Blocks[i] != null)
@@ -271,8 +253,8 @@ namespace FETP_GUI
                             }
                         }
 
-                        ButtonBlocks[button].Tag += "\t" + c.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
-                        ButtonBlocks[button].Tag += "-" + c.EndTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+                        ButtonBlocks[button].Tag += "\t" + c.StartTime.ToString();
+                        ButtonBlocks[button].Tag += "-" + c.EndTime.ToString();
                         ButtonBlocks[button].Tag += "\t(" + c.Enrollment.ToString() + " students)";
                         ButtonBlocks[button].Tag += "\n";
                     }
@@ -318,8 +300,8 @@ namespace FETP_GUI
                                         break;
                                 }
                             }
-                            ButtonBlocks[button].Tag += "\t" + c.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
-                            ButtonBlocks[button].Tag += "-" + c.EndTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+                            ButtonBlocks[button].Tag += "\t" + c.StartTime.ToString();
+                            ButtonBlocks[button].Tag += "-" + c.EndTime.ToString();
                             ButtonBlocks[button].Tag += "\t(" + c.Enrollment.ToString() + " students)";
                             ButtonBlocks[button].Tag += "\n";
                         }
@@ -329,6 +311,5 @@ namespace FETP_GUI
                 }
             }
         }
-
     }
 }

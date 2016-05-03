@@ -123,3 +123,39 @@ From FullCalendar.cs:
     //    b = dragSource;
     //    dragSource = temp;
     //}
+
+From FullCalendar.Designer.cs:
+	The entire InitializeComponent() function
+
+From SchedulePresenter.cs:
+
+    ///<summary>
+    ///Generic, unused SchedulePresenter constructor (this was made for design phase)
+    ///</summary>
+    public SchedulePresenter()
+    {
+        InitializeComponent();
+    }
+
+	//Blocks[i].Dock = DockStyle.Top;
+	//Blocks[i].Text = Blocks[i].Name;
+	//i++;
+
+	//Blocks[i].Dock = DockStyle.Top;
+	//Blocks[i].Text = Blocks[i].Name;
+	//i++;
+
+	//for(int j=0; (j < (_schedule.Blocks.Count()) && _schedule.Blocks[j] != null); j++)
+    //{
+    //    nonNullBlocks[j] = _schedule.Blocks[j];
+    //}
+
+	// _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
+	// _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+
+	// _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
+	// _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+
+
+From SchedulePresenter.Designer.cs:
+	The entire InitializeComponent() function
