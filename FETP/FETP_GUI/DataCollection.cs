@@ -25,7 +25,12 @@ namespace FETP_GUI
             InitializeComponent();
         }
 
-        //Amy
+        /// <summary>
+        /// Delegate Event Handler for the Generate Button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //Amy Brown
         private void generate_Click(object sender, EventArgs e)
         {
             if (GenerateSchedule != null)
@@ -34,7 +39,12 @@ namespace FETP_GUI
             }
         }
 
-        //Amy
+        /// <summary>
+        /// Delegate Event Handler for the Clear Button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //Amy Brown
         private void clear_Click(object sender, EventArgs e)
         {
             if (ClearForm != null)
@@ -43,6 +53,11 @@ namespace FETP_GUI
             }
         }
 
+        /// <summary>
+        /// Open File Dialog Window to find Enrollment Data File
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void enrollmentBrowse_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -54,7 +69,12 @@ namespace FETP_GUI
             }
         }
 
-        //Cory? and Amy
+        /// <summary>
+        /// Open File Dialog Window to find Schedule Constraints Data File
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //Cory Feliciano and Amy Brown
         private void scheduleBrowse_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -74,11 +94,6 @@ namespace FETP_GUI
                 breakLength_textBox.Text = int.Parse(reader.ReadLine()).ToString();
                 lunchLength_textBox.Text = int.Parse(reader.ReadLine()).ToString();
             }
-        }
-
-        private void scheduleBrowse_textBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        }        
     }
 }
