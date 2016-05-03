@@ -125,6 +125,7 @@ From FullCalendar.cs:
     //}
 
 From FullCalendar.Designer.cs:
+	
 	The entire InitializeComponent() function
 
 From SchedulePresenter.cs:
@@ -158,4 +159,30 @@ From SchedulePresenter.cs:
 
 
 From SchedulePresenter.Designer.cs:
+	
+	The entire InitializeComponent() function
+
+From SingleDayCalendar.cs:
+	
+    //private static int NUMBER_OF_DAYS = 4;
+    //private static int NUMBER_OF_EXAMS_PER_DAY = 10;
+	
+    public SingleDayCalendar()
+    {
+        InitializeComponent(NUMBER_OF_DAYS, NUMBER_OF_EXAMS_PER_DAY);
+    }
+
+	//b.Text = b.Name;
+
+	//AutoScroll = true;
+
+	// _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
+	// _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+
+    //Button temp = destination;
+    //destination = source;
+    //source = destination;
+
+From SingleDayCalendar.Designer.cs:
+	
 	The entire InitializeComponent() function

@@ -252,7 +252,7 @@ namespace FETP_GUI
         //------------------------------------------------------------------------------------------
 
         /// <summary>
-        /// Event Handler for clicking any exam time Button in the FulleCalendar view
+        /// Event Handler for clicking any exam time Button in the FullCalendar view
         /// 1st click selects one Button
         /// 2nd click selects second Button and switches both the Buttons and the Block objects within the Schedule
         /// </summary>
