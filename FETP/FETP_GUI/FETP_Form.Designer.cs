@@ -200,7 +200,7 @@
             this.Name = "FETP_Form";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FETP_Form";
+            this.Text = "Final Exam Timetabling Program";
             this.Load += new System.EventHandler(this.FETP_Form_Load);
             this.Resize += new System.EventHandler(this.FETP_Form_Resize);
             this.menuStrip1.ResumeLayout(false);
