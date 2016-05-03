@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using FETP;
 
@@ -14,12 +8,12 @@ namespace FETP_GUI
     public partial class TextSchedule : UserControl
     {
         private Schedule _schedule;
-
-        public TextSchedule()
-        {
-            InitializeComponent();
-        }
-
+        
+        /// <summary>
+        /// Dynamic Constructer displays entire schedule in text format
+        /// </summary>
+        /// <param name="schedule">Schedule object to display</param>
+        //Amy Brown
         public TextSchedule(Schedule schedule)
         {
             _schedule = schedule;
@@ -29,6 +23,10 @@ namespace FETP_GUI
             DisplayBlocks();
         }
 
+        /// <summary>
+        /// Display Schedule Constraints
+        /// </summary>
+        //Ben Etherege and Amy Brown
         public void Display()
         {
             richTextBox1.Text += "\n*******************************************************************************************";
@@ -42,11 +40,11 @@ namespace FETP_GUI
             richTextBox1.Text += string.Format("\nNumber of Exam Times Per Day: {0}", _schedule.NumberOfTimeSlotsAvailablePerDay);
             richTextBox1.Text += "\n*******************************************************************************************\n";
         }
-
-
+        
         /// <summary>
         /// Displays all blocks in schedule
         /// </summary>
+        //ben Etherege and Amy Brown
         public void DisplayBlocks()
         {
             int dayNumber = 0;
@@ -66,10 +64,6 @@ namespace FETP_GUI
                     }
                     DisplayAllClasses(_schedule.Blocks[i].ClassesInBlock, _schedule.StartTimesOfExams[i % _schedule.NumberOfTimeSlotsAvailablePerDay], _schedule.ExamsLength, dayNumber);
                 }
-                //else
-                //{
-                //    richTextBox1.Text += ("\nNOT GOOD: IN DisplayBlocks");
-                //}
             }
 
             richTextBox1.Text += ("\n\n*******************************************************************************************");
@@ -81,24 +75,15 @@ namespace FETP_GUI
             }
             richTextBox1.Text += "\n\n\n\n\n";
         }
-
+        
         /// <summary>
-        /// Displays all information stored in a Block instance with formatting.
+        /// Displays all Classes in a scheduled Block
         /// </summary>
-        public void DisplayBlock(Block block)
-        {
-            richTextBox1.Text += string.Format("\nNumber of Classes in Block: {0}", block.ClassesInBlock.Count);
-            richTextBox1.Text += string.Format("\nTotal Enrollment: {0}", block.Enrollment);
-            richTextBox1.Text += string.Format("\nAverage Enrollment: {0}", block.Average);
-            richTextBox1.Text += string.Format("\nVariance: {0}", block.Variance);
-            richTextBox1.Text += string.Format("\nStandard Deviation: {0}", block.StandardDeviation);
-            richTextBox1.Text += string.Format("\nWeighted Average Starting Time: {0}", block.WeightedAverageStartTime);
-        }
-
-
-        /// <summary>
-        /// Add a description
-        /// </summary>
+        /// <param name="classesInBlock">List of all Classes in the given Block</param>
+        /// <param name="startTime">Start Time of given Block</param>
+        /// <param name="examLength">Length of Exam Times</param>
+        /// <param name="dayNumber">Day of given Block</param>
+        //Ben Etherege and Amy Brown
         public void DisplayAllClasses(List<Class> classesInBlock, TimeSpan startTime, TimeSpan examLength, int dayNumber)
         {
             foreach (Class cl in classesInBlock)
@@ -106,8 +91,10 @@ namespace FETP_GUI
         }
 
         /// <summary>
-        /// Add a description
+        /// Displays all Classes in an unscheduled Block
         /// </summary>
+        /// <param name="classesInBlock">List of all Classes in the given Block</param>
+        //Ben Etherege and Amy Brown
         public void DisplayAllClasses(List<Class> classesInBlock)
         {
             foreach (Class cl in classesInBlock)
@@ -115,8 +102,13 @@ namespace FETP_GUI
         }
 
         /// <summary>
-        /// Displays all information stored in a Class instance with formatting.
+        /// Displays all information stored in a scheduled Class instance with formatting.
         /// </summary>
+        /// <param name="cl">Class to display</param>
+        /// <param name="startTime">Start Time of class</param>
+        /// <param name="examLength">Length of Exams</param>
+        /// <param name="dayNumber">Day of given Class</param>
+        //Ben Etherege and Amy Brown
         public void DisplayScheduledClass(Class cl, TimeSpan startTime, TimeSpan examLength, int dayNumber)
         {
             richTextBox1.Text += "\n";
@@ -147,9 +139,13 @@ namespace FETP_GUI
             richTextBox1.Text += string.Format("\t\t{0}", startTime);
             richTextBox1.Text += string.Format(" - {0}", startTime+examLength);
             richTextBox1.Text += string.Format("\t\tDay {0}", dayNumber);
-            //richTextBox1.Text += "\n";
         }
 
+        /// <summary>
+        /// Displays all information stored in an unscheduled Class instance with formatting.
+        /// </summary>
+        /// <param name="cl">Class to display</param>
+        //Ben Etherege and Amy Brown
         public void DisplayUnscheduledClass(Class cl)
         {
             richTextBox1.Text += "\n";
@@ -177,8 +173,6 @@ namespace FETP_GUI
 
             richTextBox1.Text += string.Format("\t{0}", cl.StartTime);
             richTextBox1.Text += string.Format(" - {0}", cl.EndTime);
-            //richTextBox1.Text += string.Format("\nEnrollment: {0}", cl.Enrollment);
-            //richTextBox1.Text += "\n";
         }
     }
 }

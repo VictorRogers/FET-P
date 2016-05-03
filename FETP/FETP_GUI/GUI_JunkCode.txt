@@ -186,3 +186,42 @@ From SingleDayCalendar.cs:
 From SingleDayCalendar.Designer.cs:
 	
 	The entire InitializeComponent() function
+
+From TextSchedule.cs:
+
+	using System.ComponentModel;
+	using System.Drawing;
+	using System.Data;
+	using System.Linq;
+	using System.Text;
+	using System.Threading.Tasks;
+	
+    public TextSchedule()
+    {
+        InitializeComponent();
+    }
+	
+    //else
+    //{
+    //    richTextBox1.Text += ("\nNOT GOOD: IN DisplayBlocks");
+    //}
+	
+    /// <summary>
+    /// Displays all information stored in a Block instance with formatting.
+    /// </summary>
+    public void DisplayBlock(Block block)
+    {
+        richTextBox1.Text += string.Format("\nNumber of Classes in Block: {0}", block.ClassesInBlock.Count);
+        richTextBox1.Text += string.Format("\nTotal Enrollment: {0}", block.Enrollment);
+        richTextBox1.Text += string.Format("\nAverage Enrollment: {0}", block.Average);
+        richTextBox1.Text += string.Format("\nVariance: {0}", block.Variance);
+        richTextBox1.Text += string.Format("\nStandard Deviation: {0}", block.StandardDeviation);
+        richTextBox1.Text += string.Format("\nWeighted Average Starting Time: {0}", block.WeightedAverageStartTime);
+    }
+	
+    //richTextBox1.Text += "\n";
+	
+    //richTextBox1.Text += string.Format("\nEnrollment: {0}", cl.Enrollment);
+    //richTextBox1.Text += "\n";
+
+From TextSchedule.Designer.cs:
