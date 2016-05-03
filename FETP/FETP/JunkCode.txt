@@ -2468,3 +2468,78 @@ namespace FETP
         //}
 
 
+        #region Debuging Tools
+        //TODO: Needs work
+        // TODO: gut these display methods before shipping
+        /// <summary>
+        /// Displays all information stored in a Schedule instance with formatting.
+        /// </summary>
+        public void Display()
+        {
+            Console.WriteLine("\n*******************************");
+            Console.WriteLine("DISPLAYING SCHEDULE INFORMATION");
+            Console.WriteLine("*******************************");
+            Console.WriteLine("Number of Days: {0}", this.NumberOfDays);
+            Console.WriteLine("Start Time for Exams: {0}", this.ExamsStartTime);
+            Console.WriteLine("Length of Exams: {0}", this.ExamsLength);
+            Console.WriteLine("Time Between Exams: {0}", this.TimeBetweenExams);
+            Console.WriteLine("Length of Lunch Time: {0}", this.LunchLength);
+            Console.WriteLine("Number of Timeslots Per Day: {0}", this.NumberOfTimeSlotsAvailablePerDay);
+            Console.WriteLine("Number of Timeslots: {0}", this.NumberOfTimeSlotsAvailable);
+            Console.WriteLine("*******************************\n");
+        }
+
+
+        /// <summary>
+        /// Displays all blocks in schedule
+        /// </summary>
+        public void DisplayBlocks()
+        {
+            Console.WriteLine("\n***************************************");
+            Console.WriteLine("DISPLAYING SCHEDULED BLOCKS INFORMATION");
+            Console.WriteLine("***************************************");
+            for (int i = 0; i < this.blocks.Length; i++)
+            {
+                if (blocks[i] != null)
+                {
+
+                    Console.WriteLine("**************");
+                    Console.WriteLine("Block");
+                    Console.WriteLine("**************");
+                    Console.WriteLine("Block start time: {0}", this.startTimesOfExams[i % this.NumberOfTimeSlotsAvailablePerDay]);
+                    blocks[i].Display();
+                    Console.WriteLine("\nClasses In Block");
+                    Console.WriteLine("********");
+
+                    blocks[i].DisplayAllClasses();
+                    Console.WriteLine();
+
+                }
+                else
+                {
+                    Console.WriteLine("==============");
+                    Console.WriteLine("EMPTY BLOCK");
+                    Console.WriteLine("==============");
+                }
+
+            }
+
+            Console.WriteLine("\n*******************************************");
+            Console.WriteLine("DISPLAYING NON SCHEDULED BLOCKS INFORMATION");
+            Console.WriteLine("*******************************************");
+            foreach (Block block in this.leftoverBlocks)
+            {
+                Console.WriteLine("**************");
+                Console.WriteLine("Block");
+                Console.WriteLine("**************");
+                block.Display();
+                Console.WriteLine("\nClasses In Block");
+                Console.WriteLine("********");
+                block.DisplayAllClasses();
+                Console.WriteLine();
+            }
+        }
+
+        #endregion
+
+
