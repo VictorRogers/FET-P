@@ -19,6 +19,7 @@ From FETP_Form.Designer.cs:
 	//private DataCollection dataCollection1;
 
 From FETP_Form.cs:
+
 	using System.Collections.Generic;
 	using System.ComponentModel;
 	using System.Data;
@@ -54,7 +55,6 @@ From FETP_Form.cs:
     //}
     //else
     //{
-    //This will need the Schedule data structure as a parameter
     miniCal = new SingleDayCalendar(schedule);
     //    views.Add("Single", miniCal);
     //}
@@ -65,8 +65,6 @@ From FETP_Form.cs:
     //}
     //else
     //{
-    //This will need the Schedule data structure as a parameter
-    //Prints entire schedule data structure in agreed format
     textCal = new TextSchedule(schedule);
     //    views.Add("Text", textCal);
     //}
@@ -74,3 +72,54 @@ From FETP_Form.cs:
     //views.Clear();
 	
     //views.Add("Full", fullCal);
+
+From FullCalendar.cs:
+	using System.Collections.Generic;
+	using System.Data;
+	using System.Text;
+	using System.Threading.Tasks;
+
+    //private static int NUMBER_OF_DAYS = 4;
+    //private static int NUMBER_OF_EXAMS_PER_DAY = 10;
+		
+    public FullCalendar()
+    {
+        //InitializeComponent();
+        InitializeComponent(NUMBER_OF_DAYS, NUMBER_OF_EXAMS_PER_DAY);
+    }
+
+	//b.Text = b.Name;
+                    
+	// _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
+	// _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+	            
+    //Button temp = destination;
+    //destination = source;
+    //source = destination;
+	
+    //------------------------------------------------------------------------------------------
+
+    //private Button dragSource;
+
+    //private void button_MouseDown(object sender, MouseEventArgs e)
+    //{
+    //    dragSource = (Button)sender;
+    //    dragSource.DoDragDrop(dragSource, DragDropEffects.Copy | DragDropEffects.Move);
+    //}
+
+    //private void button_DragEnter(object sender, DragEventArgs e)
+    //{
+    //    if (e.Data.GetType().Equals(typeof(Button)))
+    //        e.Effect = DragDropEffects.Copy;
+    //    else
+    //        e.Effect = DragDropEffects.None;
+    //}
+
+    //private void button_DragDrop(object sender, DragEventArgs e)
+    //{
+    //    Button b = (Button)sender;
+
+    //    Button temp = b;
+    //    b = dragSource;
+    //    dragSource = temp;
+    //}

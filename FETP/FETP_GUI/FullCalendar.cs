@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using FETP;
 using CalendarExtension;
@@ -14,9 +10,6 @@ namespace FETP_GUI
 {
     public partial class FullCalendar : UserControl
     {
-        //private static int NUMBER_OF_DAYS = 4;
-        //private static int NUMBER_OF_EXAMS_PER_DAY = 10;
-
         private bool selectOrSwitch = true;
         private Button tempForSwap;
 
@@ -25,18 +18,16 @@ namespace FETP_GUI
 
         private GroupBox[] Days;
         private Panel[] DayPanels;
-        private Button[][] Exams;// = new Button[NUMBER_OF_DAYS][];
-        private Label[][] startTimes;// = new Label[NUMBER_OF_DAYS][];
+        private Button[][] Exams;
+        private Label[][] startTimes;
 
         Schedule _schedule;
-
-        public FullCalendar()
-        {
-            //InitializeComponent();
-            InitializeComponent(NUMBER_OF_DAYS, NUMBER_OF_EXAMS_PER_DAY);
-        }
-
-        //Add Schedule object parameter - get generated schedule from FETP_Form
+        
+        /// <summary>
+        /// Dynamic FullCalendar Constructor builds FullCalendar View for given Scheudle object
+        /// </summary>
+        /// <param name="schedule"></param>
+        //Amy Brown
         public FullCalendar(Schedule schedule)
         {
             _schedule = schedule;
@@ -54,6 +45,7 @@ namespace FETP_GUI
         /// <param name="numOfDays">Number of days in the schedule</param>
         /// <param name="numOfExamsPerDay">Number of exam time slots per day</param>
         /// <param name="NUMBER_OF_EXAMS">Total number of exam time slots in the schedule</param>
+        //Amy Brown
         //4-14-16: Added labels for start times
         //4-20-16: Added labels on exam buttons
         private void InitializeComponent(int numOfDays, int numOfExamsPerDay)
@@ -148,7 +140,6 @@ namespace FETP_GUI
                     b.Location = new Point(6, (32 + (100) * block));
                     b.Name = "Exam Time " + (block + 1).ToString();
                     b.Size = new Size(185, 68);
-                    //b.Text = b.Name;
                     b.UseVisualStyleBackColor = false;
 
                     b.Click += button_Click;
@@ -203,6 +194,12 @@ namespace FETP_GUI
             PerformLayout();
         }
 
+        /// <summary>
+        /// Set Tooltip Text for each Button in the FullCalendar View with data from the given Schedule objet
+        /// </summary>
+        /// <param name="_schedule">Schedule containing Block data</param>
+        /// <param name="Exams">Set of Button objects</param>
+        //Amy Brown
         public void tooltipAllScheduledBlocks(Schedule _schedule, ref Button[][] Exams)
         {
             int totalPerDay = _schedule.NumberOfTimeSlotsAvailablePerDay - 1;
@@ -239,8 +236,8 @@ namespace FETP_GUI
                             }
                         }
 
-                        Exams[day][block].Tag += "\t" + c.StartTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].StartTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].StartTime.Minutes.ToString();
-                        Exams[day][block].Tag += "-" + c.EndTime.ToString(); // _schedule.Blocks[a].ClassesInBlock[0].EndTime.Hours.ToString() + ":" + _schedule.Blocks[a].ClassesInBlock[0].EndTime.Minutes.ToString();
+                        Exams[day][block].Tag += "\t" + c.StartTime.ToString();
+                        Exams[day][block].Tag += "-" + c.EndTime.ToString();
                         Exams[day][block].Tag += "\t(" + c.Enrollment.ToString() + " students)";
                         Exams[day][block].Tag += "\n";
                     }
@@ -254,8 +251,14 @@ namespace FETP_GUI
 
         //------------------------------------------------------------------------------------------
 
-        //I think these can go into CalendatExtensions.cs if they're tweaked right
-
+        /// <summary>
+        /// Event Handler for clicking any exam time Button in the FulleCalendar view
+        /// 1st click selects one Button
+        /// 2nd click selects second Button and switches both the Buttons and the Block objects within the Schedule
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //Amy Brown
         private void button_Click(object sender, EventArgs e)
         {
             if (selectOrSwitch)
@@ -281,7 +284,7 @@ namespace FETP_GUI
                     {
                         if (Exams[x1][y1].Equals(tempForSwap))
                         {
-                            SwapButtons(x1, y1, Exams[x1][y1], (Button)sender);
+                            SwapButtons(Exams[x1][y1], (Button)sender);
                             SwapBlocks(x1, y1, (Button)sender);
                             swappedBlocks = true;
                             break;
@@ -318,8 +321,13 @@ namespace FETP_GUI
             selectOrSwitch = !selectOrSwitch;
         }
 
-        //Swap Buttons display parent containers, locations, and sizes
-        private void SwapButtons(int x1, int y1, Button source, Button destination)
+        /// <summary>
+        /// Swap Buttons display parent containers, locations, and sizes
+        /// </summary>
+        /// <param name="source">1st selected Button</param>
+        /// <param name="destination">2nd selected Button</param>
+        //Amy Brown
+        private void SwapButtons(Button source, Button destination)
         {
             Panel p1 = (Panel)source.Parent;
             Panel p2 = (Panel)destination.Parent;
@@ -347,16 +355,18 @@ namespace FETP_GUI
 
             source.BringToFront();
             destination.BringToFront();
-            
-            //Button temp = destination;
-            //destination = source;
-            //source = destination;
 
             p1.Refresh();
             p2.Refresh();
         }
 
-        //Find and swap positions in _schedule.Blocks[] of Blocks indicated by Buttons
+        /// <summary>
+        /// Find and swap positions in _schedule.Blocks[] of Blocks indicated by Buttons
+        /// </summary>
+        /// <param name="i">x-coordinate of 1st selected Button within Exams[][]</param>
+        /// <param name="j">y-coordinate of 1st selected Button within Exams[][]</param>
+        /// <param name="destination">2nd selected Button</param>
+        //Amy Brown
         private void SwapBlocks(int i, int j, Button destination)
         {
             int sourceBlock = i * _schedule.NumberOfTimeSlotsAvailablePerDay + j;
@@ -382,32 +392,5 @@ namespace FETP_GUI
 
             _schedule.SwitchBlocks(sourceBlock, destinationBlock);
         }
-
-        //------------------------------------------------------------------------------------------
-
-        //private Button dragSource;
-
-        //private void button_MouseDown(object sender, MouseEventArgs e)
-        //{
-        //    dragSource = (Button)sender;
-        //    dragSource.DoDragDrop(dragSource, DragDropEffects.Copy | DragDropEffects.Move);
-        //}
-
-        //private void button_DragEnter(object sender, DragEventArgs e)
-        //{
-        //    if (e.Data.GetType().Equals(typeof(Button)))
-        //        e.Effect = DragDropEffects.Copy;
-        //    else
-        //        e.Effect = DragDropEffects.None;
-        //}
-
-        //private void button_DragDrop(object sender, DragEventArgs e)
-        //{
-        //    Button b = (Button)sender;
-
-        //    Button temp = b;
-        //    b = dragSource;
-        //    dragSource = temp;
-        //}
     }
 }
